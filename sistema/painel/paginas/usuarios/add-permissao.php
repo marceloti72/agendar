@@ -12,5 +12,4 @@ if($total_reg > 0){
 }else{
 	$pdo->query("INSERT INTO usuarios_permissoes SET permissao = '$id_permissao', usuario = '$id_usuario'");
 }
-
 ?>
