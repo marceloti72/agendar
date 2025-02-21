@@ -1,22 +1,23 @@
 <?php 
 
-$banco = 'barbearia';
-$usuario = 'root';
-$senha = '';
-$servidor = 'localhost';
+$url = "https://$_SERVER[HTTP_HOST]/";
+$url_sistema = explode("//", $url);
+if($url_sistema[1] == 'localhost/'){
+	$url = "http://$_SERVER[HTTP_HOST]/escolar/";
 
+	//VARIAVEIS DO BANCO DE DADOS LOCAL
+	$banco = 'barbearia';
+	$usuario = 'root';
+	$senha = '';
+	$servidor = 'localhost';
 
-/*
-$banco = 'hugocu75_barbearia';
-$usuario = 'hugocu75_barbearia';
-$senha = 'projetobarbearia';
-$servidor = 'sh-pro24.hostgator.com.br';
-*/
-
-$url_sistema = "https://$_SERVER[HTTP_HOST]/";
-$url = explode("//", $url_sistema);
-if($url[1] == 'localhost/'){
-	$url_sistema = "http://$_SERVER[HTTP_HOST]/barbearia/";
+}else{
+	//VARIAVEIS DO BANCO DE DADOS HOSPEDADO	
+	$servidor = 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
+	$usuario = 'skysee';	
+	$senha = '9vtYvJly8PK6zHahjPUg';
+	$banco = 'barbearia';	
+		
 }
 
 date_default_timezone_set('America/Sao_Paulo');
