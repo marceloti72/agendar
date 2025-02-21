@@ -1,0 +1,4 @@
+<?php 
+$access_token = 'APP_USR-8134099456227677-120914-2905ead0b834b632042f507c0af9d31a-1158656944';
+$public_key     = 'APP_USR-9fff80cb-374e-4949-8631-078153a0b75a';
+ ?>
