@@ -189,15 +189,15 @@ $numeros_formatados = json_encode($numeros_formatados);
 // require_once("marketing_texto.php");
 
 
-// $url_arquivo = $url_sistema."sistema/painel/img/marketing/".$arquivo;
-// if($arquivo != "sem-foto.jpg"){
-// 	require_once("marketing_foto.php");
-// }
-
-$url_audio = $url_sistema."sistema/painel/img/marketing/".$audio;
-if($audio != ""){
-	require_once("marketing_audio.php");
+$url_arquivo = $url_sistema."sistema/painel/img/marketing/".$arquivo;
+if($arquivo != "sem-foto.jpg"){
+	require_once("marketing_foto.php");
 }
+
+// $url_audio = $url_sistema."sistema/painel/img/marketing/".$audio;
+// if($audio != ""){
+// 	require_once("marketing_audio.php");
+// }
 
 $envios += 1;
 
