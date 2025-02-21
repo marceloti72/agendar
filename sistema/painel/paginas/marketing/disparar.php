@@ -1,6 +1,8 @@
 <?php 
 require_once("../../../conexao.php");
 
+date_default_timezone_set('America/Sao_Paulo');
+
 $dataMes = Date('m');
 $dataDia = Date('d');
 $dataAno = Date('d');
@@ -190,6 +192,7 @@ $numeros_formatados = json_encode($numeros_formatados);
 
 
 $url_arquivo = $url_sistema."sistema/painel/img/marketing/".$arquivo;
+echo $url_sistema;
 if($arquivo != "sem-foto.jpg"){
 	require_once("marketing_foto.php");
 }

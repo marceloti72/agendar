@@ -5,6 +5,27 @@
      $mensagem = $mensagem == '' ? '.' : $mensagem;
     
   $curl = curl_init();
+  curl_setopt_array($curl, array(
+    CURLOPT_URL => 'https://chatbot.menuia.com/api/create-message',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_POSTFIELDS => array(
+    'appkey' => $instancia,
+    'authkey' => $token,
+    'to' => $telefone_envio,
+    'message' => $arquivo,
+    'descricao' => $mensagem,
+    'file' => $url."img/arquivos/$arquivo",
+    'sandbox' => 'false'
+    ),
+  ));
+
+
     curl_setopt_array($curl, array(
       CURLOPT_URL => 'https://chatbot.menuia.com/api/create-message',
       CURLOPT_RETURNTRANSFER => true,
@@ -16,12 +37,12 @@
       CURLOPT_CUSTOMREQUEST => 'POST',
       CURLOPT_POSTFIELDS => array(
       'appkey' => $instancia,
-      'authkey' => $token,
-      //'licence' => 'skysee',
+      'authkey' => $token,      
       'to' => $numeros_formatados,
       'message' => $mensagem ?? '.',
       'agendamento' => date('Y-m-d H:i:s'),
-      'file' => $url_arquivo
+      'file' => $url_sistema."sistema/painel/img/marketing/".$arquivo,
+      'sandbox' => 'false'
       ),
     ));
     
