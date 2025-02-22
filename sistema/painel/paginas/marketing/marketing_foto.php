@@ -21,10 +21,7 @@
       'to' => $numeros_formatados,
       'message' => $mensagem ?? '.',
       'agendamento' => date('Y-m-d H:i:s'),
-      'file[]' => array( // Note o '[]' após 'file'
-            $url."sistema/painel/img/marketing/".$arquivo,
-            $url."sistema/painel/img/marketing/".$audio
-        ),
+      'file' => $url."sistema/painel/img/marketing/".$arquivo,
       'sandbox' => 'false'
       ),
     ));

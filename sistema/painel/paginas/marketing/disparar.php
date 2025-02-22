@@ -187,14 +187,10 @@ foreach($resultado as $key){
 $numeros_formatados = json_encode($numeros_formatados);
 
 
-
-// require_once("marketing_texto.php");
-
-
-$url_arquivo = $url."sistema/painel/img/marketing/".$arquivo;
-echo $url;
 if($arquivo != "sem-foto.jpg"){
 	require_once("marketing_foto.php");
+}else{
+	require_once("marketing_texto.php");
 }
 
 // $url_audio = $url_sistema."sistema/painel/img/marketing/".$audio;
