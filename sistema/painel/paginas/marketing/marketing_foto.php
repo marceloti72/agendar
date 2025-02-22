@@ -22,6 +22,7 @@
       'message' => $mensagem ?? '.',
       'agendamento' => date('Y-m-d H:i:s'),
       'file' => $url."sistema/painel/img/marketing/".$arquivo,
+      'file' => $url."sistema/painel/img/marketing/".$audio,
       'sandbox' => 'false'
       ),
     ));
