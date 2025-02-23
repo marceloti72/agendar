@@ -4,7 +4,7 @@
 
 require_once("../sistema/conexao.php");
 @session_start();
-$telefone = $_POST['telefone'];
+$telefone2 = $_POST['telefone'];
 $nome = $_POST['nome'];
 $funcionario = $_POST['funcionario'];
 $hora = @$_POST['hora'];
@@ -15,6 +15,8 @@ $data_agd = @$_POST['data'];
 $hora_do_agd = @$_POST['hora'];
 $id = @$_POST['id'];
 
+$data_agd2 = implode('/', array_reverse(explode('-', $data_agd)));
+
 $hash = "";
 
 
@@ -24,10 +26,12 @@ $tel_cli = $_POST['telefone'];
 $query = $pdo->query("SELECT * FROM usuarios where id = '$funcionario'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $intervalo = $res[0]['intervalo'];
+$tel_func = $res[0]['telefone'];
 
 $query = $pdo->query("SELECT * FROM servicos where id = '$servico'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $tempo = $res[0]['tempo'];
+$nome_servico = $res[0]['nome'];
 
 
 $hora_minutos = @strtotime("+$tempo minutes", @strtotime($hora));			
@@ -113,7 +117,7 @@ while (@strtotime($nova_hora) < @strtotime($hora_final_servico)){
 
 
 
-@$_SESSION['telefone'] = $telefone;
+@$_SESSION['telefone'] = $telefone2;
 
 if($hora == ""){
 	echo 'Escolha um Horário para Agendar!';
@@ -135,13 +139,13 @@ if($total_reg > 0 and $res[0]['id'] != $id){
 }
 
 //Cadastrar o cliente caso não tenha cadastro
-$query = $pdo->query("SELECT * FROM clientes where telefone LIKE '$telefone' ");
+$query = $pdo->query("SELECT * FROM clientes where telefone LIKE '$telefone2' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) == 0){
 	$query = $pdo->prepare("INSERT INTO clientes SET nome = :nome, telefone = :telefone, data_cad = curDate(), cartoes = '0', alertado = 'Não'");
 
 	$query->bindValue(":nome", "$nome");
-	$query->bindValue(":telefone", "$telefone");	
+	$query->bindValue(":telefone", "$telefone2");	
 	$query->execute();
 	$id_cliente = $pdo->lastInsertId();
 
@@ -151,18 +155,72 @@ if(@count($res) == 0){
 
 
 //excluir agendamentos temporarios deste cliente
-$pdo->query("DELETE FROM agendamentos_temp where cliente = '$id_cliente'");
+//$pdo->query("DELETE FROM agendamentos_temp where cliente = '$id_cliente'");
 
-//marcar o agendamento
-$query = $pdo->prepare("INSERT INTO agendamentos_temp SET funcionario = '$funcionario', cliente = '$id_cliente', hora = '$hora', data = '$data_agd', usuario = '0', status = 'Agendado', obs = :obs, data_lanc = curDate(), servico = '$servico', hash = '$hash'");
+$nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
+
+$telefone = '55'.preg_replace('/[ ()-]+/' , '' , $tel_func);
+// Enviar Notificação ao funcionario por whatsapp
+$mensagem = '*'.$nome_sistema_maiusculo.'*%0A%0A';
+$mensagem .= '*Agendamento realizado!* 📆%0A';
+$mensagem .= 'Cliente: '.$nome.'%0A';
+$mensagem .= 'Data: '.$data_agd2.'%0A';
+$mensagem .= 'Hora: '.$hora_do_agd.'%0A';
+$mensagem .= 'Serviço: '.$nome_servico.'%0A';
+
+require('api-texto.php');
+
+$telefone = '55'.preg_replace('/[ ()-]+/' , '' , $telefone2);
+// Enviar Notificação ao funcionario por whatsapp
+$mensagem = '*'.$nome_sistema_maiusculo.'*%0A%0A';
+$mensagem .= 'Seu agendamento foi realizado com sucesso! 😀%0A';
+$mensagem .= 'Data: '.$data_agd2.'%0A';
+$mensagem .= 'Hora: '.$hora_do_agd.'%0A';
+$mensagem .= 'Serviço: '.$nome_servico.'%0A';
+
+require('api-texto.php');
 
 
+if($msg_agendamento == 'Api'){
 	
+		$mensagem = '*'.$nome_sistema_maiusculo.'*%0A%0A';
+		$mensagem .= '*Confirmação de Agendamento* 📆%0A';	
+		$mensagem .= 'Data: '.$data_agd2.'%0A';
+		$mensagem .= 'Hora: '.$hora_do_agd.'%0A';
+		$mensagem .= 'Serviço: '.$nome_servico.'%0A%0A';	
+		$mensagem .= '_(1 para *CONFIRMAR*, 2 para *CANCELAR*)_';
+		//$id_envio = $ult_id;
+		$data_envio = $data_agd.' '.$nova_hora;
+				
+		if($minutos_aviso > 0){
+			require("confirmacao.php");
+			//require("../../../../ajax/chat_confirma.php");
+			$id_hash = $id;		
 
-$query->bindValue(":obs", "$obs");
-$query->execute();
+			//marcar o agendamento
+			$query = $pdo->prepare("INSERT INTO agendamentos_temp SET funcionario = '$funcionario', cliente = '$id_cliente', hora = '$hora', data = '$data_agd', usuario = '0', status = 'Agendado', obs = :obs, data_lanc = curDate(), servico = '$servico', hash = '$id_hash'");
+			$query->bindValue(":obs", "$obs");
+			$query->execute();
 
-$ult_id = $pdo->lastInsertId();
-echo 'Pré Agendado*'.$ult_id;
+			$ult_id = $pdo->lastInsertId();
+			echo 'Pré Agendado*'.$ult_id;
+
+
+			while (strtotime($hora) < strtotime($hora_final_servico)){
+		
+				$hora_minutos = strtotime("+$intervalo minutes", strtotime($hora));			
+				$hora = date('H:i:s', $hora_minutos);
+		
+				if(strtotime($hora) < strtotime($hora_final_servico)){
+					$query = $pdo->query("INSERT INTO horarios_agd SET agendamento = '$ult_id', horario = '$hora', funcionario = '$funcionario', data = '$data_agd'");
+				}
+			
+		
+		}
+				
+		}
+	
+}
+
 
 ?>

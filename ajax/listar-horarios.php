@@ -76,7 +76,7 @@ $intervalo = $res[0]['intervalo'];
 				$dataH = '';
 
 				//validar horario
-$query2 = $pdo->query("SELECT * FROM agendamentos where data = '$data' and hora = '$hora' and funcionario = '$funcionario'");
+$query2 = $pdo->query("SELECT * FROM agendamentos_temp where data = '$data' and hora = '$hora' and funcionario = '$funcionario'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 
 $total_reg2 = @count($res2);

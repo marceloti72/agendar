@@ -7,6 +7,18 @@ $dataInicial = @$_POST['dataInicial'];
 $dataFinal = @$_POST['dataFinal'];
 $status = '%'.@$_POST['status'].'%';
 $funcionario = @$_POST['funcionario'];
+?>
+<style>
+#tabela tr:nth-child(even) { /* Linhas pares */
+  background-color: #f2f2f2; /* Tom mais claro */
+}
+
+#tabela tr:nth-child(odd) { /* Linhas ímpares */
+  background-color: #ffffff; /* Tom mais escuro (ou branco) */
+}
+</style>
+<?php 
+
 
 $funcionario2 = $_POST['funcionario'];
 $query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario2'");
@@ -145,7 +157,7 @@ for($i=0; $i < $total_reg; $i++){
 		}
 
 
-		if($data_pgto == '0000-00-00'){
+		if($data_pgto == null){
 			$classe_alerta = 'text-danger';
 			$data_pgtoF = 'Pendente';
 			$visivel = '';

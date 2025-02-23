@@ -25,10 +25,12 @@ if(@$hora == ""){
 $query = $pdo->query("SELECT * FROM usuarios where id = '$funcionario'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $intervalo = $res[0]['intervalo'];
+$tel_func = $res[0]['telefone'];
 
 $query = $pdo->query("SELECT * FROM servicos where id = '$servico'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $tempo = $res[0]['tempo'];
+$nome_servico = $res[0]['nome'];
 
 
 $hora_minutos = strtotime("+$tempo minutes", strtotime($hora));			
@@ -116,7 +118,7 @@ if($total_reg > 0 and $res[0]['id'] != $id){
 
 
 
-
+$nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
 
 //pegar nome do cliente
 $query = $pdo->query("SELECT * FROM clientes where id = '$cliente'");
@@ -131,6 +133,17 @@ if($not_sistema == 'Sim'){
 	require('../../../../api/notid.php');
 } 
 
+$telefone = '55'.preg_replace('/[ ()-]+/' , '' , $tel_func);
+// Enviar Notificação ao funcionario por whatsapp
+$mensagem = '*'.$nome_sistema_maiusculo.'*%0A%0A';
+$mensagem .= '*Confirmação de Agendamento* 📆%0A';
+$mensagem .= 'Cliente: '.$nome_cliente.'%0A';
+$mensagem .= 'Data: '.$dataF.'%0A';
+$mensagem .= 'Hora: '.$horaF.'%0A';
+$mensagem .= 'Serviço: '.$nome_servico.'%0A';
+
+require('../../../../ajax/api-texto.php');
+
 
 if($msg_agendamento == 'Api'){
 
@@ -139,6 +152,7 @@ $hora_atual = date('H:i:s');
 $data_atual = date('Y-m-d');
 $hora_minutos = strtotime("-$minutos_aviso minutes", strtotime($hora));
 $nova_hora = date('H:i:s', $hora_minutos);
+echo $nova_hora;
 
 
 $telefone = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
@@ -157,14 +171,18 @@ $ult_id = $pdo->lastInsertId();
 
 if($msg_agendamento == 'Api'){
 if(strtotime($hora_atual) < strtotime($nova_hora) or strtotime($data_atual) != strtotime($data_agd)){
-
-		$mensagem = '*Confirmação de Agendamento* ';
-		$mensagem .= '                              _(1 para Confirmar, 2 para Cancelar)_';
+		$mensagem = '*'.$nome_sistema_maiusculo.'*%0A%0A';
+		$mensagem .= '*Confirmação de Agendamento* 📆%0A';	
+		$mensagem .= 'Data: '.$dataF.'%0A';
+		$mensagem .= 'Hora: '.$horaF.'%0A';
+		$mensagem .= 'Serviço: '.$nome_servico.'%0A%0A';	
+		$mensagem .= '_(1 para *CONFIRMAR*, 2 para *CANCELAR*)_';
 		$id_envio = $ult_id;
-		$data_envio = $data_agd.' '.$hora_do_agd;
-		
+		$data_envio = $data_agd.' '.$nova_hora;
+				
 		if($minutos_aviso > 0){
 			require("../../../../ajax/confirmacao.php");
+			//require("../../../../ajax/chat_confirma.php");
 			$id_hash = $id;		
 			$pdo->query("UPDATE agendamentos SET hash = '$id_hash' WHERE id = '$ult_id'");		
 		}

@@ -10,8 +10,8 @@ if ($modoProducao) {
     
 } else {
     $NOME_SITE = "Meu pix (Modo Teste)"; // Nome do seu site em modo de teste
-    $TOKEN_MERCADO_PAGO = "APP_USR-7645692252055791-101021-ba91ccf6cd290bc3115e3270a30edb1e-131939455"; // Token do Mercado Pago em teste
-    $TOKEN_MERCADO_PAGO_PUBLICO = "TEST-da159e2a-4731-4fe4-abf0-5d890ab6c0e0"; // Token público do Mercado Pago em teste
+    $TOKEN_MERCADO_PAGO = "APP_USR-5194938746509270-070420-5f8c4f8a406cfebf91215923b06a4fa1-1034833440"; // Token do Mercado Pago em teste
+    $TOKEN_MERCADO_PAGO_PUBLICO = "APP_USR-9d70c2bb-8d81-473c-8c06-cb48aa4408ca"; // Token público do Mercado Pago em teste
     
 }
 

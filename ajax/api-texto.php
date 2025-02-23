@@ -1,9 +1,8 @@
 <?php
 
-require_once("../funcoes.php");
+//require_once("../../../../funcoes.php");
+require_once __DIR__ . '/../funcoes.php';
 
-if ($api == "menuia") 
-{
    $mensagem = str_replace("%0A", "\n", $mensagem); 
 
     $curl = curl_init();
@@ -19,8 +18,7 @@ if ($api == "menuia")
       CURLOPT_POSTFIELDS => array(
       'appkey' => $instancia,
       'authkey' => $token,
-      'to' => $telefone,
-      'licence' => 'hugocursos',
+      'to' => $telefone,      
       'message' => $mensagem,
       ),
     ));
@@ -30,30 +28,7 @@ if ($api == "menuia")
     $response = json_decode($response, true);
     save_log($pdo, $token, $instancia, $response, 'texto', $telefone, $mensagem);
     
-} 
-else 
-{
-     $url = "http://api.wordmensagens.com.br/send-text";
 
-  $data = array('instance' => $instancia,
-                'to' => $telefone,
-                'token' => $token,
-                'message' => $mensagem);
-
-  
-
-  $options = array('http' => array(
-                 'method' => 'POST',
-                 'content' => http_build_query($data)
-  ));
-
-  $stream = stream_context_create($options);
-
-  $result = @file_get_contents($url, false, $stream);
-   
-}
-
-   
 ?>
   
 

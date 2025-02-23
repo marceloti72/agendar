@@ -3,7 +3,7 @@ require_once("../sistema/conexao.php");
 
 $id = @$_POST['id'];
 
-$query = $pdo->query("SELECT * FROM agendamentos where id = '$id'");
+$query = $pdo->query("SELECT * FROM agendamentos_temp where id = '$id'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $cliente = $res[0]['cliente'];
 $usuario = $res[0]['funcionario'].'';
@@ -20,7 +20,7 @@ $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $nome_cliente = $res[0]['nome'];
 $telefone = $res[0]['telefone'];
 
-$pdo->query("DELETE FROM agendamentos where id = '$id'");
+$pdo->query("DELETE FROM agendamentos_temp where id = '$id'");
 $pdo->query("DELETE FROM horarios_agd where agendamento = '$id'");
 
 echo 'Cancelado com Sucesso';
@@ -45,8 +45,11 @@ $query = $pdo->query("SELECT * FROM servicos where id = '$servico' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $nome_serv = $res[0]['nome'];
 
+$nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
 
-$mensagem = '_Agendamento Cancelado_ %0A';
+
+$mensagem = '*'.$nome_sistema_maiusculo.'*%0A%0A';
+$mensagem .= '_*Agendamento Cancelado*_ 🚨%0A';
 $mensagem .= 'Profissional: *'.$nome_func.'* %0A';
 $mensagem .= 'Serviço: *'.$nome_serv.'* %0A';
 $mensagem .= 'Data: *'.$dataF.'* %0A';

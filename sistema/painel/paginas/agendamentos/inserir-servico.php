@@ -131,11 +131,22 @@ $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $total_cartoes = $res2[0]['cartoes'];
 $telefone = $res2[0]['telefone'];
 $nome_cliente = $res2[0]['nome'];
+$telefone = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
+
+$nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
 
 if($total_cartoes >= $quantidade_cartoes){
 	$cartoes = 0;
 }else{
 	$cartoes = $total_cartoes + 1;
+	if($cartoes == $quantidade_cartoes){
+		//agendar avisando do cartão filidelidade preenchido
+		$mensagem = '*'.$nome_sistema_maiusculo.'*  %0A %0A';
+		$mensagem .= $texto_fidelidade. '🎁';	
+		
+		require('../../../../ajax/api-texto.php');
+
+	}
 }
 
 $data_retorno = date('Y-m-d', strtotime("+$dias_retorno days",strtotime($data_atual)));
@@ -156,7 +167,7 @@ $pdo->query("UPDATE clientes SET cartoes = '$cartoes', data_retorno = '$data_ret
 echo 'Salvo com Sucesso'; 
 
 
-$telefone = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
+
 if($msg_agendamento == 'Api'){
 //agendar mensagem de retorno
 	$mensagem = '*Olá tudo bem '.$nome_cliente.'! Nós '.$nome_sistema.', queremos ouvir você!*  %0A %0A';
@@ -165,4 +176,6 @@ if($msg_agendamento == 'Api'){
 	require('../../../../ajax/api-agendar.php');
 	
 }
+
+
 ?>

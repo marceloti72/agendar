@@ -42,14 +42,7 @@ $data_atual = date('Y-m-d');
 					<input  onclick="buscarNome()" class="inputs_agenda cor_place" type="text" name="nome" id="nome" placeholder="Seu Nome" required />
 				</div>
 
-
-
-
-
 				</div>
-				
-
-				
 
 
 
@@ -286,6 +279,7 @@ $data_atual = date('Y-m-d');
 
 			success:function(result){
 				var split = result.split("*");
+				
 				console.log(split[3])
 
 				if(split[2] == "" || split[2] == undefined){
@@ -303,7 +297,12 @@ $data_atual = date('Y-m-d');
 					$("#botao_salvar").text('Novo Agendamento');
 				}
 
-				$("#nome").val(split[0]);
+				if(split[0] == "" || split[0] == undefined){
+
+				}else{
+					$("#nome").val(split[0]);
+				}
+				
 				
 
 				$("#msg-excluir").text('Deseja Realmente excluir esse agendamento feito para o dia ' + split[7] + ' às ' + split[4]);
@@ -360,7 +359,7 @@ $data_atual = date('Y-m-d');
 					$('#mensagem').text(msg[0])
 					buscarNome()
 
-					window.location="pagamento/"+id_agd+"/100";
+					//window.location="pagamento/"+id_agd+"/100";
 
 				}		
 

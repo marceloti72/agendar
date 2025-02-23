@@ -30,7 +30,7 @@ if($hash != ""){
 	require('../../../../ajax/agendar-delete.php');
 }
 
-
+$nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
 
 if($msg_agendamento == 'Api'){
 
@@ -44,16 +44,14 @@ $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $nome_serv = $res[0]['nome'];
 
 
-$mensagem = '_Agendamento Cancelado_ %0A';
+$mensagem = '*'.$nome_sistema_maiusculo.'*%0A%0A';
+$mensagem .= '*_Agendamento Cancelado_* 🚨%0A';
 $mensagem .= 'Profissional: *'.$nome_func.'* %0A';
 $mensagem .= 'Serviço: *'.$nome_serv.'* %0A';
 $mensagem .= 'Data: *'.$dataF.'* %0A';
 $mensagem .= 'Hora: *'.$horaF.'* %0A';
-$mensagem .= 'Cliente: *'.$nome_cliente.'* %0A';
+$mensagem .= 'Cliente: *'.$nome_cliente.'*%0A';
 
-$telefone = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
-
-require('../../../../ajax/api-texto.php');
 
 //avisar o profissional
 $telefone = '55'.preg_replace('/[ ()-]+/' , '' , $tel_func);

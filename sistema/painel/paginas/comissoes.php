@@ -71,7 +71,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 		</div>
 
 		<div class="col-md-3">
-		<button  onclick="baixarTudo()" type="button" class="btn btn-success"> Baixar Comissões</button>
+		<button  onclick="baixarTudo()" type="button" class="btn btn-success" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'> Baixar Comissões</button>
 	</div>
 
 
