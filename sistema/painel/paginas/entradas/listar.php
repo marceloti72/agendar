@@ -64,7 +64,7 @@ for($i=0; $i < $total_reg; $i++){
 echo <<<HTML
 <tr class="">
 <td>
-<img src="img/produtos/{$foto_produto}" width="27px" class="mr-2">
+<img src="img/produtos/{$foto_produto}" width="50" height="50" class="hovv">
 {$nome_produto}
 </td>
 <td class="">{$quantidade}</td>

@@ -118,7 +118,7 @@ if(strtotime($data_pgto_restante) <=  strtotime($data_atual)){
 }
 
 //lançar o restante
-$pdo->query("INSERT INTO $tabela SET descricao = '$descricao', tipo = 'Serviço', valor = '$valor_serv_restante', data_lanc = curDate(), data_venc = '$data_pgto_restante', data_pgto = '$data_pgto2_restante', usuario_lanc = '$usuario_logado', usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = '$pago_restante', servico = '$servico', funcionario = '$funcionario', obs = '$obs', pgto = '$pgto_restante'");	
+$pdo->query("INSERT INTO $tabela SET descricao = '$descricao', tipo = 'Serviço', valor = '$valor_serv_restante', data_lanc = curDate(), data_venc = '$data_pgto_restante', data_pgto = '$data_pgto2_restante', usuario_lanc = '$usuario_logado', usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = '$pago_restante', servico = '$servico', funcionario = '$funcionario', obs = '$obs', pgto = '$pgto_restante', id_agenda = '$id_agd'");	
 }
 
 $query2 = $pdo->query("SELECT * FROM servicos where id = '$servico'");
@@ -153,7 +153,7 @@ $data_retorno = date('Y-m-d', strtotime("+$dias_retorno days",strtotime($data_at
 
 if($valor_serv_original != 0){
 	if($agendamento_conta == 0){
-		$pdo->query("INSERT INTO $tabela SET descricao = '$descricao', tipo = 'Serviço', valor = '$valor_serv', data_lanc = curDate(), data_venc = '$data_pgto', data_pgto = '$data_pgto2', usuario_lanc = '$usuario_logado', usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = '$pago', servico = '$servico', funcionario = '$funcionario', obs = '$obs', pgto = '$pgto'");
+		$pdo->query("INSERT INTO $tabela SET descricao = '$descricao', tipo = 'Serviço', valor = '$valor_serv', data_lanc = curDate(), data_venc = '$data_pgto', data_pgto = '$data_pgto2', usuario_lanc = '$usuario_logado', usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = '$pago', servico = '$servico', funcionario = '$funcionario', obs = '$obs', pgto = '$pgto', id_agenda = '$id_agd'");
 		}else{
 			$pdo->query("UPDATE $tabela SET valor = '$novo_valor_servico', data_pgto = curDate(), usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pgto = '$pgto' where referencia = '$id_agd'");
 		}
@@ -170,7 +170,7 @@ echo 'Salvo com Sucesso';
 
 if($msg_agendamento == 'Api'){
 //agendar mensagem de retorno
-	$mensagem = '*Olá tudo bem '.$nome_cliente.'! Nós '.$nome_sistema.', queremos ouvir você!*  %0A %0A';
+	$mensagem = '*Olá tudo bem '.$nome_cliente.'! Nós '.$nome_sistema.', queremos ouvir você!*%0A%0A';
 	$mensagem .= 'Como foi seu último serviço de '.$nome_servico.' conosco? Você teria alguma sugestão de melhoria? Você é muito importante pra gente!%0A %0A Faz um tempo que não nós vemos você aqui. Quando você vai dar aquele tapa no visual? Você merece o que há de melhor, conheça nossos pacotes de desconto. *Promoção especial apenas hoje!*';	
 	$data_mensagem = $data_retorno.' 08:00:00';
 	require('../../../../ajax/api-agendar.php');

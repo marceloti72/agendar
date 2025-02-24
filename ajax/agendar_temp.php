@@ -198,7 +198,7 @@ if($msg_agendamento == 'Api'){
 			$id_hash = $id;		
 
 			//marcar o agendamento
-			$query = $pdo->prepare("INSERT INTO agendamentos_temp SET funcionario = '$funcionario', cliente = '$id_cliente', hora = '$hora', data = '$data_agd', usuario = '0', status = 'Agendado', obs = :obs, data_lanc = curDate(), servico = '$servico', hash = '$id_hash'");
+			$query = $pdo->prepare("INSERT INTO agendamentos SET funcionario = '$funcionario', cliente = '$id_cliente', hora = '$hora', data = '$data_agd', usuario = '$funcionario', status = 'Agendado', obs = :obs, data_lanc = curDate(), servico = '$servico', hash = '$id_hash', origem = 'Site'");
 			$query->bindValue(":obs", "$obs");
 			$query->execute();
 

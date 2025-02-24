@@ -30,7 +30,7 @@ $id_cliente = $res[0]['id'];
 		<div class="footer_content " >
 			
 <?php
-$query = $pdo->query("SELECT * FROM agendamentos_temp where cliente = '$id_cliente' and status = 'Agendado' ORDER BY data asc");
+$query = $pdo->query("SELECT * FROM agendamentos where cliente = '$id_cliente' and status = 'Agendado' ORDER BY data asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){

@@ -58,7 +58,7 @@ for($i=0; $i < $total_reg; $i++){
 echo <<<HTML
 <tr class="">
 <td>
-<img src="img/produtos/{$foto}" width="27px" class="mr-2">
+<img src="img/produtos/{$foto}" onclick="mostrar('{$nome}', '{$nome_cat}', '{$descricao}', '{$valor_compraF}',  '{$valor_vendaF}', '{$estoque}', '{$foto}', '{$nivel_estoque}')" title="Ver Dados" width="50" height="50" class="hovv">
 {$nome}
 </td>
 <td class="esc">{$nome_cat}</td>
@@ -69,7 +69,7 @@ echo <<<HTML
 <td>
 		
 
-		<big><a href="#" onclick="mostrar('{$nome}', '{$nome_cat}', '{$descricao}', '{$valor_compraF}',  '{$valor_vendaF}', '{$estoque}', '{$foto}', '{$nivel_estoque}')" title="Ver Dados"><i class="fa fa-info-circle text-secondary"></i></a></big>
+		<a href="#" class="btn btn-info btn-xs" onclick="mostrar('{$nome}', '{$nome_cat}', '{$descricao}', '{$valor_compraF}',  '{$valor_vendaF}', '{$estoque}', '{$foto}', '{$nivel_estoque}')" title="Ver Dados"><i class="fe fe-search"></i></a>
 
 
 

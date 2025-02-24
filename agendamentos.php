@@ -32,7 +32,7 @@ $data_atual = date('Y-m-d');
 
 					<div class="col-6">
 						
-					<input style="color:#FFF !important;" onchange="mudarFuncionario()" class="inputs_agenda" type="date" name="data" id="data" value="<?php echo $data_atual ?>" required />
+					<input type="date"  onchange="mudarFuncionario()" class="inputs_agenda"  name="data" id="data" value="<?php echo $data_atual ?>" required />
 				
 					</div>
 
@@ -215,6 +215,12 @@ $data_atual = date('Y-m-d');
 
 		listarFuncionarios();
 	});
+
+	const dataInput = document.getElementById('data');
+	dataInput.addEventListener('click', () => {
+	dataInput.showPicker();
+	});
+
 </script>
 
 

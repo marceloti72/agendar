@@ -152,7 +152,6 @@ $hora_atual = date('H:i:s');
 $data_atual = date('Y-m-d');
 $hora_minutos = strtotime("-$minutos_aviso minutes", strtotime($hora));
 $nova_hora = date('H:i:s', $hora_minutos);
-echo $nova_hora;
 
 
 $telefone = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
@@ -161,7 +160,7 @@ $telefone = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
 }
 
 
-$query = $pdo->prepare("INSERT INTO $tabela SET funcionario = '$funcionario', cliente = '$cliente', hora = '$hora', data = '$data_agd', usuario = '$usuario_logado', status = 'Agendado', obs = :obs, data_lanc = curDate(), servico = '$servico', hash = '$hash'");
+$query = $pdo->prepare("INSERT INTO $tabela SET funcionario = '$funcionario', cliente = '$cliente', hora = '$hora', data = '$data_agd', usuario = '$usuario_logado', status = 'Agendado', obs = :obs, data_lanc = curDate(), servico = '$servico', origem = 'Loja', hash = '$hash'");
 
 $query->bindValue(":obs", "$obs");
 $query->execute();

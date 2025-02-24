@@ -21,7 +21,7 @@ if($total_reg > 0){
 
 echo <<<HTML
 	<small>
-	<table class="table table-hover">
+	<table class="table table-hover" id="tabela">
 	<thead> 
 	<tr> 
 	<th>Nome</th>	
@@ -110,14 +110,14 @@ echo <<<HTML
 <td class="esc {$classe_retorno}">{$data_retornoF}</td>
 <td class="esc">{$cartoes}</td>
 <td>
-		<big><a href="#" onclick="editar('{$id}','{$nome}', '{$telefone}', '{$endereco}', '{$data_nasc}', '{$cartoes}', '{$cpf}')" title="Editar Dados"><i class="fa fa-edit text-primary"></i></a></big>
+		<a href="#" class="btn btn-primary btn-xs" onclick="editar('{$id}','{$nome}', '{$telefone}', '{$endereco}', '{$data_nasc}', '{$cartoes}', '{$cpf}')" title="Editar Dados"><i class="fe fe-edit"></i></a>
 
-		<big><a href="#" onclick="mostrar('{$id}','{$nome}', '{$telefone}', '{$cartoes}', '{$data_cadF}', '{$data_nascF}', '{$endereco}', '{$data_retornoF}', '{$nome_servico}', '{$obs_servico}', '{$valor_servico}', '{$data_servico}')" title="Ver Dados"><i class="fa fa-info-circle text-secondary"></i></a></big>
+		<a href="#" class="btn btn-info btn-xs" onclick="mostrar('{$id}','{$nome}', '{$telefone}', '{$cartoes}', '{$data_cadF}', '{$data_nascF}', '{$endereco}', '{$data_retornoF}', '{$nome_servico}', '{$obs_servico}', '{$valor_servico}', '{$data_servico}')" title="Ver Dados"><i class="fe fe-search"></i></a>
 
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
+		<a href="#" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>
@@ -129,13 +129,13 @@ echo <<<HTML
 		</li>
 
 
-		<big><a href="http://api.whatsapp.com/send?1=pt_BR&phone=$whats&text=" target="_blank" title="Abrir Whatsapp"><i class="fa fa-whatsapp verde"></i></a></big>
+		<a href="http://api.whatsapp.com/send?1=pt_BR&phone=$whats&text=" target="_blank" class="btn btn-success btn-xs" title="Abrir Whatsapp"><i class="fa fa-whatsapp fa-2x" style = 'font-size: 16px;'></i></a>
 
 
 
-		<big><a class="" href="#" onclick="contrato('{$id}','{$nome}')" title="Contrato de Serviço"><i class="fa fa-file-pdf-o text-primary"></i></a></big>
+		<a class="btn btn-info btn-xs" href="#" onclick="contrato('{$id}','{$nome}')" title="Contrato de Serviço"><i class="fe fe-file-text"></i></a>
 
-		<big><a class="" href="rel/rel_servicos_clientes_class.php?id={$id}" target="_blank" title="Últimos Serviços"><i class="fa fa-file-pdf-o text-danger"></i></a></big>
+		<a class="btn btn-primary btn-xs" href="rel/rel_servicos_clientes_class.php?id={$id}" target="_blank" title="Últimos Serviços"><i class="fe fe-list"></i></a>
 
 		</td>
 </tr>

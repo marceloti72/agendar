@@ -1,6 +1,17 @@
 <?php 
 require_once("../../../conexao.php");
 $tabela = 'usuarios';
+?>
+<style>
+#tabela tr:nth-child(even) { /* Linhas pares */
+  background-color: #f2f2f2; /* Tom mais claro */
+}
+
+#tabela tr:nth-child(odd) { /* Linhas ímpares */
+  background-color: #ffffff; /* Tom mais escuro (ou branco) */
+}
+</style>
+<?php 
 
 $query = $pdo->query("SELECT * FROM $tabela ORDER BY id desc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -48,22 +59,24 @@ for($i=0; $i < $total_reg; $i++){
 
 
 	if($ativo == 'Sim'){
-			$icone = 'fa-check-square';
-			$titulo_link = 'Desativar Item';
+			$icone = 'fe-x';
+			$titulo_link = 'Desativar';
 			$acao = 'Não';
 			$classe_linha = '';
+			$cor = 'danger';
 		}else{
-			$icone = 'fa-square-o';
-			$titulo_link = 'Ativar Item';
+			$icone = 'fe-check';
+			$titulo_link = 'Ativar';
 			$acao = 'Sim';
 			$classe_linha = 'text-muted';
+			$cor = 'success';
 		}
 
 
 echo <<<HTML
 <tr class="{$classe_linha}">
 <td>
-<img src="img/perfil/{$foto}" width="27px" class="mr-2">
+<img src="img/perfil/{$foto}" onclick="mostrar('{$nome}', '{$email}', '{$cpf}', '{$senhaF}', '{$nivel}', '{$dataF}', '{$ativo}', '{$telefone}', '{$endereco}', '{$foto}', '{$atendimento}')" title="Ver Dados" width="50" height="50" class="hovv">
 {$nome}
 </td>
 <td class="esc">{$email}</td>
@@ -71,14 +84,14 @@ echo <<<HTML
 <td class="esc">{$nivel}</td>
 <td class="esc">{$dataF}</td>
 <td>
-		<big><a href="#" onclick="editar('{$id}','{$nome}', '{$email}', '{$telefone}', '{$cpf}', '{$nivel}', '{$endereco}', '{$foto}', '{$atendimento}')" title="Editar Dados"><i class="fa fa-edit text-primary"></i></a></big>
+		<a href="#" class="btn btn-primary btn-xs" onclick="editar('{$id}','{$nome}', '{$email}', '{$telefone}', '{$cpf}', '{$nivel}', '{$endereco}', '{$foto}', '{$atendimento}')" title="Editar Dados"><i class="fe fe-edit"></i></a>
 
-		<big><a href="#" onclick="mostrar('{$nome}', '{$email}', '{$cpf}', '{$senhaF}', '{$nivel}', '{$dataF}', '{$ativo}', '{$telefone}', '{$endereco}', '{$foto}', '{$atendimento}')" title="Ver Dados"><i class="fa fa-info-circle text-secondary"></i></a></big>
+		<a href="#" class="btn btn-info btn-xs" onclick="mostrar('{$nome}', '{$email}', '{$cpf}', '{$senhaF}', '{$nivel}', '{$dataF}', '{$ativo}', '{$telefone}', '{$endereco}', '{$foto}', '{$atendimento}')" title="Ver Dados"><i class="fe fe-search"></i></a>
 
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
+		<a href="#" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>
@@ -91,9 +104,9 @@ echo <<<HTML
 
 
 
-		<big><a href="#" onclick="ativar('{$id}', '{$acao}')" title="{$titulo_link}"><i class="fa {$icone} text-success"></i></a></big>
+		<a href="#" class="btn btn-{$cor} btn-xs" onclick="ativar('{$id}', '{$acao}')" title="{$titulo_link}"><i class="fe {$icone}"></i></a>
 
-		<big><a href="#" onclick="permissoes('{$id}', '{$nome}')" title="Definir Permissões"><i class="fa fa-lock " style="color:blue; margin-left:3px"></i></a></big>
+		<a href="#" class="btn btn-primary btn-xs" onclick="permissoes('{$id}', '{$nome}')" title="Definir Permissões"><i class="fe fe-lock"></i></a>
 
 
 		</td>

@@ -135,16 +135,16 @@ echo <<<HTML
 <td class="esc">{$data_pgtoF}</td>
 <td class="esc">{$nome_usuario_pgto}</td>
 <td class="esc">{$nome_pessoa}</td>
-<td><a href="img/contas/{$foto}" target="_blank"><img src="img/contas/{$tumb_arquivo}" width="27px" class="mr-2"></a></td>
+<td><a href="img/contas/{$foto}" target="_blank"><img src="img/contas/{$tumb_arquivo}" width="50" height="50" class="hovv"></a></td>
 <td>
-		<big><a href="#" onclick="editar('{$id}','{$descricao}', '{$pessoa}', '{$valor}', '{$data_venc}', '{$data_pgto}', '{$tumb_arquivo}')" title="Editar Dados"><i class="fa fa-edit text-primary"></i></a></big>
+		<a href="#" class="btn btn-primary btn-xs" onclick="editar('{$id}','{$descricao}', '{$pessoa}', '{$valor}', '{$data_venc}', '{$data_pgto}', '{$tumb_arquivo}')" title="Editar Dados"><i class="fe fe-edit"></i></a>
 
-		<big><a href="#" onclick="mostrar('{$descricao}', '{$valorF}', '{$data_lancF}', '{$data_vencF}',  '{$data_pgtoF}', '{$nome_usuario_lanc}', '{$nome_usuario_pgto}', '{$tumb_arquivo}', '{$nome_pessoa}', '{$foto}')" title="Ver Dados"><i class="fa fa-info-circle text-secondary"></i></a></big>
+		<a href="#" class="btn btn-info btn-xs" onclick="mostrar('{$descricao}', '{$valorF}', '{$data_lancF}', '{$data_vencF}',  '{$data_pgtoF}', '{$nome_usuario_lanc}', '{$nome_usuario_pgto}', '{$tumb_arquivo}', '{$nome_pessoa}', '{$foto}')" title="Ver Dados"><i class="fe fe-search"></i></a>
 
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
+		<a href="#" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>
@@ -158,7 +158,7 @@ echo <<<HTML
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a title="Baixar Conta" href="#" class="dropdown-toggle {$visivel}" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-check-square verde"></i></big></a>
+		<a title="Baixar Conta" href="#" class="btn btn-primary btn-xs dropdown-toggle {$visivel}" data-toggle="dropdown" aria-expanded="false"><big><i class="fe fe-dollar-sign"></i></big></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>
@@ -170,7 +170,7 @@ echo <<<HTML
 		</li>
 
 
-		<big><a href="http://api.whatsapp.com/send?1=pt_BR&phone=$whats&text=Ola, {$nome_pessoa} Lembrete de vencimento de pagamento no dia: {$data_vencF} no valor de: R$ {$valorF}." target="_blank" title="Abrir Whatsapp" class="{$classe_whats}"><i class="fa fa-whatsapp {$classe_cor_whats}"></i></a></big>
+		<a href="http://api.whatsapp.com/send?1=pt_BR&phone=$whats&text=Ola, {$nome_pessoa} Lembrete de vencimento de pagamento no dia: {$data_vencF} no valor de: R$ {$valorF}." target="_blank" title="Abrir Whatsapp" class="btn btn-success btn-xs"><i class="fa fa-whatsapp fa-2x" style = 'font-size: 16px;'></i></a>
 		
 	
 		</td>

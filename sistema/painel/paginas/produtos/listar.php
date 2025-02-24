@@ -61,7 +61,7 @@ for($i=0; $i < $total_reg; $i++){
 echo <<<HTML
 <tr class="{$alerta_estoque}">
 <td>
-<img src="img/produtos/{$foto}" width="27px" class="mr-2">
+<img src="img/produtos/{$foto}" onclick="mostrar('{$nome}', '{$nome_cat}', '{$descricao}', '{$valor_compraF}', '{$valor_vendaF}', '{$estoque}', '{$foto}', '{$nivel_estoque}')" title="Ver Dados" width="50" height="50" class="hovv">
 {$nome}
 </td>
 <td class="esc">{$nome_cat}</td>
@@ -70,14 +70,14 @@ echo <<<HTML
 <td class="esc">{$estoque}</td>
 
 <td>
-		<big><a href="#" onclick="editar('{$id}','{$nome}', '{$categoria}', '{$descricao}', '{$valor_compra}', '{$valor_venda}', '{$foto}', '{$nivel_estoque}')" title="Editar Dados"><i class="fa fa-edit text-primary"></i></a></big>
+		<a href="#" class="btn btn-primary btn-xs" onclick="editar('{$id}','{$nome}', '{$categoria}', '{$descricao}', '{$valor_compra}', '{$valor_venda}', '{$foto}', '{$nivel_estoque}')" title="Editar Dados"><i class="fe fe-edit"></i></a>
 
-		<big><a href="#" onclick="mostrar('{$nome}', '{$nome_cat}', '{$descricao}', '{$valor_compraF}',  '{$valor_vendaF}', '{$estoque}', '{$foto}', '{$nivel_estoque}')" title="Ver Dados"><i class="fa fa-info-circle text-secondary"></i></a></big>
+		<a href="#" class="btn btn-info btn-xs" onclick="mostrar('{$nome}', '{$nome_cat}', '{$descricao}', '{$valor_compraF}',  '{$valor_vendaF}', '{$estoque}', '{$foto}', '{$nivel_estoque}')" title="Ver Dados"><i class="fe fe-search"></i></a>
 
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
+		<a href="#" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>
@@ -89,9 +89,9 @@ echo <<<HTML
 		</li>
 
 
-		<big><a href="#" onclick="saida('{$id}','{$nome}', '{$estoque}')" title="Saída de Produto"><i class="fa fa-sign-out text-danger"></i></a></big>
+		<a href="#" class="btn btn-danger btn-xs" onclick="saida('{$id}','{$nome}', '{$estoque}')" title="Saída de Produto"><i class="fe fe-log-out"></i></a>
 
-		<big><a href="#" onclick="entrada('{$id}','{$nome}', '{$estoque}')" title="Entrada de Produto"><i class="fa fa-sign-in verde"></i></a></big>
+		<a href="#" class="btn btn-success btn-xs" onclick="entrada('{$id}','{$nome}', '{$estoque}')" title="Entrada de Produto"><i class="fe fe-log-in"></i></a>
 
 	
 		</td>

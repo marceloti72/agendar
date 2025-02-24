@@ -71,6 +71,8 @@ $dataMesInicial = $partesInicial[1];
 
 	<!-- font-awesome icons CSS -->
 	<link href="css/font-awesome.css" rel="stylesheet"> 
+
+	<link href="../../css/icons.css" rel="stylesheet">
 	<!-- //font-awesome icons CSS-->
 
 	<!-- side nav css file -->
@@ -107,9 +109,18 @@ $dataMesInicial = $partesInicial[1];
         .hovv{cursor: pointer; border-radius: 50px;object-fit: cover;} 
 
 		.hovv{
-    width: 25px;
-    height: 25px;
+    width: 50px;
+    height: 50px;
   }
+
+
+  #tabela tr:nth-child(even) { /* Linhas pares */
+	background-color: #f2f2f2; /* Tom mais claro */
+	}
+
+	#tabela tr:nth-child(odd) { /* Linhas ímpares */
+	background-color: #ffffff; /* Tom mais escuro (ou branco) */
+	}
 	</style>
 	<!--pie-chart --><!-- index page sales reviews visitors pie chart -->
 	<script src="js/pie-chart.js" type="text/javascript"></script>

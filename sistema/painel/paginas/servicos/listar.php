@@ -44,16 +44,18 @@ for($i=0; $i < $total_reg; $i++){
 
 	
 	if($ativo == 'Sim'){
-			$icone = 'fa-check-square';
-			$titulo_link = 'Desativar Item';
-			$acao = 'Não';
-			$classe_linha = '';
-		}else{
-			$icone = 'fa-square-o';
-			$titulo_link = 'Ativar Item';
-			$acao = 'Sim';
-			$classe_linha = 'text-muted';
-		}
+		$icone = 'fe-x';
+		$titulo_link = 'Desativar';
+		$acao = 'Não';
+		$classe_linha = '';
+		$cor = 'danger';
+	}else{
+		$icone = 'fe-check';
+		$titulo_link = 'Ativar';
+		$acao = 'Sim';
+		$classe_linha = 'text-muted';
+		$cor = 'success';
+	}
 
 
 		$query2 = $pdo->query("SELECT * FROM cat_servicos where id = '$categoria'");
@@ -77,7 +79,7 @@ for($i=0; $i < $total_reg; $i++){
 echo <<<HTML
 <tr class="{$classe_linha}">
 <td>
-<img src="img/servicos/{$foto}" width="27px" class="mr-2">
+<img src="img/servicos/{$foto}" onclick="mostrar('{$nome}', '{$valorF}', '{$nome_cat}', '{$dias_retorno}',  '{$ativo}', '{$foto}', '{$comissaoF}')" title="Ver Dados" width="50" height="50" class="hovv">
 {$nome}
 </td>
 <td class="esc">{$nome_cat}</td>
@@ -86,14 +88,14 @@ echo <<<HTML
 <td class="esc">{$comissaoF}</td>
 <td class="esc">{$tempo} Minutos</td>
 <td>
-		<big><a href="#" onclick="editar('{$id}','{$nome}', '{$valor}', '{$categoria}', '{$dias_retorno}', '{$foto}', '{$comissao}', '{$tempo}')" title="Editar Dados"><i class="fa fa-edit text-primary"></i></a></big>
+		<a href="#" class="btn btn-primary btn-xs" onclick="editar('{$id}','{$nome}', '{$valor}', '{$categoria}', '{$dias_retorno}', '{$foto}', '{$comissao}', '{$tempo}')" title="Editar Dados"><i class="fe fe-edit"></i></a>
 
-		<big><a href="#" onclick="mostrar('{$nome}', '{$valorF}', '{$nome_cat}', '{$dias_retorno}',  '{$ativo}', '{$foto}', '{$comissaoF}')" title="Ver Dados"><i class="fa fa-info-circle text-secondary"></i></a></big>
+		<a href="#" class="btn btn-info btn-xs" onclick="mostrar('{$nome}', '{$valorF}', '{$nome_cat}', '{$dias_retorno}',  '{$ativo}', '{$foto}', '{$comissaoF}')" title="Ver Dados"><i class="fe fe-search"></i></a>
 
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
+		<a href="#" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>
@@ -106,7 +108,7 @@ echo <<<HTML
 
 
 
-		<big><a href="#" onclick="ativar('{$id}', '{$acao}')" title="{$titulo_link}"><i class="fa {$icone} text-success"></i></a></big>
+		<a href="#" class="btn btn-{$cor} btn-xs" onclick="ativar('{$id}', '{$acao}')" title="{$titulo_link}"><i class="fe {$icone}"></i></a>
 
 
 		</td>

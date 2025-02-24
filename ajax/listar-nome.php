@@ -21,7 +21,7 @@ if(@count($res) > 0){
 
 //buscar agendamento
 if(!empty($id_cliente)){
-	$query = $pdo->query("SELECT * FROM agendamentos_temp where cliente = '$id_cliente' and status = 'Agendado' order by id desc");
+	$query = $pdo->query("SELECT * FROM agendamentos where cliente = '$id_cliente' and status = 'Agendado' order by id desc");
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
 	if(@count($res) > 0){
 		$data = $res[0]['data'];

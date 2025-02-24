@@ -24,8 +24,9 @@ echo <<<HTML
 	<th>Serviço</th>	
 	<th class="esc">Valor</th> 
 	<th class="esc">Funcionário</th>
+	<th class="esc">Data Lançamento</th>
 	<th class="esc">Data Serviço</th>		
-	<th class="esc">Vencimento</th>	
+	<th class="esc">Data Pgto</th>	
 	<th class="esc">Cliente</th>
 	<th>Ações</th>
 	</tr> 
@@ -49,6 +50,7 @@ for($i=0; $i < $total_reg; $i++){
 	$pessoa = $res[$i]['pessoa'];
 	$funcionario = $res[$i]['funcionario'];
 	$obs = $res[$i]['obs'];
+	$id_agenda = $res[$i]['id_agenda'];
 	
 	$pago = $res[$i]['pago'];
 	$servico = $res[$i]['servico'];
@@ -85,7 +87,14 @@ for($i=0; $i < $total_reg; $i++){
 			$nome_usuario_pgto = $res2[0]['nome'];
 		}else{
 			$nome_usuario_pgto = 'Nenhum!';
-		}
+		} 
+
+		$query2 = $pdo->query("SELECT data FROM agendamentos where id = '$id_agenda'");
+		$res2 = $query2->fetch(PDO::FETCH_ASSOC);
+		$data_agenda = @$res2['data'];
+
+		$data_agendaF = implode('/', array_reverse(explode('-', $data_agenda)));
+		
 
 
 
@@ -120,7 +129,7 @@ for($i=0; $i < $total_reg; $i++){
 			$classe_alerta = 'verde';
 			$visivel = 'ocultar';
 			$total_pago += $valor;
-			$japago = '';
+			$japago = 'btn btn-primary btn-xs';
 		}
 
 
@@ -142,24 +151,25 @@ if($data_venc < $data_hoje and $pago != 'Sim'){
 }
 		
 
-
+echo $id;
 echo <<<HTML
 <tr class="{$classe_debito}">
 <td><i class="fa fa-square {$classe_alerta}"></i> {$descricao}</td>
 <td class="esc">R$ {$valorF}</td>
 <td class="esc">{$nome_func}</td>
 <td class="esc">{$data_lancF}</td>
+<td class="esc">{$data_agendaF}</td>
 <td class="esc">{$data_vencF}</td>
 <td class="esc">{$nome_pessoa}</td>
 <td>
 		
 
-		<big><a href="#" onclick="mostrar('{$descricao}', '{$valorF}', '{$data_lancF}', '{$data_vencF}',  '{$data_pgtoF}', '{$nome_usuario_lanc}', '{$nome_usuario_pgto}', '{$tumb_arquivo}', '{$nome_pessoa}', '{$foto}', '{$telefone_pessoa}', '{$obs}')" title="Ver Dados"><i class="fa fa-info-circle text-secondary"></i></a></big>
+		<a href="#" class="btn btn-info btn-xs" onclick="mostrar('{$descricao}', '{$valorF}', '{$data_lancF}', '{$data_vencF}',  '{$data_pgtoF}', '{$nome_usuario_lanc}', '{$nome_usuario_pgto}', '{$tumb_arquivo}', '{$nome_pessoa}', '{$foto}', '{$telefone_pessoa}', '{$obs}')" title="Ver Dados"><i class="fe fe-search"></i></a>
 
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
+		<a href="#" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>
@@ -173,7 +183,7 @@ echo <<<HTML
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a title="Baixar Conta" href="#" class="dropdown-toggle {$visivel}" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-check-square verde"></i></big></a>
+		<a title="Baixar Conta" href="#" class="btn btn-success btn-xs dropdown-toggle {$visivel}" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-dollar-sign"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>
@@ -185,7 +195,7 @@ echo <<<HTML
 		</li>
 
 
-			<big><a class="{$japago}" href="#" onclick="gerarComprovante('{$id}')" title="Gerar Comprovante"><i class="fa fa-file-pdf-o text-primary"></i></a></big>
+			<a class="{$japago}" href="#" onclick="gerarComprovante('{$id}')" title="Gerar Comprovante"><i class="fe fe-file-text"></i></a>
 
 		
 	
