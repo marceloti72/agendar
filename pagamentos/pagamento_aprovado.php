@@ -1,16 +1,16 @@
 <?php 
 
-$id_conta = @$_GET['id_agd'];
-if($id_conta != null){
+$id_pg = @$_GET['id_agd'];
+if($id_pg != null){
 	  if(@$porc_servico > 0){ 
 	  	echo 'Faça o pagamento antes de ir para o agendamento';
 	  	exit();
 	  }
 	 require("../sistema/conexao.php");
 	 $valor_pago = '0';
-	 $query = $pdo->query("SELECT * FROM agendamentos_temp where id = '$id_conta'");
+	 $query = $pdo->query("SELECT * FROM agendamentos where id = '$id_pg' and id_conta = '$id_conta'");
 }else{
-	 $query = $pdo->query("SELECT * FROM agendamentos_temp where ref_pix = '$ref_pix'");
+	 $query = $pdo->query("SELECT * FROM agendamentos where ref_pix = '$ref_pix' and id_conta = '$id_conta'");
 }
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
 	$total_reg = @count($res);
@@ -34,7 +34,7 @@ if($id_conta != null){
 		$forma_pgto = "Cartão de Crédito";
 	}
 
-	$query = $pdo->query("SELECT * FROM servicos where id = '$servico' ");
+	$query = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $nome_serv = @$res[0]['nome'];
 $tempo = @$res[0]['tempo'];
@@ -45,12 +45,12 @@ $servico_conc = $nome_serv." (Site)";
 
 
 
-        $query = $pdo->query("INSERT INTO agendamentos SET funcionario = '$funcionario', cliente = '$cliente', hora = '$hora', data = '$data', usuario = '0', status = 'Agendado', obs = '$obs', data_lanc = curDate(), servico = '$servico', hash = '$hash', ref_pix = '$ref_pix', valor_pago = '$valor_pago'");
+        $query = $pdo->query("INSERT INTO agendamentos SET funcionario = '$funcionario', cliente = '$cliente', hora = '$hora', data = '$data', usuario = '0', status = 'Agendado', obs = '$obs', data_lanc = curDate(), servico = '$servico', hash = '$hash', ref_pix = '$ref_pix', valor_pago = '$valor_pago', id_conta = '$id_conta'");
 
         $ult_id = $pdo->lastInsertId();
 
-        if($id_conta == ""){
-         $pdo->query("INSERT INTO receber SET descricao = '$servico_conc', tipo = 'Serviço', valor = '$valor_pago', data_lanc = curDate(), data_venc = curDate(), data_pgto = curDate(), usuario_lanc = '0', usuario_baixa = '0', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = 'Sim', servico = '$servico', funcionario = '$funcionario', obs = '', pgto = '$forma_pgto', referencia = '$ult_id'");  
+        if($id_pg == ""){
+         $pdo->query("INSERT INTO receber SET descricao = '$servico_conc', tipo = 'Serviço', valor = '$valor_pago', data_lanc = curDate(), data_venc = curDate(), data_pgto = curDate(), usuario_lanc = '0', usuario_baixa = '0', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = 'Sim', servico = '$servico', funcionario = '$funcionario', obs = '', pgto = '$forma_pgto', referencia = '$ult_id', id_conta = '$id_conta'");  
      	}
 
 
@@ -61,7 +61,7 @@ $horaF = date("H:i", @strtotime($hora));
 
 
 
-$query = $pdo->query("SELECT * FROM usuarios where id = '$funcionario'");
+$query = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $intervalo = @$res[0]['intervalo'];
 $nome_func = @$res[0]['nome'];
@@ -74,7 +74,7 @@ $hora_final_servico = date('H:i:s', $hora_minutos);
 if($msg_agendamento == 'Api'){
 
 
-$query = $pdo->query("SELECT * FROM clientes where id = '$cliente' ");
+$query = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $nome = $res[0]['nome'];
 $telefone = $res[0]['telefone'];
@@ -130,7 +130,7 @@ if(@strtotime($hora_atual) < @strtotime($nova_hora) or @strtotime($data_atual) !
 		if($minutos_aviso > 0){
 			require("../ajax/confirmacao.php");
 			$id_hash = $id;		
-			$pdo->query("UPDATE agendamentos SET hash = '$id_hash' WHERE id = '$ult_id'");		
+			$pdo->query("UPDATE agendamentos SET hash = '$id_hash' WHERE id = '$ult_id' and id_conta = '$id_conta'");		
 		}
 	
 }
@@ -146,14 +146,14 @@ while (@strtotime($hora) < @strtotime($hora_final_servico)){
 		$hora = date('H:i:s', $hora_minutos);
 
 		if(@strtotime($hora) < @strtotime($hora_final_servico)){
-			$query = $pdo->query("INSERT INTO horarios_agd SET agendamento = '$ult_id', horario = '$hora', funcionario = '$funcionario', data = '$data_agd'");
+			$query = $pdo->query("INSERT INTO horarios_agd SET agendamento = '$ult_id', horario = '$hora', funcionario = '$funcionario', data = '$data_agd', id_conta = '$id_conta'");
 		}
 	
 
 }
 
 
-if($id_conta != ""){
+if($id_pg != ""){
 	echo "<script>window.location='../meus-agendamentos.php'</script>";
 }
 

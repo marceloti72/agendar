@@ -7,9 +7,9 @@ $titulo = $_POST['titulo'];
 $descricao = $_POST['descricao'];
 
 if($id == ""){
-	$query = $pdo->prepare("INSERT INTO $tabela SET titulo = :titulo, descricao = :descricao");
+	$query = $pdo->prepare("INSERT INTO $tabela SET titulo = :titulo, descricao = :descricao, id_conta = '$id_conta'");
 }else{
-	$query = $pdo->prepare("UPDATE $tabela SET titulo = :titulo, descricao = :descricao WHERE id = '$id'");
+	$query = $pdo->prepare("UPDATE $tabela SET titulo = :titulo, descricao = :descricao WHERE id = '$id' and id_conta = '$id_conta'");
 }
 
 $query->bindValue(":titulo", "$titulo");

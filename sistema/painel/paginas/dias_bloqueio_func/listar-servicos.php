@@ -3,13 +3,13 @@ require_once("../../../conexao.php");
 $tabela = 'dias_bloqueio';
 
 @session_start();
-$id_usuario = $_SESSION['id'];
+$id_usuario = $_SESSION['id_usuario'];
 
 $id_func = $_POST['func'];
 
-$pdo->query("DELETE FROM $tabela where data < curDate()");
+$pdo->query("DELETE FROM $tabela where data < curDate() and id_conta = '$id_conta'");
 
-$query = $pdo->query("SELECT * FROM $tabela where funcionario = '$id_usuario' order by data asc");
+$query = $pdo->query("SELECT * FROM $tabela where funcionario = '$id_usuario' and id_conta = '$id_conta' order by data asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -35,7 +35,7 @@ for($i=0; $i < $total_reg; $i++){
 	$usuario = $res[$i]['usuario'];
 	
 	
-$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario'");
+$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);	
 $nome_servico = @$res2[0]['nome'];
 
@@ -49,7 +49,7 @@ echo <<<HTML
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
+		<a href="#" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>

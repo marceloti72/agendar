@@ -32,7 +32,7 @@ if($senha == ""){
 
 
 //validar email
-$query = $pdo->query("SELECT * from $tabela where email = '$email'");
+$query = $pdo->query("SELECT * from $tabela where email = '$email' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0 and $id != $res[0]['id']){
 	echo 'Email já Cadastrado, escolha outro!!';
@@ -44,7 +44,7 @@ if(@count($res) > 0 and $id != $res[0]['id']){
 
 if($id == ""){
 
-$query = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, email = :email, senha = :senha, senha_crip = '$senha_crip', nivel = '$nivel', data = curDate(), foto = '$foto', ativo = '$ativo'");
+$query = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, email = :email, senha = :senha, senha_crip = '$senha_crip', nivel = '$nivel', data = curDate(), foto = '$foto', ativo = '$ativo', id_conta = '$id_conta'");
 $query->bindValue(":nome", "$nome");
 $query->bindValue(":email", "$email");
 $query->bindValue(":senha", "$senha");
@@ -53,7 +53,7 @@ $query->execute();
 }else{
 
 //tratamento para trocar a foto e apagar a antiga
-$query = $pdo->query("SELECT * FROM usuarios where id = '$id'");
+$query = $pdo->query("SELECT * FROM usuarios where id = '$id' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 $foto_antiga = $res[0]['foto'];
@@ -63,7 +63,7 @@ if($foto_antiga != "sem-foto.jpg" and $foto != $foto_antiga){
 }
 
 
-$query = $pdo->prepare("UPDATE usuarios SET nome = :nome, email = :email, senha = :senha, senha_crip = '$senha_crip', nivel = '$nivel', foto = '$foto', ativo = '$ativo' WHERE id = '$id'");
+$query = $pdo->prepare("UPDATE usuarios SET nome = :nome, email = :email, senha = :senha, senha_crip = '$senha_crip', nivel = '$nivel', foto = '$foto', ativo = '$ativo' WHERE id = '$id' and id_conta = '$id_conta'");
 $query->bindValue(":nome", "$nome");
 $query->bindValue(":email", "$email");
 $query->bindValue(":senha", "$senha");

@@ -12,7 +12,7 @@ if(@$_POST['pagina'] == ""){
 }
 
 
-$query = $pdo->query("SELECT * FROM $tabela where pessoa = '$id' and pago != 'Sim' ORDER BY data_venc asc");
+$query = $pdo->query("SELECT * FROM $tabela where pessoa = '$id' and pago != 'Sim' and id_conta = '$id_conta' ORDER BY data_venc asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){

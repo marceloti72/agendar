@@ -11,7 +11,7 @@ if($tel == ""){
 @$_SESSION['telefone'] = $tel;
 
 
-$query = $pdo->query("SELECT * FROM clientes where telefone LIKE '$tel' ");
+$query = $pdo->query("SELECT * FROM clientes where telefone LIKE '$tel' and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0){
 	$nome = $res[0]['nome'];
@@ -21,7 +21,7 @@ if(@count($res) > 0){
 
 //buscar agendamento
 if(!empty($id_cliente)){
-	$query = $pdo->query("SELECT * FROM agendamentos where cliente = '$id_cliente' and status = 'Agendado' order by id desc");
+	$query = $pdo->query("SELECT * FROM agendamentos where cliente = '$id_cliente' and status = 'Agendado' and id_conta = '$id_conta' order by id desc");
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
 	if(@count($res) > 0){
 		$data = $res[0]['data'];
@@ -32,14 +32,14 @@ if(!empty($id_cliente)){
 		$obs = $res[0]['obs'];
 
 
-		$query = $pdo->query("SELECT * FROM usuarios where id LIKE '$funcionario' ");
+		$query = $pdo->query("SELECT * FROM usuarios where id LIKE '$funcionario' and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0){
 	$nome_func = $res[0]['nome'];
 	}
 
 
-		$query = $pdo->query("SELECT * FROM servicos where id LIKE '$servico' ");
+		$query = $pdo->query("SELECT * FROM servicos where id LIKE '$servico' and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0){
 	$nome_serv = $res[0]['nome'];

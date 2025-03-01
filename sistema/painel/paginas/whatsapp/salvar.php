@@ -10,8 +10,9 @@ if(isset($_GET['appkey'])) {
     require_once("../../../conexao.php");
     
     try {
-        $stmt = $pdo->prepare("UPDATE config SET instancia = :appkey");
+        $stmt = $pdo->prepare("UPDATE config SET instancia = :appkey where id = :id");
         $stmt->bindParam(':appkey', $appkey);
+        $stmt->bindParam(':id', $id_conta);
         $stmt->execute();
         
         // Verifica se houve exceções durante a execução da consulta

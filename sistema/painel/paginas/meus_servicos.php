@@ -106,7 +106,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 								<select class="form-control sel2" id="cliente" name="cliente" style="width:100%;" required> 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM clientes ORDER BY nome asc");
+									$query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta' ORDER BY nome asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -126,24 +126,45 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 							<div class="col-md-6">						
 							<div class="form-group"> 
 								<label>Serviço</label> 
-								<select class="form-control sel2" id="servico" name="servico" style="width:100%;" required> 
+								<select class="form-control sel2" id="servico" name="servico" style="width:100%;" required>
+									 
 
-									<?php 
-									$query = $pdo->query("SELECT * FROM servicos_func where funcionario = '$id_usuario' ");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-if(@count($res) > 0){
-	for($i=0; $i < @count($res); $i++){
-		$serv = $res[$i]['servico'];
+								<?php 
 
-		$query2 = $pdo->query("SELECT * FROM servicos where id = '$serv' and ativo = 'Sim' ");
-		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);	
-		$nome_func = $res2[0]['nome'];
+                         if(@$_SESSION['nivel_usuario'] != 'Individual'){
 
-		echo '<option value="'.$serv.'">'.$nome_func.'</option>';
-	}		
-}else{
-	echo '<option value="">Nenhum Serviço</option>';
-}
+								$query = $pdo->query("SELECT * FROM servicos_func where funcionario = '$id_usuario' and id_conta = '$id_conta' ");
+								$res = $query->fetchAll(PDO::FETCH_ASSOC);
+								if(@count($res) > 0){
+									for($i=0; $i < @count($res); $i++){
+										$serv = $res[$i]['servico'];
+
+										$query2 = $pdo->query("SELECT * FROM servicos where id = '$serv' and ativo = 'Sim' and id_conta = '$id_conta' ");
+										$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);	
+										$nome_func = $res2[0]['nome'];
+
+										echo '<option value="'.$serv.'">'.$nome_func.'</option>';
+									}		
+								}else{
+									echo '<option value="">Nenhum Serviço</option>';
+								}
+
+							}else{
+
+								$query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta' and ativo = 'Sim' ");
+								$res = $query->fetchAll(PDO::FETCH_ASSOC);
+								if(@count($res) > 0){
+									for($i=0; $i < @count($res); $i++){
+										$serv = $res[$i]['id'];
+										$nome_func = $res[$i]['nome'];
+
+										echo '<option value="'.$serv.'">'.$nome_func.'</option>';
+									}		
+								}else{
+									echo '<option value="">Nenhum Serviço</option>';
+								}
+
+							}
 									?>
 
 
@@ -186,7 +207,7 @@ if(@count($res) > 0){
 								<select class="form-control" id="pgto" name="pgto" style="width:100%;" required> 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM formas_pgto");
+									$query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -225,7 +246,7 @@ if(@count($res) > 0){
 								<select class="form-control" id="pgto_restante" name="pgto_restante" style="width:100%;" > 
 									<option value="">Selecionar Pgto</option>
 									<?php 
-									$query = $pdo->query("SELECT * FROM formas_pgto");
+									$query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){

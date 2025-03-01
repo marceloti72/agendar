@@ -1,10 +1,10 @@
 <?php 
 require_once("../../../conexao.php");
 @session_start();
-$usuario = @$_SESSION['id'];
+$usuario = @$_SESSION['id_usuario'];
 $data_atual = date('Y-m-d');
 
-$funcionario = @$_SESSION['id'];
+$funcionario = @$_SESSION['id_usuario'];
 $data = @$_POST['data'];
 
 if($data == ""){
@@ -15,7 +15,7 @@ if($data == ""){
 echo <<<HTML
 <small>
 HTML;
-$query = $pdo->query("SELECT * FROM agendamentos where funcionario = '$funcionario' and data = '$data' ORDER BY hora asc");
+$query = $pdo->query("SELECT * FROM agendamentos where funcionario = '$funcionario' and data = '$data' and id_conta = '$id_conta' ORDER BY hora asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -60,7 +60,7 @@ if($status == 'Agendado'){
 	$classe_status = 'ocultar';
 }
 
-$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario'");
+$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res2) > 0){
 	$nome_usu = $res2[0]['nome'];
@@ -69,7 +69,7 @@ if(@count($res2) > 0){
 }
 
 
-$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico'");
+$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res2) > 0){
 	$nome_serv = $res2[0]['nome'];
@@ -80,7 +80,7 @@ if(@count($res2) > 0){
 }
 
 
-$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente'");
+$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res2) > 0){
 	$nome_cliente = $res2[0]['nome'];
@@ -106,7 +106,7 @@ $total_vencido = 0;
 $total_debitosF = 0;
 $total_pagarF = 0;
 $total_vencidoF = 0;
-$query2 = $pdo->query("SELECT * FROM receber where pessoa = '$cliente' and pago != 'Sim'");
+$query2 = $pdo->query("SELECT * FROM receber where pessoa = '$cliente' and pago != 'Sim' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $total_reg2 = @count($res2);
 if($total_reg2 > 0){

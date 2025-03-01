@@ -8,7 +8,7 @@ $data_hoje = utf8_encode(strftime('%A, %d de %B de %Y', strtotime('today')));
 $id = $_GET['id'];
 
 //BUSCAR AS INFORMAÇÕES DO PEDIDO
-$query = $pdo->query("SELECT * from comandas where id = '$id' ");
+$query = $pdo->query("SELECT * from comandas where id = '$id' and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
 $id = $res[0]['id'];	
@@ -26,20 +26,20 @@ $dataF = implode('/', array_reverse(explode('-', $data)));
 	//$horaF = date("H:i", strtotime($hora));	
 
 
-$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente'");
+$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $nome_cliente = @$res2[0]['nome'];
 $telefone_cliente = @$res2[0]['telefone'];
 $endereco_cliente = @$res2[0]['endereco'];
 
-$query2 = $pdo->query("SELECT * FROM receber where comanda = '$id' and tipo = 'Comanda' and pago = 'Sim' order by id asc");
+$query2 = $pdo->query("SELECT * FROM receber where comanda = '$id' and tipo = 'Comanda' and pago = 'Sim' and id_conta = '$id_conta' order by id asc");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $total_de_pagos = @count($res2);
 $total_pago = @$res2[0]['valor'];
 $forma_pgto_pago = @$res2[0]['pgto'];
 $total_pagoF = number_format($total_pago, 2, ',', '.');
 
-$query2 = $pdo->query("SELECT * FROM receber where comanda = '$id' and tipo = 'Comanda' and pago != 'Sim' order by id asc");
+$query2 = $pdo->query("SELECT * FROM receber where comanda = '$id' and tipo = 'Comanda' and pago != 'Sim' and id_conta = '$id_conta' order by id asc");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $total_de_pendentes = @count($res2);
 $total_pendente = @$res2[0]['valor'];
@@ -49,14 +49,14 @@ $data_pgto_pendenteF = implode('/', array_reverse(explode('-', $data_pgto_penden
 $total_pendenteF = number_format($total_pendente, 2, ',', '.');
 
 
-$query2 = $pdo->query("SELECT * FROM receber where comanda = '$id' and tipo = 'Comanda' and pago = 'Sim' order by id desc");
+$query2 = $pdo->query("SELECT * FROM receber where comanda = '$id' and tipo = 'Comanda' and pago = 'Sim' and id_conta = '$id_conta' order by id desc");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 
 $total_pago2 = @$res2[0]['valor'];
 $forma_pgto_pago2 = @$res2[0]['pgto'];
 $total_pagoF2 = number_format($total_pago2, 2, ',', '.');
 
-$query2 = $pdo->query("SELECT * FROM receber where comanda = '$id' and tipo = 'Comanda' and pago != 'Sim' order by id desc");
+$query2 = $pdo->query("SELECT * FROM receber where comanda = '$id' and tipo = 'Comanda' and pago != 'Sim' and id_conta = '$id_conta' order by id desc");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $total_pendente2 = @$res2[0]['valor'];
 $forma_pgto_pendente2 = @$res2[0]['pgto'];
@@ -147,7 +147,7 @@ $total_pendenteF2 = number_format($total_pendente2, 2, ',', '.');
 	}
 	
 	
-}
+
 </style>
 
 
@@ -175,7 +175,7 @@ Comanda: <b><?php echo $id ?></b> - Data: <?php echo $dataF ?>
 
 <?php 
 
-$res = $pdo->query("SELECT * from receber where tipo = 'Serviço' and comanda = '$id' order by id asc");
+$res = $pdo->query("SELECT * from receber where tipo = 'Serviço' and comanda = '$id' and id_conta = '$id_conta' order by id asc");
 $dados = $res->fetchAll(PDO::FETCH_ASSOC);
 $linhas = count($dados);
 
@@ -191,7 +191,7 @@ for ($i=0; $i < count($dados); $i++) {
 	$sub_tot += $valor_serv;
 	$sub_totF = number_format($sub_tot, 2, ',', '.');
 
-		$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico_serv'");
+		$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico_serv' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		if(@count(@$res2) > 0){
 			$nome_serv = $res2[0]['nome'];			
@@ -229,7 +229,7 @@ for ($i=0; $i < count($dados); $i++) {
 
 <?php 
 
-$res = $pdo->query("SELECT * from receber where tipo = 'Venda' and comanda = '$id' order by id asc");
+$res = $pdo->query("SELECT * from receber where tipo = 'Venda' and comanda = '$id' and id_conta = '$id_conta' order by id asc");
 $dados = $res->fetchAll(PDO::FETCH_ASSOC);
 $linhas = count($dados);
 
@@ -247,7 +247,7 @@ for ($i=0; $i < count($dados); $i++) {
 	$sub_tot += $valor_serv;
 	$sub_totF = number_format($sub_tot, 2, ',', '.');
 
-		$query2 = $pdo->query("SELECT * FROM produtos where id = '$produto'");
+		$query2 = $pdo->query("SELECT * FROM produtos where id = '$produto' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		if(@count(@$res2) > 0){
 			$nome_serv = $res2[0]['nome'];			

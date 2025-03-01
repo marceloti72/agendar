@@ -1,13 +1,18 @@
 <?php 
 @session_start();
+$id_conta = $_SESSION['id_conta'];
 require_once("verificar.php");
 require_once("../conexao.php");
 
 $pag_inicial = 'home';
 
-$id_usuario = $_SESSION['id'];
+$id_usuario = $_SESSION['id_usuario'];
 
-$query = $pdo->query("SELECT * from usuarios where id = '$id_usuario'");
+//VERIFICA O STATUS DO WHATSAPP	
+//require("./ajax/status.php");
+require __DIR__ . '../../../ajax/status.php'; 
+
+$query = $pdo->query("SELECT * from usuarios where id = '$id_usuario' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -23,7 +28,7 @@ if($total_reg > 0){
 	$intervalo_horarios = $res[0]['intervalo'];
 }
 
-if(@$_SESSION['nivel'] != 'Administrador'){
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
 	require_once("verificar-permissoes.php");
 }
 
@@ -50,10 +55,10 @@ $dataMesInicial = $partesInicial[1];
 ?>
 
 <!DOCTYPE HTML>
-<html>
+<html lang="pt-br">
 <head>
 	<title><?php echo $nome_sistema ?></title>
-	<link rel="icon" type="image/png" href="../img/favicon.png">
+	<link rel="icon" type="image/png" href="../../images/favicon<?php echo $id_conta?>.png">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="keywords" content="" />
@@ -64,8 +69,9 @@ $dataMesInicial = $partesInicial[1];
 	<!-- Bootstrap Core CSS -->
 	<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
 
+	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
 
-
+	
 	<!-- Custom CSS -->
 	<link href="css/style.css" rel='stylesheet' type='text/css' />
 
@@ -74,6 +80,7 @@ $dataMesInicial = $partesInicial[1];
 
 	<link href="../../css/icons.css" rel="stylesheet">
 	<!-- //font-awesome icons CSS-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
 
 	<!-- side nav css file -->
 	<link href='css/SidebarNav.min.css' media='all' rel='stylesheet' type='text/css'/>
@@ -193,14 +200,20 @@ $dataMesInicial = $partesInicial[1];
 
 
 							<li class="treeview <?php echo @$home ?>">
+								<a href="painel">
+									<i class="fa fa-home"></i> <span>Painel</span>
+								</a>
+							</li>
+
+							<li class="treeview <?php echo @$home ?>">
 								<a href="index.php">
-									<i class="fa fa-dashboard"></i> <span>Home</span>
+									<i class="fa fa-dashboard"></i> <span>Dashboards</span>
 								</a>
 							</li>
 
 							<li class="treeview <?php echo @$comanda ?>">
 								<a href="comanda">
-									<i class="fa fa-file-o"></i> <span>Nova Comanda</span>
+								<i class="fa fa-clipboard"></i> <span>Nova Comanda</span>
 								</a>
 							</li>
 
@@ -227,33 +240,28 @@ $dataMesInicial = $partesInicial[1];
 
 							<li class="treeview <?php echo @$menu_cadastros ?>" >
 								<a href="#">
-									<i class="fa fa-plus"></i>
+									<i class="fa fa-pencil"></i>
 									<span>Cadastros</span>
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
 								<ul class="treeview-menu">
-									<li class="<?php echo @$servicos ?>"><a href="servicos"><i class="fa fa-angle-right"></i>Serviços</a></li>
+								<li class="treeview <?php echo @$menu_cadastros ?>">
+								<a href="#">
+								<i class="fa fa-briefcase"></i>
+									<span>Serviços</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
 
-									<li class="<?php echo @$cargos ?>"><a href="cargos"><i class="fa fa-angle-right"></i>Cargos</a></li>
+								   <li class="<?php echo @$servicos ?>"><a href="servicos"><i class="fa fa-angle-right"></i>Serviços</a></li>
 
-									<li class="<?php echo @$cat_servicos ?>"><a href="cat_servicos"><i class="fa fa-angle-right"></i>Categoria Serviços</a></li>
-
-									<li class="<?php echo @$grupos ?>"><a href="grupos"><i class="fa fa-angle-right"></i>Grupo Acessos</a></li>
-
-									<li class="<?php echo @$acessos ?>"><a href="acessos"><i class="fa fa-angle-right"></i>Acessos</a></li>
-
-										<li class="<?php echo @$pgto ?>"><a href="pgto"><i class="fa fa-angle-right"></i>Formas de Pagamento</a></li>
-
-
-										<li class="<?php echo @$dias_bloqueio ?>"><a href="dias_bloqueio"><i class="fa fa-angle-right"></i>Bloqueio de Dias</a></li>
-								
+								   <li class="<?php echo @$cat_servicos ?>"><a href="cat_servicos"><i class="fa fa-angle-right"></i>Categoria Serviços</a></li>
 								</ul>
 							</li>
 
-
 							<li class="treeview <?php echo @$menu_produtos ?>">
 								<a href="#">
-									<i class="fa fa-plus"></i>
+								    <i class="fa fa-tags"></i>
 									<span>Produtos</span>
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
@@ -271,6 +279,28 @@ $dataMesInicial = $partesInicial[1];
 								
 								</ul>
 							</li>
+
+									<li class="<?php echo @$cargos ?>"><a href="cargos"><i class="fa fa-angle-right"></i>Cargos</a></li>
+
+									
+
+									<li class="<?php echo @$grupos ?>"><a href="grupos"><i class="fa fa-angle-right"></i>Grupo Acessos</a></li>
+
+									<li class="<?php echo @$acessos ?>"><a href="acessos"><i class="fa fa-angle-right"></i>Acessos</a></li>
+
+										<li class="<?php echo @$pgto ?>"><a href="pgto"><i class="fa fa-angle-right"></i>Formas de Pagamento</a></li>
+
+										<li><a href="dias"><i class="fa fa-angle-right"></i>Horários / Dias</a></li>
+
+										<li class="<?php echo @$dias_bloqueio ?>"><a href="dias_bloqueio"><i class="fa fa-angle-right"></i>Bloqueio de Dias</a></li>
+								
+								</ul>
+							</li>
+
+							
+
+
+							
 
 
 
@@ -299,7 +329,7 @@ $dataMesInicial = $partesInicial[1];
 
 							<li class="treeview <?php echo @$menu_agendamentos ?>">
 								<a href="#">
-									<i class="fa fa-calendar-o"></i>
+									<i class="fe fe-clock"></i>&nbsp;
 									<span>Agendamento / Serviço</span>
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
@@ -355,7 +385,7 @@ $dataMesInicial = $partesInicial[1];
 							<li class="treeview">
 								<a href="#">
 									<i class="fa fa-whatsapp"></i>
-									<span>Whatsapp - (Menuia)</span>
+									<span>Whatsapp</span>
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
 								<ul class="treeview-menu">
@@ -409,6 +439,10 @@ $dataMesInicial = $partesInicial[1];
 									<i class="fa fa-calendar-o"></i> <span>Minha Agenda</span>
 								</a>
 							</li>
+
+							<?php 
+						if(@$_SESSION['nivel_usuario'] != 'Individual'){
+						?>
 							
 							<li class="treeview">
 								<a href="meus_servicos">
@@ -442,6 +476,7 @@ $dataMesInicial = $partesInicial[1];
 								
 								</ul>
 							</li>
+							<?php }?>
 
 							<?php } ?>
 
@@ -473,7 +508,7 @@ $dataMesInicial = $partesInicial[1];
 						<?php if($atendimento == 'Sim'){ 
 
 													//totalizando agendamentos dia usuario
-						$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and funcionario = '$id_usuario' and status = 'Agendado'");
+						$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and funcionario = '$id_usuario' and status = 'Agendado' and id_conta = '$id_conta'");
 						$res = $query->fetchAll(PDO::FETCH_ASSOC);
 						$total_agendamentos_hoje_usuario_pendentes = @count($res);
 
@@ -497,7 +532,7 @@ $dataMesInicial = $partesInicial[1];
 								$horaF = date("H:i", strtotime($hora));
 
 
-									$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico'");
+									$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 									$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 									if(@count($res2) > 0){
 										$nome_serv = $res2[0]['nome'];
@@ -508,7 +543,7 @@ $dataMesInicial = $partesInicial[1];
 									}
 
 
-									$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente'");
+									$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
 									$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 									if(@count($res2) > 0){
 										$nome_cliente = $res2[0]['nome'];
@@ -545,7 +580,7 @@ $dataMesInicial = $partesInicial[1];
 					<?php if(@$rel_aniv == ''){ 
 
 						//totalizando aniversariantes do dia
-						$query = $pdo->query("SELECT * FROM clientes where month(data_nasc) = '$dataMesInicial' and day(data_nasc) = '$dataDiaInicial' order by data_nasc asc, id asc");
+						$query = $pdo->query("SELECT * FROM clientes where month(data_nasc) = '$dataMesInicial' and day(data_nasc) = '$dataDiaInicial' and id_conta = '$id_conta' order by data_nasc asc, id asc");
 						$res = $query->fetchAll(PDO::FETCH_ASSOC);
 						$total_aniversariantes_hoje = @count($res);
 
@@ -597,7 +632,7 @@ $dataMesInicial = $partesInicial[1];
 					<?php if(@$clientes_retorno == ''){ 
 
 						//totalizando aniversariantes do dia
-						$query = $pdo->query("SELECT * FROM clientes where alertado != 'Sim' and data_retorno < curDate() ORDER BY data_retorno asc");
+						$query = $pdo->query("SELECT * FROM clientes where alertado != 'Sim' and data_retorno < curDate() and id_conta = '$id_conta' ORDER BY data_retorno asc");
 						$res = $query->fetchAll(PDO::FETCH_ASSOC);
 						$total_clientes_retorno = @count($res);
 
@@ -649,7 +684,7 @@ $dataMesInicial = $partesInicial[1];
 					<?php if(@$comentarios == ''){ 
 
 						//totalizando aniversariantes do dia
-						$query = $pdo->query("SELECT * FROM comentarios where ativo != 'Sim'");
+						$query = $pdo->query("SELECT * FROM comentarios where ativo != 'Sim' and id_conta = '$id_conta'");
 						$res = $query->fetchAll(PDO::FETCH_ASSOC);
 						$total_comentarios = @count($res);
 
@@ -691,7 +726,15 @@ $dataMesInicial = $partesInicial[1];
 								</li>
 							</ul>
 						</li>	
-					<?php } ?>
+					<?php }
+
+					if($status == 'WhatsApp conectado'){
+                            $icon = 'mdi mdi-qrcode-scan mdi-24px mdi-spin';
+                        }else{
+                            $icon = 'mdi mdi-qrcode-scan mdi-24px';
+                        }?>
+
+                        <li class="dropdown head-dpdn" style="margin-left: 20px; color: <?php echo $cor?>" title='<?php echo $status?>'><small><i class="<?php echo $icon?>"></i></small></li>
 
 
 
@@ -726,7 +769,11 @@ $dataMesInicial = $partesInicial[1];
 							</a>
 							<ul class="dropdown-menu drp-mnu">
 								<?php if(@$configuracoes == ''){ ?>
-								<li> <a href="configuracoes" ><i class="fa fa-cog"></i> Configurações</a> </li> 	
+								<li> <a href="configuracoes" ><i class="fa fa-cog"></i> Config. Sistema</a> </li> 	
+								<?php } ?>
+								
+								<?php if(@$configuracoes == ''){ ?>
+								<li> <a href="conf_site" ><i class="fa fa-cog"></i> Config. Site</a> </li> 	
 								<?php } ?>
 
 								<li> <a href="" data-toggle="modal" data-target="#modalPerfil"><i class="fa fa-suitcase"></i> Editar Perfil</a> </li> 
@@ -915,19 +962,23 @@ $dataMesInicial = $partesInicial[1];
 
 
 					<div class="row">
-						<div class="col-md-4">
+					    <div class="col-md-4">
 							<div class="form-group">
 								<label for="exampleInputEmail1">Senha</label>
-								<input type="password" class="form-control" id="senha-perfil" name="senha" placeholder="Senha" value="<?php echo $senha_usuario ?>" required>    
-							</div> 	
+								<input type="password" class="form-control" id="senha-perfil" name="senha" placeholder="Senha" autocomplete="new-password" oninput="validarConfirmacaoSenha()">
+							</div>
 						</div>
 						<div class="col-md-4">
 							
 							<div class="form-group">
 								<label for="exampleInputEmail1">Confirmar Senha</label>
-								<input type="password" class="form-control" id="conf-senha-perfil" name="conf_senha" placeholder="Confirmar Senha" required>    
+								<input type="password" class="form-control" id="conf-senha-perfil" name="conf_senha" placeholder="Confirmar Senha">    
 							</div> 	
 						</div>
+
+						<?php 
+						if(@$_SESSION['nivel_usuario'] != 'Individual'){
+						?>
 
 						<div class="col-md-4">
 							<div class="form-group">
@@ -938,6 +989,9 @@ $dataMesInicial = $partesInicial[1];
 								</select>  
 							</div> 	
 						</div>
+						<?php 
+						}
+						?>
 
 					</div>
 
@@ -1091,7 +1145,7 @@ $dataMesInicial = $partesInicial[1];
 									<select class="form-control selcli" name="cliente" style="width:100%;" > 
 									<option value="">Todos</option>
 									<?php 
-									$query = $pdo->query("SELECT * FROM clientes");
+									$query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta'");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -1281,7 +1335,7 @@ $dataMesInicial = $partesInicial[1];
 									<select class="form-control sel15" name="funcionario" style="width:100%;">
 										<option value="">Todos</option>
 										<?php 
-				$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' ORDER BY id desc");
+				$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY id desc");
 				$res = $query->fetchAll(PDO::FETCH_ASSOC);
 				$total_reg = @count($res);
 				if($total_reg > 0){
@@ -1615,7 +1669,7 @@ $dataMesInicial = $partesInicial[1];
 									<select class="form-control" name="pgto" style="width:100%;" > 
 									<option value="">Selecionar Pagamento</option>
 									<?php 
-									$query = $pdo->query("SELECT * FROM formas_pgto");
+									$query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -1638,7 +1692,7 @@ $dataMesInicial = $partesInicial[1];
 									<select class="form-control" name="servico" style="width:100%;" > 
 									<option value="">Selecionar Serviço</option>
 									<?php 
-									$query = $pdo->query("SELECT * FROM servicos");
+									$query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta'");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -1671,14 +1725,10 @@ $dataMesInicial = $partesInicial[1];
 	</div>
 
 
+	<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> -->
 
 
-
-
-
-
-
-
+	
 
 
 
@@ -1788,6 +1838,41 @@ $dataMesInicial = $partesInicial[1];
 
 					$('#mensagem-config').addClass('text-danger')
 					$('#mensagem-config').text(mensagem)
+				}
+
+
+			},
+
+			cache: false,
+			contentType: false,
+			processData: false,
+
+		});
+
+	});
+
+	$("#form-config2").submit(function () {
+
+		event.preventDefault();
+		var formData = new FormData(this);
+
+		$.ajax({
+			url: "editar-config-site.php",
+			type: 'POST',
+			data: formData,
+
+			success: function (mensagem) {
+				$('#mensagem-config2').text('');
+				$('#mensagem-config2').removeClass()
+				if (mensagem.trim() == "Editado com Sucesso") {
+
+					$('#btn-fechar-config2').click();
+					location.reload();			
+					
+				} else {
+
+					$('#mensagem-config2').addClass('text-danger')
+					$('#mensagem-config2').text(mensagem)
 				}
 
 
@@ -1987,6 +2072,24 @@ $dataMesInicial = $partesInicial[1];
 			document.getElementById('tudo-'+campo).style.color = "#000";
 			document.getElementById('ano-'+campo).style.color = "#000";
 			document.getElementById(id).style.color = "blue";		
+		}
+
+
+		function validarConfirmacaoSenha() {
+			var senha = document.getElementById("senha-perfil").value;
+			var confirmacaoSenha = document.getElementById("conf-senha-perfil");
+
+			if (senha) {
+				confirmacaoSenha.setAttribute("required", "required");
+			} else {
+				confirmacaoSenha.removeAttribute("required");
+			}
+
+			if(senha !== confirmacaoSenha.value){
+				confirmacaoSenha.setCustomValidity("As senhas não conferem.");
+			}else{
+				confirmacaoSenha.setCustomValidity("");
+			}
 		}
 	</script>
 

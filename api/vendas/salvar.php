@@ -22,7 +22,7 @@ if($produto == 0 || $produto == ""){
 
 
 
-$query = $pdo->query("SELECT * FROM produtos where id = '$produto'");
+$query = $pdo->query("SELECT * FROM produtos where id = '$produto' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $descricao = 'Venda - ('.$quantidade.') '.$res[0]['nome'];
 $estoque = $res[0]['estoque'];
@@ -44,19 +44,19 @@ if($quantidade > $estoque){
 
 //atualizar dados do produto
 $total_estoque = $estoque - $quantidade;
-$pdo->query("UPDATE produtos SET estoque = '$total_estoque' WHERE id = '$produto'");
+$pdo->query("UPDATE produtos SET estoque = '$total_estoque' WHERE id = '$produto' and id_conta = '$id_conta'");
 
 
 
 
 
 if($id == ""){
-$query = $pdo->prepare("INSERT INTO $tabela SET descricao = :descricao, tipo = 'Venda', valor = :valor, data_lanc = curDate(), data_venc = '$data_venc', data_pgto = '$data_pgto', usuario_lanc = '$id_usuario', usuario_baixa = '$usuario_pgto', foto = '$foto', pessoa = '$pessoa', pago = '$pago', produto = '$produto', quantidade = '$quantidade', pgto = '$pgto'");
+$query = $pdo->prepare("INSERT INTO $tabela SET descricao = :descricao, tipo = 'Venda', valor = :valor, data_lanc = curDate(), data_venc = '$data_venc', data_pgto = '$data_pgto', usuario_lanc = '$id_usuario', usuario_baixa = '$usuario_pgto', foto = '$foto', pessoa = '$pessoa', pago = '$pago', produto = '$produto', quantidade = '$quantidade', pgto = '$pgto', id_conta = '$id_conta'");
 
 }else{
 
 //tratamento para trocar a foto e apagar a antiga
-$query = $pdo->query("SELECT * FROM $tabela where id = '$id'");
+$query = $pdo->query("SELECT * FROM $tabela where id = '$id' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 $foto_antiga = $res[0]['foto'];
@@ -66,7 +66,7 @@ if($foto_antiga != "sem-foto.jpg" and $foto != $foto_antiga){
 }
 
 
-$query = $pdo->prepare("UPDATE $tabela SET descricao = :descricao, valor = :valor, data_venc = '$data_venc', data_pgto = '$data_pgto', foto = '$foto', pessoa = '$pessoa', produto = '$produto', quantidade = '$quantidade' WHERE id = '$id'");
+$query = $pdo->prepare("UPDATE $tabela SET descricao = :descricao, valor = :valor, data_venc = '$data_venc', data_pgto = '$data_pgto', foto = '$foto', pessoa = '$pessoa', produto = '$produto', quantidade = '$quantidade' WHERE id = '$id' and id_conta = '$id_conta'");
 
 }
 

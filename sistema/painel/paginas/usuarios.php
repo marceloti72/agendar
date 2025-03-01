@@ -77,7 +77,7 @@ $pag = 'usuarios';
 								<select class="form-control sel2" id="cargo" name="cargo" style="width:100%;" > 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM cargos ORDER BY nome asc");
+									$query = $pdo->query("SELECT * FROM cargos where id_conta = '$id_conta' ORDER BY nome asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){

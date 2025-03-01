@@ -6,7 +6,13 @@ require_once("../sistema/conexao.php");
 @session_start();
 $telefone2 = $_POST['telefone'];
 $nome = $_POST['nome'];
-$funcionario = $_POST['funcionario'];
+
+if(!empty($_POST['funcionario'])){
+	$funcionario = $_POST['funcionario'];
+}else{
+	$funcionario = $_SESSION['id_usuario'];
+}
+
 $hora = @$_POST['hora'];
 $servico = $_POST['servico'];
 $obs = $_POST['obs'];
@@ -23,12 +29,12 @@ $hash = "";
 
 $tel_cli = $_POST['telefone'];
 
-$query = $pdo->query("SELECT * FROM usuarios where id = '$funcionario'");
+$query = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $intervalo = $res[0]['intervalo'];
 $tel_func = $res[0]['telefone'];
 
-$query = $pdo->query("SELECT * FROM servicos where id = '$servico'");
+$query = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $tempo = $res[0]['tempo'];
 $nome_servico = $res[0]['nome'];
@@ -46,7 +52,7 @@ $diasemana_numero = date('w', @strtotime($data));
 $dia_procurado = $diasemana[$diasemana_numero];
 
 //percorrer os dias da semana que ele trabalha
-$query = $pdo->query("SELECT * FROM dias where funcionario = '$funcionario' and dia = '$dia_procurado'");
+$query = $pdo->query("SELECT * FROM dias where funcionario = '$funcionario' and dia = '$dia_procurado' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) == 0){
 		echo 'Este Profissional não trabalha neste Dia!';
@@ -59,7 +65,7 @@ if(@count($res) == 0){
 }
 
 //verificar se possui essa data nos dias bloqueio geral
-$query = $pdo->query("SELECT * FROM dias_bloqueio where funcionario = '0' and data = '$data_agd'");
+$query = $pdo->query("SELECT * FROM dias_bloqueio where funcionario = '0' and data = '$data_agd' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0){
 	echo 'Não estaremos funcionando nesta Data!';
@@ -67,7 +73,7 @@ if(@count($res) > 0){
 }
 
 //verificar se possui essa data nos dias bloqueio func
-$query = $pdo->query("SELECT * FROM dias_bloqueio where funcionario = '$funcionario'  and data = '$data_agd'");
+$query = $pdo->query("SELECT * FROM dias_bloqueio where funcionario = '$funcionario'  and data = '$data_agd' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0){
 		echo 'Este Profissional não irá trabalhar nesta Data, selecione outra data ou escolhar outro Profissional!';
@@ -80,7 +86,7 @@ while (@strtotime($nova_hora) < @strtotime($hora_final_servico)){
 		$nova_hora = date('H:i:s', $hora_minutos);		
 		
 		//VERIFICAR NA TABELA HORARIOS AGD SE TEM O HORARIO NESSA DATA
-		$query_agd = $pdo->query("SELECT * FROM horarios_agd where data = '$data' and funcionario = '$funcionario' and horario = '$nova_hora'");
+		$query_agd = $pdo->query("SELECT * FROM horarios_agd where data = '$data' and funcionario = '$funcionario' and horario = '$nova_hora' and id_conta = '$id_conta'");
 		$res_agd = $query_agd->fetchAll(PDO::FETCH_ASSOC);
 		if(@count($res_agd) > 0){
 			echo 'Este serviço demora cerca de '.$tempo.' minutos, precisa escolher outro horário, pois neste horários não temos disponibilidade devido a outros agendamentos!';
@@ -90,7 +96,7 @@ while (@strtotime($nova_hora) < @strtotime($hora_final_servico)){
 
 
 		//VERIFICAR NA TABELA AGENDAMENTOS SE TEM O HORARIO NESSA DATA e se tem um intervalo entre o horario marcado e o proximo agendado nessa tabela
-		$query_agd = $pdo->query("SELECT * FROM agendamentos where data = '$data' and funcionario = '$funcionario' and hora = '$nova_hora'");
+		$query_agd = $pdo->query("SELECT * FROM agendamentos where data = '$data' and funcionario = '$funcionario' and hora = '$nova_hora' and id_conta = '$id_conta'");
 		$res_agd = $query_agd->fetchAll(PDO::FETCH_ASSOC);
 		if(@count($res_agd) > 0){
 			if($tempo <= $intervalo){
@@ -130,7 +136,7 @@ if($data < date('Y-m-d')){
 }
 
 //validar horario
-$query = $pdo->query("SELECT * FROM agendamentos where data = '$data' and hora = '$hora' and funcionario = '$funcionario'");
+$query = $pdo->query("SELECT * FROM agendamentos where data = '$data' and hora = '$hora' and funcionario = '$funcionario' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0 and $res[0]['id'] != $id){
@@ -139,13 +145,14 @@ if($total_reg > 0 and $res[0]['id'] != $id){
 }
 
 //Cadastrar o cliente caso não tenha cadastro
-$query = $pdo->query("SELECT * FROM clientes where telefone LIKE '$telefone2' ");
+$query = $pdo->query("SELECT * FROM clientes where telefone LIKE '$telefone2' and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) == 0){
-	$query = $pdo->prepare("INSERT INTO clientes SET nome = :nome, telefone = :telefone, data_cad = curDate(), cartoes = '0', alertado = 'Não'");
+	$query = $pdo->prepare("INSERT INTO clientes SET nome = :nome, telefone = :telefone, data_cad = curDate(), cartoes = '0', alertado = 'Não', id_conta = :id_conta");
 
 	$query->bindValue(":nome", "$nome");
 	$query->bindValue(":telefone", "$telefone2");	
+	$query->bindValue(":id_conta", "$id_conta");	
 	$query->execute();
 	$id_cliente = $pdo->lastInsertId();
 
@@ -181,7 +188,7 @@ $mensagem .= 'Serviço: '.$nome_servico.'%0A';
 require('api-texto.php');
 
 
-if($msg_agendamento == 'Api'){
+if($msg_agendamento == 'Sim'){
 	
 		$mensagem = '*'.$nome_sistema_maiusculo.'*%0A%0A';
 		$mensagem .= '*Confirmação de Agendamento* 📆%0A';	
@@ -195,32 +202,37 @@ if($msg_agendamento == 'Api'){
 		if($minutos_aviso > 0){
 			require("confirmacao.php");
 			//require("../../../../ajax/chat_confirma.php");
-			$id_hash = $id;		
-
-			//marcar o agendamento
-			$query = $pdo->prepare("INSERT INTO agendamentos SET funcionario = '$funcionario', cliente = '$id_cliente', hora = '$hora', data = '$data_agd', usuario = '$funcionario', status = 'Agendado', obs = :obs, data_lanc = curDate(), servico = '$servico', hash = '$id_hash', origem = 'Site'");
-			$query->bindValue(":obs", "$obs");
-			$query->execute();
-
-			$ult_id = $pdo->lastInsertId();
-			echo 'Pré Agendado*'.$ult_id;
-
-
-			while (strtotime($hora) < strtotime($hora_final_servico)){
-		
-				$hora_minutos = strtotime("+$intervalo minutes", strtotime($hora));			
-				$hora = date('H:i:s', $hora_minutos);
-		
-				if(strtotime($hora) < strtotime($hora_final_servico)){
-					$query = $pdo->query("INSERT INTO horarios_agd SET agendamento = '$ult_id', horario = '$hora', funcionario = '$funcionario', data = '$data_agd'");
-				}
-			
-		
-		}
-				
+			$id_hash = $id;
+		}else{
+			$id_hash = '';
 		}
 	
+	}
+					
+
+	//marcar o agendamento
+	$query = $pdo->prepare("INSERT INTO agendamentos SET funcionario = '$funcionario', cliente = '$id_cliente', hora = '$hora', data = '$data_agd', usuario = '$funcionario', status = 'Agendado', obs = :obs, data_lanc = curDate(), servico = '$servico', hash = '$id_hash', origem = 'Site', id_conta = :id_conta");
+	$query->bindValue(":obs", "$obs");
+	$query->bindValue(":id_conta", "$id_conta");
+	$query->execute();
+
+	$ult_id = $pdo->lastInsertId();
+	echo 'Pré Agendado*'.$ult_id;
+
+
+	while (strtotime($hora) < strtotime($hora_final_servico)){
+
+		$hora_minutos = strtotime("+$intervalo minutes", strtotime($hora));			
+		$hora = date('H:i:s', $hora_minutos);
+
+		if(strtotime($hora) < strtotime($hora_final_servico)){
+			$query = $pdo->query("INSERT INTO horarios_agd SET agendamento = '$ult_id', horario = '$hora', funcionario = '$funcionario', data = '$data_agd', id_conta = '$id_conta'");
+		}
+	
+
 }
+				
+		
 
 
 ?>

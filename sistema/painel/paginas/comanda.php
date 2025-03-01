@@ -113,7 +113,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 								<select class="form-control sel2" id="cliente" name="cliente" style="width:100%;" required> 
 									<option value="">Selecionar Cliente</option>
 									<?php 
-									$query = $pdo->query("SELECT * FROM clientes ORDER BY nome asc");
+									$query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta' ORDER BY nome asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -144,7 +144,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 								<select class="form-control sel2" id="servico" name="servico" style="width:100%;" required> 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM servicos ORDER BY nome asc");
+									$query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta' ORDER BY nome asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -167,7 +167,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 								<select class="form-control sel2" id="funcionario" name="funcionario" style="width:100%;" required onchange=""> 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' ORDER BY nome asc");
+									$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -199,7 +199,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 								<select class="form-control sel2" id="produto" name="produto" style="width:100%;" required onchange="listarServicos()"> 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM produtos where estoque > 0 ORDER BY nome asc");
+									$query = $pdo->query("SELECT * FROM produtos where estoque > 0 and id_conta = '$id_conta' ORDER BY nome asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -229,7 +229,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 								<select class="form-control sel2" id="funcionario2" name="funcionario2" style="width:100%;" required onchange="listarServicos()"> 
 									<option value="0">Nenhum</option>
 									<?php 
-									$query = $pdo->query("SELECT * FROM usuarios where nivel != 'Administrador' ORDER BY nome asc");
+									$query = $pdo->query("SELECT * FROM usuarios where nivel != 'Administrador' and id_conta = '$id_conta' ORDER BY nome asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -283,7 +283,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 								<select class="form-control inputs_form" id="pgto" name="pgto" style="width:100%;" required> 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM formas_pgto");
+									$query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -329,7 +329,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 								<select class="form-control inputs_form" id="pgto_restante" name="pgto_restante" style="width:100%;" > 
 									<option value="">Selecionar Pgto</option>
 									<?php 
-									$query = $pdo->query("SELECT * FROM formas_pgto");
+									$query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -462,7 +462,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 
 
 
-<script type="text/javascript">var pag = "<?=$pag?>"</script>
+<script type="text/javascript">var pag = "<?=$pag?>";</script>
 <script src="js/ajax.js"></script>
 
 

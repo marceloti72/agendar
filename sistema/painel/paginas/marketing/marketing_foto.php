@@ -1,6 +1,6 @@
 <?php
 
-    require_once("../../../../funcoes.php");
+    //require_once("../../../../funcoes.php");
      $mensagem = str_replace("%0A", "\n", $mensagem); 
      $mensagem = $mensagem == '' ? '.' : $mensagem;
     
@@ -31,7 +31,7 @@
     curl_close($curl);
     
     $res_hash = json_decode($response, true);
-    save_log($pdo, $token, $instancia, $res_hash, 'Campanha(foto)', $numeros_formatados, $mensagem);
+    //save_log($pdo, $token, $instancia, $res_hash, 'Campanha(foto)', $numeros_formatados, $mensagem);
     $hash = $res_hash['id'];  
 
 ?>

@@ -6,8 +6,9 @@ $response = array();
 require_once("../../../conexao.php");
     
 try {
-    $stmt = $pdo->prepare("UPDATE config SET instancia = :appkey");
+    $stmt = $pdo->prepare("UPDATE config SET instancia = :appkey where id = :id");
     $stmt->bindValue(':appkey', '');
+    $stmt->bindValue(':id', $id_conta);
     $stmt->execute();
     
     // Verifica se houve exceções durante a execução da consulta

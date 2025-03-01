@@ -13,7 +13,7 @@ $atendimento = $_POST['atendimento'];
 $tipo_chave = $_POST['tipo_chave'];
 $chave_pix = $_POST['chave_pix'];
 $senha = '123';
-$senha_crip = md5($senha);
+$hash = password_hash($senha, PASSWORD_DEFAULT);
 $intervalo = $_POST['intervalo'];
 $comissao = $_POST['comissao'];
 
@@ -23,7 +23,7 @@ if($cargo == "0"){
 }
 
 //validar email
-$query = $pdo->query("SELECT * from $tabela where email = '$email'");
+$query = $pdo->query("SELECT * from $tabela where email = '$email' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0 and $id != $res[0]['id']){
 	echo 'Email já Cadastrado, escolha outro!!';
@@ -32,7 +32,7 @@ if(@count($res) > 0 and $id != $res[0]['id']){
 
 
 //validar cpf
-$query = $pdo->query("SELECT * from $tabela where cpf = '$cpf'");
+$query = $pdo->query("SELECT * from $tabela where cpf = '$cpf' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0 and $id != $res[0]['id']){
 	echo 'CPF já Cadastrado, escolha outro!!';
@@ -43,7 +43,7 @@ if(@count($res) > 0 and $id != $res[0]['id']){
 
 
 //validar troca da foto
-$query = $pdo->query("SELECT * FROM $tabela where id = '$id'");
+$query = $pdo->query("SELECT * FROM $tabela where id = '$id' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -83,9 +83,9 @@ if(@$_FILES['foto']['name'] != ""){
 
 
 if($id == ""){
-	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, email = :email, cpf = :cpf, senha = '$senha', senha_crip = '$senha_crip', nivel = '$cargo', data = curDate(), ativo = 'Sim', telefone = :telefone, endereco = :endereco, foto = '$foto', atendimento = '$atendimento', tipo_chave = '$tipo_chave', chave_pix = :chave_pix, intervalo = '$intervalo', comissao = '$comissao'");
+	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, email = :email, cpf = :cpf, senha = '$hash', nivel = '$cargo', data = curDate(), ativo = 'Sim', telefone = :telefone, endereco = :endereco, foto = '$foto', atendimento = '$atendimento', tipo_chave = '$tipo_chave', chave_pix = :chave_pix, intervalo = '$intervalo', comissao = '$comissao', id_conta = '$id_conta'");
 }else{
-	$query = $pdo->prepare("UPDATE $tabela SET nome = :nome, email = :email, cpf = :cpf, nivel = '$cargo', telefone = :telefone, endereco = :endereco, foto = '$foto', atendimento = '$atendimento', tipo_chave = '$tipo_chave', chave_pix = :chave_pix, intervalo = '$intervalo', comissao = '$comissao' WHERE id = '$id'");
+	$query = $pdo->prepare("UPDATE $tabela SET nome = :nome, email = :email, cpf = :cpf, nivel = '$cargo', telefone = :telefone, endereco = :endereco, foto = '$foto', atendimento = '$atendimento', tipo_chave = '$tipo_chave', chave_pix = :chave_pix, intervalo = '$intervalo', comissao = '$comissao' WHERE id = '$id' and id_conta = '$id_conta'");
 }
 
 $query->bindValue(":nome", "$nome");

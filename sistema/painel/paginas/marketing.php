@@ -354,6 +354,7 @@ if(@$marketing == 'ocultar'){
 						</div>
 
 						<div style="margin-top: 10px; width:350px; border:1px solid #acacad; margin:0 auto; text-align: left; padding:5px" >
+						<img src="" id="target_dados" width="70%"><br><br>
 							<small>
 								<b><span id="titulo_dados"></span></b><br>
 							<span id="mensagem_dados"></span><br><br>
@@ -397,7 +398,7 @@ if(@$marketing == 'ocultar'){
 							<br>
 							<i><span id="conclusao_dados"></span></i><br><br>
 
-							<img src="" id="target_dados" width="70%"><br><br>
+							
 							<audio  controls="controls" class="" style="height:25px; width:180px"  id="audio_dados">							
 							<source class="form-control" src="" type="audio/mp3" />
 						</audio>

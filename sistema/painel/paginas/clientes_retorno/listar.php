@@ -3,7 +3,7 @@ require_once("../../../conexao.php");
 $tabela = 'clientes';
 $data_atual = date('Y-m-d');
 
-$query = $pdo->query("SELECT * FROM $tabela where alertado != 'Sim' and data_retorno < curDate() ORDER BY data_retorno asc");
+$query = $pdo->query("SELECT * FROM $tabela where alertado != 'Sim' and data_retorno < curDate() and id_conta = '$id_conta' ORDER BY data_retorno asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -47,7 +47,7 @@ for($i=0; $i < $total_reg; $i++){
 	
 	$whats = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
 
-	$query2 = $pdo->query("SELECT * FROM servicos where id = '$ultimo_servico'");
+	$query2 = $pdo->query("SELECT * FROM servicos where id = '$ultimo_servico' and id_conta = '$id_conta'");
 	$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 	if(@count($res2) > 0){
 		$nome_servico = $res2[0]['nome'];

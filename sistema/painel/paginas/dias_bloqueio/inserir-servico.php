@@ -6,7 +6,7 @@ $tabela = 'dias_bloqueio';
 $data = $_POST['data'];
 $func = $_POST['id'];
 
-$query = $pdo->query("SELECT * FROM $tabela where data = '$data'");
+$query = $pdo->query("SELECT * FROM $tabela where data = '$data' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -14,7 +14,7 @@ if($total_reg > 0){
 	exit();
 }
 
-$pdo->query("INSERT INTO $tabela SET data = '$data', funcionario = '0', usuario = '$func'");
+$pdo->query("INSERT INTO $tabela SET data = '$data', funcionario = '0', usuario = '$func', id_conta = '$id_conta'");
 
 echo 'Salvo com Sucesso';
  ?>

@@ -4,14 +4,14 @@ $tabela = 'pagar';
 $data_hoje = date('Y-m-d');
 
 @session_start();
-$id_usuario = $_SESSION['id'];
+$id_usuario = $_SESSION['id_usuario'];
 
 $dataInicial = @$_POST['dataInicial'];
 $dataFinal = @$_POST['dataFinal'];
 $status = '%'.@$_POST['status'].'%';
 $funcionario = $id_usuario;
 
-$query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario'");
+$query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
 		if($total_reg2 > 0){
@@ -24,7 +24,7 @@ $total_pago = 0;
 $total_a_pagar = 0;
 $total_pendente = 0;
 
-$query = $pdo->query("SELECT * FROM $tabela where data_lanc >= '$dataInicial' and data_lanc <= '$dataFinal' and pago LIKE '$status' and funcionario = '$funcionario' and tipo = 'Comissão' ORDER BY pago asc, data_venc asc");
+$query = $pdo->query("SELECT * FROM $tabela where data_lanc >= '$dataInicial' and data_lanc <= '$dataFinal' and pago LIKE '$status' and funcionario = '$funcionario' and tipo = 'Comissão' and id_conta = '$id_conta' ORDER BY pago asc, data_venc asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -71,7 +71,7 @@ for($i=0; $i < $total_reg; $i++){
 	$data_vencF = implode('/', array_reverse(explode('-', $data_venc)));
 	
 
-		$query2 = $pdo->query("SELECT * FROM clientes where id = '$pessoa'");
+		$query2 = $pdo->query("SELECT * FROM clientes where id = '$pessoa' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
 		if($total_reg2 > 0){
@@ -83,7 +83,7 @@ for($i=0; $i < $total_reg; $i++){
 		}
 
 
-		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_baixa'");
+		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_baixa' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
 		if($total_reg2 > 0){
@@ -94,7 +94,7 @@ for($i=0; $i < $total_reg; $i++){
 
 
 
-		$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente'");
+		$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
 		if($total_reg2 > 0){
@@ -105,7 +105,7 @@ for($i=0; $i < $total_reg; $i++){
 
 
 
-		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_lanc'");
+		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_lanc' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
 		if($total_reg2 > 0){
@@ -116,7 +116,7 @@ for($i=0; $i < $total_reg; $i++){
 
 
 
-		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario'");
+		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
 		if($total_reg2 > 0){
@@ -126,7 +126,7 @@ for($i=0; $i < $total_reg; $i++){
 		}
 
 
-		$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico'");
+		$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
 		if($total_reg2 > 0){
@@ -179,12 +179,12 @@ echo <<<HTML
 <td>
 		
 
-		<big><a href="#" onclick="mostrar('{$descricao}', '{$valorF}', '{$data_lancF}', '{$data_vencF}',  '{$data_pgtoF}', '{$nome_usuario_lanc}', '{$nome_usuario_pgto}', '{$tumb_arquivo}', '{$nome_pessoa}', '{$foto}', '{$telefone_pessoa}', '{$nome_func}')" title="Ver Dados"><i class="fa fa-info-circle text-secondary"></i></a></big>
+		<a href="#" class="btn btn-info btn-xs" onclick="mostrar('{$descricao}', '{$valorF}', '{$data_lancF}', '{$data_vencF}',  '{$data_pgtoF}', '{$nome_usuario_lanc}', '{$nome_usuario_pgto}', '{$tumb_arquivo}', '{$nome_pessoa}', '{$foto}', '{$telefone_pessoa}', '{$nome_func}')" title="Ver Dados"><i class="fe fe-search"></i></a>
 
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
+		<a href="#" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>

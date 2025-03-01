@@ -7,7 +7,7 @@ $nome = $_POST['nome'];
 $taxa = $_POST['taxa'];
 
 //validar nome
-$query = $pdo->query("SELECT * from $tabela where nome = '$nome'");
+$query = $pdo->query("SELECT * from $tabela where nome = '$nome' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0 and $id != $res[0]['id']){
 	echo 'Nome já Cadastrado, escolha outro!!';
@@ -16,9 +16,9 @@ if(@count($res) > 0 and $id != $res[0]['id']){
 
 
 if($id == ""){
-	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, taxa = '$taxa'");
+	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, taxa = '$taxa', id_conta = '$id_conta'");
 }else{
-	$query = $pdo->prepare("UPDATE $tabela SET nome = :nome, taxa = '$taxa' WHERE id = '$id'");
+	$query = $pdo->prepare("UPDATE $tabela SET nome = :nome, taxa = '$taxa' WHERE id = '$id' and id_conta = '$id_conta'");
 }
 
 $query->bindValue(":nome", "$nome");

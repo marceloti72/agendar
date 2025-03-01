@@ -3,18 +3,10 @@ require_once("../../../conexao.php");
 $tabela = 'clientes';
 $data_atual = date('Y-m-d');
 
-$busca = '%'.@$_POST['busca'].'%';
-
-// pegar a pagina atual
-if(@$_POST['pagina'] == ""){
-    @$_POST['pagina'] = 0;
-}
-
-$pagina = intval(@$_POST['pagina']);
-$limite = $pagina * $itens_pag;
 
 
-$query = $pdo->query("SELECT * FROM $tabela where nome LIKE '$busca' or telefone LIKE '$busca' or cpf LIKE '$busca' ORDER BY id desc LIMIT $limite, $itens_pag");
+
+$query = $pdo->query("SELECT * FROM $tabela where id_conta = '$id_conta' ORDER BY id desc ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -61,7 +53,7 @@ for($i=0; $i < $total_reg; $i++){
 	
 	$whats = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
 
-	$query2 = $pdo->query("SELECT * FROM servicos where id = '$ultimo_servico'");
+	$query2 = $pdo->query("SELECT * FROM servicos where id = '$ultimo_servico' and id_conta = '$id_conta'");
 	$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 	if(@count($res2) > 0){
 		$nome_servico = $res2[0]['nome'];
@@ -70,7 +62,7 @@ for($i=0; $i < $total_reg; $i++){
 	}
 
 
-	$query2 = $pdo->query("SELECT * FROM receber where pessoa = '$id' order by id desc limit 1");
+	$query2 = $pdo->query("SELECT * FROM receber where pessoa = '$id' and id_conta = '$id_conta' order by id desc limit 1");
 	$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 	if(@count($res2) > 0){
 		$obs_servico = $res2[0]['obs'];
@@ -93,11 +85,7 @@ for($i=0; $i < $total_reg; $i++){
 		$classe_retorno = '';
 	}
 	
-	 $query2 = $pdo->query("SELECT * FROM $tabela where nome LIKE '$busca' or telefone LIKE '$busca' or cpf LIKE '$busca'");
-	    $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-	    $total_reg2 = @count($res2);
-
-	     $num_paginas = ceil($total_reg2/$itens_pag);
+	
 
 
 echo <<<HTML
@@ -135,7 +123,9 @@ echo <<<HTML
 
 		<a class="btn btn-info btn-xs" href="#" onclick="contrato('{$id}','{$nome}')" title="Contrato de Serviço"><i class="fe fe-file-text"></i></a>
 
-		<a class="btn btn-primary btn-xs" href="rel/rel_servicos_clientes_class.php?id={$id}" target="_blank" title="Últimos Serviços"><i class="fe fe-list"></i></a>
+		<!-- <a class="btn btn-primary btn-xs" href="paginas/clientes.php?funcao=ultserv&id={$id}" title="Últimos Serviços"><i class="fe fe-list"></i></a> -->
+
+		<a class="btn btn-primary btn-xs" href="rel/rel_servicos_clientes.php?id={$id}" target="_blank" title="Últimos Serviços"><i class="fe fe-list"></i></a>
 
 		</td>
 </tr>
@@ -149,55 +139,7 @@ echo <<<HTML
 </table>
 </small>
 
-
-
-<hr>
-   <div class="row" align="center">
-     <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item">
-              <a onclick="listarClientes(0)" class="paginador" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-              </a>
-            </li>
-HTML;
-
-            for($i=0;$i<$num_paginas;$i++){
-            $estilo = "";
-            if($pagina >= ($i - 2) and $pagina <= ($i + 2)){
-            if($pagina == $i)
-              $estilo = "active";
-
-          $pag = $i+1;
-          $ultimo_reg = $num_paginas - 1;
-
-echo <<<HTML
-
-             <li class="page-item {$estilo}">
-              <a onclick="listarClientes({$i})" class="paginador " href="#" >{$pag}
-                
-              </a></li>
-HTML;
-
-          } 
-      } 
-
-echo <<<HTML
-
-            <li class="page-item">
-              <a onclick="listarClientes({$ultimo_reg})" class="paginador" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div> 
-
 HTML;  
-
-
 
 }else{
 	echo '<small>Não possui nenhum registro Cadastrado!</small>';

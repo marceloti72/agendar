@@ -4,7 +4,7 @@ $tabela = 'servicos_func';
 
 $id_func = $_POST['func'];
 
-$query = $pdo->query("SELECT * FROM $tabela where funcionario = '$id_func'");
+$query = $pdo->query("SELECT * FROM $tabela where funcionario = '$id_func' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -27,7 +27,7 @@ for($i=0; $i < $total_reg; $i++){
 	$servico = $res[$i]['servico'];
 	
 	
-$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico'");
+$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);	
 $nome_servico = $res2[0]['nome'];
 
@@ -38,7 +38,7 @@ echo <<<HTML
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
+		<a href="#" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>

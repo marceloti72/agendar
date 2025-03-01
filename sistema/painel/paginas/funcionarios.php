@@ -77,7 +77,7 @@ if(@$funcionarios == 'ocultar'){
 								<select class="form-control sel2" id="cargo" name="cargo" style="width:100%;" > 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM cargos where nome != 'Administrador' ORDER BY nome asc");
+									$query = $pdo->query("SELECT * FROM cargos where nome != 'Administrador' and id_conta = '$id_conta' ORDER BY nome asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -497,7 +497,7 @@ if(@$funcionarios == 'ocultar'){
 							<select class="form-control sel3" id="servico" name="servico" style="width:100%;" required> 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM servicos ORDER BY nome asc");
+									$query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta' ORDER BY nome asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){

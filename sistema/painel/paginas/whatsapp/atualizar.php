@@ -17,13 +17,14 @@ $response = array();
     
     
     try {
-        $stmt = $pdo->prepare("UPDATE config SET token = :authkey, email_menuia = :email, plano_menuia = :plano, validade_menuia = :validade, senha_menuia = :senha, api = :api ");
+        $stmt = $pdo->prepare("UPDATE config SET token = :authkey, email_menuia = :email, plano_menuia = :plano, validade_menuia = :validade, senha_menuia = :senha, api = :api where id = :id ");
             $stmt->bindParam(':authkey', $authkey);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':plano', $plano);
             $stmt->bindParam(':validade', $validadeFormatada);
             $stmt->bindParam(':senha', $senha);
             $stmt->bindValue(':api', "menuia");
+            $stmt->bindValue(':id', $id_conta);
             $stmt->execute();
 
         

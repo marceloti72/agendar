@@ -40,7 +40,7 @@ $status_pag_motivo = array(
 if ($_GET["acc"] == "check") {
 
     $id = $_GET['id'];
-    $id_conta = $_GET['id_conta'];
+    $id_pg = $_GET['id_conta'];
 
     $curl = curl_init();
     curl_setopt_array($curl, array(
@@ -68,9 +68,9 @@ if ($_GET["acc"] == "check") {
     $id_mercadopago = $response["id"];
     $valor_pago = $response['transaction_details']['total_paid_amount'];
 
-    if(isset($id_conta) && $id_conta != "null") // Garantindo apenas a primeira vez será atualiza
+    if(isset($id_pg) && $id_pg != "null") // Garantindo apenas a primeira vez será atualiza
     {
-        $pdo->query("UPDATE agendamentos_temp SET ref_pix = '$id_mercadopago', valor_pago = '$valor_pago' where id = '$id_conta'"); 
+        $pdo->query("UPDATE agendamentos SET ref_pix = '$id_mercadopago', valor_pago = '$valor_pago' where id = '$id_pg' and id_conta = '$id_conta'"); 
     }
    
  
@@ -85,7 +85,7 @@ if ($_GET["acc"] == "check") {
     }
    
     if ($status == "approved") { // PAGAMENTO APROVADO;
-        $id_conta = null; // Defindo como vazio novamente
+        $id_pg = null; // Defindo como vazio novamente
         $ref_pix = $id_mercadopago;
         $valor_pago = $transaction_amount;
         $forma_pgto = $payment_method_id;

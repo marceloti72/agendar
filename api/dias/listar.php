@@ -5,7 +5,7 @@ $tabela = 'dias';
 
 $id_func = $_POST['id_usuario'];
 
-$query = $pdo->query("SELECT * FROM $tabela where funcionario = '$id_func' ORDER BY id asc");
+$query = $pdo->query("SELECT * FROM $tabela where funcionario = '$id_func' and id_conta = '$id_conta' ORDER BY id asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 

@@ -3,7 +3,7 @@ require_once("../sistema/conexao.php");
 
 $id = @$_POST['id'];
 
-$query = $pdo->query("SELECT * FROM agendamentos where id = '$id'");
+$query = $pdo->query("SELECT * FROM agendamentos where id = '$id' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $cliente = $res[0]['cliente'];
 $usuario = $res[0]['funcionario'].'';
@@ -15,13 +15,13 @@ $hash = $res[0]['hash'];
 $dataF = implode('/', array_reverse(explode('-', $data)));
 $horaF = date("H:i", strtotime($hora));
 
-$query = $pdo->query("SELECT * FROM clientes where id = '$cliente'");
+$query = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $nome_cliente = $res[0]['nome'];
 $telefone = $res[0]['telefone'];
 
-$pdo->query("DELETE FROM agendamentos where id = '$id'");
-$pdo->query("DELETE FROM horarios_agd where agendamento = '$id'");
+$pdo->query("DELETE FROM agendamentos where id = '$id' and id_conta = '$id_conta'");
+$pdo->query("DELETE FROM horarios_agd where agendamento = '$id' and id_conta = '$id_conta'");
 
 echo 'Cancelado com Sucesso';
 
@@ -36,12 +36,12 @@ if($not_sistema == 'Sim'){
 
 if($msg_agendamento == 'Api'){
 
-$query = $pdo->query("SELECT * FROM usuarios where id = '$usuario' ");
+$query = $pdo->query("SELECT * FROM usuarios where id = '$usuario' and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $nome_func = $res[0]['nome'];
 $tel_func = $res[0]['telefone'];
 
-$query = $pdo->query("SELECT * FROM servicos where id = '$servico' ");
+$query = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $nome_serv = $res[0]['nome'];
 

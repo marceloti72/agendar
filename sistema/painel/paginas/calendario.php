@@ -1,5 +1,5 @@
 <?php		
-	$query = $pdo->query("SELECT * FROM agendamentos where data >= curDate()");
+	$query = $pdo->query("SELECT * FROM agendamentos where data >= curDate() and id_conta = '$id_conta'");
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
 	$total_reg = @count($res);
 

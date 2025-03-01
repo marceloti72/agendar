@@ -7,7 +7,7 @@ if(@$_POST['id_usuario'] != ""){
 	$usuario_logado = $_POST['id_usuario'];
 }else{
 	@session_start();
-$usuario_logado = @$_SESSION['id'];
+$usuario_logado = @$_SESSION['id_usuario'];
 }
 
 
@@ -27,7 +27,7 @@ $data_pgto_restante = $_POST['data_pgto_restante'];
 
 $valor_serv_original = $_POST['valor_serv_agd'];
 
-$query = $pdo->query("SELECT * FROM receber where referencia = '$id_agd'");
+$query = $pdo->query("SELECT * FROM receber where referencia = '$id_agd' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $agendamento_conta = @count($res);
 $valor_recebido = @$res[0]['valor'];
@@ -41,7 +41,7 @@ if($valor_serv_restante == ""){
 $valor_total_servico = $valor_serv + $valor_serv_restante + $valor_recebido;
 
 
-$query = $pdo->query("SELECT * FROM servicos where id = '$servico'");
+$query = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $valor = $res[0]['valor'];
 $comissao = $res[0]['comissao'];
@@ -49,7 +49,7 @@ $descricao = $res[0]['nome'];
 $descricao2 = 'Comissão - '.$res[0]['nome'];
 $nome_servico = $res[0]['nome'];
 
-$query = $pdo->query("SELECT * FROM usuarios where id = '$funcionario'");
+$query = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $comissao_func = $res[0]['comissao'];
 
@@ -63,7 +63,7 @@ if($tipo_comissao == 'Porcentagem'){
 	$valor_comissao = $comissao;
 }
 
-$query = $pdo->query("SELECT * FROM formas_pgto where nome = '$pgto'");
+$query = $pdo->query("SELECT * FROM formas_pgto where nome = '$pgto' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $valor_taxa = $res[0]['taxa'];
 
@@ -79,7 +79,7 @@ if($valor_taxa > 0 and strtotime($data_pgto) <=  strtotime($data_atual)){
 
 
 
-$query = $pdo->query("SELECT * FROM formas_pgto where nome = '$pgto_restante'");
+$query = $pdo->query("SELECT * FROM formas_pgto where nome = '$pgto_restante' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $valor_taxa = @$res[0]['taxa'];
 
@@ -92,23 +92,28 @@ if($valor_taxa > 0 and strtotime($data_pgto_restante) <=  strtotime($data_atual)
 	
 }
 
+
+
 if(strtotime($data_pgto) <=  strtotime($data_atual)){
 	$pago = 'Sim';
 	$data_pgto2 = $data_pgto;
 	$usuario_baixa = $usuario_logado;
 
-
-	//lançar a conta a pagar para a comissão do funcionário
-	$pdo->query("INSERT INTO pagar SET descricao = '$descricao2', tipo = 'Comissão', valor = '$valor_comissao', data_lanc = '$data_pgto', data_venc = '$data_pgto', usuario_lanc = '$usuario_logado', foto = 'sem-foto.jpg', pago = 'Não', funcionario = '$funcionario', servico = '$servico', cliente = '$cliente'");
+	if(@$_SESSION['nivel_usuario'] != 'Individual'){
+		//lançar a conta a pagar para a comissão do funcionário
+		$pdo->query("INSERT INTO pagar SET descricao = '$descricao2', tipo = 'Comissão', valor = '$valor_comissao', data_lanc = '$data_pgto', data_venc = '$data_pgto', usuario_lanc = '$usuario_logado', foto = 'sem-foto.jpg', pago = 'Não', funcionario = '$funcionario', servico = '$servico', cliente = '$cliente', id_conta = '$id_conta'");
+	}
 
 }else{
 	$pago = 'Não';
 	$data_pgto2 = '';
 	$usuario_baixa = 0;
 
-	if($lanc_comissao == 'Sempre'){
+	if(@$_SESSION['nivel_usuario'] != 'Individual'){
+		if($lanc_comissao == 'Sempre'){
 		//lançar a conta a pagar para a comissão do funcionário
-	$pdo->query("INSERT INTO pagar SET descricao = '$descricao2', tipo = 'Comissão', valor = '$valor_comissao', data_lanc = '$data_pgto', data_venc = '$data_pgto', usuario_lanc = '$usuario_logado', foto = 'sem-foto.jpg', pago = 'Não', funcionario = '$funcionario', servico = '$servico', cliente = '$cliente'");
+		$pdo->query("INSERT INTO pagar SET descricao = '$descricao2', tipo = 'Comissão', valor = '$valor_comissao', data_lanc = '$data_pgto', data_venc = '$data_pgto', usuario_lanc = '$usuario_logado', foto = 'sem-foto.jpg', pago = 'Não', funcionario = '$funcionario', servico = '$servico', cliente = '$cliente', id_conta = '$id_conta'");
+		}
 	}
 }
 
@@ -124,16 +129,16 @@ if(strtotime($data_pgto_restante) <=  strtotime($data_atual)){
 }
 
 //lançar o restante
-$pdo->query("INSERT INTO $tabela SET descricao = '$descricao', tipo = 'Serviço', valor = '$valor_serv_restante', data_lanc = curDate(), data_venc = '$data_pgto_restante', data_pgto = '$data_pgto2_restante', usuario_lanc = '$usuario_logado', usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = '$pago_restante', servico = '$servico', funcionario = '$funcionario', obs = '$obs', pgto = '$pgto_restante'");	
+$pdo->query("INSERT INTO $tabela SET descricao = '$descricao', tipo = 'Serviço', valor = '$valor_serv_restante', data_lanc = curDate(), data_venc = '$data_pgto_restante', data_pgto = '$data_pgto2_restante', usuario_lanc = '$usuario_logado', usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = '$pago_restante', servico = '$servico', funcionario = '$funcionario', obs = '$obs', pgto = '$pgto_restante', id_conta = '$id_conta'");	
 }
 
 
-$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico'");
+$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $dias_retorno = $res2[0]['dias_retorno'];
 
 //dados do cliente
-$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente'");
+$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $total_cartoes = $res2[0]['cartoes'];
 $telefone = $res2[0]['telefone'];
@@ -150,16 +155,16 @@ $data_retorno = date('Y-m-d', strtotime("+$dias_retorno days",strtotime($data_at
 
 if($valor_serv_original != 0){
 	if($agendamento_conta == 0){
-		$pdo->query("INSERT INTO $tabela SET descricao = '$descricao', tipo = 'Serviço', valor = '$valor_serv', data_lanc = curDate(), data_venc = '$data_pgto', data_pgto = '$data_pgto2', usuario_lanc = '$usuario_logado', usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = '$pago', servico = '$servico', funcionario = '$funcionario', obs = '$obs', pgto = '$pgto'");
+		$pdo->query("INSERT INTO $tabela SET descricao = '$descricao', tipo = 'Serviço', valor = '$valor_serv', data_lanc = curDate(), data_venc = '$data_pgto', data_pgto = '$data_pgto2', usuario_lanc = '$usuario_logado', usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = '$pago', servico = '$servico', funcionario = '$funcionario', obs = '$obs', pgto = '$pgto', id_conta = '$id_conta'");
 		}else{
-			$pdo->query("UPDATE $tabela SET valor = '$novo_valor_servico', data_pgto = curDate(), usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pgto = '$pgto' where referencia = '$id_agd'");
+			$pdo->query("UPDATE $tabela SET valor = '$novo_valor_servico', data_pgto = curDate(), usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pgto = '$pgto' where referencia = '$id_agd' and id_conta = '$id_conta'");
 		}
 }
 
 
 
-$pdo->query("UPDATE agendamentos SET status = 'Concluído' where id = '$id_agd'");
-$pdo->query("UPDATE clientes SET cartoes = '$cartoes', data_retorno = '$data_retorno', ultimo_servico = '$servico', alertado = 'Não' where id = '$cliente'");
+$pdo->query("UPDATE agendamentos SET status = 'Concluído' where id = '$id_agd' and id_conta = '$id_conta'");
+$pdo->query("UPDATE clientes SET cartoes = '$cartoes', data_retorno = '$data_retorno', ultimo_servico = '$servico', alertado = 'Não' where id = '$cliente' and id_conta = '$id_conta'");
 
 echo 'Salvo com Sucesso'; 
 

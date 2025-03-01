@@ -9,7 +9,7 @@ $data_hojeF = implode('/', array_reverse(@explode('-', $data_hoje)));
 
 include('../../rel/data_formatada.php');
 
-$query = $pdo->query("SELECT * FROM clientes where id = '$id'");
+$query = $pdo->query("SELECT * FROM clientes where id = '$id' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){

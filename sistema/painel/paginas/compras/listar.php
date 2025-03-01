@@ -11,7 +11,7 @@ $status = '%'.@$_POST['status'].'%';
 $total_pago = 0;
 $total_a_pagar = 0;
 
-$query = $pdo->query("SELECT * FROM $tabela where data_venc >= '$dataInicial' and data_venc <= '$dataFinal' and pago LIKE '$status' and produto != 0 ORDER BY pago asc, data_venc asc");
+$query = $pdo->query("SELECT * FROM $tabela where data_venc >= '$dataInicial' and data_venc <= '$dataFinal' and pago LIKE '$status' and produto != 0 and id_conta = '$id_conta' ORDER BY pago asc, data_venc asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -56,7 +56,7 @@ for($i=0; $i < $total_reg; $i++){
 	$data_vencF = implode('/', array_reverse(explode('-', $data_venc)));
 	
 
-		$query2 = $pdo->query("SELECT * FROM fornecedores where id = '$pessoa'");
+		$query2 = $pdo->query("SELECT * FROM fornecedores where id = '$pessoa' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
 		if($total_reg2 > 0){
@@ -68,7 +68,7 @@ for($i=0; $i < $total_reg; $i++){
 		}
 
 
-		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_baixa'");
+		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_baixa' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
 		if($total_reg2 > 0){
@@ -79,7 +79,7 @@ for($i=0; $i < $total_reg; $i++){
 
 
 
-		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_lanc'");
+		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_lanc' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
 		if($total_reg2 > 0){

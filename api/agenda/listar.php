@@ -9,7 +9,7 @@ $dataInicial = @$_POST['dataInicial'];
 $funcionario = @$_POST['id_usuario'];
 
 
-$query = $pdo->query("SELECT * FROM agendamentos where funcionario = '$funcionario' and data = '$dataInicial' ORDER BY hora asc");
+$query = $pdo->query("SELECT * FROM agendamentos where funcionario = '$funcionario' and data = '$dataInicial' and id_conta = '$id_conta' ORDER BY hora asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -48,7 +48,7 @@ if($status == 'Agendado'){
 	$oc = 'none';
 }
 
-$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario'");
+$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res2) > 0){
 	$nome_usu = $res2[0]['nome'];
@@ -57,7 +57,7 @@ if(@count($res2) > 0){
 }
 
 
-$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico'");
+$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res2) > 0){
 	$nome_serv = $res2[0]['nome'];
@@ -68,7 +68,7 @@ if(@count($res2) > 0){
 }
 
 
-$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente'");
+$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res2) > 0){
 	$nome_cliente = $res2[0]['nome'];

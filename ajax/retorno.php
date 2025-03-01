@@ -11,8 +11,8 @@ $status = $dados->status;
 if ($status == '1') {
   //$pdo->query("UPDATE agendamentos SET status = 'Confirmado' where id = '$id'");
 }else{
-  $pdo->query("DELETE FROM agendamentos where id = '$id'");
-  $pdo->query("DELETE FROM horarios_agd where agendamento = '$id'");
+  $pdo->query("DELETE FROM agendamentos where id = '$id' and id_conta = '$id_conta'");
+  $pdo->query("DELETE FROM horarios_agd where agendamento = '$id' and id_conta = '$id_conta'");
 }
 
 

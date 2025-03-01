@@ -1,4 +1,4 @@
-<?php require_once("cabecalho.php") ?>
+<?php require_once("cabecalho2.php") ?>
 <style type="text/css">
 	.sub_page .hero_area {
   min-height: auto;
@@ -8,11 +8,8 @@
 </div>
 
 
-
-
-
   <?php 
-$query = $pdo->query("SELECT * FROM produtos where estoque > 0 and valor_venda >  0 ORDER BY id desc");
+$query = $pdo->query("SELECT * FROM produtos where estoque > 0 and valor_venda >  0 and id_conta = '$id_conta' ORDER BY id desc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){ 
@@ -82,4 +79,4 @@ for($i=0; $i < $total_reg; $i++){
 
 
  
-   <?php require_once("rodape.php") ?>
+   <?php require_once("rodape2.php") ?>

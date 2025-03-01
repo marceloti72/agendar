@@ -20,7 +20,7 @@ if($categoria == 0){
 }
 
 //validar nome
-$query = $pdo->query("SELECT * from $tabela where nome = '$nome'");
+$query = $pdo->query("SELECT * from $tabela where nome = '$nome' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0 and $id != $res[0]['id']){
 	echo 'Nome já Cadastrado, escolha outro!!';
@@ -32,7 +32,7 @@ if(@count($res) > 0 and $id != $res[0]['id']){
 
 
 //validar troca da foto
-$query = $pdo->query("SELECT * FROM $tabela where id = '$id'");
+$query = $pdo->query("SELECT * FROM $tabela where id = '$id' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -72,9 +72,9 @@ if(@$_FILES['foto']['name'] != ""){
 
 
 if($id == ""){
-	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, categoria = '$categoria', valor = :valor, dias_retorno = '$dias_retorno', ativo = 'Sim', foto = '$foto', comissao = :comissao, tempo = :tempo");
+	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, categoria = '$categoria', valor = :valor, dias_retorno = '$dias_retorno', ativo = 'Sim', foto = '$foto', comissao = :comissao, tempo = :tempo, id_conta = '$id_conta'");
 }else{
-	$query = $pdo->prepare("UPDATE $tabela SET nome = :nome, categoria = '$categoria', valor = :valor, dias_retorno = '$dias_retorno', foto = '$foto', comissao = :comissao, tempo = :tempo WHERE id = '$id'");
+	$query = $pdo->prepare("UPDATE $tabela SET nome = :nome, categoria = '$categoria', valor = :valor, dias_retorno = '$dias_retorno', foto = '$foto', comissao = :comissao, tempo = :tempo WHERE id = '$id' and id_conta = '$id_conta'");
 }
 
 $query->bindValue(":nome", "$nome");

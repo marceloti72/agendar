@@ -1,25 +1,6 @@
 <?php 
 require_once("conexao.php");
 
-//INSERIR UM USUÁRIO ADMINISTRADOR CASO NÃO EXISTA
-$senha = '123';
-$senha_crip = md5($senha);
-
-$query = $pdo->query("SELECT * from usuarios where nivel = 'Administrador'");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$total_reg = @count($res);
-if($total_reg == 0){
-	$pdo->query("INSERT INTO usuarios SET nome = 'Hugo Vasconcelos', email = 'contato@hugocursos.com.br', cpf = '000.000.000-00', senha = '$senha', senha_crip = '$senha_crip', nivel = 'Administrador', data = curDate(), ativo = 'Sim', foto = 'sem-foto.jpg'");
-}
-
-
-$query = $pdo->query("SELECT * from cargos");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$total_reg = @count($res);
-if($total_reg == 0){
-	$pdo->query("INSERT INTO cargos SET nome = 'Administrador'");
-}
-
 
 //EXCLUIR HORÁRIOS TEMPORÁRIOS
 $pdo->query("DELETE FROM horarios where data < curDate() and data is not null ");
@@ -42,7 +23,7 @@ if($total_reg > 0){
 
  ?>
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title><?php echo $nome_sistema ?></title>
@@ -70,7 +51,7 @@ if($total_reg > 0){
 			    	<form accept-charset="UTF-8" role="form" action="autenticar.php" method="post">
                     <fieldset>
 			    	  	<div class="form-group">
-			    		    <input class="form-control" placeholder="E-mail ou CPF" name="email" type="text" value="">
+			    		    <input class="form-control" placeholder="E-mail ou Username" name="usuario" type="text" value="">
 			    		</div>
 			    		<div class="form-group">
 			    			<input class="form-control" placeholder="Senha" name="senha" type="password" value="">

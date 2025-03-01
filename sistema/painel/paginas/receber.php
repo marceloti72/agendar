@@ -118,7 +118,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 								<select class="form-control sel2" id="pessoa" name="pessoa" style="width:100%;" > 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM clientes ORDER BY nome asc");
+									$query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta'ORDER BY nome asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									

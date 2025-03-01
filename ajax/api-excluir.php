@@ -1,7 +1,7 @@
 <?php
-require_once("../../../../funcoes.php");
+//require_once("../../../../funcoes.php");
 
-  $mensagem = str_replace("%0A", "\n", $mensagem); 
+  //$mensagem = str_replace("%0A", "\n", $mensagem); 
     $curl = curl_init();
     
     curl_setopt_array($curl, array(
@@ -26,7 +26,7 @@ require_once("../../../../funcoes.php");
     
     curl_close($curl);
     $response = json_decode($response, true);
-    save_log($pdo, $token, $instancia, $response, 'texto', $telefone, $mensagem);
+    //save_log($pdo, $token, $instancia, $response, 'texto', $telefone, $mensagem);
 
 ?>
 

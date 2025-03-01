@@ -5,13 +5,14 @@ include('../../conexao.php');
 $id = $_GET['id'];
 
 //ALIMENTAR OS DADOS NO RELATÓRIO
-$html = file_get_contents($url_sistema."sistema/painel/rel/rel_servicos_clientes.php?id=$id");
+$html = file_get_contents($url."sistema/painel/rel/rel_servicos_clientes.php?id=$id");
 
-if($tipo_rel != 'PDF'){
-	echo $html;
-	exit();
-}
-
+// if($tipo_rel != 'PDF'){
+// 	echo $html;
+// 	exit();
+// }
+echo $html;
+exit();
 //CARREGAR DOMPDF
 require_once '../../dompdf/autoload.inc.php';
 use Dompdf\Dompdf;

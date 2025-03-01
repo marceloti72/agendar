@@ -72,7 +72,7 @@ if(@$servicos == 'ocultar'){
 								<select class="form-control sel2" id="categoria" name="categoria" style="width:100%;" > 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM cat_servicos ORDER BY id asc");
+									$query = $pdo->query("SELECT * FROM cat_servicos where id_conta = '$id_conta' ORDER BY id asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){

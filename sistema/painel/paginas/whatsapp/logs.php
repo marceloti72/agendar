@@ -4,7 +4,7 @@ $tabela = 'logs';
 $filtro = $_POST['filtro'];
 
 
-$query = $pdo->query("SELECT * FROM $tabela" . ($filtro == "sucesso" ? " WHERE codigo_status = 200" : ($filtro == "erro" ? " WHERE codigo_status != 200" : "")));
+$query = $pdo->query("SELECT * FROM $tabela" . ($filtro == "sucesso" ? " WHERE codigo_status = 200" : ($filtro == "erro" ? " WHERE id_conta = '$id_conta' and codigo_status != 200" : "")));
 
  
 

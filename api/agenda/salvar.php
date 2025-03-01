@@ -26,7 +26,7 @@ $diasemana_numero = date('w', strtotime($data));
 $dia_procurado = $diasemana[$diasemana_numero];
 
 //percorrer os dias da semana que ele trabalha
-$query = $pdo->query("SELECT * FROM dias where funcionario = '$funcionario' and dia = '$dia_procurado'");
+$query = $pdo->query("SELECT * FROM dias where funcionario = '$funcionario' and dia = '$dia_procurado' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) == 0){
 		echo 'Este Funcionário não trabalha neste Dia!';
@@ -40,7 +40,7 @@ $dataF = implode('/', array_reverse(explode('-', $data)));
 $horaF = date("H:i", strtotime($hora));
 
 //validar cpf
-$query = $pdo->query("SELECT * FROM $tabela where data = '$data' and hora = '$hora' and funcionario = '$funcionario'");
+$query = $pdo->query("SELECT * FROM $tabela where data = '$data' and hora = '$hora' and funcionario = '$funcionario' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -49,7 +49,7 @@ if($total_reg > 0){
 }
 
 
-$query = $pdo->prepare("INSERT INTO $tabela SET funcionario = '$funcionario', cliente = '$cliente', hora = '$hora', data = '$data', usuario = '$usuario_logado', status = 'Agendado', obs = :obs, data_lanc = curDate(), servico = '$servico'");
+$query = $pdo->prepare("INSERT INTO $tabela SET funcionario = '$funcionario', cliente = '$cliente', hora = '$hora', data = '$data', usuario = '$usuario_logado', status = 'Agendado', obs = :obs, data_lanc = curDate(), servico = '$servico', id_conta = '$id_conta'");
 
 $query->bindValue(":obs", "$obs");
 $query->execute();
@@ -59,7 +59,7 @@ echo 'Salvo';
 
 
 //pegar nome do cliente
-$query = $pdo->query("SELECT * FROM clientes where id = '$cliente'");
+$query = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $nome_cliente = $res[0]['nome'];
 

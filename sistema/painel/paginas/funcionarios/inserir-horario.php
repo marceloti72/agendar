@@ -7,9 +7,9 @@ $horario = $_POST['horario'];
 $data = @$_POST['data'];
 
 if($data == ""){
-	$pdo->query("INSERT INTO $tabela SET horario = '$horario', funcionario = '$id'");
+	$pdo->query("INSERT INTO $tabela SET horario = '$horario', funcionario = '$id', id_conta = '$id_conta'");
 }else{
-	$pdo->query("INSERT INTO $tabela SET horario = '$horario', funcionario = '$id', data = '$data'");
+	$pdo->query("INSERT INTO $tabela SET horario = '$horario', funcionario = '$id', data = '$data', id_conta = $id_conta'");
 }
 
 

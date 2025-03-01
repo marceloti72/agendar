@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 include('../../conexao.php');
 
@@ -8,15 +8,16 @@ $pago = urlencode($_POST['pago']);
 $funcionario = urlencode($_POST['funcionario']);
 
 //ALIMENTAR OS DADOS NO RELATÓRIO
-$html = file_get_contents($url_sistema."sistema/painel/rel/rel_comissoes.php?dataInicial=$dataInicial&dataFinal=$dataFinal&pago=$pago&funcionario=$funcionario");
+$html = file_get_contents($url . "sistema/painel/rel/rel_comissoes.php?dataInicial=$dataInicial&dataFinal=$dataFinal&pago=$pago&funcionario=$funcionario");
 
-if($tipo_rel != 'PDF'){
+if ($tipo_rel != 'PDF') {
 	echo $html;
 	exit();
 }
 
 //CARREGAR DOMPDF
 require_once '../../dompdf/autoload.inc.php';
+
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -41,7 +42,6 @@ $pdf->render();
 
 //NOMEAR O PDF GERADO
 $pdf->stream(
-'comissoes.pdf',
-array("Attachment" => false)
+	'comissoes.pdf',
+	array("Attachment" => false)
 );
-?>

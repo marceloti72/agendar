@@ -3,6 +3,14 @@ require_once("verificar.php");
 require_once("../conexao.php");
 $pag = 'configuracoes';
 $data_atual = date('Y-m-d');
+?>
+<style>
+	.tooltip-inner {
+		background-color: #48D1CC; /* Amarelo */
+		color: #000; /* Cor do texto */
+	}
+</style>
+<?php 
 
 //verificar se ele tem a permissão de estar nessa página
 if(@$configuracoes == 'ocultar'){
@@ -20,14 +28,14 @@ if(@$configuracoes == 'ocultar'){
 					<div class="row">
 						<div class="col-md-4">
 							<div class="form-group">
-								<label for="exampleInputEmail1">Nome Barbearia</label>
+								<label for="exampleInputEmail1">Nome Comercial</label>
 								<input type="text" class="form-control" id="nome_sistema" name="nome_sistema" placeholder="Nome da Barbearia" value="<?php echo $nome_sistema ?>" required>    
 							</div> 	
 						</div>
 						<div class="col-md-4">
 
 							<div class="form-group">
-								<label for="exampleInputEmail1">Email Barbearia</label>
+								<label for="exampleInputEmail1">E-mail <i class="fa fa-envelope"></i></label>
 								<input type="email" class="form-control" id="email_sistema" name="email_sistema" placeholder="Email" value="<?php echo $email_sistema ?>" required>    
 							</div> 	
 						</div>
@@ -35,7 +43,7 @@ if(@$configuracoes == 'ocultar'){
 						<div class="col-md-4">
 
 							<div class="form-group">
-								<label for="exampleInputEmail1">Whatsapp Barbearia</label>
+								<label for="exampleInputEmail1">Whatsapp <i style="color: green;" class="bi bi-whatsapp"></i></label>
 								<input type="text" class="form-control" id="whatsapp_sistema" name="whatsapp_sistema" placeholder="Whatsapp" value="<?php echo $whatsapp_sistema ?>" required>    
 							</div> 	
 						</div>
@@ -44,77 +52,40 @@ if(@$configuracoes == 'ocultar'){
 
 					<div class="row">
 						
-						<div class="col-md-3">
+						<div class="col-md-2">
 
 							<div class="form-group">
-								<label for="exampleInputEmail1">Tel Fixo Barbearia</label>
+								<label for="exampleInputEmail1">Tel Fixo</label>
 								<input type="text" class="form-control" id="telefone_fixo_sistema" name="telefone_fixo_sistema" placeholder="Fixo" value="<?php echo $telefone_fixo_sistema ?>" required>    
 							</div> 	
 						</div>
 						<div class="col-md-7">
 							
 							<div class="form-group">
-								<label for="exampleInputEmail1">Endereço Barbearia</label>
+								<label for="exampleInputEmail1">Endereço</label>
 								<input type="text" class="form-control" id="endereco_sistema" name="endereco_sistema" placeholder="Rua X Numero X Bairro Cidade" value="<?php echo $endereco_sistema ?>">    
 							</div> 	
 						</div>
 
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<div class="form-group">
-								<label for="exampleInputEmail1">Tipo Relatório</label>
-								<select class="form-control" name="tipo_rel" id="tipo_rel">
-									<option value="PDF" <?php if($tipo_rel == 'PDF'){?> selected <?php } ?> >PDF</option>
-									<option value="HTML" <?php if($tipo_rel == 'HTML'){?> selected <?php } ?> >HTML</option>
-								</select>   
-							</div> 	
+								<label for="exampleInputEmail1">CNPJ</label>
+								 	<input type="text" class="form-control" id="cnpj_sistema" name="cnpj_sistema" value="<?php echo $cnpj_sistema ?>">    
+							</div> 
 						</div>
 					</div>
 
 
 					<div class="row">
 						
-						<div class="col-md-6">
+						<div class="col-md-4">
 							<div class="form-group">
 								<label for="exampleInputEmail1">Instagram</label>
 								<input type="text" class="form-control" id="instagram_sistema" name="instagram_sistema" placeholder="Link do Perfil no Instagram" value="<?php echo $instagram_sistema ?>">   
 							</div> 	
-						</div>
-
-					<div class="col-md-6">
-						<div class="form-group">
-								<label for="exampleInputEmail1">Mapa Site <small>(Url incorporada)</small></label>
-								<input type="text" class="form-control" id="mapa" name="mapa" placeholder="" value='<?php echo $mapa ?>'>  
-							</div> 	
-						</div>
-
-						
-
-
-						
-					</div>
-
-					<div class="row">
-						<div class="col-md-12">
-						<div class="form-group">
-								<label for="exampleInputEmail1">Texto Rodapé Site <small>(255) Caracteres</small></label>
-								<input maxlength="255" type="text" class="form-control" id="texto_rodape" name="texto_rodape" placeholder="Texto para o Rodapé do site" value="<?php echo $texto_rodape ?>">   
-							</div> 
-						</div>
-					</div>
-
-
-					<div class="row">
-						<div class="col-md-12">
-						<div class="form-group">
-								<label for="exampleInputEmail1">Texto Sobre (Site) <small>(600) Caracteres</small></label>
-								<input maxlength="255" type="text" class="form-control" id="texto_sobre" name="texto_sobre" placeholder="Texto para a área Sobre a empresa no site" value="<?php echo $texto_sobre ?>">   
-							</div> 
-						</div>
-					</div>
-
-
-					<div class="row">
-						<div class="col-md-12">
+						</div>	
+					
+						<div class="col-md-8">
 						<div class="form-group">
 								<label for="exampleInputEmail1">Texto Cartão Fidelidade</label>
 								<input maxlength="255" type="text" class="form-control" id="texto_fidelidade" name="texto_fidelidade" placeholder="Parabéns, você completou seus cartões, você ganhou ..." value="<?php echo @$texto_fidelidade ?>">   
@@ -127,120 +98,64 @@ if(@$configuracoes == 'ocultar'){
 					<div class="row">
 						<div class="col-md-2">
 						<div class="form-group">
-								<label for="exampleInputEmail1">Cartões Troca</label>
+								<label for="exampleInputEmail1">Cartões Fidelidade <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Caso queria trabalhar com cartão de fidelidade, basta informar a quantidade de serviços para o brinde ao cliente, caso contrário deixe em branco." style="color: blue;"></i></label>
 								<input type="number" class="form-control" id="quantidade_cartoes" name="quantidade_cartoes" placeholder="Quantidade Cartões Troca" value="<?php echo $quantidade_cartoes ?>">   
 							</div> 
 						</div>
 
+						
 						<div class="col-md-2">
 							<div class="form-group">
-								<label for="exampleInputEmail1">Texto Agendamento</label>
-								<input maxlength="30" type="text" class="form-control" id="texto_agendamento" name="texto_agendamento" placeholder="Selecionar Cabelereira" value="<?php echo $texto_agendamento ?>">   
-							</div> 
-						</div>
-
-
-						<div class="col-md-2">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Mensagem Agendamento</label>
+								<label for="exampleInputEmail1">Mens.Confirmação <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Marque SIM se quiser que o cliente receba um WahtsApp pedindo a confirmação do serviço. Defina os minutos no próximo campo." style="color: blue;"></i></label>
 								<select class="form-control" name="msg_agendamento" id="msg_agendamento">
 									<option value="Sim" <?php if($msg_agendamento == 'Sim'){?> selected <?php } ?> >Sim</option>
 									<option value="Não" <?php if($msg_agendamento == 'Não'){?> selected <?php } ?> >Não</option>
-									<option value="Api" <?php if($msg_agendamento == 'Api'){?> selected <?php } ?> >Api Paga</option>
+									
 								</select>      
+							</div> 
+						</div>
+
+						<div class="col-md-2">
+							<div class="form-group">
+								<label for="exampleInputEmail1">Min.Confirmação <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Informe os minutos de antecedência que o clientes receberá a mensagem pedindo a confirmação." style="color: blue;"></i></label>
+								<input type="number" class="form-control" id="minutos_aviso" name="minutos_aviso" placeholder="Alerta Agendamento" value="<?php echo @$minutos_aviso ?>">   
 							</div> 
 						</div>
 
                         
 						<div class="col-md-2">
 							<div class="form-group">
-								<label for="exampleInputEmail1">Seletor de Api</label>
+								<label for="exampleInputEmail1">Alertas WhatsApp <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Notificações de WhatsApp, selecione SIM para o cliente receber diversos alertas como, agendamentos, confirmações, cancelamentos, campanhas de marketing e outos. Lembre-se de fazer a leitura do QRcode no menu lateral em 'WhatsApp'." style="color: blue;"></i></label>
 								<select class="form-control" name="api" id="api">
-									<option value="menuia" <?php if($api == 'menuia'){?> selected <?php } ?> >Menuia</option>
-									<option value="outros" <?php if($api == 'outros'){?> selected <?php } ?> >Outros</option>
+									<option value="Sim" <?php if($api == 'Sim'){?> selected <?php } ?> >Sim</option>
+									<option value="Não" <?php if($api == 'Não'){?> selected <?php } ?> >Não</option>
 								</select>      
 							</div> 
 						</div>
 
-						<div class="col-md-2">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Token Api</label>
-								<input type="text" class="form-control" id="token" name="token" placeholder="Token Api Whatsapp" value="<?php echo @$token ?>">   
-							</div> 
-						</div>
-
-
-						<div class="col-md-2">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Instancia API</label>
-								<input type="text" class="form-control" id="instancia" name="instancia" placeholder="Instância Api Whatsapp" place value="<?php echo @$instancia ?>">   
-							</div> 
-						</div>
-
-
-						
-
-					</div>
-
-
-					<div class="row">
-						
-
-						<div class="col-md-2">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Horas Confirmação</label>
-								<input type="number" class="form-control" id="minutos_aviso" name="minutos_aviso" placeholder="Alerta Agendamento" value="<?php echo @$minutos_aviso ?>">   
-							</div> 
-						</div>
-
 						<div class="col-md-3">
 							<div class="form-group">
-								<label for="exampleInputEmail1">CNPJ</label>
-								 	<input type="text" class="form-control" id="cnpj_sistema" name="cnpj_sistema" value="<?php echo $cnpj_sistema ?>">    
-							</div> 
-						</div>
-
-
-						<div class="col-md-2">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Cidade</label>
-								 	<input type="text" class="form-control" id="cidade_sistema" name="cidade_sistema" value="<?php echo $cidade_sistema ?>" placeholder="Cidade para o contrato">    
-							</div> 
-						</div>
-
-
-						<div class="col-md-3">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Manter Agendamento Dias</label>
+								<label for="exampleInputEmail1">Manter Agendamento Dias <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Informe aqui até quantos dias deseja manter os agendamentos concluidos no sistema." style="color: blue;"></i></label>
 								 	<input type="number" class="form-control" id="agendamento_dias" name="agendamento_dias" value="<?php echo $agendamento_dias ?>" placeholder="Manter no Banco de Dados">    
 							</div> 
-						</div>
+						</div>										
 
-
-						<div class="col-md-2">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Itens Paginação</label>
-								 	<input type="number" class="form-control" id="itens_pag" name="itens_pag" value="<?php echo $itens_pag ?>" placeholder="">    
-							</div> 
-						</div>
-
-						</div>
-					
+					</div>				
 
 
 						<div class="row">
 								<div class="col-md-2">
 							<div class="form-group">
-								<label for="exampleInputEmail1">Taxa Pgto Serviço</label>
+								<label for="exampleInputEmail1">Taxa de Cartões <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Aqui vc informa quem vai pagar as taxas dos cartões de Debito e Crétido. Lembrando que vc informa os valores das taxas no menu lateral em 'Cadastros -> Formas de Pagamentos'." style="color: blue;"></i></label>
 								<select class="form-control" name="taxa_sistema" id="taxa_sistema">
 									<option value="Cliente" <?php if(@$taxa_sistema == 'Cliente'){?> selected <?php } ?> >Cliente Paga</option>
-									<option value="Empresa" <?php if(@$taxa_sistema == 'Empresa'){?> selected <?php } ?> >Salão Paga</option>
+									<option value="Empresa" <?php if(@$taxa_sistema == 'Empresa'){?> selected <?php } ?> >Estabelecimento Paga</option>
 									
 								</select>      
 							</div> 
 						</div>
 
-
+						
 						<div class="col-md-2">
 							<div class="form-group">
 								<label for="exampleInputEmail1">Tipo Comissão</label>
@@ -262,149 +177,56 @@ if(@$configuracoes == 'ocultar'){
 								</select>   
 							</div> 	
 						</div>
+										
 
 
 						<div class="col-md-2">
 						<div class="form-group">
-								<label for="exampleInputEmail1">% Agendamento</label>
+								<label for="exampleInputEmail1">% Agendamento <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Informe aqui a porcentagem que o cliente pagará ao agendar serviços pelo site. Funciona como um sinal para efetuar o agendamento." style="color: blue;"></i></label>
 								<input type="number" class="form-control" id="porc_servico" name="porc_servico" placeholder="% pagar Agendamento" value="<?php echo $porc_servico ?>">   
 							</div> 
 						</div>
+							
+						</div>
 
+						<div class="row">
 
-							<div class="col-md-2">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Api Pgto</label>
-								<select class="form-control" name="pgto_api" id="pgto_api">
-									<option value="Sim" <?php if($pgto_api == 'Sim'){?> selected <?php } ?> >Sim</option>
-									<option value="Não" <?php if($pgto_api == 'Não'){?> selected <?php } ?> >Não</option>
-									
-								</select>      
+						    <div class="col-md-2">
+								<div class="form-group">
+									<label>									
+									Api Mercado Pago <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Já incluso no sistema! Basta abrir uma conta no MERCADO PAGO e informar nos campos seguintes o TOKEN e o PUBLIC KEY. Essas informações vc consegue em www.mercadopago.com.br/developers, após abrir a conta. Com ele vc terá diversas formas de pagamentos e com baixas automáticas! 👍" style="color: blue;"></i></label>
+									<select class = 'form-control' name="api_mp" id="api_mp"  style="width:100%" onchange="javascript:apimp(this);">
+										<option>Selecione</option>
+										<option value="Sim" <?php if (@$pgto_api == 'Sim') { ?> selected <?php } ?>>Sim
+										</option>
+										<option value="Não" <?php if (@$$pgto_api == 'Não') { ?> selected <?php } ?>>Não
+										</option>                    
+									</select>
+								</div>
 							</div> 
-						</div>
 
+                                
 
-						</div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Token</label>
+                                            <input type="text" class="form-control" id="token_mp" name="token_mp"
+                                            placeholder="Token do Mercado Pago" value="<?php echo $token_mp ?>">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Public Key</label>
+                                        <input type="text" class="form-control" id="key_mp" name="key_mp"
+                                        placeholder="Public Key do Mercado Pago" value="<?php echo $key_mp ?>">
+                                    </div>
+                                </div>
+							</div>
 
 
 				
 
-						<div class="row">
-
-							<div class="col-md-4">						
-								<div class="form-group"> 
-									<label>Logo (*PNG)</label> 
-									<input class="form-control" type="file" name="foto-logo" onChange="carregarImgLogo();" id="foto-logo">
-								</div>						
-							</div>
-							<div class="col-md-2">
-								<div id="divImg">
-									<img src="../img/<?php echo $logo_sistema ?>"  width="80px" id="target-logo">									
-								</div>
-							</div>
-
-
-							<div class="col-md-4">						
-								<div class="form-group"> 
-									<label>Ícone (*Png)</label> 
-									<input class="form-control" type="file" name="foto-icone" onChange="carregarImgIcone();" id="foto-icone">
-								</div>						
-							</div>
-							<div class="col-md-2">
-								<div id="divImg">
-									<img src="../img/<?php echo $icone_sistema ?>"  width="50px" id="target-icone">									
-								</div>
-							</div>
-
-						</div>
-
-
-
-						<div class="row">
-
-							<div class="col-md-4">						
-								<div class="form-group"> 
-									<label>Logo Relatório (*Jpg)</label> 
-									<input class="form-control" type="file" name="foto-logo-rel" onChange="carregarImgLogoRel();" id="foto-logo-rel">
-								</div>						
-							</div>
-							<div class="col-md-2">
-								<div id="divImg">
-									<img src="../img/<?php echo $logo_rel ?>"  width="80px" id="target-logo-rel">									
-								</div>
-							</div>
-
-
-
-							<div class="col-md-4">						
-								<div class="form-group"> 
-									<label>Ícone Site (*png)</label> 
-									<input class="form-control" type="file" name="foto-icone-site" onChange="carregarImgIconeSite();" id="foto-icone-site">
-								</div>						
-							</div>
-							<div class="col-md-2">
-								<div id="divImg">
-									<img src="../../images/<?php echo $icone_site ?>"  width="50px" id="target-icone-site">									
-								</div>
-							</div>
-
-
-
-						</div>
-
-
-
-						<div class="row">
-
-							<div class="col-md-4">						
-								<div class="form-group"> 
-									<label>Imagem Área Sobre (Site)</label> 
-									<input class="form-control" type="file" name="foto-sobre" onChange="carregarImgSobre();" id="foto-sobre">
-								</div>						
-							</div>
-							<div class="col-md-2">
-								<div id="divImg">
-									<img src="../../images/<?php echo $imagem_sobre ?>"  width="80px" id="target-sobre">									
-								</div>
-							</div>
-
-
-
-							<div class="col-md-4">						
-								<div class="form-group"> 
-									<label>Imagem Banner Index <small>(1500x1000)</small></label> 
-									<input class="form-control" type="file" name="foto-banner-index" onChange="carregarImgBannerIndex();" id="foto-banner-index">
-								</div>						
-							</div>
-							<div class="col-md-2">
-								<div id="divImg">
-									<img src="../../images/<?php echo $img_banner_index ?>"  width="80px" id="target-banner-index">									
-								</div>
-							</div>
-
-
-
-						</div>
-
-
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-								<label for="exampleInputEmail1">Url do Vídeo Index</label>
-								 	<input type="text" class="form-control" id="url_video" name="url_video" value="<?php echo $url_video ?>" placeholder="Url do Youtube Incorporada">    
-							</div> 
-							</div>	
-
-							<div class="col-md-4">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Posição do Vídeo</label>
-								<select class="form-control" name="posicao_video" id="posicao_video">
-									<option value="sobre" <?php if($posicao_video == 'sobre'){?> selected <?php } ?> >Encima da Imagem Sobre</option>
-									<option value="abaixo" <?php if($posicao_video == 'abaixo'){?> selected <?php } ?> >Abaixo da Área Sobre</option>
-									
-								</select>      
-							</div> 
-						</div>
+						
 						</div>
 					
 						
@@ -418,3 +240,9 @@ if(@$configuracoes == 'ocultar'){
 			</form>	
 
 </div>
+
+<script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>

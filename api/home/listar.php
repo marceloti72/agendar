@@ -24,7 +24,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 
 
 //buscar o total de usuarios
-$query = $pdo->query("SELECT * FROM clientes");
+$query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_usuarios = @count($res);
 
@@ -33,7 +33,7 @@ $total_usuarios = @count($res);
 
 //buscar o saldo do dia
 $total_debitos_dia = 0;
-$query = $pdo->query("SELECT * FROM pagar where data_pgto = curDate()");
+$query = $pdo->query("SELECT * FROM pagar where data_pgto = curDate() and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0){
 for($i=0; $i < @count($res); $i++){
@@ -43,7 +43,7 @@ for($i=0; $i < @count($res); $i++){
 }
 
 $total_ganhos_dia = 0;
-$query = $pdo->query("SELECT * FROM receber where data_pgto = curDate() ");
+$query = $pdo->query("SELECT * FROM receber where data_pgto = curDate() and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0){
 for($i=0; $i < @count($res); $i++){
@@ -69,7 +69,7 @@ if($saldo_total_dia < 0){
 
 //TOTALIZAR CONTAS PENDENTES NO MES
 $total_pagar_mes = 0;
-$query = $pdo->query("SELECT * FROM pagar where data_venc >= '$data_inicio_mes' and data_venc <= '$data_final_mes' and pago != 'Sim'");
+$query = $pdo->query("SELECT * FROM pagar where data_venc >= '$data_inicio_mes' and data_venc <= '$data_final_mes' and pago != 'Sim' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0){
 for($i=0; $i < @count($res); $i++){
@@ -80,7 +80,7 @@ for($i=0; $i < @count($res); $i++){
 $total_pagar_mesF = number_format($total_pagar_mes, 2, ',', '.');
 
 $total_receber_mes = 0;
-$query = $pdo->query("SELECT * FROM receber where data_venc >= '$data_inicio_mes' and data_venc <= '$data_final_mes' and pago != 'Sim'");
+$query = $pdo->query("SELECT * FROM receber where data_venc >= '$data_inicio_mes' and data_venc <= '$data_final_mes' and pago != 'Sim' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0){
 for($i=0; $i < @count($res); $i++){
@@ -98,7 +98,7 @@ $total_receber_mesF = number_format($total_receber_mes, 2, ',', '.');
 
 //TOTALIZAR COMISSÕES E COMPRAS PENDENTES MES
 $total_compra_mes = 0;
-$query = $pdo->query("SELECT * FROM pagar where data_venc >= '$data_inicio_mes' and data_venc <= '$data_final_mes' and pago != 'Sim' and tipo = 'Compra'");
+$query = $pdo->query("SELECT * FROM pagar where data_venc >= '$data_inicio_mes' and data_venc <= '$data_final_mes' and pago != 'Sim' and tipo = 'Compra' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0){
 for($i=0; $i < @count($res); $i++){
@@ -109,7 +109,7 @@ for($i=0; $i < @count($res); $i++){
 $total_compra_mesF = number_format($total_compra_mes, 2, ',', '.');
 
 $total_comissao_mes = 0;
-$query = $pdo->query("SELECT * FROM pagar where data_venc >= '$data_inicio_mes' and data_venc <= '$data_final_mes' and pago != 'Sim' and tipo = 'Comissão'");
+$query = $pdo->query("SELECT * FROM pagar where data_venc >= '$data_inicio_mes' and data_venc <= '$data_final_mes' and pago != 'Sim' and tipo = 'Comissão' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0){
 for($i=0; $i < @count($res); $i++){
@@ -121,7 +121,7 @@ $total_comissao_mesF = number_format($total_comissao_mes, 2, ',', '.');
 
 
 //estoque baixo quantidade produtos
-$query = $pdo->query("SELECT * FROM produtos");
+$query = $pdo->query("SELECT * FROM produtos where id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 $estoque_baixo = 0;
@@ -141,26 +141,26 @@ if($total_reg > 0){
 
 
 //totalizando agendamentos
-$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() ");
+$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_agendamentos_hoje = @count($res);
 
 
 
 //totalizando agendamentos usuario
-$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and funcionario = '$id_usuario' ");
+$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and funcionario = '$id_usuario' and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_agendamentos_usuario = @count($res);
 
 //totalizando agendamentos usuario concluido
-$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and funcionario = '$id_usuario' and status = 'Concluído'");
+$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and funcionario = '$id_usuario' and status = 'Concluído' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_agendamentos_usuario_conc = @count($res);
 
 
 //total comissao pendente do usuario
 $total_comissao_pendente = 0;
-$query = $pdo->query("SELECT * FROM pagar where pago != 'Sim' and tipo = 'Comissão' and funcionario = '$id_usuario'");
+$query = $pdo->query("SELECT * FROM pagar where pago != 'Sim' and tipo = 'Comissão' and funcionario = '$id_usuario' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0){
 for($i=0; $i < @count($res); $i++){
@@ -174,7 +174,7 @@ $total_comissao_pendenteF = number_format($total_comissao_pendente, 2, ',', '.')
 
 //total comissao pendente do usuario hoje
 $total_comissao_pendente_hoje = 0;
-$query = $pdo->query("SELECT * FROM pagar where pago != 'Sim' and tipo = 'Comissão' and funcionario = '$id_usuario' and data_lanc = curDate()");
+$query = $pdo->query("SELECT * FROM pagar where pago != 'Sim' and tipo = 'Comissão' and funcionario = '$id_usuario' and data_lanc = curDate() and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0){
 for($i=0; $i < @count($res); $i++){
@@ -188,7 +188,7 @@ $total_comissao_pendente_hojeF = number_format($total_comissao_pendente_hoje, 2,
 
 //total serviços do usuario hoje
 $total_servicos_hoje = 0;
-$query = $pdo->query("SELECT * FROM receber where tipo = 'Serviço' and funcionario = '$id_usuario' and data_lanc = curDate()");
+$query = $pdo->query("SELECT * FROM receber where tipo = 'Serviço' and funcionario = '$id_usuario' and data_lanc = curDate() and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_servicos_executado = @count($res);
 if(@count($res) > 0){

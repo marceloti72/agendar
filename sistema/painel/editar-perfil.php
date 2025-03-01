@@ -6,22 +6,35 @@ $nome = $_POST['nome'];
 $email = $_POST['email'];
 $telefone = $_POST['telefone'];
 $cpf = $_POST['cpf'];
-$senha = $_POST['senha'];
-$conf_senha = $_POST['conf_senha'];
+if(!empty($_POST['senha'])){
+	$senha = $_POST['senha'];
+	$hash = password_hash($senha, PASSWORD_DEFAULT);
+	$senha_pdo = 'senha = :senha,';
+}else{
+	$senha = '';
+	$senha_pdo = '';
+}
+
+
 $endereco = $_POST['endereco'];
-$senha_crip = md5($senha);
-$atendimento = $_POST['atendimento'];
+
+if(@$_SESSION['nivel_usuario'] != 'Individual'){						
+    $atendimento = $_POST['atendimento'];
+}else{
+	$atendimento = 'Não';
+}
+
 $intervalo = $_POST['intervalo'];
 
 $foto = '';
 
-if($senha != $conf_senha){
-	echo 'As senhas são diferentes!!';
-	exit();
-}
+// if($hash != $hash2){
+// 	echo 'As senhas são diferentes!!';
+// 	exit();
+// }
 
 //validar email
-$query = $pdo->query("SELECT * from usuarios where email = '$email'");
+$query = $pdo->query("SELECT * from usuarios where email = '$email' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0 and $id != $res[0]['id']){
 	echo 'Email já Cadastrado, escolha outro!!';
@@ -29,7 +42,7 @@ if(@count($res) > 0 and $id != $res[0]['id']){
 }
 
 //validar cpf
-$query = $pdo->query("SELECT * from usuarios where cpf = '$cpf'");
+$query = $pdo->query("SELECT * from usuarios where cpf = '$cpf' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0 and $id != $res[0]['id']){
 	echo 'CPF já Cadastrado, escolha outro!!';
@@ -39,7 +52,7 @@ if(@count($res) > 0 and $id != $res[0]['id']){
 
 
 //validar troca da foto
-$query = $pdo->query("SELECT * FROM usuarios where id = '$id'");
+$query = $pdo->query("SELECT * FROM usuarios where id = '$id' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -78,13 +91,15 @@ if(@$_FILES['foto']['name'] != ""){
 
 
 
-$query = $pdo->prepare("UPDATE usuarios SET nome = :nome, email = :email, telefone = :telefone, cpf = :cpf, senha = :senha, senha_crip = '$senha_crip', endereco = :endereco, foto = '$foto', atendimento = '$atendimento', intervalo = '$intervalo' WHERE id = '$id'");
+$query = $pdo->prepare("UPDATE usuarios SET nome = :nome, email = :email, telefone = :telefone, cpf = :cpf, $senha_pdo endereco = :endereco, foto = '$foto', atendimento = '$atendimento', intervalo = '$intervalo' WHERE id = '$id' and id_conta = '$id_conta'");
 
 $query->bindValue(":nome", "$nome");
 $query->bindValue(":email", "$email");
 $query->bindValue(":telefone", "$telefone");
 $query->bindValue(":cpf", "$cpf");
-$query->bindValue(":senha", "$senha");
+if($senha != ''){
+    $query->bindValue(":senha", "$hash");
+}
 $query->bindValue(":endereco", "$endereco");
 $query->execute();
 

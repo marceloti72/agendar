@@ -1,119 +1,121 @@
-<?php 
+<?php
 require_once("../../../conexao.php");
 @session_start();
-$usuario = @$_SESSION['id'];
+$usuario = @$_SESSION['id_usuario'];
 $data_atual = date('Y-m-d');
 ?>
 <style>
-.service-item {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 10px;
-  transition: all 0.3s ease;
-}
+	.service-item {
+		display: flex;
+		align-items: center;
+		padding: 10px;
+		border-radius: 8px;
+		background-color: #f9f9f9;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		margin-bottom: 10px;
+		transition: all 0.3s ease;
+	}
 
-/* Ajuste das colunas */
-.dropdown-column {
-  padding-right: 15px; /* Espaçamento à direita para separar */
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
+	/* Ajuste das colunas */
+	.dropdown-column {
+		padding-right: 15px;
+		/* Espaçamento à direita para separar */
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+	}
 
-.service-column {
-  padding-left: 15px; /* Espaçamento à esquerda para separar */
-}
+	.service-column {
+		padding-left: 15px;
+		/* Espaçamento à esquerda para separar */
+	}
 
-.service-item:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  background-color:rgb(194, 229, 200);
-}
+	.service-item:hover {
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+		background-color: rgb(194, 229, 200);
+	}
 
-.service-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin: 0;
-  
-}
+	.service-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		margin: 0;
 
-.service-time {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-}
+	}
 
-.service-actions {
-  display: flex;
-  gap: 8px;
-}
+	.service-time {
+		font-size: 16px;
+		font-weight: 600;
+		color: #333;
+	}
 
-.btn {
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 500;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
+	.service-actions {
+		display: flex;
+		gap: 8px;
+	}
 
-.btn-history {
-  background-color: #007bff;
-  color: white;
-}
+	.btn {
+		padding: 6px 12px;
+		font-size: 12px;
+		font-weight: 500;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
 
-.btn-history:hover {
-  background-color: #0056b3;
-}
+	.btn-history {
+		background-color: #007bff;
+		color: white;
+	}
 
-.btn-finish {
-  background-color: #dc3545;
-  color: white;
-}
+	.btn-history:hover {
+		background-color: #0056b3;
+	}
 
-.btn-finish:hover {
-  background-color: #b02a37;
-}
+	.btn-finish {
+		background-color: #dc3545;
+		color: white;
+	}
 
-.payment-status {
-  font-size: 12px;
-  font-weight: 300;
-  padding: 4px 8px;
-  border-radius: 12px;
-}
+	.btn-finish:hover {
+		background-color: #b02a37;
+	}
 
-.verde {
-  color: #28a745;
-  background-color: #e6ffe6;
-}
+	.payment-status {
+		font-size: 12px;
+		font-weight: 300;
+		padding: 4px 8px;
+		border-radius: 12px;
+	}
 
-/* Classe dinâmica para status (exemplo) */
-.finalizado {
-  background-color: #6c757d;
-  cursor: not-allowed;
-}
+	.verde {
+		color: #28a745;
+		background-color: #e6ffe6;
+	}
 
-.finalizado:hover {
-  background-color: #5c636a;
-}
+	/* Classe dinâmica para status (exemplo) */
+	.finalizado {
+		background-color: #6c757d;
+		cursor: not-allowed;
+	}
+
+	.finalizado:hover {
+		background-color: #5c636a;
+	}
 </style>
-<?php 
+<?php
 
 
 $funcionario = @$_POST['funcionario'];
 $data = @$_POST['data'];
 
-if($data == ""){
+if ($data == "") {
 	$data = date('Y-m-d');
 }
 
-if($funcionario == ""){
+if ($funcionario == "") {
 	echo '<small>Selecione um Funcionário!</small>';
 	exit();
 }
@@ -121,135 +123,136 @@ if($funcionario == ""){
 echo <<<HTML
 <small>
 HTML;
-$query = $pdo->query("SELECT * FROM agendamentos where funcionario = '$funcionario' and data = '$data' ORDER BY hora asc");
+$query = $pdo->query("SELECT * FROM agendamentos where funcionario = '$funcionario' and data = '$data' and id_conta = '$id_conta' ORDER BY hora asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
-if($total_reg > 0){
-for($i=0; $i < $total_reg; $i++){
-	foreach ($res[$i] as $key => $value){}
-$id = $res[$i]['id'];
-$funcionario = $res[$i]['funcionario'];
-$cliente = $res[$i]['cliente'];
-$hora = $res[$i]['hora'];
-$data = $res[$i]['data'];
-$usuario = $res[$i]['usuario'];
-$data_lanc = $res[$i]['data_lanc'];
-$obs = $res[$i]['obs'];
-$status = $res[$i]['status'];
-$servico = $res[$i]['servico'];
-$valor_pago = $res[$i]['valor_pago'];
-$origem = $res[$i]['origem'];
+if ($total_reg > 0) {
+	for ($i = 0; $i < $total_reg; $i++) {
+		foreach ($res[$i] as $key => $value) {
+		}
+		$id = $res[$i]['id'];
+		$funcionario = $res[$i]['funcionario'];
+		$cliente = $res[$i]['cliente'];
+		$hora = $res[$i]['hora'];
+		$data = $res[$i]['data'];
+		$usuario = $res[$i]['usuario'];
+		$data_lanc = $res[$i]['data_lanc'];
+		$obs = $res[$i]['obs'];
+		$status = $res[$i]['status'];
+		$servico = $res[$i]['servico'];
+		$valor_pago = $res[$i]['valor_pago'];
+		$origem = $res[$i]['origem'];
 
-$valor_pagoF = number_format($valor_pago, 2, ',', '.');
-if($valor_pago > 0 and $status == 'Agendado'){
-	$classe_valor_pago = '';
-}else{
-	$classe_valor_pago = 'ocultar';
-}
+		$valor_pagoF = number_format($valor_pago, 2, ',', '.');
+		if ($valor_pago > 0 and $status == 'Agendado') {
+			$classe_valor_pago = '';
+		} else {
+			$classe_valor_pago = 'ocultar';
+		}
 
-$dataF = implode('/', array_reverse(explode('-', $data)));
-$horaF = date("H:i", strtotime($hora));
-
-
-if($status == 'Concluído'){		
-	$classe_linha = '';
-}else{		
-	$classe_linha = 'text-muted';
-}
+		$dataF = implode('/', array_reverse(explode('-', $data)));
+		$horaF = date("H:i", strtotime($hora));
 
 
-
-if($status == 'Agendado'){
-	$imagem = 'relogio-vermelho.png';
-	$classe_status = '';	
-}else{
-	$imagem = 'relogio-azul.png';
-	$classe_status = 'ocultar';
-}
-
-$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-if(@count($res2) > 0){
-	$nome_usu = $res2[0]['nome'];
-}else{
-	$nome_usu = 'Sem Usuário';
-}
-
-
-$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-if(@count($res2) > 0){
-	$nome_serv = $res2[0]['nome'];
-	$valor_serv = $res2[0]['valor'];
-}else{
-	$nome_serv = 'Não Lançado';
-	$valor_serv = '';
-}
-
-
-$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-if(@count($res2) > 0){
-	$nome_cliente = $res2[0]['nome'];
-	$total_cartoes = $res2[0]['cartoes'];
-}else{
-	$nome_cliente = 'Sem Cliente';
-	$total_cartoes = 0;
-}
-
-if($total_cartoes >= $quantidade_cartoes and $status == 'Agendado'){
-	$ocultar_cartoes = '';
-}else{
-	$ocultar_cartoes = 'ocultar';
-}
-
-//retirar aspas do texto do obs
-$obs = str_replace('"', "**", $obs);
-
-$classe_deb = '#043308';
-$total_debitos = 0;
-$total_pagar = 0;
-$total_vencido = 0;
-$total_debitosF = 0;
-$total_pagarF = 0;
-$total_vencidoF = 0;
-$query2 = $pdo->query("SELECT * FROM receber where pessoa = '$cliente' and pago != 'Sim'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-$total_reg2 = @count($res2);
-if($total_reg2 > 0){
-	$classe_deb = '#661109';
-	for($i2=0; $i2 < $total_reg2; $i2++){	
-	$valor_s = $res2[$i2]['valor'];		
-	$data_venc = $res2[$i2]['data_venc'];	
-	
-	$total_debitos += $valor_s;
-	$total_debitosF = number_format($total_debitos, 2, ',', '.');
-	
-
-	if(strtotime($data_venc) < strtotime($data_atual)){		
-		$total_vencido += $valor_s;
-	}else{
-		$total_pagar += $valor_s;
-	}
-
-	$total_pagarF = number_format($total_pagar, 2, ',', '.');
-	$total_vencidoF = number_format($total_vencido, 2, ',', '.');
-}
-}
-
-if($valor_serv == $valor_pago){
-	$valor_pagoF = ' Pago';
-}else{
-	$valor_pagoF = 'R$ '.$valor_pagoF;
-}
-
-if($valor_pago > 0){
-	$valor_serv = $valor_serv - $valor_pago;
-}
+		if ($status == 'Concluído') {
+			$classe_linha = '';
+		} else {
+			$classe_linha = 'text-muted';
+		}
 
 
 
-echo <<<HTML
+		if ($status == 'Agendado') {
+			$imagem = 'relogio-vermelho.png';
+			$classe_status = '';
+		} else {
+			$imagem = 'relogio-azul.png';
+			$classe_status = 'ocultar';
+		}
+
+		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario' and id_conta = '$id_conta'");
+		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+		if (@count($res2) > 0) {
+			$nome_usu = $res2[0]['nome'];
+		} else {
+			$nome_usu = 'Sem Usuário';
+		}
+
+
+		$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
+		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+		if (@count($res2) > 0) {
+			$nome_serv = $res2[0]['nome'];
+			$valor_serv = $res2[0]['valor'];
+		} else {
+			$nome_serv = 'Não Lançado';
+			$valor_serv = '';
+		}
+
+
+		$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
+		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+		if (@count($res2) > 0) {
+			$nome_cliente = $res2[0]['nome'];
+			$total_cartoes = $res2[0]['cartoes'];
+		} else {
+			$nome_cliente = 'Sem Cliente';
+			$total_cartoes = 0;
+		}
+
+		if ($total_cartoes >= $quantidade_cartoes and $status == 'Agendado') {
+			$ocultar_cartoes = '';
+		} else {
+			$ocultar_cartoes = 'ocultar';
+		}
+
+		//retirar aspas do texto do obs
+		$obs = str_replace('"', "**", $obs);
+
+		$classe_deb = '#043308';
+		$total_debitos = 0;
+		$total_pagar = 0;
+		$total_vencido = 0;
+		$total_debitosF = 0;
+		$total_pagarF = 0;
+		$total_vencidoF = 0;
+		$query2 = $pdo->query("SELECT * FROM receber where pessoa = '$cliente' and pago != 'Sim' and id_conta = '$id_conta'");
+		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+		$total_reg2 = @count($res2);
+		if ($total_reg2 > 0) {
+			$classe_deb = '#661109';
+			for ($i2 = 0; $i2 < $total_reg2; $i2++) {
+				$valor_s = $res2[$i2]['valor'];
+				$data_venc = $res2[$i2]['data_venc'];
+
+				$total_debitos += $valor_s;
+				$total_debitosF = number_format($total_debitos, 2, ',', '.');
+
+
+				if (strtotime($data_venc) < strtotime($data_atual)) {
+					$total_vencido += $valor_s;
+				} else {
+					$total_pagar += $valor_s;
+				}
+
+				$total_pagarF = number_format($total_pagar, 2, ',', '.');
+				$total_vencidoF = number_format($total_vencido, 2, ',', '.');
+			}
+		}
+
+		if ($valor_serv == $valor_pago) {
+			$valor_pagoF = ' Pago';
+		} else {
+			$valor_pagoF = 'R$ ' . $valor_pagoF;
+		}
+
+		if ($valor_pago > 0) {
+			$valor_serv = $valor_serv - $valor_pago;
+		}
+
+
+
+		echo <<<HTML
 			<div class="col-xs-12 col-md-4 widget cardTarefas mobile100">
         		<div class="r3_counter_box">     		
         		
@@ -325,9 +328,8 @@ echo <<<HTML
                 </div>
         	</div>
 HTML;
-}
-
-}else{
+	}
+} else {
 	echo 'Nenhum horário para essa Data!';
 }
 
@@ -338,16 +340,16 @@ HTML;
 
 
 <script type="text/javascript">
-	function fecharServico(id, cliente, servico, valor_servico, funcionario, nome_serv){
-	
+	function fecharServico(id, cliente, servico, valor_servico, funcionario, nome_serv) {
+
 		$('#id_agd').val(id);
-		$('#cliente_agd').val(cliente);		
-		$('#servico_agd').val(servico);	
-		$('#valor_serv_agd').val(valor_servico);	
-		$('#funcionario_agd').val(funcionario).change();	
-		$('#titulo_servico').text(nome_serv);	
+		$('#cliente_agd').val(cliente);
+		$('#servico_agd').val(servico);
+		$('#valor_serv_agd').val(valor_servico);
+		$('#funcionario_agd').val(funcionario).change();
+		$('#titulo_servico').text(nome_serv);
 		$('#descricao_serv_agd').val(nome_serv);
-		$('#obs2').val('');	
+		$('#obs2').val('');
 
 		$('#valor_serv_agd_restante').val('');
 		$('#data_pgto_restante').val('');
@@ -357,11 +359,11 @@ HTML;
 	}
 
 	function verificarStatus(id, cliente, servico, valor_serv, funcionario, nome_serv, status) {
-	if (status !== 'Concluído') {
-	  fecharServico(id, cliente, servico, valor_serv, funcionario, nome_serv);
-	} else {
-	  // Opcional: Exibir uma mensagem informando que o serviço já foi concluído
-	  alert('Este serviço já foi concluído.');
+		if (status !== 'Concluído') {
+			fecharServico(id, cliente, servico, valor_serv, funcionario, nome_serv);
+		} else {
+			// Opcional: Exibir uma mensagem informando que o serviço já foi concluído
+			alert('Este serviço já foi concluído.');
+		}
 	}
-  }
 </script>

@@ -2,7 +2,7 @@
 require_once("../../../conexao.php");
 $tabela = 'config';
 
-$query = $pdo->query("SELECT * FROM $tabela");
+$query = $pdo->query("SELECT * FROM $tabela where id = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -12,7 +12,7 @@ if($total_reg > 0){
 	<table class="table table-hover" id="tabela">
     	<thead> 
         	<tr> 
-            	<th>Authkey</th>	
+            	<!-- <th>Authkey</th>	 -->
             	<th class="esc">Nome do dispositivo</th> 	
             	<th>Status</th>
             	<th>Ações</th>
@@ -22,7 +22,7 @@ if($total_reg > 0){
 	
 <?php if(isset($res) && isset($res[0]) && isset($res[0]['instancia']) && $res[0]['instancia'] != ''): ?>
 <tr>
-    <td class="esc" id="authkey_list"><?= $res[0]['token'];?></td>
+    <td class="esc" id="authkey_list" style="display: none;"><?= $res[0]['token'];?></td>
     <td class="esc" id="appkey_list"><?= $res[0]['instancia'];?></td>
     <td id="status_list">Carregando...</td>
     <td><big><a href="#" onclick="editar()" title="Reconectar"><i class="fa fa-plug text-primary"></i></a></big>

@@ -22,7 +22,7 @@ if(@$agendamentos == 'ocultar'){
 			<select class="form-control sel2" id="funcionario" name="funcionario" style="width:100%;" onchange="mudarFuncionario()"> 
 				<option value="">Selecione um Profissional</option>
 				<?php 
-				$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' ORDER BY id desc");
+				$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY id desc");
 				$res = $query->fetchAll(PDO::FETCH_ASSOC);
 				$total_reg = @count($res);
 				if($total_reg > 0){
@@ -94,7 +94,7 @@ if(@$agendamentos == 'ocultar'){
 								<select class="form-control sel3" id="cliente" name="cliente" style="width:100%;" required> 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM clientes ORDER BY nome asc");
+									$query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta' ORDER BY nome asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -117,7 +117,7 @@ if(@$agendamentos == 'ocultar'){
 								<select class="form-control sel2" id="funcionario_modal" name="funcionario" style="width:100%;" onchange="mudarFuncionarioModal()"> 
 									<option value="">Selecione um Funcionário</option>
 									<?php 
-									$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' ORDER BY id desc");
+									$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY id desc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -228,7 +228,7 @@ if(@$agendamentos == 'ocultar'){
 								<select class="form-control sel4" id="funcionario_agd" name="funcionario_agd" style="width:100%;" required> 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' ORDER BY nome asc");
+									$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -269,7 +269,7 @@ if(@$agendamentos == 'ocultar'){
 								<select class="form-control" id="pgto" name="pgto" style="width:100%;" required> 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM formas_pgto");
+									$query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -310,7 +310,7 @@ if(@$agendamentos == 'ocultar'){
 								<select class="form-control" id="pgto_restante" name="pgto_restante" style="width:100%;" > 
 									<option value="">Selecionar Pgto</option>
 									<?php 
-									$query = $pdo->query("SELECT * FROM formas_pgto");
+									$query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){

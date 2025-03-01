@@ -4,7 +4,7 @@ require_once("verificar.php");
 require_once("../conexao.php");
 $pag = 'whatsapp';
 
-$query = $pdo->query("SELECT * FROM logs");
+$query = $pdo->query("SELECT * FROM logs where id_conta = '$id_conta'");
 $res = $query->fetchAll();
 
 $sucesso = 0;

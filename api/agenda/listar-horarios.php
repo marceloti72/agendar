@@ -11,7 +11,7 @@ $diasemana_numero = date('w', strtotime($data));
 $dia_procurado = $diasemana[$diasemana_numero];
 
 //percorrer os dias da semana que ele trabalha
-$query = $pdo->query("SELECT * FROM dias where funcionario = '$funcionario' and dia = '$dia_procurado'");
+$query = $pdo->query("SELECT * FROM dias where funcionario = '$funcionario' and dia = '$dia_procurado' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) == 0){
 		echo '<span style="font-size:12px">Este Funcionário não trabalha neste Dia!</span>';
@@ -22,7 +22,7 @@ if(@count($res) == 0){
 <div class="row">
 
 	<?php 
-	$query = $pdo->query("SELECT * FROM horarios where funcionario = '$funcionario' ORDER BY horario asc");
+	$query = $pdo->query("SELECT * FROM horarios where funcionario = '$funcionario' and id_conta = '$id_conta' ORDER BY horario asc");
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
 	$total_reg = @count($res);
 	if($total_reg > 0){
@@ -33,7 +33,7 @@ if(@count($res) == 0){
 				$dataH = $res[$i]['data'];
 
 				//validar horario
-$query2 = $pdo->query("SELECT * FROM agendamentos where data = '$data' and hora = '$hora' and funcionario = '$funcionario'");
+$query2 = $pdo->query("SELECT * FROM agendamentos where data = '$data' and hora = '$hora' and funcionario = '$funcionario' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $total_reg2 = @count($res2);
 if($total_reg2 > 0){

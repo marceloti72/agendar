@@ -2,7 +2,7 @@
 require_once("../../sistema/conexao.php");
 
 
-$query = $pdo->query("SELECT * FROM formas_pgto");
+$query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){

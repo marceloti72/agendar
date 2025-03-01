@@ -22,7 +22,7 @@ if($produto == 0 || $produto == ""){
 
 
 
-$query = $pdo->query("SELECT * FROM produtos where id = '$produto'");
+$query = $pdo->query("SELECT * FROM produtos where id = '$produto' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $descricao = 'Compra - ('.$quantidade.') '.$res[0]['nome'];
 $estoque = $res[0]['estoque'];
@@ -43,7 +43,7 @@ $pdo->query("UPDATE produtos SET estoque = '$total_estoque', valor_compra = '$va
 
 
 
-$query = $pdo->prepare("INSERT INTO $tabela SET descricao = :descricao, tipo = 'Compra', valor = :valor, data_lanc = curDate(), data_venc = '$data_venc', data_pgto = '$data_pgto', usuario_lanc = '$id_usuario', usuario_baixa = '$usuario_pgto', foto = '$foto', pessoa = '$pessoa', pago = '$pago', produto = '$produto', quantidade = '$quantidade'");
+$query = $pdo->prepare("INSERT INTO $tabela SET descricao = :descricao, tipo = 'Compra', valor = :valor, data_lanc = curDate(), data_venc = '$data_venc', data_pgto = '$data_pgto', usuario_lanc = '$id_usuario', usuario_baixa = '$usuario_pgto', foto = '$foto', pessoa = '$pessoa', pago = '$pago', produto = '$produto', quantidade = '$quantidade', id_conta = '$id_conta'");
 
 $query->bindValue(":descricao", "$descricao");
 $query->bindValue(":valor", "$valor");

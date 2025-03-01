@@ -5,14 +5,14 @@ require_once("cabecalho.php");
 $data_atual = date('Y-m-d');
 
 
-echo $_SESSION['telefone'].'tel';
+//echo $_SESSION['telefone'].'tel';
 if($telefone == ''){
-	//echo "<script>window.alert('Você precisa inserir seu Telefone')</script>";
-	//echo "<script>window.location='agendamentos.php'</script>";
+	echo "<script>window.alert('Você precisa inserir seu Telefone')</script>";
+	echo "<script>window.location='agendamentos.php'</script>";
 
 }
 
-$query = $pdo->query("SELECT * FROM clientes where telefone = '$telefone' ");
+$query = $pdo->query("SELECT * FROM clientes where telefone = '$telefone' and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $id_cliente = $res[0]['id'];
 
@@ -30,7 +30,7 @@ $id_cliente = $res[0]['id'];
 		<div class="footer_content " >
 			
 <?php
-$query = $pdo->query("SELECT * FROM agendamentos where cliente = '$id_cliente' and status = 'Agendado' ORDER BY data asc");
+$query = $pdo->query("SELECT * FROM agendamentos where cliente = '$id_cliente' and status = 'Agendado' and id_conta = '$id_conta' ORDER BY data asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -69,7 +69,7 @@ if($status == 'Agendado'){
 	$classe_status = 'ocultar';
 }
 
-$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario'");
+$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res2) > 0){
 	$nome_usu = $res2[0]['nome'];
@@ -77,7 +77,7 @@ if(@count($res2) > 0){
 	$nome_usu = 'Sem Usuário';
 }
 
-$query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario'");
+$query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res2) > 0){
 	$nome_func = $res2[0]['nome'];
@@ -86,7 +86,7 @@ if(@count($res2) > 0){
 }
 
 
-$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico'");
+$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res2) > 0){
 	$nome_serv = $res2[0]['nome'];
@@ -97,7 +97,7 @@ if(@count($res2) > 0){
 }
 
 
-$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente'");
+$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res2) > 0){
 	$nome_cliente = $res2[0]['nome'];

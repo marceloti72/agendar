@@ -1,5 +1,5 @@
 <?php 
-require_once("./cabecalho.php");
+require_once("./cabecalho2.php");
 $data_atual = date('Y-m-d');
 ?>
 <style type="text/css">
@@ -51,7 +51,7 @@ $data_atual = date('Y-m-d');
 						<option value="">Selecione um Serviço</option>
 
 						<?php 
-						$query = $pdo->query("SELECT * FROM servicos ORDER BY nome asc");
+						$query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta' ORDER BY nome asc");
 						$res = $query->fetchAll(PDO::FETCH_ASSOC);
 						$total_reg = @count($res);									
 						if($total_reg > 0){
@@ -69,13 +69,13 @@ $data_atual = date('Y-m-d');
 					</select>    
 				</div>		
 
+                
+					<div class="form-group">			
+						<select class="form-control sel2" id="funcionario" name="funcionario" style="width:100%;" onchange="mudarFuncionario()" required> 				
+							echo '<option value="">Selecionar Profissional</option>';
 
-				<div class="form-group">			
-					<select class="form-control sel2" id="funcionario" name="funcionario" style="width:100%;" onchange="mudarFuncionario()" required> 				
-						echo '<option value=""><?php echo $texto_agendamento ?></option>';
-
-					</select>   
-				</div> 	
+						</select>   
+					</div> 				
 
 
 				<div class="form-group"> 
@@ -140,7 +140,7 @@ $data_atual = date('Y-m-d');
 
 
 
-<?php require_once("rodape.php") ?>
+<?php require_once("rodape2.php") ?>
 
 
 

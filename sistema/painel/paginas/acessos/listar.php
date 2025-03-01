@@ -2,7 +2,7 @@
 require_once("../../../conexao.php");
 $tabela = 'acessos';
 
-$query = $pdo->query("SELECT * FROM $tabela ORDER BY id desc");
+$query = $pdo->query("SELECT * FROM $tabela where id_conta = '$id_conta' ORDER BY id desc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){	
@@ -29,7 +29,7 @@ for($i=0; $i < $total_reg; $i++){
 	$grupo = $res[$i]['grupo'];	
 	
 	
-		$query2 = $pdo->query("SELECT * FROM grupo_acessos where id = '$grupo'");
+		$query2 = $pdo->query("SELECT * FROM grupo_acessos where id = '$grupo' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
 		if($total_reg2 > 0){

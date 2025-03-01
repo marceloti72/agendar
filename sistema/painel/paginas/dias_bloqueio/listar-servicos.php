@@ -4,9 +4,9 @@ $tabela = 'dias_bloqueio';
 
 $id_func = $_POST['func'];
 
-$pdo->query("DELETE FROM $tabela where data < curDate()");
+$pdo->query("DELETE FROM $tabela where data < curDate() and id_conta = '$id_conta'");
 
-$query = $pdo->query("SELECT * FROM $tabela where funcionario = 0 order by data asc");
+$query = $pdo->query("SELECT * FROM $tabela where funcionario = 0 and id_conta = '$id_conta' order by data asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -32,7 +32,7 @@ for($i=0; $i < $total_reg; $i++){
 	$usuario = $res[$i]['usuario'];
 	
 	
-$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario'");
+$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);	
 $nome_servico = @$res2[0]['nome'];
 

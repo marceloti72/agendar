@@ -64,7 +64,7 @@ $pag = 'acessos';
 									<option value="0">Nenhum Grupo</option>
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM grupo_acessos ORDER BY id asc");
+									$query = $pdo->query("SELECT * FROM grupo_acessos where id_conta = '$id_conta' ORDER BY id asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){

@@ -1,7 +1,7 @@
 <?php 
 require_once("../../sistema/conexao.php");
 $url_img = $_POST['url_img'];
-$query = $pdo->query("SELECT * FROM usuarios order by id desc");
+$query = $pdo->query("SELECT * FROM usuarios where id_conta = '$id_conta' order by id desc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){

@@ -72,7 +72,7 @@
 
 						
 						$cliente = $res[$i]['cliente'];
-						$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente'");
+						$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
 						$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 						if(@count($res2) > 0){
 							$nome_cliente = $res2[0]['nome'];							
@@ -83,7 +83,7 @@
 
 
 						$funcionario = $res[$i]['funcionario'];
-						$query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario'");
+						$query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_conta = '$id_conta'");
 						$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 						if(@count($res2) > 0){
 							$profissional = $res2[0]['nome'];							
@@ -93,7 +93,7 @@
 						}
 
 						$servico = $res[$i]['servico'];
-						$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico'");
+						$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 						$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 						if(@count($res2) > 0){
 							$nome_servico = $res2[0]['nome'];							

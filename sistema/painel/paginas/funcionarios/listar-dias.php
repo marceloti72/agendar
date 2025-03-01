@@ -4,7 +4,7 @@ $tabela = 'dias';
 
 $id_func = $_POST['func'];
 
-$query = $pdo->query("SELECT * FROM $tabela where funcionario = '$id_func' ORDER BY id asc");
+$query = $pdo->query("SELECT * FROM $tabela where funcionario = '$id_func' and id_conta = '$id_conta' ORDER BY id asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -50,7 +50,7 @@ echo <<<HTML
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
+		<a href="#" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>
@@ -61,7 +61,7 @@ echo <<<HTML
 		</ul>
 		</li>
 
-		<big><a href="#" onclick="editarDias('{$id}','{$dia}', '{$inicio}', '{$final}', '{$inicio_almoco}', '{$final_almoco}')" title="Editar Dados"><i class="fa fa-edit text-primary"></i></a></big>
+		<a href="#" class="btn btn-primary btn-xs" onclick="editarDias('{$id}','{$dia}', '{$inicio}', '{$final}', '{$inicio_almoco}', '{$final_almoco}')" title="Editar Dados"><i class="fe fe-edit"></i></a>
 
 		</td>
 

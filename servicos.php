@@ -1,4 +1,4 @@
-<?php require_once("cabecalho.php") ?>
+<?php require_once("cabecalho2.php") ?>
 <style type="text/css">
 	.sub_page .hero_area {
   min-height: auto;
@@ -19,7 +19,7 @@
         </h2>
         <p class="col-lg-8 px-0">
           <?php 
-          $query = $pdo->query("SELECT * FROM cat_servicos ORDER BY id asc");
+          $query = $pdo->query("SELECT * FROM cat_servicos where id_conta = '$id_conta' ORDER BY id asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){ 
@@ -38,7 +38,7 @@ for($i=0; $i < $total_reg; $i++){
 
 }
 
-$query = $pdo->query("SELECT * FROM servicos where ativo = 'Sim' ORDER BY id asc");
+$query = $pdo->query("SELECT * FROM servicos where ativo = 'Sim' and id_conta = '$id_conta' ORDER BY id asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){ 
@@ -100,4 +100,4 @@ for($i=0; $i < $total_reg; $i++){
 
 
  
-   <?php require_once("rodape.php") ?>
+   <?php require_once("rodape2.php") ?>

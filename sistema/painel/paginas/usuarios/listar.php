@@ -13,7 +13,7 @@ $tabela = 'usuarios';
 </style>
 <?php 
 
-$query = $pdo->query("SELECT * FROM $tabela ORDER BY id desc");
+$query = $pdo->query("SELECT * FROM $tabela where id_conta = '$id_conta' ORDER BY id desc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -24,8 +24,7 @@ echo <<<HTML
 	<thead> 
 	<tr> 
 	<th>Nome</th>	
-	<th class="esc">Email</th> 	
-	<th class="esc">Senha</th> 	
+	<th class="esc">Email</th> 	 	
 	<th class="esc">Nível</th> 	
 	<th class="esc">Cadastro</th>
 	<th>Ações</th>
@@ -80,7 +79,6 @@ echo <<<HTML
 {$nome}
 </td>
 <td class="esc">{$email}</td>
-<td class="esc">{$senhaF}</td>
 <td class="esc">{$nivel}</td>
 <td class="esc">{$dataF}</td>
 <td>

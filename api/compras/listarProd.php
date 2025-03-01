@@ -2,7 +2,7 @@
 require_once("../../sistema/conexao.php");
 
 
-$query = $pdo->query("SELECT * FROM produtos where valor_venda > 0 and estoque > 0 ORDER BY nome asc");
+$query = $pdo->query("SELECT * FROM produtos where valor_venda > 0 and estoque > 0 and id_conta = '$id_conta' ORDER BY nome asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){

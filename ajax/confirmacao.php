@@ -1,6 +1,5 @@
 <?php
-//require_once("../../../../funcoes.php");
-require_once __DIR__ . '/../funcoes.php';  
+//require_once __DIR__ . '/../funcoes.php';  
     
     
     $mensagem = str_replace("%0A", "\n", $mensagem); 
@@ -32,7 +31,7 @@ require_once __DIR__ . '/../funcoes.php';
     
     
     $response = json_decode($response, true); // {"status":200,"id":5370,"message":"Agendamento realizado com sucesso."}
-    save_log($pdo, $token, $instancia, $response, 'agendamento', $telefone, $mensagem);
+    //save_log($pdo, $token, $instancia, $response, 'agendamento', $telefone, $mensagem);
      $id = $response['id'];
 
 ?>

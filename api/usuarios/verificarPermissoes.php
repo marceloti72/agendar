@@ -4,7 +4,7 @@ require_once("../../sistema/conexao.php");
 $id_usuario = $_POST['id_usuario'];
 
 
-$query = $pdo->query("SELECT * from usuarios where id = '$id_usuario'");
+$query = $pdo->query("SELECT * from usuarios where id = '$id_usuario' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 $atendimento = $res[0]['atendimento'];
@@ -68,7 +68,7 @@ $comentarios = 'none';
 
 
 
-$query = $pdo->query("SELECT * FROM usuarios_permissoes where usuario = '$id_usuario'");
+$query = $pdo->query("SELECT * FROM usuarios_permissoes where usuario = '$id_usuario' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -76,7 +76,7 @@ if($total_reg > 0){
 		foreach ($res[$i] as $key => $value){}
 		$permissao = $res[$i]['permissao'];
 		
-		$query2 = $pdo->query("SELECT * FROM acessos where id = '$permissao'");
+		$query2 = $pdo->query("SELECT * FROM acessos where id = '$permissao' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$nome = $res2[0]['nome'];
 		$chave = $res2[0]['chave'];
@@ -261,12 +261,12 @@ if($home != 'none'){
 }else if($atendimento == 'Sim'){
 	$pag_inicial = 'agenda';
 }else{
-	$query = $pdo->query("SELECT * FROM usuarios_permissoes where usuario = '$id_usuario' order by id asc limit 1");
+	$query = $pdo->query("SELECT * FROM usuarios_permissoes where usuario = '$id_usuario' and id_conta = '$id_conta' order by id asc limit 1");
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
 	$total_reg = @count($res);
 	if($total_reg > 0){	
 			$permissao = $res[0]['permissao'];		
-			$query2 = $pdo->query("SELECT * FROM acessos where id = '$permissao'");
+			$query2 = $pdo->query("SELECT * FROM acessos where id = '$permissao' and id_conta = '$id_conta'");
 			$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);		
 			$pag_inicial = $res2[0]['chave'];		
 

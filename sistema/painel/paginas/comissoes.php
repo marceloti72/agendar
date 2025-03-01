@@ -54,7 +54,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 			<select class="form-control sel2" id="funcionario" name="funcionario" style="width:100%;" onchange="listar()"> 
 				<option value="">Filtrar Funcionário</option>
 				<?php 
-				$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' ORDER BY id desc");
+				$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY id desc");
 				$res = $query->fetchAll(PDO::FETCH_ASSOC);
 				$total_reg = @count($res);
 				if($total_reg > 0){

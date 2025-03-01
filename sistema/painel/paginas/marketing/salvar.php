@@ -144,7 +144,7 @@ $conclusao = str_replace("'", "", $conclusao);
 
 
 //validar troca da foto
-$query = $pdo->query("SELECT * FROM $tabela where id = '$id'");
+$query = $pdo->query("SELECT * FROM $tabela where id = '$id' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -154,7 +154,7 @@ if($total_reg > 0){
 }
 
 //validar troca da audio
-$query = $pdo->query("SELECT * FROM $tabela where id = '$id'");
+$query = $pdo->query("SELECT * FROM $tabela where id = '$id' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
@@ -222,9 +222,9 @@ if(@$_FILES['audio']['name'] != ""){
 
 
 if($id == ""){
-	$query = $pdo->prepare("INSERT INTO $tabela SET data = curDate(), titulo = :titulo, mensagem = :mensagem, item1 = :item1, item2 = :item2, item3 = :item3, item4 = :item4, item5 = :item5, item6 = :item6, item7 = :item7, item8 = :item8, conclusao = :conclusao, arquivo = '$foto', audio = '$audio', item9 = :item9, item10 = :item10, item11 = :item11, item12 = :item12, item13 = :item13, item14 = :item14, item15 = :item15, item16 = :item16, item17 = :item17, item18 = :item18, item19 = :item19, item20 = :item20");
+	$query = $pdo->prepare("INSERT INTO $tabela SET data = curDate(), titulo = :titulo, mensagem = :mensagem, item1 = :item1, item2 = :item2, item3 = :item3, item4 = :item4, item5 = :item5, item6 = :item6, item7 = :item7, item8 = :item8, conclusao = :conclusao, arquivo = '$foto', audio = '$audio', item9 = :item9, item10 = :item10, item11 = :item11, item12 = :item12, item13 = :item13, item14 = :item14, item15 = :item15, item16 = :item16, item17 = :item17, item18 = :item18, item19 = :item19, item20 = :item20, id_conta = :id_conta");
 }else{
-	$query = $pdo->prepare("UPDATE $tabela SET titulo = :titulo, mensagem = :mensagem, item1 = :item1, item2 = :item2, item3 = :item3, item4 = :item4, item5 = :item5, item6 = :item6, item7 = :item7, item8 = :item8, conclusao = :conclusao, arquivo = '$foto', audio = '$audio', item9 = :item9, item10 = :item10, item11 = :item11, item12 = :item12, item13 = :item13, item14 = :item14, item15 = :item15, item16 = :item16, item17 = :item17, item18 = :item18, item19 = :item19, item20 = :item20 WHERE id = '$id'");
+	$query = $pdo->prepare("UPDATE $tabela SET titulo = :titulo, mensagem = :mensagem, item1 = :item1, item2 = :item2, item3 = :item3, item4 = :item4, item5 = :item5, item6 = :item6, item7 = :item7, item8 = :item8, conclusao = :conclusao, arquivo = '$foto', audio = '$audio', item9 = :item9, item10 = :item10, item11 = :item11, item12 = :item12, item13 = :item13, item14 = :item14, item15 = :item15, item16 = :item16, item17 = :item17, item18 = :item18, item19 = :item19, item20 = :item20 WHERE id = '$id' and id_conta = '$id_conta'");
 }
 
 $query->bindValue(":titulo", "$titulo");
@@ -250,6 +250,7 @@ $query->bindValue(":item17", "$item17");
 $query->bindValue(":item18", "$item18");
 $query->bindValue(":item19", "$item19");
 $query->bindValue(":item20", "$item20");
+$query->bindValue(":id_conta", "$id_conta");
 
 
 $query->bindValue(":conclusao", "$conclusao");

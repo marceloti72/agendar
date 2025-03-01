@@ -26,7 +26,7 @@ if(@$produtos == 'ocultar'){
 
 
 <!-- Modal Inserir-->
-<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="modalFormLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header text-white" style="background-color: #4682B4;">
@@ -53,7 +53,7 @@ if(@$produtos == 'ocultar'){
 								<select class="form-control sel2" id="categoria" name="categoria" style="width:100%;" > 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM cat_produtos ORDER BY id asc");
+									$query = $pdo->query("SELECT * FROM cat_produtos where id_conta = '$id_conta' ORDER BY id asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){

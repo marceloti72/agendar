@@ -1,121 +1,111 @@
-<?php 
+<?php
+@session_start();
 
-$url = "https://$_SERVER[HTTP_HOST]/";
-$url_sistema = explode("//", $url);
-if($url_sistema[1] == 'localhost/'){
-	$url = "http://$_SERVER[HTTP_HOST]/escolar/";
+// Configurações da URL
+$url = "https://" . $_SERVER['HTTP_HOST'] . "/";
+$url = explode("//", $url);
 
-	//VARIAVEIS DO BANCO DE DADOS LOCAL
-	$banco = 'barbearia';
-	$usuario = 'root';
-	$senha = '';
-	$servidor = 'localhost';
+if ($url[1] === 'localhost/') {
+	$url = "http://" . $_SERVER['HTTP_HOST'] . "/agendar/";
 
-}else{
-	//VARIAVEIS DO BANCO DE DADOS HOSPEDADO	
-	$servidor = 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
-	$usuario = 'skysee';	
-	$senha = '9vtYvJly8PK6zHahjPUg';
-	$banco = 'barbearia';	
-		
+	// Configurações do Banco de Dados Local
+	$db_servidor = 'localhost';
+	$db_usuario = 'root';
+	$db_senha = '';
+	$db_nome = 'barbearia';
+} else {
+	// Configurações do Banco de Dados Hospedado
+	$db_servidor = 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
+	$db_usuario = 'skysee';
+	$db_senha = '9vtYvJly8PK6zHahjPUg';
+	$db_nome = 'barbearia';
 }
 
+// Configuração do Fuso Horário
 date_default_timezone_set('America/Sao_Paulo');
 
+// Conexão com o Banco de Dados
 try {
-	$pdo = new PDO("mysql:dbname=$banco;host=$servidor;charset=utf8", "$usuario", "$senha");
-} catch (Exception $e) {
-	echo 'Não conectado ao Banco de Dados! <br><br>' .$e;
+	$pdo = new PDO("mysql:dbname=$db_nome;host=$db_servidor;charset=utf8", $db_usuario, $db_senha);
+	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Habilita tratamento de erros
+} catch (PDOException $e) {
+	die("Erro ao conectar com o banco de dados: " . $e->getMessage());
 }
 
+// Configurações do Sistema
+if (isset($_SESSION['id_conta'])) {
+	$id_conta = $_SESSION['id_conta'];
 
-//VARIAVEIS DO SISTEMA
-$nome_sistema = 'Barbearia Freitas';
-$email_sistema = 'contato@hugocursos.com.br';
-$whatsapp_sistema = '(31) 97527-5084';
-$not_sistema = 'Sim';
+	try {
+		$stmt = $pdo->prepare("SELECT * FROM config WHERE id = :id_conta");
+		$stmt->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+		$stmt->execute();
+		$config = $stmt->fetch(PDO::FETCH_ASSOC);
 
+		if ($config) {
+			// Variáveis de Configuração do Sistema
+			$nome_sistema = $config['nome'];
+			$email_sistema = $config['email'];
+			$whatsapp_sistema = $config['telefone_whatsapp'];
+			$tipo_rel = $config['tipo_rel'];
+			$telefone_fixo_sistema = $config['telefone_fixo'];
+			$endereco_sistema = $config['endereco'];
+			$instagram_sistema = $config['instagram'];
+			$tipo_comissao = $config['tipo_comissao'];
+			$texto_rodape = $config['texto_rodape'];
+			$texto_sobre = $config['texto_sobre'];
+			$mapa = $config['mapa'];
+			$quantidade_cartoes = $config['quantidade_cartoes'];
+			$texto_fidelidade = $config['texto_fidelidade'];
+			$msg_agendamento = $config['msg_agendamento'];
+			$cnpj_sistema = $config['cnpj'];
+			$agendamento_dias = $config['agendamento_dias'];
+			$minutos_aviso = $config['minutos_aviso'];
+			$antAgendamento = $config['minutos_aviso'];
+			$token = $config['token'];
+			$instancia = $config['instancia'];
+			$url_video = $config['url_video'];
+			$taxa_sistema = $config['taxa_sistema'];
+			$lanc_comissao = $config['lanc_comissao'];
+			$ativo_sistema = $config['ativo'];
+			$porc_servico = $config['porc_servico'];
+			$pgto_api = $config['pgto_api'];
+			$token_mp = $config['token_mp'];
+			$key_mp = $config['key_mp'];
+			$agendamentos2 = $config['agendamentos'];
+			$produtos2 = $config['produtos'];
+			$servicos2 = $config['servicos'];
+			$depoimentos2 = $config['depoimentos'];
+			$carrossel = $config['carrossel'];
 
-$query = $pdo->query("SELECT * from config ");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$total_reg = @count($res);
-if($total_reg == 0){
-	$pdo->query("INSERT INTO config SET nome = '$nome_sistema', email = '$email_sistema', telefone_whatsapp = '$whatsapp_sistema', logo = 'logo.png', icone = 'favicon.ico', logo_rel = 'logo_rel.jpg', tipo_rel = 'pdf', tipo_comissao = 'Porcentagem', texto_rodape = 'Edite este texto nas configurações do painel administrador', img_banner_index = 'hero-bg.jpg', quantidade_cartoes = 10, texto_agendamento = 'Selecionar Prestador de Serviço', msg_agendamento = 'Sim', agendamento_dias = '30', itens_pag = '10', minutos_aviso = '0', porc_servico = '0', pgto_api = 'Sim'");
-}else{
-    
-     // Novas variaveis
-    $emailMenuia = $res[0]['email_menuia'] ?? '';
-    $planoMenuia = $res[0]['plano_menuia'] ?? '';
-    $validadeMenuia = $res[0]['validade_menuia'] ?? '';
-    $senhaMenuia = $res[0]['senha_menuia'] ?? '';
-     $api = $res[0]['api'] ?? '';
-    // Fim das variaveis Menuia
-    
-	$nome_sistema = $res[0]['nome'];
-	$email_sistema = $res[0]['email'];
-	$whatsapp_sistema = $res[0]['telefone_whatsapp'];
-	$tipo_rel = $res[0]['tipo_rel'];
-	$telefone_fixo_sistema = $res[0]['telefone_fixo'];
-	$endereco_sistema = $res[0]['endereco'];
-	$logo_rel = $res[0]['logo_rel'];
-	$logo_sistema = $res[0]['logo'];
-	$icone_sistema = $res[0]['icone'];
-	$instagram_sistema = $res[0]['instagram'];
-	$tipo_comissao = $res[0]['tipo_comissao'];
-	$texto_rodape = $res[0]['texto_rodape'];
-	$img_banner_index = $res[0]['img_banner_index'];
-	$icone_site = $res[0]['icone_site'];
-	$texto_sobre = $res[0]['texto_sobre'];
-	$imagem_sobre = $res[0]['imagem_sobre'];
-	$mapa = $res[0]['mapa'];
-	$quantidade_cartoes = $res[0]['quantidade_cartoes'];
-	$texto_fidelidade = $res[0]['texto_fidelidade'];
-	$texto_agendamento = $res[0]['texto_agendamento'];
-	$msg_agendamento = $res[0]['msg_agendamento'];
-	$cnpj_sistema = $res[0]['cnpj'];
-	$cidade_sistema = $res[0]['cidade'];
-	$agendamento_dias = $res[0]['agendamento_dias'];
-	$itens_pag = $res[0]['itens_pag'];
-	$minutos_aviso = $res[0]['minutos_aviso'];
-	$antAgendamento = $res[0]['minutos_aviso'];
-	$token = $res[0]['token'];
-	$instancia = $res[0]['instancia'];
-	$url_video = $res[0]['url_video'];
-	$posicao_video = $res[0]['posicao_video'];
-	$taxa_sistema = $res[0]['taxa_sistema'];
-	$lanc_comissao = $res[0]['lanc_comissao'];
-	$ativo_sistema = $res[0]['ativo'];
-	$porc_servico = $res[0]['porc_servico'];
-	$pgto_api = $res[0]['pgto_api'];
+			// Novas variáveis Menuia
+			$emailMenuia = $config['email_menuia'] ?? '';
+			$planoMenuia = $config['plano_menuia'] ?? '';
+			$validadeMenuia = $config['validade_menuia'] ?? '';
+			$senhaMenuia = $config['senha_menuia'] ?? '';
+			$api = $config['api'] ?? '';
 
-	$horas_confirmacaoF = $minutos_aviso.':00:00';
+			$horas_confirmacaoF = $minutos_aviso . ':00:00';
+			$tel_whatsapp = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
 
-	$tel_whatsapp = '55'.preg_replace('/[ ()-]+/' , '' , $whatsapp_sistema);
-    
-	
-
-	if($ativo_sistema != 'Sim' and $ativo_sistema != ''){ ?>
-	<style type="text/css">
-		@media only screen and (max-width: 700px) {
-  .imgsistema_mobile{
-    width:300px;
-  }
-    
+			// Verificação de Ativação do Sistema
+			if ($ativo_sistema !== 'Sim' && $ativo_sistema !== '' && $ativo_sistema !== 'teste') {
+				echo '<style type="text/css">
+                        @media only screen and (max-width: 700px) {
+                            .imgsistema_mobile {
+                                width: 300px;
+                            }
+                        }
+                    </style>
+                    <div style="text-align: center; margin-top: 100px">
+                        <img src="sistema/img/bloqueio.png" class="imgsistema_mobile">
+                    </div>';
+				exit();
+			}
+		} else {
+			echo "Configurações não encontradas para a conta.";
+		}
+	} catch (PDOException $e) {
+		echo "Erro ao buscar configurações: " . $e->getMessage();
+	}
 }
-	</style>
-	<div style="text-align: center; margin-top: 100px">
-	<img src="sistema/img/bloqueio.png" class="imgsistema_mobile">	
-	</div>
-<?php 
-exit();
-} 
-	
-}
-
-
-
-
-
-
-
- ?>

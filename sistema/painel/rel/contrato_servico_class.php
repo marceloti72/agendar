@@ -1,19 +1,20 @@
-<?php 
+<?php
 
 include('../../conexao.php');
 
 $id = $_GET['id'];
 
 //ALIMENTAR OS DADOS NO RELATÓRIO
-$html = file_get_contents($url_sistema."sistema/painel/rel/contrato_servico.php?id=$id");
+$html = file_get_contents($url . "sistema/painel/rel/contrato_servico.php?id=$id");
 
-if($tipo_rel != 'PDF'){
+if ($tipo_rel != 'PDF') {
 	echo $html;
 	exit();
 }
 
 //CARREGAR DOMPDF
 require_once '../../dompdf/autoload.inc.php';
+
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -38,7 +39,6 @@ $pdf->render();
 
 //NOMEAR O PDF GERADO
 $pdf->stream(
-'contrato_servico.pdf',
-array("Attachment" => false)
+	'contrato_servico.pdf',
+	array("Attachment" => false)
 );
-?>

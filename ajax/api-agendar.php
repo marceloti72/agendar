@@ -2,8 +2,7 @@
 
 require_once("../../../../funcoes.php");
 
-if ($api == "menuia") 
-{
+
    $data_mensagem_obj = new DateTime($data_mensagem);
     $data_mensagem_obj->modify("-$antAgendamento hours");
     $data_mensagem = $data_mensagem_obj->format('Y-m-d H:i:s');
@@ -22,8 +21,7 @@ if ($api == "menuia")
         'appkey' => $instancia,
         'authkey' => $token,
         'to' => $telefone,
-        'message' => $mensagem,
-        'licence' => 'hugocursos',
+        'message' => $mensagem,        
         'agendamento' => $data_mensagem
         ),
       ));
@@ -36,31 +34,7 @@ if ($api == "menuia")
       
       $hash = $response['id'];
 
-} 
-else 
-{
-  $url = "http://api.wordmensagens.com.br/agendar-text";
 
-  $data = array('instance' => $instancia,
-                'to' => $telefone,
-                'token' => $token,
-                'message' => $mensagem,
-                'data' => $data_mensagem);
-
-  
-
-  $options = array('http' => array(
-                 'method' => 'POST',
-                 'content' => http_build_query($data)
-  ));
-
-  $stream = stream_context_create($options);
-
-  $result = @file_get_contents($url, false, $stream);
-  $res = json_decode($result, true);
-  $hash = @$res['message']['hash'];
-}
-  //echo $hash;
 ?>
   
 

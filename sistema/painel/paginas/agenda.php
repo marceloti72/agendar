@@ -69,7 +69,7 @@ $data_atual = date('Y-m-d');
 								<select class="form-control sel3" id="cliente" name="cliente" style="width:100%;" required> 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM clientes ORDER BY nome asc");
+									$query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta' ORDER BY nome asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -92,13 +92,13 @@ $data_atual = date('Y-m-d');
 							<select class="form-control sel3" id="servico" name="servico" style="width:100%;" required> 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM servicos_func where funcionario = '$id_usuario' ");
+									$query = $pdo->query("SELECT * FROM servicos_func where funcionario = '$id_usuario' and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) > 0){
 	for($i=0; $i < @count($res); $i++){
 		$serv = $res[$i]['servico'];
 
-		$query2 = $pdo->query("SELECT * FROM servicos where id = '$serv' and ativo = 'Sim' ");
+		$query2 = $pdo->query("SELECT * FROM servicos where id = '$serv' and ativo = 'Sim' and id_conta = '$id_conta' ");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);	
 		$nome_func = $res2[0]['nome'];
 
@@ -199,7 +199,7 @@ if(@count($res) > 0){
 								<select class="form-control sel4" id="funcionario_agd" name="funcionario_agd" style="width:100%;" required> 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' ORDER BY nome asc");
+									$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -240,7 +240,7 @@ if(@count($res) > 0){
 								<select class="form-control" id="pgto" name="pgto" style="width:100%;" required> 
 
 									<?php 
-									$query = $pdo->query("SELECT * FROM formas_pgto");
+									$query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -281,7 +281,7 @@ if(@count($res) > 0){
 								<select class="form-control" id="pgto_restante" name="pgto_restante" style="width:100%;" > 
 									<option value="">Selecionar Pgto</option>
 									<?php 
-									$query = $pdo->query("SELECT * FROM formas_pgto");
+									$query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
 									$res = $query->fetchAll(PDO::FETCH_ASSOC);
 									$total_reg = @count($res);
 									if($total_reg > 0){
@@ -343,7 +343,7 @@ if(@count($res) > 0){
 
 
 
-<script type="text/javascript">var pag = "<?=$pag?>"</script>
+<script type="text/javascript">var pag = "<?=$pag?>";</script>
 <script src="js/ajax.js"></script>
 
 

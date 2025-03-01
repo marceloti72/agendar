@@ -11,11 +11,11 @@ $pag = 'funcionarios';
 				<div class="row">
 					<div class="col-md-2">						
 						<div class="form-group">
-							<label for="exampleInputEmail1">Dia</label>
+							<label for="exampleInputEmail1">Serviços</label>
 							<select class="form-control sel3" id="servico" name="servico" style="width:100%;" required> 
 
                                     <?php 
-                                    $query = $pdo->query("SELECT * FROM servicos ORDER BY nome asc");
+                                    $query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta' ORDER BY nome asc");
                                     $res = $query->fetchAll(PDO::FETCH_ASSOC);
                                     $total_reg = @count($res);
                                     if($total_reg > 0){

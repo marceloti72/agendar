@@ -1,26 +1,26 @@
-<?php 
+<?php
 require_once("../../../conexao.php");
 $tabela = 'receber';
 $data_hoje = date('Y-m-d');
 
 $id = @$_POST['id'];
 
-if($id == ""){
+if ($id == "") {
 	$id = 0;
 }
 
 @session_start();
-$usuario_logado = @$_SESSION['id'];
+$usuario_logado = @$_SESSION['id_usuario'];
 
 
 $total_servicos = 0;
 
-$query = $pdo->query("SELECT * FROM $tabela where tipo = 'Venda' and comanda = '$id' and func_comanda = '$usuario_logado' order by id asc");
+$query = $pdo->query("SELECT * FROM $tabela where tipo = 'Venda' and comanda = '$id' and func_comanda = '$usuario_logado' and id_conta = '$id_conta' order by id asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
-if($total_reg > 0){
+if ($total_reg > 0) {
 
-echo <<<HTML
+	echo <<<HTML
 	<small>
 	<table class="table table-hover" id="">
 	<thead> 
@@ -36,120 +36,121 @@ echo <<<HTML
 	<tbody>	
 HTML;
 
-for($i=0; $i < $total_reg; $i++){
-	foreach ($res[$i] as $key => $value){}
-	$id = $res[$i]['id'];	
-	$descricao = $res[$i]['descricao'];
-	$tipo = $res[$i]['tipo'];
-	$valor = $res[$i]['valor'];
-	$data_lanc = $res[$i]['data_lanc'];
-	$data_pgto = $res[$i]['data_pgto'];
-	$data_venc = $res[$i]['data_venc'];
-	$usuario_lanc = $res[$i]['usuario_lanc'];
-	$usuario_baixa = $res[$i]['usuario_baixa'];
-	$foto = $res[$i]['foto'];
-	$pessoa = $res[$i]['pessoa'];
-	$funcionario = $res[$i]['funcionario'];
-	$obs = $res[$i]['obs'];
-	$comanda = $res[$i]['comanda'];
-	$produto = $res[$i]['produto'];
-	$quantidade = $res[$i]['quantidade'];
-	
-	$pago = $res[$i]['pago'];
-	$servico = $res[$i]['servico'];
-	
-	$valorF = number_format($valor, 2, ',', '.');
-	$data_lancF = implode('/', array_reverse(explode('-', $data_lanc)));
-	$data_pgtoF = implode('/', array_reverse(explode('-', $data_pgto)));
-	$data_vencF = implode('/', array_reverse(explode('-', $data_venc)));
-	
+	for ($i = 0; $i < $total_reg; $i++) {
+		foreach ($res[$i] as $key => $value) {
+		}
+		$id = $res[$i]['id'];
+		$descricao = $res[$i]['descricao'];
+		$tipo = $res[$i]['tipo'];
+		$valor = $res[$i]['valor'];
+		$data_lanc = $res[$i]['data_lanc'];
+		$data_pgto = $res[$i]['data_pgto'];
+		$data_venc = $res[$i]['data_venc'];
+		$usuario_lanc = $res[$i]['usuario_lanc'];
+		$usuario_baixa = $res[$i]['usuario_baixa'];
+		$foto = $res[$i]['foto'];
+		$pessoa = $res[$i]['pessoa'];
+		$funcionario = $res[$i]['funcionario'];
+		$obs = $res[$i]['obs'];
+		$comanda = $res[$i]['comanda'];
+		$produto = $res[$i]['produto'];
+		$quantidade = $res[$i]['quantidade'];
 
-		$query2 = $pdo->query("SELECT * FROM clientes where id = '$pessoa'");
+		$pago = $res[$i]['pago'];
+		$servico = $res[$i]['servico'];
+
+		$valorF = number_format($valor, 2, ',', '.');
+		$data_lancF = implode('/', array_reverse(explode('-', $data_lanc)));
+		$data_pgtoF = implode('/', array_reverse(explode('-', $data_pgto)));
+		$data_vencF = implode('/', array_reverse(explode('-', $data_venc)));
+
+
+		$query2 = $pdo->query("SELECT * FROM clientes where id = '$pessoa' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
-		if($total_reg2 > 0){
+		if ($total_reg2 > 0) {
 			$nome_pessoa = $res2[0]['nome'];
 			$telefone_pessoa = $res2[0]['telefone'];
-		}else{
+		} else {
 			$nome_pessoa = 'Nenhum!';
 			$telefone_pessoa = 'Nenhum';
 		}
 
 
-		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_baixa'");
+		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_baixa' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
-		if($total_reg2 > 0){
+		if ($total_reg2 > 0) {
 			$nome_usuario_pgto = $res2[0]['nome'];
-		}else{
+		} else {
 			$nome_usuario_pgto = 'Nenhum!';
 		}
 
 
 
-		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_lanc'");
+		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_lanc' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
-		if($total_reg2 > 0){
+		if ($total_reg2 > 0) {
 			$nome_usuario_lanc = $res2[0]['nome'];
-		}else{
+		} else {
 			$nome_usuario_lanc = 'Sem Referência!';
 		}
 
 
 
-		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario'");
+		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg2 = @count($res2);
-		if($total_reg2 > 0){
+		if ($total_reg2 > 0) {
 			$nome_func = $res2[0]['nome'];
-		}else{
+		} else {
 			$nome_func = '';
 		}
 
-	
 
 
-		if($data_pgto == '0000-00-00'){
+
+		if ($data_pgto == '0000-00-00') {
 			$classe_alerta = 'text-danger';
 			$data_pgtoF = 'Pendente';
 			$visivel = '';
-			
+
 			$japago = 'ocultar';
-		}else{
+		} else {
 			$classe_alerta = 'verde';
 			$visivel = 'ocultar';
-			
+
 			$japago = '';
 		}
 
 		$total_servicos += $valor;
 
 
-			//extensão do arquivo
-$ext = pathinfo($foto, PATHINFO_EXTENSION);
-if($ext == 'pdf'){
-	$tumb_arquivo = 'pdf.png';
-}else if($ext == 'rar' || $ext == 'zip'){
-	$tumb_arquivo = 'rar.png';
-}else{
-	$tumb_arquivo = $foto;
-}
-		
+		//extensão do arquivo
+		$ext = pathinfo($foto, PATHINFO_EXTENSION);
+		if ($ext == 'pdf') {
+			$tumb_arquivo = 'pdf.png';
+		} else if ($ext == 'rar' || $ext == 'zip') {
+			$tumb_arquivo = 'rar.png';
+		} else {
+			$tumb_arquivo = $foto;
+		}
 
-if($data_venc < $data_hoje and $pago != 'Sim'){
-	$classe_debito = 'vermelho-escuro';
-}else{
-	$classe_debito = '';
-}
-		
 
-$query2 = $pdo->query("SELECT * FROM produtos where id = '$produto'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-$nome_produto = $res2[0]['nome'];
-$estoque_produto = $res2[0]['estoque'];
+		if ($data_venc < $data_hoje and $pago != 'Sim') {
+			$classe_debito = 'vermelho-escuro';
+		} else {
+			$classe_debito = '';
+		}
 
-echo <<<HTML
+
+		$query2 = $pdo->query("SELECT * FROM produtos where id = '$produto' and id_conta = '$id_conta'");
+		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+		$nome_produto = $res2[0]['nome'];
+		$estoque_produto = $res2[0]['estoque'];
+
+		echo <<<HTML
 <tr class="{$classe_debito}">
 <td>{$quantidade} {$nome_produto}</td>
 <td class="esc">R$ {$valorF}</td>
@@ -176,12 +177,11 @@ echo <<<HTML
 		</td>
 </tr>
 HTML;
+	}
 
-}
+	$total_servicosF = number_format($total_servicos, 2, ',', '.');
 
-$total_servicosF = number_format($total_servicos, 2, ',', '.');
-
-echo <<<HTML
+	echo <<<HTML
 </tbody>
 <small><div align="center" id="mensagem-excluir-servicos"></div></small>
 </table>
@@ -190,34 +190,32 @@ echo <<<HTML
 
 </small>
 HTML;
-
-
-}else{
+} else {
 	echo '<small>Nenhum Produto ainda Lançado!</small>';
 }
 
 ?>
 
 <script type="text/javascript">
-	$(document).ready( function () {
-	$('#valor_produtos').val("<?=$total_servicos?>");   
-   
-} );
+	$(document).ready(function() {
+		$('#valor_produtos').val("<?= $total_servicos ?>");
 
-	function excluirProduto(id, comanda){
+	});
+
+	function excluirProduto(id, comanda) {
 		$.ajax({
 			url: 'paginas/' + pag + "/excluir_produto.php",
 			method: 'POST',
-			data: {id},
+			data: {
+				id
+			},
 			dataType: "text",
 
-			success:function(result){
+			success: function(result) {
 				listarProdutos(comanda);
 				calcular();
 			}
 		});
-		
+
 	}
 </script>
-
-

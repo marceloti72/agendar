@@ -1,4 +1,5 @@
 RewriteEngine On
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
@@ -11,6 +12,7 @@ RewriteRule ^index.php(.*)$ index.php [L]
 
 RewriteRule ^pagar/(.*)$ pagamentos/index.php?id_conta=$1 [L]
 RewriteRule ^pagamento/(.*)/(.*)$ pagamentos/index.php?id_conta=$1&total=$2 [L]
+
 
 # php -- BEGIN cPanel-generated handler, do not edit
 # Defina o pacote “ea-php81” como a linguagem padrão de programação “PHP”.

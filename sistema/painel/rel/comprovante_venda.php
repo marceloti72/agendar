@@ -5,7 +5,7 @@ include('data_formatada.php');
 $id = $_GET['id'];
 
 //BUSCAR AS INFORMAÇÕES DO PEDIDO
-$query = $pdo->query("SELECT * from receber where id = '$id' ");
+$query = $pdo->query("SELECT * from receber where id = '$id' and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
 $id = $res[0]['id'];	
@@ -28,7 +28,7 @@ $dataF = implode('/', array_reverse(explode('-', $data)));
 	//$horaF = date("H:i", strtotime($hora));	
 
 
-$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente'");
+$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $nome_cliente = @$res2[0]['nome'];
 $telefone_cliente = @$res2[0]['telefone'];
@@ -118,7 +118,7 @@ $endereco_cliente = @$res2[0]['endereco'];
 	}
 	
 	
-}
+
 </style>
 
 
@@ -146,7 +146,7 @@ Venda: <b><?php echo $id ?></b> - Data: <?php echo $dataF ?>
 
 <?php 
 
-$res = $pdo->query("SELECT * from receber where data_pgto = '$data' and pessoa = '$cliente' and tipo = 'Venda' order by id asc");
+$res = $pdo->query("SELECT * from receber where data_pgto = '$data' and pessoa = '$cliente' and tipo = 'Venda' and id_conta = '$id_conta' order by id asc");
 $dados = $res->fetchAll(PDO::FETCH_ASSOC);
 $linhas = count($dados);
 
@@ -169,7 +169,7 @@ for ($i=0; $i < count($dados); $i++) {
 	$sub_tot += $valor_serv;
 	$sub_totF = number_format($sub_tot, 2, ',', '.');
 
-		$query2 = $pdo->query("SELECT * FROM produtos where id = '$produto'");
+		$query2 = $pdo->query("SELECT * FROM produtos where id = '$produto' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 		if(@count(@$res2) > 0){
 			$nome_serv = $res2[0]['nome'];			

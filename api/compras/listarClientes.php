@@ -2,7 +2,7 @@
 require_once("../../sistema/conexao.php");
 
 
-$query = $pdo->query("SELECT * FROM fornecedores ORDER BY nome asc");
+$query = $pdo->query("SELECT * FROM fornecedores where id_conta = '$id_conta' ORDER BY nome asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){

@@ -24,7 +24,7 @@ if($mes_atual == '4' || $mes_atual == '6' || $mes_atual == '9' || $mes_atual == 
 
 $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 
-$id_func = $_SESSION['id'];
+$id_func = $_SESSION['id_usuario'];
 ?>
 
 <div class="bs-example widget-shadow" style="padding:15px">

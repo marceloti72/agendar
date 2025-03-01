@@ -4,7 +4,7 @@ $tabela = 'horarios';
 
 $id_func = $_POST['func'];
 
-$query = $pdo->query("SELECT * FROM $tabela where funcionario = '$id_func' ORDER BY horario asc");
+$query = $pdo->query("SELECT * FROM $tabela where funcionario = '$id_func' and id_conta = '$id_conta' ORDER BY horario asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){
