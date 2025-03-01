@@ -4,17 +4,28 @@ require_once("../sistema/conexao.php");
 $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
 $url = explode("//", $url);
 
+$nome = $_POST['nome'];
+$telefone = $_POST['telefone'];
+$mensagem = $_POST['mensagem'];
+$dest = $_POST['email'];
 
-if ($url[1] != 'localhost/') {
 
-    $remetente = $email_sistema;
-    $assunto = 'Contato - ' . $nome_sistema;
+if ($url[1] != 'localhost/') {    
 
-    $mensagem = utf8_decode('Nome: ' . $_POST['nome'] . "\r\n" . "\r\n" . 'Telefone: ' . $_POST['telefone'] . "\r\n" . "\r\n" . 'Mensagem: ' . "\r\n" . "\r\n" . $_POST['mensagem']);
-    $dest = $_POST['email'];
-    $cabecalhos = "From: " . $dest;
+$mensagem_corpo = "Nome: " . $nome . "\r\n\r\n" .
+                  "Telefone: " . $telefone . "\r\n\r\n" .
+                  "Mensagem:\r\n\r\n" . $mensagem;
 
-    mail($remetente, $assunto, $mensagem, $cabecalhos);
+$cabecalhos = "From: " . $remetente . "\r\n" .
+              "Reply-To: " . $dest . "\r\n" .
+              "Content-Type: text/plain; charset=UTF-8\r\n" .
+              "X-Mailer: PHP/" . phpversion();
+
+if (mail($dest, $assunto, $mensagem_corpo, $cabecalhos)) {
+    echo "E-mail enviado com sucesso!";
+} else {
+    echo "Erro ao enviar o e-mail.";
+}
 }
 
 
