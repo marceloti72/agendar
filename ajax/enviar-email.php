@@ -16,7 +16,7 @@ $mensagem_corpo = "Nome: " . $nome . "\r\n\r\n" .
                   "Telefone: " . $telefone . "\r\n\r\n" .
                   "Mensagem:\r\n\r\n" . $mensagem;
 
-$cabecalhos = "From: " . $remetente . "\r\n" .
+$cabecalhos = "From: maroni.alimentos01@gmail.com" .
               "Reply-To: " . $dest . "\r\n" .
               "Content-Type: text/plain; charset=UTF-8\r\n" .
               "X-Mailer: PHP/" . phpversion();
