@@ -179,7 +179,7 @@ $sobrenome = $_REQUEST["sobrenome"];
         const renderStatusScreenBrick = async (bricksBuilder) => {
             const settings = {
                 initialization: {
-                    paymentId: '<?= $_GET["id_produto"]; ?>',
+                    paymentId: '<?= $_GET["id"]; ?>',
                 },
                 customization: {
                     visual: {
@@ -216,7 +216,7 @@ $sobrenome = $_REQUEST["sobrenome"];
 
         function check(id, id_conta) {
             var settings = {
-                "url": "<?= $url; ?>pagamentos/process_payment.php?acc=check&id=" + id + "&id_produto=" + id_conta,
+                "url": "<?= $url; ?>pagamentos/process_payment_produto.php?acc=check&id=" + id + "&id_produto=" + id_conta,
                 "method": "GET",
                 "timeout": 0
             };
