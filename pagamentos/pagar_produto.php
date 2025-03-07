@@ -228,7 +228,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                         $("#form-pago").slideDown("fast");
                         if (redi.trim() == "Sim") {
                             setTimeout(() => {
-                                window.location = "pag_aprovado_produto.php";
+                                window.location = "pag_aprovado_produto.php?id_produto="+id_conta;
                                 //alert('Pagamento efetuado com sucesso!');
                                 //$("#btn_form").click();
                             }, 6000);
