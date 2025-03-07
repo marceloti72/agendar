@@ -128,10 +128,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 								<label>Serviço</label> 
 								<select class="form-control sel2" id="servico" name="servico" style="width:100%;" required>
 									 
-
-								<?php 
-
-                         if(@$_SESSION['nivel_usuario'] != 'Individual'){
+								<?php      
 
 								$query = $pdo->query("SELECT * FROM servicos_func where funcionario = '$id_usuario' and id_conta = '$id_conta' ");
 								$res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -147,44 +144,15 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 									}		
 								}else{
 									echo '<option value="">Nenhum Serviço</option>';
-								}
-
-							}else{
-
-								$query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta' and ativo = 'Sim' ");
-								$res = $query->fetchAll(PDO::FETCH_ASSOC);
-								if(@count($res) > 0){
-									for($i=0; $i < @count($res); $i++){
-										$serv = $res[$i]['id'];
-										$nome_func = $res[$i]['nome'];
-
-										echo '<option value="'.$serv.'">'.$nome_func.'</option>';
-									}		
-								}else{
-									echo '<option value="">Nenhum Serviço</option>';
-								}
-
-							}
-									?>
-
+								}?>
 
 								</select>    
 							</div>						
-						</div>				
-
-
-							
+						</div>									
 
 					</div>
 
-
-				
-
-
-
-					<div class="row">
-
-							
+					<div class="row">							
 
 						<div class="col-md-3" id="nasc">						
 							<div class="form-group"> 

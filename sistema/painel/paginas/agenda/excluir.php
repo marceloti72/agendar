@@ -1,4 +1,4 @@
-<?php 
+<?php
 $tabela = 'agendamentos';
 require_once("../../../conexao.php");
 
@@ -7,7 +7,7 @@ $id = $_POST['id'];
 $query = $pdo->query("SELECT * FROM $tabela where id = '$id' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $cliente = $res[0]['cliente'];
-$usuario = $res[0]['funcionario'].'';
+$usuario = $res[0]['funcionario'] . '';
 $data = $res[0]['data'];
 $hora = $res[0]['hora'];
 $servico = $res[0]['servico'];
@@ -26,45 +26,43 @@ $pdo->query("DELETE FROM horarios_agd where agendamento = '$id' and id_conta = '
 
 echo 'Excluído com Sucesso';
 
-if($hash != ""){
+if ($hash != "") {
 	require('../../../../ajax/agendar-delete.php');
 }
 
 
 
-if($msg_agendamento == 'Api'){
+if ($msg_agendamento == 'Sim') {
 
-$query = $pdo->query("SELECT * FROM usuarios where id = '$usuario' and id_conta = '$id_conta' ");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$nome_func = $res[0]['nome'];
-$tel_func = $res[0]['telefone'];
+	$query = $pdo->query("SELECT * FROM usuarios where id = '$usuario' and id_conta = '$id_conta' ");
+	$res = $query->fetchAll(PDO::FETCH_ASSOC);
+	$nome_func = $res[0]['nome'];
+	$tel_func = $res[0]['telefone'];
 
-$query = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta' ");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$nome_serv = $res[0]['nome'];
+	$query = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta' ");
+	$res = $query->fetchAll(PDO::FETCH_ASSOC);
+	$nome_serv = $res[0]['nome'];
 
 
-$mensagem = '_Agendamento Cancelado_ %0A';
-$mensagem .= 'Profissional: *'.$nome_func.'* %0A';
-$mensagem .= 'Serviço: *'.$nome_serv.'* %0A';
-$mensagem .= 'Data: *'.$dataF.'* %0A';
-$mensagem .= 'Hora: *'.$horaF.'* %0A';
-$mensagem .= 'Cliente: *'.$nome_cliente.'* %0A';
+	$mensagem = '_Agendamento Cancelado_ %0A';
+	$mensagem .= 'Profissional: *' . $nome_func . '* %0A';
+	$mensagem .= 'Serviço: *' . $nome_serv . '* %0A';
+	$mensagem .= 'Data: *' . $dataF . '* %0A';
+	$mensagem .= 'Hora: *' . $horaF . '* %0A';
+	$mensagem .= 'Cliente: *' . $nome_cliente . '* %0A';
 
-$telefone = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
+	$telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
 
-require('../../../../ajax/api-texto.php');
+	require('../../../../ajax/api-texto.php');
 
-//avisar o profissional
-$telefone = '55'.preg_replace('/[ ()-]+/' , '' , $tel_func);
-require('../../../../ajax/api-texto.php');
+	//avisar o profissional
+	$telefone = '55' . preg_replace('/[ ()-]+/', '', $tel_func);
+	require('../../../../ajax/api-texto.php');
 }
 
-if($not_sistema == 'Sim'){
+if ($not_sistema == 'Sim') {
 	$mensagem_not = $nome_cliente;
-	$titulo_not = 'Agendamento Cancelado '.$dataF.' - '.$horaF;
+	$titulo_not = 'Agendamento Cancelado ' . $dataF . ' - ' . $horaF;
 	$id_usu = $usuario;
 	require('../../../../api/notid.php');
-} 
-
-?>
+}

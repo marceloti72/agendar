@@ -1,10 +1,13 @@
 <?php
-@session_start();
+
 require_once("conexao.php");
 
 date_default_timezone_set('America/Sao_Paulo');
 
 $fusoHorarioAtual = date('Y-m-d H:i:s');
+
+$url = "https://" . $_SERVER['HTTP_HOST'] . "/";
+$url = explode("//", $url);
 
 $usuario = $_POST['usuario'];
 $senha = $_POST['senha'];
@@ -16,7 +19,7 @@ $res = $query->fetch(PDO::FETCH_ASSOC);
 
 if ($res) {
 
-	if ($res['nivel'] != 'Administrador' && $res['nivel'] != 'Individual') {
+	if ($res['nivel'] != 'Administrador') {
 		if ($res['ativo'] != 'Sim') {
 			echo "<script language='javascript'> window.alert('Seu acesso esta bloqueado! Favor entar em contato com a instituição.') </script>";
 

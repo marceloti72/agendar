@@ -31,7 +31,7 @@ if($total_reg > 0){
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/estilo-login.css">
-	<link rel="icon" type="image/png" href="img/favicon.ico">
+	<link rel="icon" type="image/png" href="../images/favicon<?php echo $id_conta?>.png">
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
 
@@ -45,7 +45,7 @@ if($total_reg > 0){
     	<div class="col-md-4 col-md-offset-4">
     		<div class="panel panel-default form-login" style="opacity:0.9; border-radius: 20px">
 			  	<div class="panel-heading" align="center" style="border-top-right-radius: 20px; border-top-left-radius: 20px">
-			    	<img src="img/logo.png" width="250px">
+			    	<img src="img/logo<?php echo $id_conta?>.png" width="250px">
 			 	</div>
 			  	<div class="panel-body">
 			    	<form accept-charset="UTF-8" role="form" action="autenticar.php" method="post">

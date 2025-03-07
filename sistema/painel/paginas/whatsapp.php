@@ -37,7 +37,7 @@ if(@$whatsapp == 'ocultar'){
 <?php else: ?>
 <div>      
 	<a class="btn btn-primary" onclick="inserirW()" class="btn btn-primary btn-flat btn-pri" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Novo Dispositivo</a>
-	<a class="btn btn-primary" onclick="desconectar()" class="btn btn-primary btn-flat btn-pri" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-sign-out"  aria-hidden="true"></i> Desconectar Conta</a>
+	<!-- <a class="btn btn-primary" onclick="desconectar()" class="btn btn-primary btn-flat btn-pri" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-sign-out"  aria-hidden="true"></i> Desconectar Conta</a> -->
 	<input type="hidden" id="filtro" value="<?= $filtro;?>">
 </div>
 
@@ -97,7 +97,7 @@ if(@$whatsapp == 'ocultar'){
 
 
 
-<div style="display: flex; justify-content: flex-end;">
+<!-- <div style="display: flex; justify-content: flex-end;">
     <div style="margin-right: 20px;">
         <span class="fa fa-trophy text-warning" style="margin-right: 5px;"></span> 
         <span style="font-weight: bold;" class="text-warning">Plano:</span> 
@@ -108,10 +108,10 @@ if(@$whatsapp == 'ocultar'){
         <span style="font-weight: bold;" class="text-primary">Validade:</span> 
         <?= $validadeMenuia > date('Y-m-d') ? date('d-m-Y', strtotime($validadeMenuia)) : '<a href="https://chatbot.menuia.com/user/subscription">Vencido</a>'; ?>
     </div>
-</div>
+</div> -->
 
 <div class="bs-example widget-shadow" style="padding:15px" id="listar"></div>
-<div class="bs-example widget-shadow" style="padding:15px" id="logs"></div>
+<!-- <div class="bs-example widget-shadow" style="padding:15px" id="logs"></div> -->
 <?php endif; ?>
 
 

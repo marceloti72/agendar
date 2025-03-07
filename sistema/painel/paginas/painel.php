@@ -5,11 +5,6 @@ require_once __DIR__ . '/../../conexao.php';
 
 $usuario_nivel = $_SESSION['nivel_usuario'];
 
-$comandas_disabled = ($usuario_nivel == "Individual") ? "disabled" : "";
-$marketing_disabled = ($usuario_nivel == "Individual") ? "disabled" : "";
-$comandas_opacity = ($usuario_nivel == "Individual") ? "0.5" : "1";
-$marketing_opacity = ($usuario_nivel == "Individual") ? "0.5" : "1";
-
 $hoje = date('Y-m-d');
 
 //verificar se ele tem a permissão de estar nessa página
@@ -29,15 +24,21 @@ $total_comandas = @count($res);
 $query = $pdo->query("SELECT * FROM marketing where id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_marketing = @count($res);
+
+$query = $pdo->query("SELECT * FROM produtos where id_conta = '$id_conta'");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$total_produtos = @count($res);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <style>
+    <title>Painel</title>
+    
+</head>
+<style>
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -67,7 +68,7 @@ $total_marketing = @count($res);
         }
 
         .widget {            
-            background-color: #836FFF;
+            background-color: #D2691E;
             color: white;
             border-radius: 10px;
             box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);
@@ -113,19 +114,18 @@ $total_marketing = @count($res);
             pointer-events: none;
         }
     </style>
-</head>
 <body>
     <div class="container">
         <div class="row">
-            <div class="col_3" <?php echo $comandas_disabled; ?> onclick="<?php if ($comandas_disabled == "") { echo "$('#modalFormComanda').modal('show')"; } ?>">
-                <div class="widget <?php if ($comandas_disabled != "") { echo "disabled"; } ?>" style="opacity: <?php echo $comandas_opacity; ?>">
+            <a href="comanda" class="col_3">
+                <div class="widget">
                     <div class="stats">
                         <h5><strong>COMANDAS</strong></h5>
                     </div>
                     <hr>
                     <div><span>Comandas Hoje: <?php echo $total_comandas; ?></span></div>
                 </div>
-            </div>
+            </a>
 
             <a href="meus_servicos" class="col_3">
                 <div class="widget">
@@ -137,17 +137,15 @@ $total_marketing = @count($res);
                 </div>
             </a>
 
-            <div class="col_3" <?php echo $marketing_disabled; ?>>
-                <a href="<?php if ($marketing_disabled == "") { echo "marketing"; } ?>" style="pointer-events: <?php if ($marketing_disabled != "") { echo "none"; } ?>">
-                    <div class="widget <?php if ($marketing_disabled != "") { echo "disabled"; } ?>" style="opacity: <?php echo $marketing_opacity; ?>">
+            <a href="meus_servicos" class="col_3">
+                <div class="widget">
                         <div class="stats">
                             <h5><strong>MARKETING</strong></h5>
                         </div>
                         <hr>
                         <div><span>Total de campanhas: <?php echo $total_marketing; ?></span></div>
                     </div>
-                </a>
-            </div>
+                </a>           
         </div>
         <div class="row">
             <a href="calendario" class="col_3">
@@ -174,6 +172,16 @@ $total_marketing = @count($res);
                 </div>
             </a>
         </div>
+        <div class="row">
+        <a href="meus_servicos" class="col_3">
+                <div class="widget">
+                        <div class="stats">
+                            <h5><strong>VENDA PRODUTOS</strong></h5>
+                        </div>
+                        <hr>
+                        <div><span>Total de produtos: <?php echo $total_produtos; ?></span></div>
+                    </div>
+                </a>            
     </div>
 </body>
 </html>

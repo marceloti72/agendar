@@ -1,16 +1,13 @@
 <?php
 
 $data = [
-  'appkey' => $instancia,
-      'authkey' => $token,
-      'to' => $telefone,
-      "message" => $mensagem,
-  
-  "isStreamEnabled" => false,
-  
-  "isOnlyRegistering" => false,
- 
-  "textBubbleContentFormat" => "richText"
+   'appkey' => 'GESTAO',
+    'authkey' => 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9',
+    'to' => $telefone,
+    "message" => $mensagem,  
+    "isStreamEnabled" => false,    
+    "isOnlyRegistering" => false,  
+    "textBubbleContentFormat" => "richText"
 ];
 
 $json_data = json_encode($data); // Converte o array PHP para JSON

@@ -12,13 +12,30 @@ $nome_adm = $_POST['nome'];
 $nome = 'Teste nº' . $numero_aleatorio;
 $telefone = $_POST['telefone'];
 $email_adm = $_POST['email'];
-$nivel = 'Individual';
+$nivel = 'Administrador';
 $username = $_POST['username'];
+$plano = $_POST['plano'];
+$frequencia = $_POST['frequencia'];
+$valor = $_POST['valor'];
+
+if($frequencia == '30'){
+    $periodo = 'Mensal';
+}else{
+    $periodo = 'Anual';
+}
+
+if($plano == '1'){
+    $plano2 = 'Individual';
+}else{
+    $plano2 = 'Empresa';
+}
+
+
 
 $ativo = 'teste';
 $logo = 'logo-teste.png';
 
-$valor = '39.90';
+//$valor = '39.90';
 $senha = '123';
 $hash = password_hash($senha, PASSWORD_DEFAULT);
 
@@ -29,6 +46,10 @@ $servidor = 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
 $usuario = 'skysee';
 $senha = '9vtYvJly8PK6zHahjPUg';
 $banco = 'barbearia';
+
+$token_menuia = 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9';
+$email_menuia = 'rtcoretora@gmail.com';
+
 
 $hoje = date('Y-m-d');
 
@@ -75,18 +96,21 @@ try {
     $pdo->beginTransaction();
 
     // Cadastra a instituição no EDUK
-    $res1 = $pdo->prepare("INSERT INTO config SET nome = :nome, telefone_whatsapp = :telefone, email = :email_adm, ativo = :ativo, username = :username");
+    $res1 = $pdo->prepare("INSERT INTO config SET nome = :nome, telefone_whatsapp = :telefone, email = :email_adm, ativo = :ativo, username = :username, token = :token, email_menuia = :email_menuia, plano = :plano, api = 'Sim'");
     $res1->bindValue(":nome", $nome);
     $res1->bindValue(":telefone", $telefone);
     $res1->bindValue(":email_adm", $email_adm);
     $res1->bindValue(":ativo", $ativo);
     $res1->bindValue(":username", $username);
+    $res1->bindValue(":token", $token_menuia);
+    $res1->bindValue(":email_menuia", $email_menuia);
+    $res1->bindValue(":plano", $plano);
     $res1->execute();
 
     $id_conta = $pdo->lastInsertId();
 
     // Cadastra o perfil ADM-MASTER
-    $res2 = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, cpf = :cpf, email = :email, telefone = :telefone, senha = :senha, nivel = :nivel, id_conta = :id_conta, ativo = :ativo, atendimento = 'Não'");
+    $res2 = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, cpf = :cpf, email = :email, telefone = :telefone, senha = :senha, nivel = :nivel, id_conta = :id_conta, ativo = :ativo, atendimento = 'Sim', intervalo = '15', username = :username");
     $res2->bindValue(":nome", $nome_adm);
     $res2->bindValue(":cpf", $cpf);
     $res2->bindValue(":email", $email_adm);
@@ -95,30 +119,16 @@ try {
     $res2->bindValue(":nivel", $nivel);
     $res2->bindValue(":ativo", $ativo);
     $res2->bindValue(":id_conta", $id_conta);
+    $res2->bindValue(":username", $username);
     $res2->execute();
 
     $id_usuario = $pdo->lastInsertId();
-
-    if ($nivel == 'Individual') {
-        $permissoes = [22, 34, 38, 40, 3, 4, 5, 6, 8, 35, 39, 11, 12, 13, 14, 15, 16, 17, 18, 19, 25, 26, 32, 33, 27, 29, 30, 31, 36];
-        foreach ($permissoes as $permissao) {
-            try {
-                $query = $pdo->prepare("INSERT INTO usuarios_permissoes (permissao, usuario, id_conta) VALUES (:permissao, :usuario, :conta)");
-                $query->bindParam(':permissao', $permissao, PDO::PARAM_INT);
-                $query->bindParam(':usuario', $id_usuario, PDO::PARAM_INT);
-                $query->bindParam(':conta', $id_conta, PDO::PARAM_INT);
-                $query->execute();
-            } catch (PDOException $e) {
-                echo "Erro ao inserir permissão: " . $e->getMessage();
-            }
-        }
-    }
+   
 
     // Configurações do banco de dados (variam conforme ambiente)
     $url = "https://$_SERVER[HTTP_HOST]/";
     $url2 = explode("//", $url);
-    echo $url2[1];
-
+    
     if ($url2[1] == 'localhost/') {
         // Banco de dados local
         $host = 'localhost';
@@ -140,7 +150,7 @@ try {
     ]);
 
     // Insere o cliente no segundo banco
-    $res3 = $pdo2->prepare("INSERT INTO clientes SET nome = :nome_adm, instituicao = :instituicao, telefone = :telefone, email = :email_adm, valor = :valor, data_pgto = :data_pgto, pago = :pago, ativo = :ativo, servidor = :servidor, banco = :banco, usuario = :usuario, senha = :senha, id_conta = :id_cliente, data_cad = NOW()");
+    $res3 = $pdo2->prepare("INSERT INTO clientes SET nome = :nome_adm, instituicao = :instituicao, telefone = :telefone, email = :email_adm, valor = :valor, data_pgto = :data_pgto, pago = :pago, ativo = :ativo, servidor = :servidor, banco = :banco, usuario = :usuario, senha = :senha, id_conta = :id_cliente, data_cad = NOW(), plano = :plano, frequencia = :frequencia");
     $res3->bindValue(":id_cliente", $id_conta);
     $res3->bindValue(":nome_adm", $nome_adm);
     $res3->bindValue(":instituicao", $nome);
@@ -154,15 +164,17 @@ try {
     $res3->bindValue(":usuario", $usuario);
     $res3->bindValue(":senha", $senha);
     $res3->bindValue(":ativo", $ativo);
+    $res3->bindValue(":plano", $plano);
+    $res3->bindValue(":frequencia", $frequencia);
     $res3->execute();
 
     $id_cliente = $pdo2->lastInsertId();
 
     // Calcula a data de vencimento (7 dias após a data de pagamento)
-    $nova_data_vencimento = date('Y-m-d', strtotime("+15 days", strtotime($data_pgto)));
+    $nova_data_vencimento = date('Y-m-d', strtotime("+7 days", strtotime($data_pgto)));
 
     // Insere o registro na tabela 'receber'
-    $res4 = $pdo2->prepare("INSERT INTO receber SET empresa = :empresa, tipo = :tipo, descricao = :descricao, pessoa = :pessoa, valor = :valor, subtotal = :subtotal, vencimento = :vencimento, data_lanc = :data_lanc, arquivo = :arquivo, pago = :pago, cliente = :cliente");
+    $res4 = $pdo2->prepare("INSERT INTO receber SET empresa = :empresa, tipo = :tipo, descricao = :descricao, pessoa = :pessoa, valor = :valor, subtotal = :subtotal, vencimento = :vencimento, data_lanc = :data_lanc, arquivo = :arquivo, pago = :pago, cliente = :cliente, frequencia = :frequencia");
     $res4->bindValue(":empresa", '0');
     $res4->bindValue(":tipo", 'Empresa');
     $res4->bindValue(":descricao", 'Mensalidade');
@@ -173,6 +185,7 @@ try {
     $res4->bindValue(":arquivo", 'sem-foto.png');
     $res4->bindValue(":pago", $pago);
     $res4->bindValue(":cliente", $id_cliente);
+    $res4->bindValue(":frequencia", $frequencia);
     $res4->bindValue(":data_lanc", date('Y-m-d'));
     $res4->execute();
 
@@ -239,8 +252,8 @@ try {
             $mail->Subject = 'Dados para Acesso';
             $mail->Body = "<small style=\"opacity: 0.5\"><i>Mensagem automática gerada pelo sistema <b>Skysse Soluções em TI</b>, favor não responder.<i></small><br>";
             $mail->Body .= "$saudacao, {$primeiroNome[0]}<br>";
-            $mail->Body .= "Seu periodo de 15 dias de teste grátis foi concluido com sucesso. Segue os dados para acesso ao sistema:<br><br>";
-            $mail->Body .= "Link do sistema: <a href='{$link}'>www.agendar.skysee.com.br</a><br>";
+            $mail->Body .= "Seu periodo de 7 dias de teste grátis foi concluido com sucesso. Segue os dados para acesso ao sistema:<br><br>";
+            $mail->Body .= "Link do sistema: <a href='{$link_pgto}'>www.agendar.skysee.com.br</a><br>";
             $mail->Body .= "Login: <b>$email_adm</b><br>";
             $mail->Body .= "Senha: <b>123</b><br><br>";
             $mail->Body .= "<b>Obs:</b> Altere sua senha, basta acessar o seu perfil.<br><br>";
@@ -255,27 +268,32 @@ try {
     }
 
     // Mensagem para WhatsApp
-    $mensagem = "*SKYSEE - Soluções em TI*%0A%0A";
+    $mensagem = "*AGENDAR - Sistema de Gestão de Serviços*%0A%0A";
     $mensagem .= "$saudacao, *" . $primeiroNome[0] . "*%0A%0A";
     $mensagem .= "Seja bem-vindo ao nosso sistema!$grinning%0A%0A";
     $mensagem .= "Segue os dados para acesso:%0A";
-    $mensagem .= "*Login:* $email_adm%0A";
+    $mensagem .= "*Login:* $username%0A";
     $mensagem .= "*Senha:* 123%0A";
     $mensagem .= "Altere sua senha assim que acessar e complete seus dados!%0A%0A";
-    $mensagem .= "Você tem 15 dias grátis para conhecer nosso sistema.%0A%0A";
+    $mensagem .= "Você tem 7 dias grátis para conhecer nosso sistema.%0A%0A";
     $mensagem .= "*Segue os dados para assinatura*" . $point_down . "  %0A%0A";
     $mensagem .= "Cliente: *" . $nome . "* %0A";
+    $mensagem .= "Plano: *" . $plano2 . "* %0A";
+    $mensagem .= "Período: *" . $periodo . "* %0A";
     $mensagem .= "Valor: R$ " . $valor . "%0A";
     $mensagem .= "Vencimento: *" . $data_vencF . "* %0A%0A";
+    $mensagem .= "Link para acesso: https://www.agendar.skysee.com.br/login.php";
 
     require("./ajax/api-texto-ass.php");
 
     // Mensagem de lembrete para WhatsApp (1 dia antes do vencimento)
     $mensagem = $sino . " _Lembrete Automático de Vencimento!_ %0A%0A";
-    $mensagem .= "*SKYSEE - Soluções em TI* %0A%0A";
+    $mensagem .= "*AGENDAR - Sistema de Gestão de Serviços* %0A%0A";
     $mensagem .= "*" . $saudacao . "* tudo bem? " . $grinning . "%0A%0A";
     $mensagem .= "Queremos lembra que sua mensalidade, referente ao teste grátis, vençerá amanhã %0A";
     $mensagem .= "Efetue o pagamento para continuar usando nosso sistema! %0A%0A";
+    $mensagem .= "Plano: *" . $plano2 . "* %0A";
+    $mensagem .= "Período: *" . $periodo . "* %0A";
     $mensagem .= "Mensalidade: *R$ " . $valor . "* %0A";
     $mensagem .= "Vencimento: *" . $data_vencF . "* %0A%0A";
     $mensagem .= "Efetue o pagamento no link abaixo " . $point_down . " %0A";

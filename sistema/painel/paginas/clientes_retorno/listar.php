@@ -40,7 +40,7 @@ for($i=0; $i < $total_reg; $i++){
 	$data_nascF = implode('/', array_reverse(@explode('-', $data_nasc)));
 	$data_retornoF = implode('/', array_reverse(@explode('-', $data_retorno)));
 	
-	if($data_nascF == '00/00/0000'){
+	if($data_nascF == '00/00/0000' || $data_nascF == null){
 		$data_nascF = 'Sem Lançamento';
 	}
 	

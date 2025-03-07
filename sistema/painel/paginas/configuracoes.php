@@ -125,7 +125,8 @@ if(@$configuracoes == 'ocultar'){
                         
 						<div class="col-md-2">
 							<div class="form-group">
-								<label for="exampleInputEmail1">Alertas WhatsApp <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Notificações de WhatsApp, selecione SIM para o cliente receber diversos alertas como, agendamentos, confirmações, cancelamentos, campanhas de marketing e outos. Lembre-se de fazer a leitura do QRcode no menu lateral em 'WhatsApp'." style="color: blue;"></i></label>
+								<label for="exampleInputEmail1">Alertas WhatsApp <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Notificações de WhatsApp, selecione SIM para o cliente receber diversos alertas como: Agendamentos, Confirmações, Cancelamentos, Campanhas de marketing, Mensagem de retorno, Mensagem de aniversário e outos.
+								Lembre-se de fazer a leitura do QRcode no menu lateral em 'WhatsApp'." style="color: blue;"></i></label>
 								<select class="form-control" name="api" id="api">
 									<option value="Sim" <?php if($api == 'Sim'){?> selected <?php } ?> >Sim</option>
 									<option value="Não" <?php if($api == 'Não'){?> selected <?php } ?> >Não</option>

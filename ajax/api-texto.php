@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../sistema/conexao.php';
-require_once __DIR__ . '/../funcoes.php';
+//require_once __DIR__ . '/../funcoes.php';
 
 
    $mensagem = str_replace("%0A", "\n", $mensagem); 
@@ -27,7 +27,7 @@ require_once __DIR__ . '/../funcoes.php';
     curl_close($curl);
     $response = json_decode($response, true);
     
-    save_log($pdo, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'GESTÃO', $response, 'texto', $telefone, $mensagem, $id_conta);
+    //save_log($pdo, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'GESTÃO', $response, 'texto', $telefone, $mensagem, $id_conta);
     
 
 ?>

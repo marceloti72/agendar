@@ -32,7 +32,7 @@ $pag = 'funcionarios';
 					</div>
 
 					<div class="col-md-4">						
-						<button type="submit" class="btn btn-primary" style="margin-top:20px">Salvar</button>
+						<button type="submit" class="btn btn-primary" style="margin-top:20px">Incluir Serviço</button>
 					</div>
 
 					<input type="hidden" name="id" id="id_dias" value="<?php echo $id_usuario ?>">

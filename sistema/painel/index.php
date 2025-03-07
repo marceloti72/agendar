@@ -52,6 +52,10 @@ $dataMesInicial = $partesInicial[1];
 
 
 
+$query = $pdo->query("SELECT plano from config where id = '$id_conta'");
+$res3 = $query->fetch(PDO::FETCH_ASSOC);
+$plano = $res3['plano'];
+
 ?>
 
 <!DOCTYPE HTML>
@@ -179,9 +183,9 @@ $dataMesInicial = $partesInicial[1];
 
 	
 </head> 
-<body class="cbp-spmenu-push">
+<body class="cbp-spmenu-push" >
 	<div class="main-content">
-		<div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+		<div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1" >
 			<!--left-fixed -navigation-->
 			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
 				<nav class="navbar navbar-inverse" >
@@ -205,10 +209,24 @@ $dataMesInicial = $partesInicial[1];
 								</a>
 							</li>
 
-							<li class="treeview <?php echo @$home ?>">
+							<!-- <li class="treeview <?php echo @$home ?>">
 								<a href="index.php">
 									<i class="fa fa-dashboard"></i> <span>Dashboards</span>
 								</a>
+							</li> -->
+							<li class="treeview <?php echo @$home ?>">
+								<a href="#">
+									<i class="fa fa-dashboard"></i>
+									<span>Dashboards</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+									<li class="<?php echo @$home ?>"><a href="index.php"><i class="fa fa-angle-right"></i>Financeiro</a></li>
+									<li class="<?php echo @$home ?>"><a href="grafico_dias"><i class="fa fa-angle-right"></i>Agendamentos Mês</a></li>
+									<li class="<?php echo @$home ?>"><a href="grafico_ano"><i class="fa fa-angle-right"></i>Agendamentos Ano</a></li>
+					
+
+								</ul>
 							</li>
 
 							<li class="treeview <?php echo @$comanda ?>">
@@ -218,7 +236,7 @@ $dataMesInicial = $partesInicial[1];
 							</li>
 
 
-							<li class="treeview <?php echo @$menu_pessoas ?>">
+							<!-- <li class="treeview <?php echo @$menu_pessoas ?>">
 								<a href="#">
 									<i class="fa fa-users"></i>
 									<span>Pessoas</span>
@@ -234,7 +252,7 @@ $dataMesInicial = $partesInicial[1];
 									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"><i class="fa fa-angle-right"></i>Fornecedores</a></li>
 
 								</ul>
-							</li>
+							</li> -->
 
 
 
@@ -245,7 +263,37 @@ $dataMesInicial = $partesInicial[1];
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
 								<ul class="treeview-menu">
-								<li class="treeview <?php echo @$menu_cadastros ?>">
+
+								<?php 
+								if($plano == '2'){
+								?>
+								<li class="<?php echo @$usuarios ?>"><a href="usuarios"><i class="fa fa-angle-right"></i>Usuários</a></li>
+								<li class="<?php echo @$funcionarios ?>"><a href="funcionarios"><i class="fa fa-angle-right"></i>Funcionários</a></li>
+								<li class="<?php echo @$cargos ?>"><a href="cargos"><i class="fa fa-angle-right"></i>Cargos</a></li>
+								<?php 
+								}
+								
+								?>							
+
+
+								<li class="<?php echo @$clientes ?>"><a href="clientes"><i class="fa fa-angle-right"></i>Clientes</a></li>
+								
+									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"><i class="fa fa-angle-right"></i>Fornecedores</a></li>									
+
+									<!-- <li class="<?php echo @$grupos ?>"><a href="grupos"><i class="fa fa-angle-right"></i>Grupo Acessos</a></li>
+
+									<li class="<?php echo @$acessos ?>"><a href="acessos"><i class="fa fa-angle-right"></i>Acessos</a></li> -->
+
+										<li class="<?php echo @$pgto ?>"><a href="pgto"><i class="fa fa-angle-right"></i>Formas de Pagamento</a></li>
+
+										<li><a href="dias"><i class="fa fa-angle-right"></i>Horários / Dias</a></li>
+
+										<li class="<?php echo @$dias_bloqueio ?>"><a href="dias_bloqueio"><i class="fa fa-angle-right"></i>Bloqueio de Dias</a></li>
+								
+								</ul>
+							</li>							
+
+							<li class="treeview <?php echo @$menu_cadastros ?>">
 								<a href="#">
 								<i class="fa fa-briefcase"></i>
 									<span>Serviços</span>
@@ -257,9 +305,8 @@ $dataMesInicial = $partesInicial[1];
 
 								   <li class="<?php echo @$cat_servicos ?>"><a href="cat_servicos"><i class="fa fa-angle-right"></i>Categoria Serviços</a></li>
 								</ul>
-							</li>
 
-							<li class="treeview <?php echo @$menu_produtos ?>">
+								<li class="treeview <?php echo @$menu_produtos ?>">
 								<a href="#">
 								    <i class="fa fa-tags"></i>
 									<span>Produtos</span>
@@ -278,29 +325,7 @@ $dataMesInicial = $partesInicial[1];
 									<li class="<?php echo @$entradas ?>"><a href="entradas"><i class="fa fa-angle-right"></i>Entradas</a></li>
 								
 								</ul>
-							</li>
-
-									<li class="<?php echo @$cargos ?>"><a href="cargos"><i class="fa fa-angle-right"></i>Cargos</a></li>
-
-									
-
-									<li class="<?php echo @$grupos ?>"><a href="grupos"><i class="fa fa-angle-right"></i>Grupo Acessos</a></li>
-
-									<li class="<?php echo @$acessos ?>"><a href="acessos"><i class="fa fa-angle-right"></i>Acessos</a></li>
-
-										<li class="<?php echo @$pgto ?>"><a href="pgto"><i class="fa fa-angle-right"></i>Formas de Pagamento</a></li>
-
-										<li><a href="dias"><i class="fa fa-angle-right"></i>Horários / Dias</a></li>
-
-										<li class="<?php echo @$dias_bloqueio ?>"><a href="dias_bloqueio"><i class="fa fa-angle-right"></i>Bloqueio de Dias</a></li>
-								
-								</ul>
-							</li>
-
-							
-
-
-							
+							</li>							
 
 
 
@@ -371,15 +396,16 @@ $dataMesInicial = $partesInicial[1];
 									<li class="<?php echo @$rel_aniv ?>"><a href="#" data-toggle="modal" data-target="#RelAniv"><i class="fa fa-angle-right"></i>Relatório de Aniversáriantes</a></li>
 
 
-									<li class="<?php echo @$rel_lucro ?>"><a href="#" data-toggle="modal" data-target="#RelLucro"><i class="fa fa-angle-right"></i>Demonstrativo de Lucro</a></li>
-
-
-								
-
-														
-								
+									<li class="<?php echo @$rel_lucro ?>"><a href="#" data-toggle="modal" data-target="#RelLucro"><i class="fa fa-angle-right"></i>Demonstrativo de Lucro</a></li>	
+															
 								</ul>
 							</li>
+
+							<li class="treeview <?php echo @$clientes_retorno ?>">
+                                <a href="clientes_retorno">
+                                    <i class="fa fa-bell"></i><span>Clientes Retornos</span>
+                                </a>
+                             </li>	
 
 
 							<li class="treeview">
@@ -397,12 +423,13 @@ $dataMesInicial = $partesInicial[1];
 								
 								</ul>
 							</li>
+                         
 
                             <li class="treeview <?= @$marketings ?>">
                                 <a href="marketingp">
                                     <i class="fa fa-paper-plane"></i><span>Campanha Marketing</span>
                                 </a>
-                             </li>
+                             </li>					
                             
 								<li class="treeview <?php echo @$calendario ?>">
 								<a href="calendario">
@@ -418,8 +445,10 @@ $dataMesInicial = $partesInicial[1];
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
 								<ul class="treeview-menu">
+									
+									<li> <a href="conf_site" ><i class="fa fa-angle-right"></i> Configurações</a> </li> 		
 
-									<li class="<?php echo @$textos_index ?>"><a href="textos_index"><i class="fa fa-angle-right"></i>Textos Index</a></li>
+									<li class="<?php echo @$textos_index ?>"><a href="textos_index"><i class="fa fa-angle-right"></i>Textos Carrossel</a></li>
 
 
 									<li class="<?php echo @$comentarios ?>"><a href="comentarios"><i class="fa fa-angle-right"></i>Comentários</a></li>
@@ -427,27 +456,31 @@ $dataMesInicial = $partesInicial[1];
 														
 								
 								</ul>
-							</li>
-
-
-
-
+							</li>                           
+							
 
 							<?php if(@$atendimento == 'Sim'){ ?>
+
+								<li class="header">MENU DO PROFISSIONAL</li>
 							<li class="treeview">
 								<a href="agenda">
 									<i class="fa fa-calendar-o"></i> <span>Minha Agenda</span>
 								</a>
-							</li>
-
-							<?php 
-						if(@$_SESSION['nivel_usuario'] != 'Individual'){
-						?>
+							</li>	
 							
 							<li class="treeview">
-								<a href="meus_servicos">
-									<i class="fa fa-server"></i> <span>Meus Serviços</span>
+								<a href="#">
+									<i class="fa fa-server"></i>
+									<span>Meus Serviços</span>
+									<i class="fa fa-angle-left pull-right"></i>
 								</a>
+								<ul class="treeview-menu">
+							
+									<li><a href="meus_servicos"><i class="fa fa-angle-right"></i> <span>Serviços</span></a>
+									</li>	
+
+									<li><a href="servicos_func"><i class="fa fa-angle-right"></i>Ativar Serviços</a></li>
+									</ul>
 							</li>	
 
 
@@ -467,24 +500,14 @@ $dataMesInicial = $partesInicial[1];
 								<ul class="treeview-menu">
 
 									<li><a href="dias"><i class="fa fa-angle-right"></i>Horários / Dias</a></li>
-									
-								
-									<li><a href="servicos_func"><i class="fa fa-angle-right"></i>Lançar Serviços</a></li>
 
 									<li><a href="dias_bloqueio_func"><i class="fa fa-angle-right"></i>Bloqueio de Dias</a></li>
 																		
 								
 								</ul>
-							</li>
-							<?php }?>
+							</li>							
 
-							<?php } ?>
-
-
-
-
-
-							
+							<?php } ?>						
 
 
 						</ul>
@@ -514,7 +537,7 @@ $dataMesInicial = $partesInicial[1];
 
 							?>
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell"></i><span class="badge text-danger"><?php echo $total_agendamentos_hoje_usuario_pendentes ?></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell" title="Agendamentos hoje"></i><span class="badge text-danger"><?php echo $total_agendamentos_hoje_usuario_pendentes ?></span></a>
 							<ul class="dropdown-menu">
 								<li>
 									<div class="notification_header" align="center">
@@ -586,7 +609,7 @@ $dataMesInicial = $partesInicial[1];
 
 							?>
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-birthday-cake" style="color:#FFF"></i><span class="badge" style="background: #2b6b39"><?php echo $total_aniversariantes_hoje ?></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Aniversariantes de hoje"><i class="fa fa-birthday-cake" style="color:#FFF"></i><span class="badge" style="background: #2b6b39"><?php echo $total_aniversariantes_hoje ?></span></a>
 							<ul class="dropdown-menu">
 								<li>
 									<div class="notification_header" align="center">
@@ -638,7 +661,7 @@ $dataMesInicial = $partesInicial[1];
 
 							?>
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-users" style="color:#FFF"></i><span class="badge" style="background: #c93504"><?php echo $total_clientes_retorno ?></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Clientes com retorno pendente"><i class="fa fa-users" style="color:#FFF"></i><span class="badge" style="background: #c93504"><?php echo $total_clientes_retorno ?></span></a>
 							<ul class="dropdown-menu">
 								<li>
 									<div class="notification_header" align="center">
@@ -690,7 +713,7 @@ $dataMesInicial = $partesInicial[1];
 
 							?>
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-comment" style="color:#FFF"></i><span class="badge" style="background: #22168a"><?php echo $total_comentarios ?></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Depoimentos pendentes"><i class="fa fa-comment" style="color:#FFF"></i><span class="badge" style="background: #22168a"><?php echo $total_comentarios ?></span></a>
 							<ul class="dropdown-menu">
 								<li>
 									<div class="notification_header" align="center">
@@ -757,7 +780,7 @@ $dataMesInicial = $partesInicial[1];
 						<li class="dropdown profile_details_drop">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<div class="profile_img">	
-									<span class="prfil-img"><img src="img/perfil/<?php echo $foto_usuario ?>" alt="" width="50" height="50"> </span> 
+									<span class="prfil-img"><img src="img/perfil/<?php if(!empty($foto_usuario)){ echo $foto_usuario;}else{?>sem-foto.jpg<?php }?>" alt="" width="50" height="50"> </span> 
 									<div class="user-name esc">
 										<p><?php echo $nome_usuario ?></p>
 										<span><?php echo $nivel_usuario ?></span>
@@ -772,9 +795,6 @@ $dataMesInicial = $partesInicial[1];
 								<li> <a href="configuracoes" ><i class="fa fa-cog"></i> Config. Sistema</a> </li> 	
 								<?php } ?>
 								
-								<?php if(@$configuracoes == ''){ ?>
-								<li> <a href="conf_site" ><i class="fa fa-cog"></i> Config. Site</a> </li> 	
-								<?php } ?>
 
 								<li> <a href="" data-toggle="modal" data-target="#modalPerfil"><i class="fa fa-suitcase"></i> Editar Perfil</a> </li> 
 								<li> <a href="logout.php"><i class="fa fa-sign-out"></i> Sair</a> </li>
@@ -918,7 +938,7 @@ $dataMesInicial = $partesInicial[1];
 <div class="modal fade" id="modalPerfil" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header text-white" style="background-color: #4682B4;">
 				<h4 class="modal-title" id="exampleModalLabel">Editar Perfil</h4>
 				<button id="btn-fechar-perfil" type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
 					<span aria-hidden="true" >&times;</span>
@@ -974,11 +994,7 @@ $dataMesInicial = $partesInicial[1];
 								<label for="exampleInputEmail1">Confirmar Senha</label>
 								<input type="password" class="form-control" id="conf-senha-perfil" name="conf_senha" placeholder="Confirmar Senha">    
 							</div> 	
-						</div>
-
-						<?php 
-						if(@$_SESSION['nivel_usuario'] != 'Individual'){
-						?>
+						</div>						
 
 						<div class="col-md-4">
 							<div class="form-group">
@@ -988,10 +1004,7 @@ $dataMesInicial = $partesInicial[1];
 									<option <?php if($atendimento == 'Não'){ ?> selected <?php } ?> value="Não">Não</option>
 								</select>  
 							</div> 	
-						</div>
-						<?php 
-						}
-						?>
+						</div>						
 
 					</div>
 
@@ -1026,7 +1039,7 @@ $dataMesInicial = $partesInicial[1];
 							</div>
 							<div class="col-md-4">
 								<div id="divImg">
-									<img src="img/perfil/<?php echo $foto_usuario ?>"  width="80px" id="target-usu">									
+									<img src="img/perfil/<?php if(!empty($foto_usuario)){ echo $foto_usuario;}else{?>sem-foto.jpg<?php }?>"  width="80px" id="target-usu">									
 								</div>
 							</div>
 
@@ -1040,7 +1053,7 @@ $dataMesInicial = $partesInicial[1];
 					<small><div id="mensagem-perfil" align="center"></div></small>
 				</div>
 				<div class="modal-footer">      
-					<button type="submit" class="btn btn-primary">Editar Perfil</button>
+					<button type="submit" class="btn btn-primary">Salvar</button>
 				</div>
 			</form>
 		</div>

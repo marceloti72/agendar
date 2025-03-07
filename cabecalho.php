@@ -92,7 +92,7 @@ if(isset($_GET['id'])){
 <body class="sub_page">
   <div class="hero_area">         
       <nav class="navbar navbar-expand-lg navbar-dark" id="cabecalho" style="background-color: #483D8B;">
-        <a class="navbar-brand" href="#">EDUK - Gestão Escolar</a>
+        <a class="navbar-brand" href="#">AGENDAR - Gestão de Serviços</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Alterna navegação">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -100,41 +100,35 @@ if(isset($_GET['id'])){
           <ul class="navbar-nav">
             <li class="nav-item active">
               <a class="nav-link" href="index.php">Home <span class="sr-only">(Página atual)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="representante.php">Seja um Representante</a>
-            </li>
-            <li class="nav-item">
+            </li>            
+            <!-- <li class="nav-item">
               <a class="nav-link" id="section-11"  data-section="sessao-11" style="cursor: pointer;">Tutoriais</a>
+            </li> -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Funcionalidades
+              </a>
+              
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Portais
+                Soluções
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" id="section-2" data-section="sessao-2">Portal do Aluno</a>
-                <a class="dropdown-item"  id="section-3" data-section="sessao-3">Portal do Professor</a>
-                <a class="dropdown-item" id="section-4" data-section="sessao-4">Portal do Responsável</a>
-                <a class="dropdown-item" id="section-5" data-section="sessao-5">Portal da Secretaria</a>
-                <a class="dropdown-item" id="section-6" data-section="sessao-6">Portal da Tesouraria</a>
-                <a class="dropdown-item" id="section-7" data-section="sessao-7">Portal do Administrador</a>
-                <a class="dropdown-item" id="section-8" data-section="sessao-9">Portal do Cuidador/Mediador</a>
-                <a class="dropdown-item" id="section-9" data-section="sessao-8">Portal do Almoxarifado</a>
+                <a class="dropdown-item" id="section-10" data-section="sessao-10">Sistema para Barbearia</a>
+                <a class="dropdown-item"  id="section-12" data-section="sessao-11">Sistema para Salão de Beleza</a>                
+                <a class="dropdown-item"  id="section-13" data-section="sessao-12">Sistema para Clinica de Estética</a>                
+                <a class="dropdown-item"  id="section-14" data-section="sessao-13">Sistema para Esmalteria</a>                
               </div>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Integrações
+              <a class="nav-link dropdown-toggle" href="precos.php" id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
+                Preços
               </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" id="section-10" data-section="sessao-10">WhatsApp</a>
-                <a class="dropdown-item"  id="section-12" data-section="sessao-11">Mercado Pago</a>                
-                <a class="dropdown-item"  id="section-13" data-section="sessao-12">Diário de Classe</a>                
-                <a class="dropdown-item"  id="section-14" data-section="sessao-13">Biblioteca</a>                
-              </div>
+              
             </li>
           </ul>
-          <button class="botao2" id="section-12" data-section="sessao-12">Teste Grátis</button>
+          <a href="precos.php"><button class="botao2">Teste Grátis</button></a>
           <a href="login.php" class="botao">Acesse</a>
         </div>
       </nav>
@@ -228,35 +222,8 @@ if(isset($_GET['id'])){
             transform: scale(1.2);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
         }
-        #videos {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            background-color: #DCDCDC;
-            color: black;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            margin-left: 30px;
-            
-        }
-
-        #videos:hover {
-            transform: scale(1.2);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-        }
-
-        .full-screen-image {
-          width: 100vw;
-          height: 100vh;
-          object-fit: cover; /* ou object-fit: contain */
-        }        
-        #tela {
-          width: 100vw;
-          height: 100vh;
-          object-fit: cover; /* ou object-fit: contain */
-        }        
+                  
+           
 
         .scroll-down {
           position: fixed;
@@ -285,25 +252,8 @@ if(isset($_GET['id'])){
           outline: none !important; 
 
         }       
-        #quem_somos{
-          position: absolute;          
-          top: 460px;
-          right: 870px;
-          background-color: white;
-          border: none;           
-          padding: 10px;  
-          border-radius: 20px;        
-          cursor: pointer;          
-          transition: all 0.3s ease-in-out; /* Add transition for smooth effects */
-          outline: none !important; 
-
-        }  
+               
         
-        #quem_somos:hover {
-            transform: scale(1.2);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-        }
-
         #cabecalho{
           z-index: 2;
         }
@@ -349,6 +299,168 @@ if(isset($_GET['id'])){
         }
         }
 
+        .content {
+            display: flex;
+            justify-content: center; /* Centraliza a imagem */
+            align-items: center;
+            padding: 50px;
+        }
+
+        .image {
+            position: relative; /* Necessário para posicionar o overlay */
+            width: 80%; /* Aumenta a largura da imagem */
+            max-width: 1000px; /* Define um tamanho máximo */
+            border-radius: 10px; /* Adiciona bordas arredondadas */
+            overflow: hidden; /* Garante que o conteúdo não vaze das bordas arredondadas */
+        }
+
+        .image img {
+            width: 100%;
+            height: auto;
+            display: block; /* Remove espaço extra abaixo da imagem */
+        }
+
+        .image-overlay {
+            position: absolute; /* Posiciona o overlay sobre a imagem */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Adiciona um fundo semi-transparente */
+            color: white; /* Define a cor do texto como branco */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center; /* Centraliza o texto horizontalmente */
+            padding: 20px;
+            box-sizing: border-box; /* Garante que o padding não aumente o tamanho do overlay */
+        }
+
+        .text {
+            width: 80%; /* Largura do texto dentro do overlay */
+        }
+
+        .text h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .text p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .buttons a {
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            margin-right: 20px;
+            font-weight: bold;
+        }
+
+        .buttons .trial-large {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .buttons .sales {
+            border: 1px solid #27ae60;
+            color: #27ae60;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .section-card:hover {
+            transform: translateY(-5px);
+        }
+        .section-icon {
+            font-size: 2.5rem;
+            color: #007bff;
+            margin-right: 1rem;
+        }
+
+
+        /* Media Query para telas pequenas (celulares) */
+@media (max-width: 768px) {
+    .content {
+        padding: 20px; /* Reduz o padding */
+        flex-direction: column; /* Empilha os elementos verticalmente */
+    }
+
+    .image {
+        width: 100%; /* Ocupa toda a largura */
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+
+    .text {
+        width: 100%; /* Ocupa toda a largura */
+        padding: 0 10px; /* Pequeno padding interno */
+    }
+
+    .text h1 {
+        font-size: 1.8em; /* Reduz o tamanho do título */
+    }
+
+    .text p {
+        font-size: 1em; /* Reduz o tamanho do parágrafo */
+    }
+
+    .buttons {
+        flex-direction: column; /* Garante que os botões fiquem em coluna */
+        align-items: center; /* Centraliza os botões */
+        gap: 10px; /* Espaçamento vertical entre botões */
+    }
+
+    .buttons a {
+        padding: 10px 20px; /* Reduz o padding dos botões */
+        min-width: 150px; /* Ajusta a largura mínima */
+        width: 100%; /* Garante que o botão ocupe a largura total do container */
+        box-sizing: border-box; /* Inclui padding na largura total */
+        margin: 0; /* Remove margens laterais para evitar sobreposição */
+        font-size: 12px;
+    }
+
+    .scroll-up, .scroll-down {
+        font-size: 1.2em; /* Reduz o tamanho dos ícones */
+    }
+
+    .scroll-up {
+        bottom: 70px; /* Ajusta posição para evitar sobreposição */
+    }
+
+    .scroll-down {
+        bottom: 20px;
+    }
+}
+
+/* Ajustes para telas muito pequenas (ex.: smartphones em modo retrato) */
+@media (max-width: 480px) {
+    .text h1 {
+        font-size: 1.5em; /* Título ainda menor */
+    }
+
+    .text p {
+        font-size: 0.9em; /* Parágrafo ainda menor */
+    }
+
+    .buttons a {
+        width: 120px; /* Largura mínima ainda menor */
+        padding: 8px 15px; /* Padding reduzido */
+        font-size: 10px;
+        margin-bottom: 30px;
+        
+    }
+
+   
+}
        
        
     </style>    

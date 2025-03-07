@@ -48,5 +48,7 @@ RewriteRule ^calendario(.*)$ index.php?pag=calendario [L]
 RewriteRule ^configuracoes(.*)$ index.php?pag=configuracoes [L]
 RewriteRule ^conf_site(.*)$ index.php?pag=conf_site [L]
 RewriteRule ^painel(.*)$ index.php?pag=painel [L]
+RewriteRule ^grafico_dias(.*)$ index.php?pag=grafico_dias [L]
+RewriteRule ^grafico_ano(.*)$ index.php?pag=grafico_ano [L]
 
 

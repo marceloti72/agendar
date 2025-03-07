@@ -214,68 +214,6 @@ if(@$configuracoes == 'ocultar'){
 </div>
 
 
-<!-- Modal Inserir-->
-<div class="modal" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header text-white" style="background-color: #4682B4;">
-				<h4 class="modal-title">Textos para o Carrossel</h4>
-				<button id="btn-fechar" type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
-					<span aria-hidden="true" >&times;</span>
-				</button>
-			</div>
-			
-			<form id="form">
-			<div class="modal-body">
-
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Título <small>(Até 25 Caracteres)</small></label>
-								<input maxlength="25" type="text" class="form-control" id="titulo" name="titulo" placeholder="Título do Texto" >    
-							</div> 	
-						</div>
-						
-					</div>
-
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Descrição <small>(Até 255 Caracteres)</small></label>
-								<input maxlength="255" type="text" class="form-control" id="descricao" name="descricao" placeholder="Descrição do Texto" >    
-							</div> 	
-						</div>
-						
-					</div><br><br>
-
-					<div id="listar"></div>
-
-					<input type="hidden" name="id" id="id">	
-
-					<br>
-					<small><div id="mensagem" align="center"></div></small>
-				</div>
-
-
-				<div class="modal-footer">    
-			    	<button type="button" data-bs-dismiss="modal" class="btn btn-danger">Sair</button>  
-
-					<button type="submit" class="btn btn-primary">Salvar</button> 
-					
-				</div>
-			</form>
-			<script type="text/javascript">var pag = "textos_index";</script>
-            <script src="js/ajax.js"></script>
-
-							
-		</div>
-	</div>
-</div>
-
-
-
-
-
 <script>
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
@@ -283,10 +221,3 @@ if(@$configuracoes == 'ocultar'){
 	
 </script>
 
-<script>
-    document.getElementById('carrossel').addEventListener('change', function() {
-        if (this.checked) {
-            $('#modalForm').modal('show'); // Abre o modal
-        }
-    });
-</script>

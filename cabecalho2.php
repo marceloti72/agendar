@@ -105,6 +105,7 @@ try {
           $porc_servico = htmlspecialchars($config['porc_servico']);
           $pgto_api = htmlspecialchars($config['pgto_api']);
           $api = htmlspecialchars($config['api']);
+          $id_conta = htmlspecialchars($config['id']);
 
           $horas_confirmacaoF = $minutos_aviso . ':00:00';
           $tel_whatsapp = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);

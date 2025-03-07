@@ -365,7 +365,7 @@ $data_atual = date('Y-m-d');
 					$('#mensagem').text(msg[0])
 					buscarNome()
 
-					//window.location="pagamento/"+id_agd+"/100";
+					window.location="pagamento/"+id_agd+"/100";
 
 				}		
 

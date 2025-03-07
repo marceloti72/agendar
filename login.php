@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-	<title>Login eDuk</title>
+	<title>Login AGENDAR - Gestão de Serviços</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -36,7 +36,7 @@
 					<span class="login100-form-title p-b-4">
 						Seja Bem-vindo a 
 					</span>
-					<img src="./img/logo/logo-eduk.png" width="180px;" style=" margin-left: 50px">
+					<img src="sistema/img/logo2.png" width="250px;" >
 					<span class="login100-form-title p-b-35">
 					<!-- <img src="./img/logo/logo.png" width="150 px" style="filter: invert(100%)"> -->
 					</span>

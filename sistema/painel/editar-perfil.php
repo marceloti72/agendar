@@ -17,12 +17,8 @@ if(!empty($_POST['senha'])){
 
 
 $endereco = $_POST['endereco'];
-
-if(@$_SESSION['nivel_usuario'] != 'Individual'){						
-    $atendimento = $_POST['atendimento'];
-}else{
-	$atendimento = 'Não';
-}
+						
+$atendimento = $_POST['atendimento'];
 
 $intervalo = $_POST['intervalo'];
 

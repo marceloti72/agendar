@@ -8,13 +8,13 @@
             <div class="footer_detail">
               <a href="index.php">
                 <h4>
-                  EDUK - Sistema Online de Gestão Escolar
+                  AGENDAR - Sistema de Gestão de Serviços
                 </h4>
               </a>
               <small>
                 Desevolvido por
               </small><br>
-              <img src="img/logo/logo-ss-branco-lg.png" style="width: 60%;">
+              <img src="images/logo-ss-branco-lg.png" style="width: 60%;">
             </div>
           </div>
           <div class="col-md-7 col-lg-3 ">
@@ -98,173 +98,14 @@
 
 AOS.init();
 
-// const scrollButtons = document.querySelectorAll('.scroll-down');
-// const sections = document.querySelectorAll('section');
-// let currentSectionIndex = 0;
-
-// scrollButtons.forEach(button => {
-//   button.addEventListener('click', () => {
-//     currentSectionIndex++;
-//     if (currentSectionIndex >= sections.length) {
-//       currentSectionIndex = 0; // Voltar para a primeira seção se chegar ao final
-//     }
-//     sections[currentSectionIndex].scrollIntoView({ behavior: 'smooth' });
-//   });
-// });
-
-
-// const scrollButtons2 = document.querySelectorAll('.scroll-down2');
-
-// scrollButtons2.forEach(button => {
-//   button.addEventListener('click', () => {
-//     currentSectionIndex-1;
-//     if (currentSectionIndex >= sections.length) {
-//       currentSectionIndex = 0; // Voltar para a primeira seção se chegar ao final
-//     }
-//     sections[currentSectionIndex].scrollIntoView({ behavior: 'smooth' });
-//   });
-// });
-
-
-const scrollButtonsUp = document.querySelectorAll('.scroll-up'); 
-const scrollButtonsDown = document.querySelectorAll('.scroll-down');
-const sections = document.querySelectorAll('section');
-let currentSectionIndex = 0;
-
-scrollButtonsDown.forEach(button => {
-  button.addEventListener('click', () => {
-    currentSectionIndex++;
-    if (currentSectionIndex >= sections.length) {
-      currentSectionIndex = 0; 
-    }
-    sections[currentSectionIndex].scrollIntoView({ behavior: 'smooth' });
-  });
-});
-
-scrollButtonsUp.forEach(button => {
-  button.addEventListener('click', () => {
-    currentSectionIndex--;
-    if (currentSectionIndex < 0) {
-      currentSectionIndex = sections.length - 1; 
-    }
-    sections[currentSectionIndex].scrollIntoView({ behavior: 'smooth' });
-  });
-});
-
-document.getElementById('quem_somos').addEventListener('click', function() {
-  const sectionId = this.dataset.section;
-  const section = document.getElementById(sectionId);
-
-  // Rolar suavemente até a seção
-  section.scrollIntoView({ behavior: 'smooth' });
-});
-
-document.getElementById('section-2').addEventListener('click', function() {
-  const sectionId = this.dataset.section;
-  const section = document.getElementById(sectionId);
-
-  // Rolar suavemente até a seção
-  section.scrollIntoView({ behavior: 'smooth' });
-});
-document.getElementById('section-3').addEventListener('click', function() {
-  const sectionId = this.dataset.section;
-  const section = document.getElementById(sectionId);
-
-  // Rolar suavemente até a seção
-  section.scrollIntoView({ behavior: 'smooth' });
-});
-document.getElementById('section-4').addEventListener('click', function() {
-  const sectionId = this.dataset.section;
-  const section = document.getElementById(sectionId);
-
-  // Rolar suavemente até a seção
-  section.scrollIntoView({ behavior: 'smooth' });
-});
-document.getElementById('section-5').addEventListener('click', function() {
-  const sectionId = this.dataset.section;
-  const section = document.getElementById(sectionId);
-
-  // Rolar suavemente até a seção
-  section.scrollIntoView({ behavior: 'smooth' });
-});
-document.getElementById('section-6').addEventListener('click', function() {
-  const sectionId = this.dataset.section;
-  const section = document.getElementById(sectionId);
-
-  // Rolar suavemente até a seção
-  section.scrollIntoView({ behavior: 'smooth' });
-});
-document.getElementById('section-7').addEventListener('click', function() {
-  const sectionId = this.dataset.section;
-  const section = document.getElementById(sectionId);
-
-  // Rolar suavemente até a seção
-  section.scrollIntoView({ behavior: 'smooth' });
-});
-document.getElementById('section-8').addEventListener('click', function() {
-  const sectionId = this.dataset.section;
-  const section = document.getElementById(sectionId);
-
-  // Rolar suavemente até a seção
-  section.scrollIntoView({ behavior: 'smooth' });
-});
-document.getElementById('section-9').addEventListener('click', function() {
-  const sectionId = this.dataset.section;
-  const section = document.getElementById(sectionId);
-
-  // Rolar suavemente até a seção
-  section.scrollIntoView({ behavior: 'smooth' });
-});
-document.getElementById('section-10').addEventListener('click', function() {
-  const sectionId = this.dataset.section;
-  const section = document.getElementById(sectionId);
-
-  // Rolar suavemente até a seção
-  section.scrollIntoView({ behavior: 'smooth' });
-});
-
-document.getElementById('section-11').addEventListener('click', function() {
-  const sectionId = this.dataset.section;
-  const section = document.getElementById(sectionId);
-
-  // Rolar suavemente até a seção
-  section.scrollIntoView({ behavior: 'smooth' });
-});
-
-document.getElementById('section-12').addEventListener('click', function() {
-  const sectionId = this.dataset.section;
-  const section = document.getElementById(sectionId);
-
-  // Rolar suavemente até a seção
-  section.scrollIntoView({ behavior: 'smooth' });
-});
-document.getElementById('section-13').addEventListener('click', function() {
-  const sectionId = this.dataset.section;
-  const section = document.getElementById(sectionId);
-
-  // Rolar suavemente até a seção
-  section.scrollIntoView({ behavior: 'smooth' });
-});
-
-document.getElementById('section-14').addEventListener('click', function() {
-  const sectionId = this.dataset.section;
-  const section = document.getElementById(sectionId);
-
-  // Rolar suavemente até a seção
-  section.scrollIntoView({ behavior: 'smooth' });
-});
-
-
-
-
-  
+ 
 $("#form_cadastro").submit(function () {
 
     event.preventDefault();
     var formData = new FormData(this);
 
     $.ajax({
-        url: 'ajax/cadastrar.php',
+        url: 'ajax/cadastrar2.php',
         type: 'POST',
         data: formData,
 
