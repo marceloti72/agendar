@@ -60,7 +60,7 @@ $sobrenome = $_REQUEST["sobrenome"];
 
 
         <div id="info_pagamento" style="text-align: center;">
-            <p class="h3 font-weight-normal" style=" font-size: 21px; border-radius: 4px;"><span><b>Produto <?= $nome_produto; ?> - </span><span style="color:green; ">R$ <?= $valorF; ?><?= $public_key; ?></b></span> </p>               
+            <p class="h3 font-weight-normal" style=" font-size: 21px; border-radius: 4px;"><span><b>Produto <?= $nome_produto; ?> - </span><span style="color:green; ">R$ <?= $valorF; ?></b></span> </p>               
 
         </div>
 
@@ -179,7 +179,7 @@ $sobrenome = $_REQUEST["sobrenome"];
         const renderStatusScreenBrick = async (bricksBuilder) => {
             const settings = {
                 initialization: {
-                    paymentId: '<?= $_GET["id"]; ?>',
+                    paymentId: '<?= $_GET["id_produto"]; ?>',
                 },
                 customization: {
                     visual: {
