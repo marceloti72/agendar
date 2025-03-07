@@ -42,7 +42,9 @@ $status_pag_motivo = array(
 if ($_GET["acc"] == "check") {    
 
     $id = $_GET['id'];
+    $id_pg = $_GET['id_produto'];
     
+
     $curl = curl_init();
     curl_setopt_array($curl, array(
         CURLOPT_URL => 'https://api.mercadopago.com/v1/payments/' . $id,
