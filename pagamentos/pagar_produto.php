@@ -3,7 +3,7 @@ ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 //error_reporting(E_ALL);
 
-include("./config.php");
+include("config.php");
 require("../sistema/conexao.php");
 
 $id_produto = $_GET['id_produto'];
@@ -60,7 +60,7 @@ $sobrenome = $_REQUEST["sobrenome"];
 
 
         <div id="info_pagamento" style="text-align: center;">
-            <p class="h3 font-weight-normal" style=" font-size: 21px; border-radius: 4px;"><span><b>Produto <?= $nome_produto; ?> - </span><span style="color:green; ">R$ <?= $valorF; $public_key;?></b></span> </p>               
+            <p class="h3 font-weight-normal" style=" font-size: 21px; border-radius: 4px;"><span><b>Produto <?= $nome_produto; ?> - </span><span style="color:green; ">R$ <?= $valorF; ?><?= $public_key; ?></b></span> </p>               
 
         </div>
 
