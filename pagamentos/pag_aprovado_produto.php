@@ -1,5 +1,5 @@
 <?php 
-
+require("../sistema/conexao.php");
 $id_conta = $_GET['id_conta'];
 
 try {
