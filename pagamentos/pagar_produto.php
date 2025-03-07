@@ -240,7 +240,7 @@ $sobrenome = $_REQUEST["sobrenome"];
             <?php } ?>
             renderPaymentBrick(bricksBuilder);
         <?php } ?>
-        var redi = "<?= $URL_REDIRECIONAR; ?>";
+        var redi = "<?= $URL_REDIRECIONAR; ?>";        
 
         function check(id, id_conta) {
             var settings = {
