@@ -106,6 +106,11 @@ try {
           $pgto_api = htmlspecialchars($config['pgto_api']);
           $api = htmlspecialchars($config['api']);
           $id_conta = htmlspecialchars($config['id']);
+          $agendamentos2 = $config['agendamentos'];
+          $produtos2 = $config['produtos'];
+          $servicos2 = $config['servicos'];
+          $depoimentos2 = $config['depoimentos'];
+          $carrossel = $config['carrossel'];
 
           $horas_confirmacaoF = $minutos_aviso . ':00:00';
           $tel_whatsapp = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
