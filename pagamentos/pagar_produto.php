@@ -221,6 +221,8 @@ $sobrenome = $_REQUEST["sobrenome"];
                 "method": "GET",
                 "timeout": 0
             };
+            alert(id_conta);
+            alert(<?= $_GET["id_produto"]; ?>)
             $.ajax(settings).done(function(response) {
                 try {
                     if (response.status == "pago") {
