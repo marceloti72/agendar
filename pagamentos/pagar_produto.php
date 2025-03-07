@@ -153,7 +153,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                                 .then((response) => {
                                     // receber o resultado do pagamento
                                     if (response.status == true) {
-                                        window.location.href = "<?= $url; ?>pagamentos/pag_aprovado_produto.php?id=" + response.id + '&id_produto=' + id_conta;
+                                        window.location.href = "<?=$url;?>pagamentos/pagar_produto.php?id="+response.id+'&id_produto=' + id_conta;
                                     }
                                     if (response.status != true) {
                                         alert(response.message);
