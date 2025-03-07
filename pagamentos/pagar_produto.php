@@ -4,10 +4,37 @@ ini_set('display_startup_errors', 0);
 //error_reporting(E_ALL);
 
 include("config.php");
-require("../sistema/conexao.php");
+//require("../cabecalho2.php");
+
+
 
 $id_produto = $_GET['id_produto'];
+$id_conta = $_GET['id_conta'];
 $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
+
+try {
+    $stmt = $pdo->prepare("SELECT * FROM config WHERE id = :id_conta");
+    $stmt->bindParam(':id', $id_conta, PDO::PARAM_INT);
+    $stmt->execute();
+    $config = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($config) {
+        $nome_sistema = htmlspecialchars($config['nome']);
+        $email_sistema = htmlspecialchars($config['email']);
+        $whatsapp_sistema = htmlspecialchars($config['telefone_whatsapp']);         
+        $token = htmlspecialchars($config['token']);
+        $instancia = htmlspecialchars($config['instancia']);       
+        $pgto_api = htmlspecialchars($config['pgto_api']);
+        $api = htmlspecialchars($config['api']);  
+
+        $tel_whatsapp = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
+    } else {
+        echo "Configurações não encontradas para a conta.";
+    }
+} catch (PDOException $e) {
+    echo "Erro ao buscar configurações: " . $e->getMessage();
+}
+
 
 
 $query = $pdo->query("SELECT * FROM produtos where id = '$id_produto' and id_conta = '$id_conta'");
@@ -153,7 +180,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                                 .then((response) => {
                                     // receber o resultado do pagamento
                                     if (response.status == true) {
-                                        window.location.href = "<?=$url;?>pagamentos/pagar_produto.php?id="+response.id+'&id_produto=' + id_conta;
+                                        window.location.href = "<?=$url;?>pagamentos/pagar_produto.php?id="+response.id+'&id_produto=' + id_conta +'&id_conta='+<?=$id_conta;?>;
                                     }
                                     if (response.status != true) {
                                         alert(response.message);
@@ -217,7 +244,7 @@ $sobrenome = $_REQUEST["sobrenome"];
 
         function check(id, id_conta) {
             var settings = {
-                "url": "<?= $url; ?>pagamentos/process_payment2.php?acc=check&id=" + id + "&id_produto=" + id_conta,
+                "url": "<?= $url; ?>pagamentos/process_payment2.php?acc=check&id=" + id,
                 "method": "GET",
                 "timeout": 0
             };
@@ -229,7 +256,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                         $("#form-pago").slideDown("fast");
                         if (redi.trim() == "Sim") {
                             setTimeout(() => {
-                                window.location = "pag_aprovado_produto.php?id_produto="+<?= $_GET["id_produto"]; ?>;
+                                window.location = "pag_aprovado_produto.php?id_produto="+<?= $_GET["id_produto"];?>+"&id_conta="+<?=$id_conta;?>;
                                 //alert('Pagamento efetuado com sucesso!');
                                 //$("#btn_form").click();
                             }, 6000);

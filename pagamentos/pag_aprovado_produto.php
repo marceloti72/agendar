@@ -1,5 +1,31 @@
 <?php 
 require("../sistema/conexao.php");
+$id_conta = $_GET['id_conta'];
+
+try {
+    $stmt = $pdo->prepare("SELECT * FROM config WHERE id = :id_conta");
+    $stmt->bindParam(':id', $id_conta, PDO::PARAM_INT);
+    $stmt->execute();
+    $config = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($config) {
+        $nome_sistema = htmlspecialchars($config['nome']);
+        $email_sistema = htmlspecialchars($config['email']);
+        $whatsapp_sistema = htmlspecialchars($config['telefone_whatsapp']);         
+        $token = htmlspecialchars($config['token']);
+        $instancia = htmlspecialchars($config['instancia']);       
+        $pgto_api = htmlspecialchars($config['pgto_api']);
+        $api = htmlspecialchars($config['api']);  
+        $username = htmlspecialchars($config['username']);  
+
+        $tel_whatsapp = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
+    } else {
+        echo "Configurações não encontradas para a conta.";
+    }
+} catch (PDOException $e) {
+    echo "Erro ao buscar configurações: " . $e->getMessage();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -39,8 +65,6 @@ require("../sistema/conexao.php");
     // Só executa o código PHP se os dados foram enviados
     if (isset($_GET['nome']) && isset($_GET['telefone'])) {
         $id_produto = @$_GET['id_produto'];
-        require("../sistema/conexao.php");
-
         $nome = $_GET['nome'];
         $telefone = $_GET['telefone'];
 
@@ -69,12 +93,17 @@ require("../sistema/conexao.php");
 
         $mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
         $mensagem .= 'Olá ' . $nome . '%0A';
-        $mensagem .= '*Pagamento realizado com sucesso!* ✅%0A';
+        $mensagem .= '✅ *Pagamento realizado com sucesso!*%0A';
         $mensagem .= 'Produto: ' . $nome_produto . '%0A';
         $mensagem .= 'Valor: ' . $valor . '%0A%0A';
-        $mensagem .= '📦 _O produto já pode ser retirado em nossa loja. Seje deseja envio pelos Correios entre em contato._%0A%0A';
+        $mensagem .= '📦 _O produto já pode ser retirado em nossa loja. Se desejar envio pelos Correios entre em contato._%0A%0A';
 
-        require('envio_foto.php');
+        if(!empty($foto)){
+            require('envio_foto.php');
+        }else{
+            require('api-texto.php');
+        }
+        
 
         header("Location: ../site.php?u=" . urlencode($username));
         exit;

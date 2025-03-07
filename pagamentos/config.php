@@ -18,7 +18,7 @@ if ($modoProducao) {
 
 $DESCRICAO_PAGAMENTO = "Pagamento Serviço"; // OBRIGATÓRIO: DESCRIÇÃO PAGAMENTO O PAGAMENTO
 
-$MSG_APOS_PAGAMENTO = "Recebemos seu pagamento. Aguarde um momento ...";
+$MSG_APOS_PAGAMENTO = "Recebemos seu pagamento!<br>Aguarde um momento ...";
 
 $URL_REDIRECIONAR = "Sim"; // LINK PARA DIRECIONAR 6 SEGUNDOS APÓS RECEBER O PAGAMENTO (Coloque Sim caso queira que ele redirecione para o comprovante)
 

@@ -246,7 +246,7 @@ if($produtos2 == 'Sim'){
                 <a target="_blank" href="http://api.whatsapp.com/send?1=pt_BR&phone=<?php echo $tel_whatsapp ?>&text=Ola, gostaria de saber mais informações sobre o produto <?php echo $nome ?>">
                 Comprar Agora
                 </a>
-                <a href="pagamento2/<?php echo $id ?>">
+                <a href="pagamento2/<?php echo $id ?>/<?php echo $id_conta?>">
                 Comprar Agora
                 </a>
               </div>
