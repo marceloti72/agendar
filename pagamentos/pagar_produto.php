@@ -221,8 +221,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                 "method": "GET",
                 "timeout": 0
             };
-            alert(id_conta);
-            alert(<?= $_GET["id_produto"]; ?>)
+            
             $.ajax(settings).done(function(response) {
                 try {
                     if (response.status == "pago") {
@@ -230,7 +229,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                         $("#form-pago").slideDown("fast");
                         if (redi.trim() == "Sim") {
                             setTimeout(() => {
-                                window.location = "pag_aprovado_produto.php?id_produto="+id_conta;
+                                window.location = "pag_aprovado_produto.php?id_produto="+<?= $_GET["id_produto"]; ?>;
                                 //alert('Pagamento efetuado com sucesso!');
                                 //$("#btn_form").click();
                             }, 6000);
