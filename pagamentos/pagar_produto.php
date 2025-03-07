@@ -244,7 +244,7 @@ $sobrenome = $_REQUEST["sobrenome"];
 
         function check(id, id_conta) {
             var settings = {
-                "url": "<?= $url; ?>pagamentos/process_payment2.php?acc=check&id=" + id + "&id_produto=" + id_conta,
+                "url": "<?= $url; ?>pagamentos/process_payment2.php?acc=check&id=" + id + "&id_produto=" + id_conta + "&id_conta="+<?=$id_conta;?>,
                 "method": "GET",
                 "timeout": 0
             };
