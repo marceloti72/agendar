@@ -1,10 +1,10 @@
 <?php 
-require("../sistema/conexao.php");
+
 $id_conta = $_GET['id_conta'];
 
 try {
     $stmt = $pdo->prepare("SELECT * FROM config WHERE id = :id_conta");
-    $stmt->bindParam(':id', $id_conta, PDO::PARAM_INT);
+    $stmt->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
     $stmt->execute();
     $config = $stmt->fetch(PDO::FETCH_ASSOC);
 
