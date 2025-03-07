@@ -196,7 +196,7 @@ if($carrossel == 'Sim'){
 
 
   <?php 
-
+echo $produtos2;
 if($produtos2 == 'Sim'){
   $query = $pdo->query("SELECT * FROM produtos where estoque > 0 and valor_venda >  0 and id_conta = '$id_conta' ORDER BY id desc limit 8");
   $res = $query->fetchAll(PDO::FETCH_ASSOC);
