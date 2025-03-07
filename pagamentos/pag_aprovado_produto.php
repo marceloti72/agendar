@@ -55,9 +55,9 @@
         // Busca informações do produto
         $query = $pdo->query("SELECT * FROM produtos WHERE id = '$id_produto' AND id_conta = '$id_conta'");
         $res = $query->fetchAll(PDO::FETCH_ASSOC);
-        $nome_produto = $res[0]['nome'];
-        $valor = $res[0]['valor_venda'];
-        $foto = $res[0]['foto'];
+        $nome_produto = @$res[0]['nome'];
+        $valor = @$res[0]['valor_venda'];
+        $foto = @$res[0]['foto'];
 
         $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
         $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
@@ -68,7 +68,7 @@
         $mensagem .= 'Produto: ' . $nome_produto . '%0A';
         $mensagem .= 'Valor: ' . $valor . '%0A';
 
-        require('envio_foto.php');
+        require('api-texto.php');
     }
     ?>
 
