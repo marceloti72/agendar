@@ -88,6 +88,10 @@ try {
         $valor = @$res[0]['valor_venda'];
         $foto = @$res[0]['foto'];
 
+        echo $foto;
+        echo $username;
+        echo $token;
+
         $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
 
         $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
