@@ -244,7 +244,7 @@ $sobrenome = $_REQUEST["sobrenome"];
 
         function check(id, id_conta) {
             var settings = {
-                "url": "<?= $url; ?>pagamentos/process_payment2.php?acc=check&id=" + id + "&id_produto=" + id_conta + "&id_conta="+<?=$id_conta;?>,
+                "url": "<?= $url; ?>pagamentos/process_payment2.php?acc=check&id=" + id + "&id_produto=" + id_conta,
                 "method": "GET",
                 "timeout": 0
             };
@@ -256,7 +256,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                         $("#form-pago").slideDown("fast");
                         if (redi.trim() == "Sim") {
                             setTimeout(() => {
-                                window.location = "pag_aprovado_produto.php?id_produto="+<?= $_GET["id_produto"]; ?>+"&id_conta="+<?= $_GET["id_conta"]; ?>;
+                                window.location = "pag_aprovado_produto.php?id_produto="+<?= $_GET["id_produto"]; ?>+"&id_conta="+<?=$id_conta;?>;
                                 //alert('Pagamento efetuado com sucesso!');
                                 //$("#btn_form").click();
                             }, 6000);
