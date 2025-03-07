@@ -74,7 +74,7 @@ $sobrenome = $_REQUEST["sobrenome"];
             <br>
             <h5><?= $MSG_APOS_PAGAMENTO; ?></h5>
             <br>
-            Código do pagamento: <?php echo $_GET["id_produto"]; ?>
+            Código do pagamento: <?php echo $_GET["id"]; ?>
         </div>
     </div>
     <style>
@@ -141,7 +141,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                         var id_conta = '<?= $id_produto; ?>';
 
                         return new Promise((resolve, reject) => {
-                            fetch("<?= $url; ?>pagamentos/process_payment.php", {
+                            fetch("<?= $url; ?>pagamentos/process_payment_produto.php", {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json",
