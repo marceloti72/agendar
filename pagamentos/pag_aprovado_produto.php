@@ -62,6 +62,8 @@ require("../sistema/conexao.php");
         $valor = @$res[0]['valor_venda'];
         $foto = @$res[0]['foto'];
 
+        $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
+
         $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
         $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
 
@@ -74,7 +76,7 @@ require("../sistema/conexao.php");
 
         require('envio_foto.php');
 
-        header("Location: agendar.skysee.com.br/site.php?u=" . urlencode($username));
+        header("Location: ../site.php?u=" . urlencode($username));
         exit;
     }
     ?>
