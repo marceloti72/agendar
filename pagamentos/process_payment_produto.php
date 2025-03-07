@@ -41,9 +41,7 @@ if ($_GET["acc"] == "check") {
 
     $id = $_GET['id'];
     $id_pg = $_GET['id_produto'];
-    echo $id;
-    echo $id_pg;
-    exit();
+    
 
     $curl = curl_init();
     curl_setopt_array($curl, array(
