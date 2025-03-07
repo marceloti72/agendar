@@ -228,8 +228,8 @@ $sobrenome = $_REQUEST["sobrenome"];
                         $("#form-pago").slideDown("fast");
                         if (redi.trim() == "Sim") {
                             setTimeout(() => {
-                                //window.location = "../meus-agendamentos.php";
-                                alert('Pagamento efetuado com sucesso!');
+                                window.location = "pag_aprovado_produto.php";
+                                //alert('Pagamento efetuado com sucesso!');
                                 //$("#btn_form").click();
                             }, 6000);
                         }
