@@ -7,6 +7,7 @@ include("config.php");
 require("../sistema/conexao.php");
 
 $id_produto = $_GET['id_produto'];
+$url = "https://" . $_SERVER['HTTP_HOST'] . "/";
 
 
 $query = $pdo->query("SELECT * FROM produtos where id = '$id_produto' and id_conta = '$id_conta'");
