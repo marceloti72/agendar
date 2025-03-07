@@ -1,8 +1,7 @@
 <?php 
 require("../sistema/conexao.php");
 $id_conta = $_GET['id_conta'];
-echo $id_conta;
-exit();
+
 
 try {
     $stmt = $pdo->prepare("SELECT * FROM config WHERE id = :id_conta");
@@ -19,6 +18,9 @@ try {
         $pgto_api = htmlspecialchars($config['pgto_api']);
         $api = htmlspecialchars($config['api']);  
         $username = htmlspecialchars($config['username']);  
+
+        echo $username;
+        exit();
 
         $tel_whatsapp = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
     } else {
