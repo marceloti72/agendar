@@ -1,3 +1,6 @@
+<?php 
+require("../sistema/conexao.php");
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -66,9 +69,10 @@
         $mensagem .= 'Olá ' . $nome . '%0A';
         $mensagem .= '*Pagamento realizado com sucesso!* ✅%0A';
         $mensagem .= 'Produto: ' . $nome_produto . '%0A';
-        $mensagem .= 'Valor: ' . $valor . '%0A';
+        $mensagem .= 'Valor: ' . $valor . '%0A%0A';
+        $mensagem .= '📦 _O produto já pode ser retirado em nossa loja. Seje deseja envio pelos Correios entre em contato._%0A%0A';
 
-        require('api-texto.php');
+        require('envio_foto.php');
     }
     ?>
 
