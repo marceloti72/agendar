@@ -18,9 +18,7 @@ try {
         $pgto_api = htmlspecialchars($config['pgto_api']);
         $api = htmlspecialchars($config['api']);  
         $username = htmlspecialchars($config['username']);  
-
-        echo $username;
-        exit();
+        
 
         $tel_whatsapp = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
     } else {
