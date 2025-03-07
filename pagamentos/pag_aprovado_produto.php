@@ -91,6 +91,7 @@ try {
         echo $foto;
         echo $username;
         echo $token;
+        exit();
 
         $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
 
