@@ -142,7 +142,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                         var id_conta = '<?= $id_produto; ?>';
 
                         return new Promise((resolve, reject) => {
-                            fetch("<?= $url; ?>pagamentos/process_payment_produto.php", {
+                            fetch("<?= $url; ?>pagamentos/process_payment.php", {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json",
@@ -217,7 +217,7 @@ $sobrenome = $_REQUEST["sobrenome"];
 
         function check(id, id_conta) {
             var settings = {
-                "url": "<?= $url; ?>pagamentos/process_payment_produto.php?acc=check&id=" + id + "&id_produto=" + id_conta,
+                "url": "<?= $url; ?>pagamentos/process_payment.php?acc=check&id=" + id + "&id_produto=" + id_conta,
                 "method": "GET",
                 "timeout": 0
             };
