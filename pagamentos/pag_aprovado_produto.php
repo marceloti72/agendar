@@ -73,6 +73,9 @@ require("../sistema/conexao.php");
         $mensagem .= '📦 _O produto já pode ser retirado em nossa loja. Seje deseja envio pelos Correios entre em contato._%0A%0A';
 
         require('envio_foto.php');
+
+        header("Location: agendar.skysee.com.br/site.php?u=" . urlencode($username));
+        exit;
     }
     ?>
 
