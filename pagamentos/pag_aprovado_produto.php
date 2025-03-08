@@ -48,6 +48,7 @@ try {
                 <div class="modal-body">
                     <form id="formDados" method="GET" action="">
                         <input type="hidden" name="id_produto" value="<?php echo isset($_GET['id_produto']) ? htmlspecialchars($_GET['id_produto']) : ''; ?>">
+                        <input type="hidden" name="id_conta" value="<?php echo isset($_GET['id_conta']) ? htmlspecialchars($_GET['id_conta']) : ''; ?>">
                         <div class="mb-3">
                             <label for="nome" class="form-label">Nome</label>
                             <input type="text" class="form-control" id="nome" name="nome" required>
@@ -69,6 +70,32 @@ try {
         $id_produto = @$_GET['id_produto'];
         $nome = $_GET['nome'];
         $telefone = $_GET['telefone'];
+        $id_conta = $_GET['id_conta'];
+
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM config WHERE id = :id_conta");
+            $stmt->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+            $stmt->execute();
+            $config = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+            if ($config) {
+                $nome_sistema = htmlspecialchars($config['nome']);
+                $email_sistema = htmlspecialchars($config['email']);
+                $whatsapp_sistema = htmlspecialchars($config['telefone_whatsapp']);         
+                $token = htmlspecialchars($config['token']);
+                $instancia = htmlspecialchars($config['instancia']);       
+                $pgto_api = htmlspecialchars($config['pgto_api']);
+                $api = htmlspecialchars($config['api']);  
+                $username = htmlspecialchars($config['username']);  
+                
+        
+                $tel_whatsapp = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
+            } else {
+                echo "Configurações não encontradas para a conta.";
+            }
+        } catch (PDOException $e) {
+            echo "Erro ao buscar configurações: " . $e->getMessage();
+        }
 
         // Verifica se o cliente já existe
         $query = $pdo->query("SELECT * FROM clientes WHERE telefone = '$telefone' AND id_conta = '$id_conta'");
@@ -88,10 +115,7 @@ try {
         $valor = @$res[0]['valor_venda'];
         $foto = @$res[0]['foto'];
 
-        echo $foto;
-        echo $username;
-        echo $token;
-        exit();
+        
 
         $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
 
