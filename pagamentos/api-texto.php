@@ -13,8 +13,8 @@
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => 'POST',
       CURLOPT_POSTFIELDS => array(
-      'appkey' => 'GESTÃO',
-      'authkey' => 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9',
+      'appkey' => $instancia,
+      'authkey' => $token,
       'to' => $telefone,      
       'message' => $mensagem,
       ),

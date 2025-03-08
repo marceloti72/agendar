@@ -123,7 +123,7 @@ try {
         $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
 
         $mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
-        $mensagem .= 'Olá ' . $nome . '%0A';
+        $mensagem .= 'Olá ' . $nome . '%0A%0A';
         $mensagem .= '✅ *Pagamento realizado com sucesso!*%0A';
         $mensagem .= 'Produto: ' . $nome_produto . '%0A';
         $mensagem .= 'Valor: ' . $valor . '%0A%0A';
