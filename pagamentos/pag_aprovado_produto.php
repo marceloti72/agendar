@@ -69,7 +69,7 @@ try {
     if (isset($_GET['nome']) && isset($_GET['telefone'])) {
         $id_produto = @$_GET['id_produto'];
         $nome = $_GET['nome'];
-        $telefone = $_GET['telefone'];
+        $telefone2 = $_GET['telefone'];
         $id_conta = $_GET['id_conta'];
 
         try {
@@ -88,8 +88,7 @@ try {
                 $api = htmlspecialchars($config['api']);  
                 $username = htmlspecialchars($config['username']);  
                 
-        
-                $tel_whatsapp = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
+                        
             } else {
                 echo "Configurações não encontradas para a conta.";
             }
@@ -98,14 +97,17 @@ try {
         }
 
         // Verifica se o cliente já existe
-        $query = $pdo->query("SELECT * FROM clientes WHERE telefone = '$telefone' AND id_conta = '$id_conta'");
+        $query = $pdo->query("SELECT * FROM clientes WHERE telefone = '$telefone2' AND id_conta = '$id_conta'");
         $res = $query->fetchAll(PDO::FETCH_ASSOC);
+        $id_cliente = $res[0]['id'];
         if (count($res) <= 0) {
             $query = $pdo->prepare("INSERT INTO clientes SET nome = :nome, telefone = :telefone, data_cad = curDate(), cartoes = '0', id_conta = :id_conta");
             $query->bindValue(":nome", "$nome");
-            $query->bindValue(":telefone", "$telefone");
+            $query->bindValue(":telefone", "$telefone2");
             $query->bindValue(":id_conta", "$id_conta");
             $query->execute();
+            $id_cliente = $pdo->lastInsertId();
+
         }
 
         // Busca informações do produto
@@ -115,12 +117,13 @@ try {
         $valor = @$res[0]['valor_venda'];
         $foto = @$res[0]['foto'];
 
-        
+        $query = $pdo->prepare("INSERT INTO receber SET descricao = '$nome_produto', tipo = 'Venda', valor = '$valor', data_lanc = curDate(), data_venc = curDate(), usuario_lanc = curDate(), foto = '$foto', pessoa = '$id_cliente', pago = 'Sim', obs = 'Site', id_conta = '$id_conta'");
+                
 
         $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
 
         $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
-        $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
+        $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone2);
 
         $mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
         $mensagem .= 'Olá ' . $nome . '%0A%0A';
@@ -128,6 +131,23 @@ try {
         $mensagem .= 'Produto: ' . $nome_produto . '%0A';
         $mensagem .= 'Valor: ' . $valor . '%0A%0A';
         $mensagem .= '📦 _O produto já pode ser retirado em nossa loja. Se desejar envio pelos Correios entre em contato._%0A%0A';
+
+        if(!empty($foto)){
+            require('envio_foto.php');
+        }else{
+            require('api-texto.php');
+        }
+        
+
+        $telefone = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
+
+        $mensagem = '*AGENDAR - Gestão de Serviços*%0A%0A';        
+        $mensagem .= '✅ *Compra realizada pelo seu site!*%0A%0A';
+        $mensagem .= 'Produto: ' . $nome_produto . '%0A';
+        $mensagem .= 'Valor: ' . $valor . '%0A';
+        $mensagem .= 'Comprador: ' . $nome . '%0A';
+        $mensagem .= 'Telefone: ' . $telefone2 . '%0A%0A';
+        $mensagem .= '_Att. Equipe Skysee_%0A%0A';
 
         if(!empty($foto)){
             require('envio_foto.php');
