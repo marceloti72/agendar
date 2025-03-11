@@ -3,7 +3,7 @@ ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 //error_reporting(E_ALL);
 
-include("./config.php");
+include("config.php");
 require("../sistema/conexao.php");
 
 $id_pg = $_GET['id_conta'];
@@ -15,7 +15,7 @@ if ($pgto_api != 'Sim') {
     echo "<script>window.location='$url/pagamentos/pagamento_aprovado.php?id_agd=$id_pg'</script>";
 }
 
-$query = $pdo->query("SELECT * FROM agendamentos where id = '$id_pg' and id_conta = '$id_conta'");
+$query = $pdo->query("SELECT * FROM agendamentos where id = '$id_pg'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 $cliente = $res[0]['cliente'];
@@ -23,6 +23,7 @@ $servico = $res[0]['servico'];
 $ref_pix = $res[0]['ref_pix'];
 $data = $res[0]['data'];
 $hora = $res[0]['hora'];
+$id_conta = $res[0]['id_conta'];
 $dataF = implode('/', array_reverse(explode('-', $data)));
 $horaF = date("H:i", strtotime($hora));
 
@@ -53,10 +54,10 @@ $cpf_cliente =  '450.417.700-50';
 $email_cliente =  'seuemail@email.com';
 
 $token_valor = ($valor != "") ? sha1($valor) : "";
-$doc = $cpf_cliente;
+$doc = $_REQUEST["cpf"];
 $doc =  str_replace(array(",", ".", "-", "/", " "), "", $doc);
 $ref = $_REQUEST["ref"];
-$email = $email_cliente;
+$email = $_REQUEST["email"];
 $gerarDireto = $_REQUEST["gerarDireto"];
 $descricao = $descricao;
 $nome = $nome_cliente;
@@ -102,7 +103,7 @@ $sobrenome = $_REQUEST["sobrenome"];
             <div style=" margin-bottom: 8px; font-size: 14px"><b>Agendado</b> Data:<?= $dataF; ?> / Hora <?= $horaF; ?><br></div>
 
             <?php if ($porc_servico <= 0) { ?>
-                <div style="margin-bottom: 8px; font-size: 16px"><a href="<?php echo $url ?>pagamentos/pagamento_aprovado.php?id_agd=<?php echo $id_pg ?>"><b>>>CLIQUE AQUI<<</b></a> <span style="font-size: 14px"> para confirmar e efetuar o pagamento no local!</span></div>
+                <div style="margin-bottom: 8px; font-size: 16px"><a href="<?php echo $url ?>pagamentos/pagamento_aprovado.php?id_agd=<?php echo $id_pg ?>&id_conta=<?php echo $id_conta?>"><b>>>CLIQUE AQUI<<</b></a> <span style="font-size: 14px"> para confirmar e efetuar o pagamento no local!</span></div>
             <?php } ?>
 
         </div>
