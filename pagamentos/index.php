@@ -42,10 +42,10 @@ $valorF = number_format($valor, 2, ',', '.');
 
 if ($ref_pix != "") {
     require('consultar_pagamento.php');
-    if ($status_api == 'approved') {
+    
         echo "<script>window.location='$url/pagamentos/pagamento_aprovado.php?id_agd=$id_pg'&id_conta=$id_conta</script>";
         exit();
-    }
+    
 }
 
 $query = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
@@ -205,8 +205,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                                 .then((response) => response.json())
                                 .then((response) => {
                                     // receber o resultado do pagamento
-                                    if (response.status == true) {
-                                        alert(response.status)
+                                    if (response.status == true) {                    
                                         window.location.href = "<?= $url; ?>pagamentos/index.php?id=" + response.id + '&id_conta=' + id_conta;
                                     }
                                     if (response.status != true) {
