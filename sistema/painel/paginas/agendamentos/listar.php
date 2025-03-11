@@ -241,9 +241,11 @@ if ($total_reg > 0) {
 		}
 
 		if ($valor_serv == $valor_pago) {
-			$valor_pagoF = ' Pago';
+			$valor_pagoF = 'Pagamento concluido!';
+			$cor = 'green';
 		} else {
-			$valor_pagoF = 'R$ ' . $valor_pagoF;
+			$valor_pagoF = 'Sinal pago R$ ' . $valor_pagoF;
+			$cor = '';
 		}
 
 		if ($valor_pago > 0) {
@@ -309,14 +311,17 @@ if ($total_reg > 0) {
 						<div class="service-actions">					
 						
 						</div>
-						<span class="payment-status {$classe_valor_pago}" >({$valor_pagoF})</span>
+						<!-- <span class="payment-status {$classe_valor_pago}" >({$valor_pagoF})</span> -->
+						
 					</h5>
+					
 				</div>
-
+				
 
 
         			
         		</div>
+				<button style='width: 100%; background-color: {$cor};' class="payment-status {$classe_valor_pago}" >{$valor_pagoF}</button>
         		</div>
         		
         					
