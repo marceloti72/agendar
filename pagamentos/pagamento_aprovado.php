@@ -56,7 +56,7 @@ if ($id_pg == "") {
     $pdo->query("INSERT INTO receber SET descricao = '$servico_conc', tipo = 'Serviço', valor = '$valor_pago', data_lanc = CURDATE(), data_venc = CURDATE(), data_pgto = CURDATE(), usuario_lanc = '0', usuario_baixa = '0', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = 'Sim', servico = '$servico', funcionario = '$funcionario', obs = '', pgto = '$forma_pgto', referencia = '$ult_id', id_conta = '$id_conta'");
 }
 
-if ($id_pg != "") {
+
     echo "<script>
         document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
@@ -88,7 +88,7 @@ if ($id_pg != "") {
             });
         });
     </script>";
-}
+
 ?>
 </body>
 </html>
