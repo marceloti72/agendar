@@ -10,7 +10,7 @@
 </head>
 <body>
 <?php
-$id_pg = @$_GET['id_produto'];
+$id_pg = @$_GET['id_agd'];
 $id_conta = @$_GET['id_conta'];
 if ($id_pg != null) {
     if (@$porc_servico > 0) {
