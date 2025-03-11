@@ -355,7 +355,7 @@ if(@$agendamentos == 'ocultar'){
 
 
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary">Salvar</button>
+					<button type="submit" class="btn btn-primary">Concluir</button>
 				</div>
 
 
