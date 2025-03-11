@@ -15,11 +15,11 @@ $curl = curl_init();
     $response = curl_exec($curl);
     $resultado = json_decode($response);
 curl_close($curl);
-echo $resultado->status;
+//echo $resultado->status;
 $status_api = $resultado->status;
 
 if($status_api == 'approved'){
 
 }
-var_dump($resultado);
+//var_dump($resultado);
 ?>
