@@ -11,7 +11,7 @@
 <body>
 <?php
 $id_pg = @$_GET['id_agd'];
-$id_conta = @$_GET['id_conta'];
+$id_conta = '0';
 if ($id_pg != null) {
     if (@$porc_servico > 0) {
         echo 'Faça o pagamento antes de ir para o agendamento';
