@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 include("config.php");
-require("../sistema/conexao.php");
+//require("../sistema/conexao.php");
 
 
 
@@ -85,11 +85,11 @@ if ($_GET["acc"] == "check") {
     }
    
     if ($status == "approved") { // PAGAMENTO APROVADO;
-        $id_pg = null; // Defindo como vazio novamente
-        $ref_pix = $id_mercadopago;
-        $valor_pago = $transaction_amount;
-        $forma_pgto = $payment_method_id;
-        require("pagamento_aprovado.php");
+        // $id_pg = null; // Defindo como vazio novamente
+        // $ref_pix = $id_mercadopago;
+        // $valor_pago = $transaction_amount;
+        // $forma_pgto = $payment_method_id;
+        // require("pagamento_aprovado.php");
         
         
         echo json_encode(array("status" => "pago"));
