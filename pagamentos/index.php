@@ -60,7 +60,7 @@ $doc =  str_replace(array(",", ".", "-", "/", " "), "", $doc);
 $ref = $_REQUEST["ref"];
 $email = $_REQUEST["email"];
 $gerarDireto = $_REQUEST["gerarDireto"];
-$descricao = $descricao;
+$descricao = $nome_servico;
 $nome = $nome_cliente;
 $sobrenome = $_REQUEST["sobrenome"];
 
@@ -206,6 +206,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                                 .then((response) => {
                                     // receber o resultado do pagamento
                                     if (response.status == true) {
+                                        alert(response.status)
                                         window.location.href = "<?= $url; ?>pagamentos/index.php?id=" + response.id + '&id_conta=' + id_conta;
                                     }
                                     if (response.status != true) {
