@@ -21,5 +21,5 @@ $status_api = $resultado->status;
 if($status_api == 'approved'){
 
 }
-var_dump($resultado);
+//var_dump($resultado);
 ?>
