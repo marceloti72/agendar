@@ -10,8 +10,8 @@
 </head>
 <body>
 <?php
-$id_pg = @$_GET['id_agd'];
-$id_conta = '0';
+$id_pg = @$_GET['id_produto'];
+$id_conta = @$_GET['id_conta'];
 if ($id_pg != null) {
     if (@$porc_servico > 0) {
         echo 'Faça o pagamento antes de ir para o agendamento';

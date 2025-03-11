@@ -281,8 +281,10 @@ $sobrenome = $_REQUEST["sobrenome"];
                         $("#form-pago").slideDown("fast");
                         if (redi.trim() == "Sim") {
                             setTimeout(() => {
-                                window.location = "../meus-agendamentos.php";
+                                //window.location = "../meus-agendamentos.php";
                                 //$("#btn_form").click();
+
+                                window.location = "pagamento_aprovado.php?id_produto="+<?= $_GET["id_conta"]; ?>+"&id_conta="+<?=$id_conta;?>;
                             }, 6000);
                         }
                     } else {
