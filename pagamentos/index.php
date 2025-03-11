@@ -40,13 +40,13 @@ if ($porc_servico > 0 and $total != 100) {
 
 $valorF = number_format($valor, 2, ',', '.');
 
-if ($ref_pix != "") {
-    require('consultar_pagamento.php');
-    if ($status_api == 'approved') {
-        echo "<script>window.location='$url/pagamentos/pagamento_aprovado.php?id_agd=$id_pg'&id_conta=$id_conta</script>";
-        exit();
-    }
-}
+// if ($ref_pix != "") {
+//     require('consultar_pagamento.php');
+//     if ($status_api == 'approved') {
+//         echo "<script>window.location='$url/pagamentos/pagamento_aprovado.php?id_agd=$id_pg'&id_conta=$id_conta</script>";
+//         exit();
+//     }
+// }
 
 $query = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);

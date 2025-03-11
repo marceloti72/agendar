@@ -19,7 +19,7 @@ if ($id_pg != null) {
     }
     require("../sistema/conexao.php");
     $valor_pago = '0';
-    $query = $pdo->query("SELECT * FROM agendamentos WHERE id = '$id_pg' AND id_conta = '$id_conta'");
+    $query = $pdo->query("SELECT * FROM agendamentos WHERE id = '$id_pg'");
 } else {
     $query = $pdo->query("SELECT * FROM agendamentos WHERE ref_pix = '$ref_pix'");
 }
