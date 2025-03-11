@@ -77,6 +77,7 @@ if (isset($_SESSION['id_conta'])) {
 			$servicos2 = $config['servicos'];
 			$depoimentos2 = $config['depoimentos'];
 			$carrossel = $config['carrossel'];
+			$username = $config['username'];
 
 			// Novas variáveis Menuia
 			$emailMenuia = $config['email_menuia'] ?? '';

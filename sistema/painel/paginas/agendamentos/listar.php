@@ -168,6 +168,8 @@ if ($total_reg > 0) {
 		} else {
 			$imagem = 'relogio-azul.png';
 			$classe_status = 'ocultar';
+			$valor_pagoF = 'Serviço Finalizado!';
+			$cor = '#90EE90';
 		}
 
 		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario' and id_conta = '$id_conta'");
@@ -311,15 +313,10 @@ if ($total_reg > 0) {
 						<div class="service-actions">					
 						
 						</div>
-						<!-- <span class="payment-status {$classe_valor_pago}" >({$valor_pagoF})</span> -->
-						
+												
 					</h5>
 					
-				</div>
-				
-
-
-        			
+				</div>        			
         		</div>
 				<button style='width: 100%; background-color: {$cor};' class="payment-status {$classe_valor_pago}" >{$valor_pagoF}</button>
         		</div>

@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../../../funcoes.php");
+//require_once("../../../../funcoes.php");
 
 
    $data_mensagem_obj = new DateTime($data_mensagem);
@@ -30,7 +30,7 @@ require_once("../../../../funcoes.php");
       
       curl_close($curl);
       $response = json_decode($response, true);
-      save_log($pdo, $token, $instancia, $response, 'agendamento', $telefone, $mensagem);
+      //save_log($pdo, $token, $instancia, $response, 'agendamento', $telefone, $mensagem);
       
       $hash = $response['id'];
 

@@ -174,7 +174,7 @@ if ($msg_agendamento == 'Sim') {
 	$mensagem .= 'Olá '.$nome_cliente.', tudo bem! 😃%0A';
 	$mensagem .= 'Seu último serviço: '.$nome_servico.'%0A%0A';
 	$mensagem .= 'Queremos ouvir você!%0A';
-	$mensagem .= 'Como foi seu último serviço de conosco?%0A';
+	$mensagem .= 'Como foi seu último serviço conosco?%0A';
 	$mensagem .= 'Você teria alguma sugestão de melhoria? Você é muito importante pra gente!%0A';
 	$mensagem .= 'Faz um tempo que não nós vemos você aqui. Quando você vai dar aquele tapa no visual? Você merece o que há de melhor, conheça nossos pacotes de desconto. *Promoção Especial apenas hoje!* 👇%0A';
 	$mensagem .= 'Acesse e agende: '.$link_agenda;
