@@ -43,7 +43,7 @@
               </h5>
               <small>Entraremos em contato!</small>
               <form id="form_cadastro">
-                <input type="text" name="telefone" id="telefone_rodape" placeholder="Seu Telefone DDD + número" required pattern="[0-9]{10,11}" title="Digite um telefone válido com DDD (10 ou 11 dígitos)" />
+                <input type="text" name="telefone" id="telefone_rodape" placeholder="Seu Telefone DDD + número" title="Digite um telefone válido com DDD (10 ou 11 dígitos)" />
                 <input type="text" name="nome" placeholder="Seu Nome" required />
                 <button type="submit" class="form-control" id='botao_duvidas'>Enviar</button>
               </form>
@@ -95,6 +95,7 @@
 
 
 <script type="text/javascript">
+  $('#telefone_rodape').mask('(00) 00000-0000');
 
 AOS.init();
 

@@ -25,12 +25,12 @@ $pdo->query("DELETE FROM horarios_agd where agendamento = '$id' and id_conta = '
 
 echo 'Cancelado com Sucesso';
 
-if ($not_sistema == 'Sim') {
-	$mensagem_not = $nome_cliente;
-	$titulo_not = 'Agendamento Cancelado ' . $dataF . ' - ' . $horaF;
-	$id_usu = $usuario;
-	require('../api/notid.php');
-}
+// if ($api == 'Sim') {
+// 	$mensagem_not = $nome_cliente;
+// 	$titulo_not = 'Agendamento Cancelado ' . $dataF . ' - ' . $horaF;
+// 	$id_usu = $usuario;
+// 	require('api-texto.php');
+// }
 
 
 
@@ -64,6 +64,11 @@ if ($msg_agendamento == 'Sim') {
 		$telefone = '55' . preg_replace('/[ ()-]+/', '', $tel_func);
 		require('api-texto.php');
 	}
+	
+    // ENVIO PARA EMPRESA
+	$telefone = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
+	require('api-texto.php');
+	
 
 	if ($hash != "") {
 		require('agendar-delete.php');

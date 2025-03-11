@@ -121,37 +121,37 @@ $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $nome_cliente = $res[0]['nome'];
 $telefone = $res[0]['telefone'];
 
-if ($not_sistema == 'Sim') {
-	$mensagem_not = $nome_cliente;
-	$titulo_not = 'Novo Agendamento ' . $dataF . ' - ' . $horaF;
-	$id_usu = $funcionario;
-	require('../../../../api/notid.php');
+if ($api == 'Sim') {
+	// $mensagem_not = $nome_cliente;
+	// $titulo_not = 'Novo Agendamento ' . $dataF . ' - ' . $horaF;
+	// $id_usu = $funcionario;
+	// require('../../../../api/notid.php');
+
+
+	$telefone = '55' . preg_replace('/[ ()-]+/', '', $tel_func);
+	// Enviar Notificação ao funcionario por whatsapp
+	$mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
+	$mensagem .= '*Confirmação de Agendamento* 📆%0A';
+	$mensagem .= 'Cliente: ' . $nome_cliente . '%0A';
+	$mensagem .= 'Data: ' . $dataF . '%0A';
+	$mensagem .= 'Hora: ' . $horaF . '%0A';
+	$mensagem .= 'Serviço: ' . $nome_servico . '%0A';
+
+	require('../../../../ajax/api-texto.php');
+
+
+	if ($msg_agendamento == 'Sim') {
+
+		//agendar o alerta de confirmação
+		$hora_atual = date('H:i:s');
+		$data_atual = date('Y-m-d');
+		$hora_minutos = strtotime("-$minutos_aviso minutes", strtotime($hora));
+		$nova_hora = date('H:i:s', $hora_minutos);
+
+
+		$telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
+	}
 }
-
-$telefone = '55' . preg_replace('/[ ()-]+/', '', $tel_func);
-// Enviar Notificação ao funcionario por whatsapp
-$mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
-$mensagem .= '*Confirmação de Agendamento* 📆%0A';
-$mensagem .= 'Cliente: ' . $nome_cliente . '%0A';
-$mensagem .= 'Data: ' . $dataF . '%0A';
-$mensagem .= 'Hora: ' . $horaF . '%0A';
-$mensagem .= 'Serviço: ' . $nome_servico . '%0A';
-
-require('../../../../ajax/api-texto.php');
-
-
-if ($msg_agendamento == 'Sim') {
-
-	//agendar o alerta de confirmação
-	$hora_atual = date('H:i:s');
-	$data_atual = date('Y-m-d');
-	$hora_minutos = strtotime("-$minutos_aviso minutes", strtotime($hora));
-	$nova_hora = date('H:i:s', $hora_minutos);
-
-
-	$telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
-}
-
 
 $query = $pdo->prepare("INSERT INTO $tabela SET funcionario = '$funcionario', cliente = '$cliente', hora = '$hora', data = '$data_agd', usuario = '$usuario_logado', status = 'Agendado', obs = :obs, data_lanc = curDate(), servico = '$servico', origem = 'Loja', hash = '$hash', id_conta = '$id_conta'");
 
@@ -161,22 +161,24 @@ $query->execute();
 
 $ult_id = $pdo->lastInsertId();
 
-if ($msg_agendamento == 'Sim') {
-	if (strtotime($hora_atual) < strtotime($nova_hora) or strtotime($data_atual) != strtotime($data_agd)) {
-		$mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
-		$mensagem .= '*Confirmação de Agendamento* 📆%0A';
-		$mensagem .= 'Data: ' . $dataF . '%0A';
-		$mensagem .= 'Hora: ' . $horaF . '%0A';
-		$mensagem .= 'Serviço: ' . $nome_servico . '%0A%0A';
-		$mensagem .= '_(1 para *CONFIRMAR*, 2 para *CANCELAR*)_';
-		$id_envio = $ult_id;
-		$data_envio = $data_agd . ' ' . $nova_hora;
+if ($api == 'Sim') {
+	if ($msg_agendamento == 'Sim') {
+		if (strtotime($hora_atual) < strtotime($nova_hora) or strtotime($data_atual) != strtotime($data_agd)) {
+			$mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
+			$mensagem .= '*Confirmação de Agendamento* 📆%0A';
+			$mensagem .= 'Data: ' . $dataF . '%0A';
+			$mensagem .= 'Hora: ' . $horaF . '%0A';
+			$mensagem .= 'Serviço: ' . $nome_servico . '%0A%0A';
+			$mensagem .= '_(1 para *CONFIRMAR*, 2 para *CANCELAR*)_';
+			$id_envio = $ult_id;
+			$data_envio = $data_agd . ' ' . $nova_hora;
 
-		if ($minutos_aviso > 0) {
-			require("../../../../ajax/confirmacao.php");
-			//require("../../../../ajax/chat_confirma.php");
-			$id_hash = $id;
-			$pdo->query("UPDATE agendamentos SET hash = '$id_hash' WHERE id = '$ult_id' and id_conta = '$id_conta'");
+			if ($minutos_aviso > 0) {
+				require("../../../../ajax/confirmacao.php");
+				//require("../../../../ajax/chat_confirma.php");
+				$id_hash = $id;
+				$pdo->query("UPDATE agendamentos SET hash = '$id_hash' WHERE id = '$ult_id' and id_conta = '$id_conta'");
+			}
 		}
 	}
 }

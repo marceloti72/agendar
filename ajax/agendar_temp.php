@@ -33,6 +33,7 @@ $query = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_co
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $intervalo = $res[0]['intervalo'];
 $tel_func = $res[0]['telefone'];
+$nome_func = $res[0]['nome'];
 
 $query = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -62,6 +63,7 @@ if(@count($res) == 0){
 	$final = $res[0]['final'];
 	$inicio_almoco = $res[0]['inicio_almoco'];
 	$final_almoco = $res[0]['final_almoco'];
+	
 }
 
 //verificar se possui essa data nos dias bloqueio geral
@@ -123,7 +125,7 @@ while (@strtotime($nova_hora) < @strtotime($hora_final_servico)){
 
 
 
-@$_SESSION['telefone'] = $telefone2;
+//@$_SESSION['telefone'] = $telefone2;
 
 if($hora == ""){
 	echo 'Escolha um Horário para Agendar!';
@@ -169,7 +171,7 @@ $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
 $telefone = '55'.preg_replace('/[ ()-]+/' , '' , $tel_func);
 // Enviar Notificação ao funcionario por whatsapp
 $mensagem = '*'.$nome_sistema_maiusculo.'*%0A%0A';
-$mensagem .= '*Agendamento realizado!* 📆%0A';
+$mensagem .= '*Novo agendamento pelo site!* 📆%0A';
 $mensagem .= 'Cliente: '.$nome.'%0A';
 $mensagem .= 'Data: '.$data_agd2.'%0A';
 $mensagem .= 'Hora: '.$hora_do_agd.'%0A';
@@ -177,13 +179,26 @@ $mensagem .= 'Serviço: '.$nome_servico.'%0A';
 
 require('api-texto.php');
 
-$telefone = '55'.preg_replace('/[ ()-]+/' , '' , $telefone2);
+
+$telefone = '55'.preg_replace('/[ ()-]+/' , '' , $whatsapp_sistema);
 // Enviar Notificação ao funcionario por whatsapp
+$mensagem = '*Novo agendamento pelo site!* 📆%0A';
+$mensagem .= 'Cliente: '.$nome.'%0A';
+$mensagem .= 'Data: '.$data_agd2.'%0A';
+$mensagem .= 'Hora: '.$hora_do_agd.'%0A';
+$mensagem .= 'Serviço: '.$nome_servico.'%0A';
+$mensagem .= 'Profissional: '.$nome_func.'%0A';
+
+require('api-texto.php');
+
+$telefone = '55'.preg_replace('/[ ()-]+/' , '' , $telefone2);
+// Enviar Notificação ao cliente por whatsapp
 $mensagem = '*'.$nome_sistema_maiusculo.'*%0A%0A';
 $mensagem .= 'Seu agendamento foi realizado com sucesso! 😀%0A';
 $mensagem .= 'Data: '.$data_agd2.'%0A';
 $mensagem .= 'Hora: '.$hora_do_agd.'%0A';
 $mensagem .= 'Serviço: '.$nome_servico.'%0A';
+$mensagem .= 'Profissional: '.$nome_func.'%0A';
 
 require('api-texto.php');
 
@@ -194,7 +209,8 @@ if($msg_agendamento == 'Sim'){
 		$mensagem .= '*Confirmação de Agendamento* 📆%0A';	
 		$mensagem .= 'Data: '.$data_agd2.'%0A';
 		$mensagem .= 'Hora: '.$hora_do_agd.'%0A';
-		$mensagem .= 'Serviço: '.$nome_servico.'%0A%0A';	
+		$mensagem .= 'Serviço: '.$nome_servico.'%0A';
+		$mensagem .= 'Profissional: '.$nome_func.'%0A%0A';	
 		$mensagem .= '_(1 para *CONFIRMAR*, 2 para *CANCELAR*)_';
 		//$id_envio = $ult_id;
 		$data_envio = $data_agd.' '.$nova_hora;

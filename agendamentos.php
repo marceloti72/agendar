@@ -99,7 +99,7 @@ $data_atual = date('Y-m-d');
                    
                 </button>
 
-                  <a href="meus-agendamentos.php" class="botao-azul" id='botao_editar' style="width:100%; text-align: center; margin-top: 5px">              
+                  <a href="meus-agendamentos.php?u=<?php echo $username?>" class="botao-azul" id='botao_editar' style="width:100%; text-align: center; margin-top: 5px">              
                   Ver Agendamentos
                 </a>
                
@@ -244,7 +244,7 @@ $data_atual = date('Y-m-d');
 
 		
 		$.ajax({
-			url: "ajax/listar-horarios.php",
+			url: "ajax/listar-horarios2.php",
 			method: 'POST',
 			data: {funcionario, data, hora},
 			dataType: "text",

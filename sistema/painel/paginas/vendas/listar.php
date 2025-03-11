@@ -1,6 +1,6 @@
 <?php
 @session_start();
-$nivel_usu = @$_SESSION['nivel'];
+$nivel_usu = $_SESSION['nivel_usuario'];
 $id_usu = @$_SESSION['id_usuario'];
 require_once("../../../conexao.php");
 $tabela = 'receber';
@@ -13,7 +13,6 @@ $status = '%' . @$_POST['status'] . '%';
 
 $total_pago = 0;
 $total_a_pagar = 0;
-
 if ($nivel_usu == "Administrador") {
 	$query = $pdo->query("SELECT * FROM $tabela where data_venc >= '$dataInicial' and data_venc <= '$dataFinal' and pago LIKE '$status' and produto != 0 and id_conta = '$id_conta' ORDER BY pago asc, data_venc asc");
 } else {

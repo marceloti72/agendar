@@ -55,7 +55,7 @@ try {
                         </div>
                         <div class="mb-3">
                             <label for="telefone" class="form-label">Telefone</label>
-                            <input type="text" class="form-control" id="telefone" name="telefone" required>
+                            <input type="text" class="form-control" id="telefone_compra" name="telefone" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Enviar</button>
                     </form>

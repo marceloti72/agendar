@@ -219,6 +219,32 @@ require_once("cabecalho.php");?>
 
 </section>
 
+<section class="content">
+
+<div class="text">
+        
+        <div class="buttons">
+            <a href="precos.php" class="trial-large">COMEÇAR AGORA</a>
+            <a href="https://wa.me/5522998838694" target="_blank" class="sales">FALAR COM VENDAS</a>
+            
+        </div>
+    </div>
+    <div class="image">
+        <img src="images/testegratis.png" alt="Teste Grátis" style="width: 70%;">
+    </div>
+  
+
+  <button class="scroll-up" data-section="sessao-0">
+    <i class="fa-solid fa-arrow-up fa-beat-fade fa-2x"></i>
+  </button>
+
+  <button class="scroll-down" data-section="sessao-2">
+    <i class="fa-solid fa-arrow-down fa-beat-fade fa-2x"></i>
+  </button>
+
+
+</section>
+
 
 
 

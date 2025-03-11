@@ -55,10 +55,17 @@ for($i=0; $i < $total_reg; $i++){
                  R$ <?php echo $valorF ?>
                 </span>
                
-              </h6>
-              <a target="_blank" href="http://api.whatsapp.com/send?1=pt_BR&phone=<?php echo $tel_whatsapp ?>&text=Ola, gostaria de saber mais informações sobre o produto <?php echo $nome ?>">
-               Comprar Agora
-              </a>
+              </h6><?php 
+              if($pgto_api != 'Sim'){?>
+                      <a target="_blank" href="http://api.whatsapp.com/send?1=pt_BR&phone=<?php echo $tel_whatsapp ?>&text=Ola, gostaria de saber mais informações sobre o produto <?php echo $nome ?>">
+                        Comprar Agora
+                      </a><?php 
+                    }else{?>
+                      <a href="pagamento2/<?php echo $id ?>/<?php echo $id_conta?>">
+                        Comprar Agora
+                      </a><?php 
+                    }
+                    ?>
             </div>
           </div>
         </div>

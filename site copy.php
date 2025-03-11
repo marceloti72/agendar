@@ -1,124 +1,6 @@
 <?php 
 require_once("cabecalho2.php") ?>
 
-<style>
-  /* Estilos gerais da seção */
-.product_section {
-    padding: 60px 0;
-    background-color: #f9f9f9;
-}
-
-.heading_container h2 {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.heading_container p {
-    font-size: 1.1rem;
-    color: #666;
-}
-
-/* Estilos do Slick Slider */
-.slick-services {
-    margin: 0 -15px;
-}
-
-.slick-item {
-    padding: 15px;
-}
-
-.box {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
-}
-
-.box:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.img-box img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-.detail-box {
-    padding: 20px;
-    text-align: center;
-}
-
-.detail-box h4 {
-    font-size: 1.2rem;
-    color: #222;
-    margin-bottom: 10px;
-}
-
-.detail-box .price .new_price {
-    font-size: 1.3rem;
-    color: #e67e22;
-    font-weight: bold;
-}
-
-.detail-box a {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.detail-box a:hover {
-    background-color: #0056b3;
-}
-
-/* Estilos dos controles do Slick */
-
-
-.slick-dots li button:before {
-    font-size: 12px;
-    color: #007bff;
-}
-
-.slick-dots li.slick-active button:before {
-    color: #0056b3;
-}
-
-
-
-
-.product-slider {
-        width: 100%;
-        margin: 0 auto;
-      }
-      .product-slide {
-        padding: 0 15px; /* Add some spacing between slides */
-      }
-      .slick-prev, .slick-next {
-        z-index: 1; /* Ensure arrows are above slides */
-      }
-      .box {
-        margin: 0 auto;
-        text-align: center;
-      }
-</style>
-
-<body class="sub_page">
-  <div class="hero_area">
-    <div class="hero_bg_box">
-      <img src="images/banner<?php echo $id_conta?>.jpg" alt="">
-      
-    </div>
-
 
 <?php 
 if($carrossel == 'Sim'){
@@ -127,7 +9,7 @@ if($carrossel == 'Sim'){
   $total_reg = @count($res);
   if($total_reg > 0){
     ?>
-<div class="container">
+        
     <section class="slider_section ">
       <div id="customCarousel1" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
@@ -197,68 +79,86 @@ if($carrossel == 'Sim'){
       <?php      
   }
 
-  if ($servicos2 == 'Sim') { ?>
-    <section class="product_section layout_padding">
-        <div class="container-fluid">
-            <div class="heading_container heading_center">
-                <h2 id="titulo_servicos">Nossos Serviços</h2>
-                <p class="col-lg-8 px-0">
-                    <?php 
-                    $query = $pdo->query("SELECT * FROM cat_servicos WHERE id_conta = '$id_conta' ORDER BY id ASC");
-                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                    $total_reg = @count($res);
-                    if ($total_reg > 0) { 
-                        for ($i = 0; $i < $total_reg; $i++) {
-                            $nome = $res[$i]['nome'];?>
-                            <button id="botao_servicos" style="border-radius: 15px; background-color:rgb(141, 157, 248); color: white; padding: 2 px;"><?php echo $nome;?></button><?php              
-                            
+  if($servicos2 == 'Sim'){?>
+
+<section class="product_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center ">
+            <h2 class="">
+                Nossos Serviços
+            </h2>
+            <p class="col-lg-8 px-0">
+                <?php 
+                $query = $pdo->query("SELECT * FROM cat_servicos where id_conta = '$id_conta' ORDER BY id asc");
+                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                $total_reg = @count($res);
+                if($total_reg > 0){ 
+                    for($i=0; $i < $total_reg; $i++){
+                        foreach ($res[$i] as $key => $value){}
+                        $id = $res[$i]['id'];
+                        $nome = $res[$i]['nome'];
+
+                        echo $nome;
+
+                        if($i < ($total_reg - 1)){
+                            echo ' / ';
                         }
                     }
+                }
 
-                    $query = $pdo->query("SELECT * FROM servicos WHERE ativo = 'Sim' AND id_conta = '$id_conta' ORDER BY id ASC");
-                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                    $total_reg = @count($res);
-                    if ($total_reg > 0) { 
-                    ?>
-                </p>
-            </div>
-            <div class="product_container">
-                <div class="slick-services">
-                    <?php 
-                    for ($i = 0; $i < $total_reg; $i++) {
-                        $id = $res[$i]['id'];
-                        $nome = $res[$i]['nome']; 
-                        $valor = $res[$i]['valor'];
-                        $foto = $res[$i]['foto'];
-                        $valorF = number_format($valor, 2, ',', '.');
-                        $nomeF = mb_strimwidth($nome, 0, 20, "...");
-                    ?>
-                    <div class="slick-item">
-                        <div class="box">
-                            <div class="img-box">
-                                <img src="sistema/painel/img/servicos/<?php echo $foto ?>" alt="<?php echo $nome ?>">
-                            </div>
-                            <div class="detail-box">
-                                <h4><?php echo $nomeF ?></h4>
-                                <h6 class="price">
-                                    <span class="new_price">R$ <?php echo $valorF ?></span>
-                                </h6>
-                                <a href="agendamentos?u=<?php echo $username ?>">Agendar</a>
-                            </div>
+                $query = $pdo->query("SELECT * FROM servicos where ativo = 'Sim' and id_conta = '$id_conta' ORDER BY id asc");
+                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                $total_reg = @count($res);
+                if($total_reg > 0){ 
+                ?>
+            </p>
+        </div>
+        <div class="product_container">
+            <div class="product_owl-carousel owl-carousel owl-theme ">
+
+                <?php 
+                for($i=0; $i < $total_reg; $i++){
+                    foreach ($res[$i] as $key => $value){}
+
+                    $id = $res[$i]['id'];
+                    $nome = $res[$i]['nome']; 
+                    $valor = $res[$i]['valor'];
+                    $foto = $res[$i]['foto'];
+                    $valorF = number_format($valor, 2, ',', '.');
+                    $nomeF = mb_strimwidth($nome, 0, 20, "...");
+                ?>
+
+                <div class="item">
+                    <div class="box">
+                        <div class="img-box">
+                            <img src="sistema/painel/img/servicos/<?php echo $foto ?>" alt="">
+                        </div>
+                        <div class="detail-box">
+                            <h4>
+                                <?php echo $nomeF ?>
+                            </h4>
+                            <h6 class="price">
+                                <span class="new_price">
+                                    R$ <?php echo $valorF ?>
+                                </span>
+
+                            </h6>
+                            <a href="agendamentos?u=<?php echo $username?>">
+                                Agendar
+                            </a>
                         </div>
                     </div>
-                    <?php } ?>
                 </div>
-                <div class="btn-box">
-          <a href="servicos?u=<?php echo $username?>">
-            Ver mais Serviços
-          </a>
+                <?php 
+                } 
+                ?>
+            </div>
         </div>
-            </div>            
-        </div>
-    </section>
-<?php } ?>
-<?php } ?>
+      
+
+      <?php }?>
+      </section><?php 
+  }?>
 
   
   <section class="about_section ">
@@ -276,14 +176,14 @@ if($carrossel == 'Sim'){
         <div class="col-md-5">
           <div class="detail-box ">
             <div class="heading_container">
-              <h2 style="color: white;">
+              <h2 class="">
                 Sobre Nós
               </h2>
             </div>
             <p class="detail_p_mt">
               <?php echo $texto_sobre ?>
             </p>
-            <a style="border-radius: 15px;" href="http://api.whatsapp.com/send?1=pt_BR&phone=<?php echo $tel_whatsapp ?>" class="">
+            <a href="http://api.whatsapp.com/send?1=pt_BR&phone=<?php echo $tel_whatsapp ?>" class="">
               Mais Informações
             </a>
           </div>
@@ -294,73 +194,82 @@ if($carrossel == 'Sim'){
 
 
   <?php 
-
+echo $produtos2;
 if($produtos2 == 'Sim'){
-  $query = $pdo->query("SELECT * FROM produtos where estoque > 0 and valor_venda > 0 and id_conta = '$id_conta' ORDER BY id desc limit 8");
+  $query = $pdo->query("SELECT * FROM produtos where estoque > 0 and valor_venda >  0 and id_conta = '$id_conta' ORDER BY id desc limit 8");
   $res = $query->fetchAll(PDO::FETCH_ASSOC);
   $total_reg = @count($res);
-  if($total_reg > 0){   ?>   
+  if($total_reg > 0){ 
+    ?>
 
     <section class="product_section layout_padding">
       <div class="container-fluid">
-        <div class="heading_container heading_center">
-          <h2 id="titulo_produtos">
+        <div class="heading_container heading_center ">
+          <h2 class="">
             Nossos Produtos
           </h2>
+        
         </div>
         <div class="row">
-          <div class="product-slider">
-            <?php 
-            for($i=0; $i < $total_reg; $i++){
-              foreach ($res[$i] as $key => $value){}
-              
-              $id = $res[$i]['id'];
-              $nome = $res[$i]['nome'];   
-              $valor = $res[$i]['valor_venda'];
-              $foto = $res[$i]['foto'];
-              $descricao = $res[$i]['descricao'];
-              $valorF = number_format($valor, 2, ',', '.');
-              $nomeF = mb_strimwidth($nome, 0, 23, "...");
-            ?>
-              <div class="product-slide">
-                <div class="box">
-                  <div class="img-box">
-                    <img src="sistema/painel/img/produtos/<?php echo $foto ?>" title="<?php echo $descricao ?>">
-                  </div>
-                  <div class="detail-box">
-                    <h5>
-                      <?php echo $nomeF ?>
-                    </h5>
-                    <h6 class="price">
-                      <span class="new_price">
-                        R$ <?php echo $valorF ?>
-                      </span>
-                    </h6>
-                    <?php 
-                    if($pgto_api != 'Sim'){?>
-                      <a target="_blank" href="http://api.whatsapp.com/send?1=pt_BR&phone=<?php echo $tel_whatsapp ?>&text=Ola, gostaria de saber mais informações sobre o produto <?php echo $nome ?>">
-                        Comprar Agora
-                      </a><?php 
-                    }else{?>
-                      <a href="pagamento2/<?php echo $id ?>/<?php echo $id_conta?>">
-                        Comprar Agora
-                      </a><?php 
-                    }
-                    ?>
-                  </div>
-                </div>
+
+  <?php 
+  for($i=0; $i < $total_reg; $i++){
+    foreach ($res[$i] as $key => $value){}
+  
+    $id = $res[$i]['id'];
+    $nome = $res[$i]['nome'];   
+    $valor = $res[$i]['valor_venda'];
+    $foto = $res[$i]['foto'];
+    $descricao = $res[$i]['descricao'];
+    $valorF = number_format($valor, 2, ',', '.');
+  $nomeF = mb_strimwidth($nome, 0, 23, "...");
+
+  ?>
+
+          <div class="col-sm-6 col-md-3">
+            <div class="box">
+              <div class="img-box">
+                <img src="sistema/painel/img/produtos/<?php echo $foto ?>" title="<?php echo $descricao ?>">
               </div>
-            <?php } ?>
+              <div class="detail-box">
+                <h5>
+                <?php echo $nomeF ?>
+                </h5>
+                <h6 class="price">
+                  <span class="new_price">
+                  R$ <?php echo $valorF ?>
+                  </span>
+                
+                </h6>
+                <?php 
+                if($pgto_api != 'Sim'){?>
+                  <a target="_blank" href="http://api.whatsapp.com/send?1=pt_BR&phone=<?php echo $tel_whatsapp ?>&text=Ola, gostaria de saber mais informações sobre o produto <?php echo $nome ?>">
+                  Comprar Agora
+                  </a><?php 
+                }else{?>
+                  <a href="pagamento2/<?php echo $id ?>/<?php echo $id_conta?>">
+                  Comprar Agora
+                  </a><?php 
+                }
+                ?>
+                
+                
+              </div>
+            </div>
           </div>
+        
+    <?php } ?>    
+
+
         </div>
         <div class="btn-box">
-          <a style="border-radius: 15px;" href="produtos?u=<?php echo $username?>">
+          <a href="produtos?u=<?php echo $username?>">
             Ver mais Produtos
           </a>
         </div>
       </div>
     </section>
-   
+  
 
   <?php }
 } ?>
@@ -368,7 +277,7 @@ if($produtos2 == 'Sim'){
   <section class="contact_section layout_padding-bottom">
     <div class="container">
       <div class="heading_container">
-        <h2 id="contato">
+        <h2>
           Contate-nos
         </h2>
       </div>
@@ -389,7 +298,7 @@ if($produtos2 == 'Sim'){
                 <input type="text" name="mensagem" class="message-box" placeholder="Mensagem" required />
               </div>
               <div class="btn_box">
-                <button style="border-radius: 15px;">
+                <button>
                   Enviar
                 </button>
               </div>
@@ -409,7 +318,7 @@ if($produtos2 == 'Sim'){
   
 
 
-  <?php
+<?php
 if($depoimentos2 == 'Sim'){ 
   $query = $pdo->query("SELECT * FROM comentarios where ativo = 'Sim' and id_conta = '$id_conta' ORDER BY id asc");
   $res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -419,72 +328,56 @@ if($depoimentos2 == 'Sim'){
     <section class="client_section layout_padding-bottom">
       <div class="container">
         <div class="heading_container">
-          <h2 id="depoimentos">
+          <h2>
             Depoimento dos nossos Clientes
           </h2>
         </div>
         <div class="client_container">
-          <div class="slick-slider-client">
-            <?php 
-            for($i=0; $i < $total_reg; $i++){
-              foreach ($res[$i] as $key => $value){}
+          <div class="carousel-wrap">
+            <div class="owl-carousel client_owl-carousel">
+
+              <?php 
+              for($i=0; $i < $total_reg; $i++){
+            foreach ($res[$i] as $key => $value){}
   
-              $id = $res[$i]['id'];
-              $nome = $res[$i]['nome'];   
-              $texto = $res[$i]['texto'];
-              $foto = $res[$i]['foto'];   
-            ?>
+            $id = $res[$i]['id'];
+            $nome = $res[$i]['nome'];   
+            $texto = $res[$i]['texto'];
+            $foto = $res[$i]['foto'];   
+              ?>
+
               <div class="item">
                 <div class="box">
-                  <div >
-                  <img src="sistema/painel/img/comentarios/<?php echo $foto ?>" alt="" class="img-1" style="aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%;border: 5px solid #be2623; width: 50%;">
+                  <div class="img-box">
+                    <img src="sistema/painel/img/comentarios/<?php echo $foto ?>" alt="" class="img-1" style="aspect-ratio: 1 / 1; object-fit: fill;">
                   </div>
                   <div class="detail-box">
                     <h5>
                       <?php echo $nome ?>
                     </h5>
+                    
                     <p>
                       <?php echo $texto ?>
                     </p>
                   </div>
                 </div>
               </div>
-            <?php } ?>
+
+
+  <?php } ?>
+
+            </div>
           </div>
         </div>
-        <div class="btn-box2">
-        <a style="border-radius: 15px;" href="" data-toggle="modal" data-target="#modalComentario">
+      </div>
+
+      <div class="btn-box2">
+          <a href="" data-toggle="modal" data-target="#modalComentario">
           Inserir Depoimento
-        </a>
-      </div>
-      </div>
+          </a>
+        </div>
 
-      
     </section>
-
-    <!-- Adicionar o script Slick no final da página -->
-    <script>
-    $(document).ready(function(){
-      $('.slick-slider-client').slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        dots: true,
-        arrows: true,
-        infinite: true,
-        responsive: [
-          {
-            breakpoint: 768,
-            settings: {
-              slidesToShow: 1
-            }
-          }
-        ]
-      });
-    });
-    </script>
-
   <?php }
 } ?>
 
@@ -567,7 +460,6 @@ if($depoimentos2 == 'Sim'){
       </div>
     </div>
   </div>
-</div>
 
 
 
@@ -577,39 +469,6 @@ if($depoimentos2 == 'Sim'){
 
 
 <script type="text/javascript">
-
-$(document).ready(function(){
-    // Inicialização do Slick Slider para serviços
-    $('.slick-services').slick({
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 3000,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3
-                }
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 2
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1
-                }
-            }
-        ]
-    });
-  });
   
 $("#form-email").submit(function () {
 

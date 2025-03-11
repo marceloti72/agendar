@@ -6,11 +6,6 @@
 </style>
 
 </div>
-
-
-
-
-
   <section class="product_section layout_padding">
     <div class="container-fluid">
       <div class="heading_container heading_center ">
@@ -26,13 +21,8 @@ if($total_reg > 0){
 for($i=0; $i < $total_reg; $i++){
   foreach ($res[$i] as $key => $value){}
   $id = $res[$i]['id'];
-  $nome = $res[$i]['nome'];
-
-  echo $nome;
-
-  if($i < ($total_reg - 1)){
-    echo ' / ';
-  }
+  $nome = $res[$i]['nome'];?>
+          <button style="border-radius: 15px; background-color:rgb(141, 157, 248); color: white; padding: 5px;border: 0"><?php echo $nome;?></button><?php 
 
 }
 

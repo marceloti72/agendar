@@ -95,14 +95,14 @@ $sobrenome = $_REQUEST["sobrenome"];
 
             <?php if ($porc_servico > 0) { ?>
                 <?php if ($porc_servico != 100) { ?>
-                    <div style="margin-top: -8px; margin-bottom: 8px; font-size: 14px"><a href="<?php echo $id_pg ?>/<?php echo $porc_servico ?>">Pagar <?= $porc_servico; ?>% </a> / <a href="/<?php echo $id_pg ?>/100"> Pagar 100% </a> </div>
+                    <div style="margin-top: -8px; margin-bottom: 8px; font-size: 14px"><a href="<?php echo $porc_servico ?>">Pagar <?= $porc_servico; ?>% </a> / <a href="100"> Pagar 100% </a> </div>
             <?php }
             } ?>
 
             <div style=" margin-bottom: 8px; font-size: 14px"><b>Agendado</b> Data:<?= $dataF; ?> / Hora <?= $horaF; ?><br></div>
 
             <?php if ($porc_servico <= 0) { ?>
-                <div style="margin-bottom: 8px; font-size: 16px"><a href="<?php echo $url ?>pagamentos/pagamento_aprovado.php?id_agd=<?php echo $id_pg ?>"><b>>>CLIQUE AQUI<<< /b></a> <span style="font-size: 14px"> para confirmar e efetuar o pagamento no local!</span></div>
+                <div style="margin-bottom: 8px; font-size: 16px"><a href="<?php echo $url ?>pagamentos/pagamento_aprovado.php?id_agd=<?php echo $id_pg ?>"><b>>>CLIQUE AQUI<<</b></a> <span style="font-size: 14px"> para confirmar e efetuar o pagamento no local!</span></div>
             <?php } ?>
 
         </div>

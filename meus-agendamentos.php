@@ -1,7 +1,8 @@
 <?php 
 session_start();
 $telefone = $_SESSION['telefone'];
-require_once("cabecalho.php");
+$id_conta = @$_SESSION['id_conta'];
+require_once("cabecalho2.php");
 $data_atual = date('Y-m-d');
 
 
@@ -122,10 +123,10 @@ $obs = str_replace('"', "**", $obs);
 
   <div class="list-group-item list-group-item-action flex-column align-items-start " style="margin-bottom: 10px">
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1"><small> <i class="fa fa-calendar" aria-hidden="true"></i> Data: <?php echo $dataF ?>  <i class="fa fa-clock-o text-success" aria-hidden="true" style="margin-left: 10px"></i> Hora: <?php echo $horaF ?></small></h5> 
+      <h6 class="mb-1"><i class="fa fa-calendar" aria-hidden="true"></i> Data: <?php echo $dataF ?>  <i class="fa fa-clock-o text-success" aria-hidden="true" style="margin-left: 10px"></i> Hora: <?php echo $horaF ?></h6> 
       <small><a href="#" onclick="excluir('<?php echo $id ?>', '<?php echo $nome_cliente ?>', '<?php echo $dataF ?>', '<?php echo $horaF ?>', '<?php echo $nome_serv ?>', '<?php echo $nome_func ?>')"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i> </a></small>     
     </div>
-    <p class="mb-1"><small>Funcionário: <?php echo $nome_func ?></small></p>
+    <p class="mb-1"><small><b>Profissional:</b> <?php echo $nome_func ?></small></p>
     <small><b>Serviço:</b> <?php echo $nome_serv ?> <b>Valor:</b> R$ <?php echo $valor_serv ?></small>
   </div>
  
@@ -163,11 +164,7 @@ $obs = str_replace('"', "**", $obs);
 
 
 
-<?php require_once("rodape.php") ?>
-
-
-
-
+<?php require_once("rodape2.php") ?>
 
 
   <!-- Modal Excluir -->
@@ -255,27 +252,18 @@ $obs = str_replace('"', "**", $obs);
 				    $('#btn-fechar-excluir').click();     	          
 					$('#mensagem').text(mensagem)
 
-					var id_cliente = $('#id_excluir').val();	
-					var nome = $('#nome_excluir').val();
-					var dataFormatada = $('#data_excluir').val();	
-					var horaFormatada = $('#hora_excluir').val();
-					var nome_serv = $('#servico_excluir').val();	
-					var nome_func = $('#func_excluir').val();		
-		
-					window.location="agendamentos.php";			
-				
-					var msg_agendamento = "<?=$msg_agendamento?>";
-
-					if(msg_agendamento == 'Sim'){
-
-				let a= document.createElement('a');
-			          a.target= '_blank';
-			          a.href= 'http://api.whatsapp.com/send?1=pt_BR&phone=<?=$tel_whatsapp?>&text= *Atenção:* _Agendamento Cancelado_ %0A Funcionário: *' + nome_func + '* %0A Serviço: *' + nome_serv + '* %0A Data: *' + dataFormatada + '* %0A Hora: *' + horaFormatada + '* %0A Cliente: *' + nome + '*';
-			          a.click();
-			          return;		
-
-			      }
-
+					Swal.fire({
+						title: 'Cancelado!',
+						text: 'Cancelamento realizado com sucesso.',
+						icon: 'success',
+						timer: 3000,
+						width: '600px', // Janela maior
+						showConfirmButton: false,
+						
+					}).then(() => {
+						window.location.href = 'meus-agendamentos.php';
+					});							
+								
 				} else {
 					//$('#mensagem').addClass('text-danger')
 					$('#mensagem-excluir').text(mensagem)
