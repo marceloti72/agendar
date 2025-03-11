@@ -164,7 +164,10 @@ try {
     <!-- Bootstrap JS e jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script> 
+
     <script>
+        $('#telefone_compra').mask('(00) 00000-0000');
         // Mostra o modal automaticamente ao carregar a página se os dados não foram enviados
         $(document).ready(function() {
             <?php if (!isset($_GET['nome']) || !isset($_GET['telefone'])): ?>

@@ -5,7 +5,11 @@ ini_set('display_startup_errors', 0);
 
 include("config.php");
 //require("../cabecalho2.php");
+?>
 
+<!-- Adicione a biblioteca canvas-confetti no <head> ou antes do seu script -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<?php 
 
 
 $id_produto = $_GET['id_produto'];
@@ -272,6 +276,45 @@ $sobrenome = $_REQUEST["sobrenome"];
             });
         }
     </script>
+
+
+<!-- Script para disparar os confetes quando o form-pago for exibido -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Função para disparar confetes
+        function launchConfetti() {
+            confetti({
+                particleCount: 150,          // Quantidade de confetes
+                spread: 90,                 // Espalhamento
+                origin: { y: 0.5 },         // Origem vertical (meio da tela)
+                colors: ['#ff0000', '#00ff00', '#0000ff'], // Cores personalizadas
+                angle: 90,                  // Direção
+                decay: 0.9,                 // Desaceleração
+                startVelocity: 45           // Velocidade inicial
+            });
+
+            // Ajusta o zIndex do canvas dos confetes
+            const confettiCanvas = document.querySelector('canvas');
+            if (confettiCanvas) {
+                confettiCanvas.style.zIndex = '9999';
+            }
+        }
+
+        // Observa mudanças no estilo do elemento form-pago
+        const formPago = document.getElementById('form-pago');
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'style' && formPago.style.display !== 'none') {
+                    launchConfetti();
+                    observer.disconnect(); // Para de observar após disparar os confetes
+                }
+            });
+        });
+
+        // Inicia a observação do elemento
+        observer.observe(formPago, { attributes: true });
+    });
+</script>
 
 </body>
 
