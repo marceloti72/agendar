@@ -8,6 +8,7 @@ require("../sistema/conexao.php");
 
 $id_pg = $_GET['id_conta'];
 $total = $_GET['total'];
+$url = "https://" . $_SERVER['HTTP_HOST'] . "/";
 
 if ($pgto_api != 'Sim') {
 
