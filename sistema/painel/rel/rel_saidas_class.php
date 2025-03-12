@@ -31,6 +31,10 @@ function gerarPDF3($html)
 
 // Verifica se o botão PDF foi clicado
 if (isset($_GET['gerar_pdf'])) {
+	$dataInicial = $_GET['dataInicial'];
+	$dataFinal = $_GET['dataFinal'];
+	$filtro = urlencode($_GET['filtro']);
+	$cliente = urlencode($_GET['cliente']);
 	//ob_start(); // Inicia o buffer de saída
 	$html = file_get_contents($url . "sistema/painel/rel/rel_saidas.php?dataInicial=$dataInicial&dataFinal=$dataFinal&filtro=$filtro&id_conta=$id_conta");
 	//$html = ob_get_clean(); // Obtém o conteúdo do buffer e limpa-o
@@ -402,7 +406,7 @@ $filtro = '%' . $filtro . '%';
 	</div>
 
 	<div style="float: right;margin-right: 20px;">
-        <a href="?gerar_pdf=1" target="_blank">
+        <a href="?dataInicial=<?php echo $dataInicial?>&dataFinal=<?php echo $dataFinal?>&filtro=<?php echo $filtro?>&cliente=<?php echo $cliente?>&id_conta=<?php echo $id_conta?>&gerar_pdf=1" target="_blank">
             <button class="btn btn-primary">Gerar PDF</button>
         </a>
     </div>
