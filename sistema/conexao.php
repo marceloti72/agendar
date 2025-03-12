@@ -19,6 +19,8 @@ if ($url[1] === 'localhost/') {
 	$db_usuario = 'skysee';
 	$db_senha = '9vtYvJly8PK6zHahjPUg';
 	$db_nome = 'barbearia';
+
+	$url = "https://" . $_SERVER['HTTP_HOST'] . "/";
 }
 
 // Configuração do Fuso Horário
@@ -79,8 +81,7 @@ if (isset($_SESSION['id_conta'])) {
 			$carrossel = $config['carrossel'];
 			$username = $config['username'];
 
-			$url = "https://" . $_SERVER['HTTP_HOST'] . "/";
-
+			
 			// Novas variáveis Menuia
 			$emailMenuia = $config['email_menuia'] ?? '';
 			$planoMenuia = $config['plano_menuia'] ?? '';

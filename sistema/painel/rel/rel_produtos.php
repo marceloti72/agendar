@@ -166,7 +166,7 @@ $id_conta = $_GET['id_conta'];
 	<div class="titulo_cab titulo_img"><u>Relatório de Produtos </u></div>
 	<div class="data_img"><?php echo mb_strtoupper($data_hoje) ?></div>
 
-	<img class="imagem" src="<?php echo $url ?>/sistema/img/logo_rel<?php echo $id_conta ?>.jpg">
+	<img class="imagem" src="<?php echo $url ?>sistema/img/logo_rel<?php echo $id_conta ?>.jpg">
 
 
 	<br><br><br>

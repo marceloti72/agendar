@@ -191,7 +191,7 @@ if (isset($_GET['gerar_pdf'])) {
 <body>
 	<div class="titulo_cab titulo_img"><u>Relatório de Produtos </u></div>
 	<div class="data_img"><?php echo mb_strtoupper($data_hoje) ?></div>
-	<img class="imagem" src="<?php echo $url ?>/sistema/img/logo_rel<?php echo $id_conta ?>.jpg" width="150px">
+	<img class="imagem" src="<?php echo $url ?>sistema/img/logo_rel<?php echo $id_conta ?>.jpg" width="150px">
 	
 	<br><br><br>
 	<div class="cabecalho" style="border-bottom: solid 1px #0340a3"></div>
