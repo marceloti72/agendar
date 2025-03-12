@@ -79,6 +79,8 @@ if (isset($_SESSION['id_conta'])) {
 			$carrossel = $config['carrossel'];
 			$username = $config['username'];
 
+			$url = "https://" . $_SERVER['HTTP_HOST'] . "/";
+
 			// Novas variáveis Menuia
 			$emailMenuia = $config['email_menuia'] ?? '';
 			$planoMenuia = $config['plano_menuia'] ?? '';
