@@ -6,7 +6,7 @@ include('data_formatada.php');
 $dataInicial = $_POST['dataInicial'];
 $dataFinal = $_POST['dataFinal'];
 $filtro = urlencode($_POST['filtro']);
-$cliente = urlencode(@$_POST['cliente']);
+$cliente = urlencode($_POST['cliente']);
 
 //CARREGAR DOMPDF
 require_once '../../dompdf/autoload.inc.php';
@@ -32,6 +32,10 @@ function gerarPDF2($html)
 
 // Verifica se o botão PDF foi clicado
 if (isset($_GET['gerar_pdf'])) {
+	$dataInicial = $_GET['dataInicial'];
+	$dataFinal = $_GET['dataFinal'];
+	$filtro = urlencode($_GET['filtro']);
+	$cliente = urlencode($_GET['cliente']);
 	//ob_start(); // Inicia o buffer de saída
 	$html = file_get_contents($url . "sistema/painel/rel/rel_entradas.php?dataInicial=$dataInicial&dataFinal=$dataFinal&filtro=$filtro&cliente=$cliente&id_conta=$id_conta");
 	//$html = ob_get_clean(); // Obtém o conteúdo do buffer e limpa-o
@@ -69,7 +73,7 @@ if ($filtro == '') {
 	$acao_rel = 'Recebimentos';
 }
 
-$filtro = '%' . $filtro . '%';
+$filtro2 = '%' . $filtro . '%';
 
 ?>
 
@@ -250,7 +254,7 @@ $filtro = '%' . $filtro . '%';
 
 		<?php
 		$total_entradas = 0;
-		$query = $pdo->query("SELECT * FROM receber where data_pgto >= '$dataInicial' and data_pgto <= '$dataFinal' and tipo LIKE '$filtro' and pago = 'Sim' $sql_cli and id_conta = '$id_conta'  ORDER BY data_pgto asc");
+		$query = $pdo->query("SELECT * FROM receber where data_pgto >= '$dataInicial' and data_pgto <= '$dataFinal' and tipo LIKE '$filtro2' and pago = 'Sim' $sql_cli and id_conta = '$id_conta'  ORDER BY data_pgto asc");
 		$res = $query->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg = @count($res);
 		if ($total_reg > 0) {
@@ -396,7 +400,7 @@ $filtro = '%' . $filtro . '%';
 	</div>
 
 	<div style="float: right;margin-right: 20px;">
-        <a href="?gerar_pdf=1" target="_blank">
+        <a href="?dataInicial=<?php echo $dataInicial?>&dataFinal=<?php echo $dataFinal?>&filtro=<?php echo $filtro?>&cliente=<?php echo $cliente?>&id_conta=<?php echo $id_conta?>&gerar_pdf=1" target="_blank">
             <button class="btn btn-primary">Gerar PDF</button>
         </a>
     </div>
