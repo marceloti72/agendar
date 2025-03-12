@@ -35,8 +35,8 @@ function gerarPDF8($html)
 if (isset($_GET['gerar_pdf'])) {
 	$dataInicial = $_GET['dataInicial'];
 	$dataFinal = $_GET['dataFinal'];
-	$filtro = urlencode($_GET['filtro']);
-	$cliente = urlencode($_GET['cliente']);
+	$pago = urlencode($_GET['pago']);
+    $funcionario = urlencode($_GET['funcionario']);
 
 	$html = file_get_contents($url . "sistema/painel/rel/rel_comissoes.php?dataInicial=$dataInicial&dataFinal=$dataFinal&pago=$pago&funcionario=$funcionario");
 
@@ -419,7 +419,7 @@ $funcionario = '%' . $funcionario . '%';
 							<td class="esc">R$ <?php echo $valorF ?></td>
 							<td class="esc"><?php echo $nome_func ?></td>
 							<td class="esc"><?php echo $data_lancF ?></td>
-							<td class="esc"><?php echo $data_vencF ?></td>
+							<td class="esc"><?php echo $data_pgtoF ?></td>
 							<td class="esc"><?php echo $nome_cliente ?></td>
 						</tr>
 
@@ -486,7 +486,7 @@ $funcionario = '%' . $funcionario . '%';
 	</div>
 
 	<div style="float: right;margin-right: 20px;">
-        <a href="?gerar_pdf=1" target="_blank">
+        <a href="?dataInicial=<?php echo $dataInicial?>&dataFinal=<?php echo $dataFinal?>&pago=<?php echo $pago?>&funcionario=<?php echo $funcionario?>&id_conta=<?php echo $id_conta?>&gerar_pdf=1" target="_blank">
             <button class="btn btn-primary">Gerar PDF</button>
         </a>
     </div>

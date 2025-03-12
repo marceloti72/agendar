@@ -30,6 +30,8 @@ function gerarPDF6($html)
 
 // Verifica se o botão PDF foi clicado
 if (isset($_GET['gerar_pdf'])) {
+	$dataInicial = $_GET['dataInicial'];
+    $dataFinal = $_GET['dataFinal'];
 	//ob_start(); // Inicia o buffer de saída
 	$html = file_get_contents($url . "sistema/painel/rel/rel_aniv.php?dataInicial=$dataInicial&dataFinal=$dataFinal&id_conta=$id_conta");
 	//$html = ob_get_clean(); // Obtém o conteúdo do buffer e limpa-o
@@ -322,7 +324,7 @@ if ($dataInicial == $dataFinal) {
 	</div>
 
 	<div style="float: right;margin-right: 20px;">
-        <a href="?gerar_pdf=1" target="_blank">
+        <a href="?dataInicial=<?php echo $dataInicial?>&dataFinal=<?php echo $dataFinal?>&id_conta=<?php echo $id_conta?>&gerar_pdf=1" target="_blank">
             <button class="btn btn-primary">Gerar PDF</button>
         </a>
     </div>

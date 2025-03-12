@@ -67,7 +67,7 @@ if ($filtro == '') {
 	$acao_rel = 'Entradas / Ganhos';
 } elseif ($filtro == 'Venda') {
 	$acao_rel = ' Vendas ';
-} elseif ($filtro == 'Serviço') {
+} elseif ($filtro == 'Servico') {
 	$acao_rel = ' Serviços ';
 } else {
 	$acao_rel = 'Recebimentos';
