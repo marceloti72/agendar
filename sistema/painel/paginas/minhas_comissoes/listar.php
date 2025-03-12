@@ -136,7 +136,7 @@ for($i=0; $i < $total_reg; $i++){
 		}
 
 
-		if($data_pgto == '0000-00-00'){
+		if($data_pgto == '0000-00-00' || $data_pgto == null){
 			$classe_alerta = 'text-danger';
 			$data_pgtoF = 'Pendente';
 			$visivel = '';

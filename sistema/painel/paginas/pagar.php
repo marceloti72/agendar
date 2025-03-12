@@ -474,7 +474,14 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
         dataType: "text",
 
         success: function (mensagem) {            
-            if (mensagem.trim() == "Baixado com Sucesso") {                
+            if (mensagem.trim() == "Baixado com Sucesso") {   
+				Swal.fire({
+					position: "top-center",
+					icon: "success",
+					title: "Baixada com sucesso!",
+					showConfirmButton: false,
+					timer: 2000
+				});              
                 listar();                
             } else {
                     $('#mensagem-excluir').addClass('text-danger')

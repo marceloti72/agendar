@@ -215,7 +215,7 @@ $id_conta = $_GET['id_conta'];
 
 						//extensão do arquivo
 						$ext = pathinfo($foto, PATHINFO_EXTENSION);
-						if ($ext == 'jpg' || $ext == 'JPG') {
+						if ($ext == 'jpg' || $ext == 'JPG' || $ext == 'png' || $ext == 'PNG' || $ext == 'jpeg' || $ext == 'JPEG') {
 							$foto2 = $foto;
 						} else {
 							$foto2 = 'sem-foto.jpg';

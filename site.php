@@ -127,7 +127,7 @@ if($carrossel == 'Sim'){
   $total_reg = @count($res);
   if($total_reg > 0){
     ?>
-<div class="container">
+
     <section class="slider_section ">
       <div id="customCarousel1" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
@@ -161,7 +161,7 @@ if($carrossel == 'Sim'){
                         </p>
                         <div class="btn-box">
                           <a href="http://api.whatsapp.com/send?1=pt_BR&phone=<?php echo $tel_whatsapp ?>" target="_blank" class="btn1">
-                            Contate-nos
+                            Contate-nos <i class="fa fa-whatsapp"></i>
                           </a>
                         </div>
                       </div>
@@ -284,7 +284,7 @@ if($carrossel == 'Sim'){
               <?php echo $texto_sobre ?>
             </p>
             <a style="border-radius: 15px;" href="http://api.whatsapp.com/send?1=pt_BR&phone=<?php echo $tel_whatsapp ?>" class="">
-              Mais Informações
+              Mais Informações <i class="fa fa-whatsapp"></i>
             </a>
           </div>
         </div>
@@ -627,6 +627,13 @@ $("#form-email").submit(function () {
             if (mensagem.trim() == "Enviado com Sucesso") {
                $('#mensagem').addClass('text-success')
                 $('#mensagem').text(mensagem)
+                Swal.fire({
+                  position: "top-center",
+                  icon: "success",
+                  title: "Obrigado! Entraremos em contato!",
+                  showConfirmButton: false,
+                  timer: 2000
+                });
 
             } else {
 

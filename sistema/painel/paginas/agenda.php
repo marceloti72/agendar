@@ -4,8 +4,13 @@ require_once("../conexao.php");
 $pag = 'agenda';
 $data_atual = date('Y-m-d');
 
-
 ?>
+<style>
+	.tooltip-inner {
+		background-color: #48D1CC; /* Amarelo */
+		color: #000; /* Cor do texto */
+	}
+</style>
 
 <div class="row">
 	<div class="col-md-3">
@@ -262,7 +267,7 @@ if(@count($res) > 0){
 						<div class="row">
 						<div class="col-md-4" id="">						
 							<div class="form-group"> 
-								<label>Valor Restante </label> 
+								<label>Valor Restante <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Caso o cliente efetue o pagamento com duas formas diferentes de pagamento. Ex: Pix e Cartão." style="color: blue;"></i> </label> 
 								<input type="text" class="form-control" name="valor_serv_agd_restante" id="valor_serv_agd_restante" placeholder="Mais de uma forma PGTO"> 
 							</div>						
 						</div>
@@ -326,7 +331,7 @@ if(@count($res) > 0){
 
 
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary">Salvar</button>
+					<button type="submit" class="btn btn-primary">Concluir</button>
 				</div>
 
 
@@ -573,4 +578,10 @@ if(@count($res) > 0){
 
 	});
 
+</script>
+
+<script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>

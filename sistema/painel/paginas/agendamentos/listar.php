@@ -165,11 +165,17 @@ if ($total_reg > 0) {
 		if ($status == 'Agendado') {
 			$imagem = 'relogio-vermelho.png';
 			$classe_status = '';
+			$classe_finalizado = 'ocultar';
+			$finalizado = '';
+			$cor2 = '';
+			$cor3 = '';
 		} else {
 			$imagem = 'relogio-azul.png';
 			$classe_status = 'ocultar';
-			$valor_pagoF = 'Serviço Finalizado!';
-			$cor = '#90EE90';
+			$classe_finalizado = '';
+			$finalizado = 'Serviço Finalizado!';
+			$cor2 = '#836FFF';
+			$cor3 = 'white';
 		}
 
 		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario' and id_conta = '$id_conta'");
@@ -292,8 +298,8 @@ if ($total_reg > 0) {
 		<p>
 		<span style="margin-right: 20px; "><b>Débitos do Cliente</b></span><br>
 		<span style="margin-right: 20px; ">Total Vencido <span style="color:red">R$ {$total_vencidoF}</span></span><br>
-<span style="margin-right: 20px; ">Total à Vencer <span style="color:blue">R$ {$total_pagarF}</span></span><br>
-<span >Total Pagar <span style="color:green">R$ {$total_debitosF}</span></span>
+		<span style="margin-right: 20px; ">Total à Vencer <span style="color:blue">R$ {$total_pagarF}</span></span><br>
+		<span >Total Pagar <span style="color:green">R$ {$total_debitosF}</span></span>
 		</p>
 		<p>Observações: {$obs}</p>
 		</div>
@@ -319,13 +325,15 @@ if ($total_reg > 0) {
 				</div>        			
         		</div>
 				<button style='width: 100%; background-color: {$cor};' class="payment-status {$classe_valor_pago}" >{$valor_pagoF}</button>
+				<button style='width: 100%; background-color: {$cor2}; color: {$cor3};' class="payment-status {$classe_finalizado}" >{$finalizado}</button>
         		</div>
         		
         					
         		<hr style="margin-top:-2px; margin-bottom: 3px">                    
                     <div class="stats" align="center">
                       <span style="">                      
-                        <small> <span class="{$ocultar_cartoes}" style=""><img class="icon-rounded-vermelho" src="img/presente.jpg" width="20px" height="20px"></span> <span style="color:{$classe_deb}; font-size:13px">{$nome_cliente}</span> (<i><span style="color:#061f9c; font-size:12px">{$nome_serv}</span></i>) via {$origem}</small></span>
+                        <small> <span class="{$ocultar_cartoes}" style=""><img class="icon-rounded-vermelho" src="img/presente.jpg" width="20px" height="20px"></span> <span style="color:{$classe_deb}; font-size:13px">{$nome_cliente}</span> (<i><span style="color:#061f9c; font-size:12px">{$nome_serv}</span></i>)</small></span>
+						<small><small><button style='border-radius: 10px;border: 0px;background-color: #F0E68C;'>via {$origem}</button></small></small>
                     </div>
                 </div>
         	</div>

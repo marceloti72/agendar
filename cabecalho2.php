@@ -311,7 +311,7 @@ try {
     <!-- header section starts -->
 <header class="header_section">
     <nav class="navbar navbar-expand-lg custom_nav-container">
-        <a class="navbar-brand" href="index">
+        <a class="navbar-brand" href="site.php?u=<?php echo $username?>">
             <img src="sistema/img/logo<?php echo $id_conta?>.png" alt="Logo"><b id="nome">
             <?php echo $nome_sistema ?></b>
         </a>

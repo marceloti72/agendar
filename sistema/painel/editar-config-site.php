@@ -73,11 +73,11 @@ if(@$_FILES['foto-banner-index']['name'] != ""){
 
 
 
-$caminho = '../../images/foto-sobre'.$id_conta.'.png';
+$caminho = '../../images/foto-sobre'.$id_conta.'.jpg';
 $imagem_temp = @$_FILES['foto-sobre']['tmp_name']; 
 if(@$_FILES['foto-sobre']['name'] != ""){
 	$ext = pathinfo(@$_FILES['foto-sobre']['name'], PATHINFO_EXTENSION);   
-	if($ext == 'png'){  
+	if($ext == 'jpg'){  
 		move_uploaded_file($imagem_temp, $caminho);
 	}else{
 		echo 'Extensão de Imagem não permitida!';

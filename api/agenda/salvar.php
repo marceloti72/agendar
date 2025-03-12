@@ -63,12 +63,12 @@ $query = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta 
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $nome_cliente = $res[0]['nome'];
 
-if($api == 'Sim'){
-	$mensagem_not = $nome_cliente;
-	$titulo_not = 'Novo Agendamento '.$dataF.' - '.$horaF;
-	$id_usu = $usuario_logado;
-	require('../notid.php');
-} 
+// if($api == 'Sim'){
+// 	$mensagem_not = $nome_cliente;
+// 	$titulo_not = 'Novo Agendamento '.$dataF.' - '.$horaF;
+// 	$id_usu = $usuario_logado;
+// 	require('../notid.php');
+// } 
 
 
 ?>

@@ -119,12 +119,12 @@ $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $nome_cliente = $res[0]['nome'];
 $telefone = $res[0]['telefone'];
 
-if ($api == 'Sim') {
-	$mensagem_not = $nome_cliente;
-	$titulo_not = 'Novo Agendamento ' . $dataF . ' - ' . $horaF;
-	$id_usu = $usuario_logado;
-	require('../../../../api/notid.php');
-}
+// if ($api == 'Sim') {
+// 	$mensagem_not = $nome_cliente;
+// 	$titulo_not = 'Novo Agendamento ' . $dataF . ' - ' . $horaF;
+// 	$id_usu = $usuario_logado;
+// 	require('../../../../api/notid.php');
+// }
 
 
 if ($msg_agendamento == 'Sim') {

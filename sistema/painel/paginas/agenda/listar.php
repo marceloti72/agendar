@@ -10,6 +10,109 @@ $data = @$_POST['data'];
 if($data == ""){
 	$data = date('Y-m-d');
 }
+?>
+<style>
+	.service-item {
+		display: flex;
+		align-items: center;
+		padding: 10px;
+		border-radius: 8px;
+		background-color: #f9f9f9;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		margin-bottom: 10px;
+		transition: all 0.3s ease;
+	}
+
+	/* Ajuste das colunas */
+	.dropdown-column {
+		padding-right: 15px;
+		/* Espaçamento à direita para separar */
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+	}
+
+	.service-column {
+		padding-left: 15px;
+		/* Espaçamento à esquerda para separar */
+	}
+
+	.service-item:hover {
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+		background-color: rgb(194, 229, 200);
+	}
+
+	.service-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		margin: 0;
+
+	}
+
+	.service-time {
+		font-size: 16px;
+		font-weight: 600;
+		color: #333;
+	}
+
+	.service-actions {
+		display: flex;
+		gap: 8px;
+	}
+
+	.btn {
+		padding: 6px 12px;
+		font-size: 12px;
+		font-weight: 500;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.btn-history {
+		background-color: #007bff;
+		color: white;
+	}
+
+	.btn-history:hover {
+		background-color: #0056b3;
+	}
+
+	.btn-finish {
+		background-color: #dc3545;
+		color: white;
+	}
+
+	.btn-finish:hover {
+		background-color: #b02a37;
+	}
+
+	.payment-status {
+		font-size: 12px;
+		font-weight: 300;
+		padding: 4px 8px;
+		border-radius: 12px;
+	}
+
+	.verde {
+		color: #28a745;
+		background-color: #e6ffe6;
+	}
+
+	/* Classe dinâmica para status (exemplo) */
+	.finalizado {
+		background-color: #6c757d;
+		cursor: not-allowed;
+	}
+
+	.finalizado:hover {
+		background-color: #5c636a;
+	}
+</style>
+<?php 
 
 
 echo <<<HTML
@@ -35,11 +138,30 @@ $valor_pago = $res[$i]['valor_pago'];
 $origem = $res[$i]['origem'];
 
 $valor_pagoF = number_format($valor_pago, 2, ',', '.');
-if($valor_pago > 0 and $status == 'Agendado'){
+if ($valor_pago > 0 and $status == 'Agendado') {
 	$classe_valor_pago = '';
-}else{
+} else {
 	$classe_valor_pago = 'ocultar';
 }
+
+
+
+if ($status == 'Agendado') {
+	$imagem = 'relogio-vermelho.png';
+	$classe_status = '';
+	$classe_finalizado = 'ocultar';
+	$finalizado = '';
+	$cor2 = '';
+	$cor3 = '';
+} else {
+	$imagem = 'relogio-azul.png';
+	$classe_status = 'ocultar';
+	$classe_finalizado = '';
+	$finalizado = 'Serviço Finalizado!';
+	$cor2 = '#836FFF';
+	$cor3 = 'white';
+}
+
 $dataF = implode('/', array_reverse(explode('-', $data)));
 $horaF = date("H:i", strtotime($hora));
 
@@ -50,15 +172,6 @@ if($status == 'Concluído'){
 	$classe_linha = 'text-muted';
 }
 
-
-
-if($status == 'Agendado'){
-	$imagem = 'icone-relogio.png';
-	$classe_status = '';	
-}else{
-	$imagem = 'icone-relogio-verde.png';
-	$classe_status = 'ocultar';
-}
 
 $query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
@@ -130,10 +243,12 @@ if($total_reg2 > 0){
 }
 }
 
-if($valor_serv == $valor_pago){
-	$valor_pagoF = ' Pago';
-}else{
-	$valor_pagoF = 'R$ '.$valor_pagoF;
+if ($valor_serv == $valor_pago) {
+	$valor_pagoF = 'Pagamento concluido!';
+	$cor = '#90EE90';
+} else {
+	$valor_pagoF = 'Sinal pago R$ ' . $valor_pagoF;
+	$cor = '';
 }
 
 if($valor_pago > 0){
@@ -165,10 +280,10 @@ echo <<<HTML
 
 
 		<div class="row">
-        		<div class="col-md-3">
-        			 <li class="dropdown head-dpdn2" style="list-style-type: none;">
+        		<div class="col-md-3 dropdown-column">
+				<li class="dropdown head-dpdn2" style="list-style-type: none;">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-		<img class="icon-rounded-vermelho" src="img/{$imagem}" width="45px" height="45px">
+		<img class="icon-rounded-vermelho" src="img/{$imagem}" width="75px" height="75px">
 				</a>
 
 		<ul class="dropdown-menu" style="margin-left:-30px;">
@@ -177,40 +292,48 @@ echo <<<HTML
 		<p>
 		<span style="margin-right: 20px; "><b>Débitos do Cliente</b></span><br>
 		<span style="margin-right: 20px; ">Total Vencido <span style="color:red">R$ {$total_vencidoF}</span></span><br>
-<span style="margin-right: 20px; ">Total à Vencer <span style="color:blue">R$ {$total_pagarF}</span></span><br>
-<span >Total Pagar <span style="color:green">R$ {$total_debitosF}</span></span>
+		<span style="margin-right: 20px; ">Total à Vencer <span style="color:blue">R$ {$total_pagarF}</span></span><br>
+		<span >Total Pagar <span style="color:green">R$ {$total_debitosF}</span></span>
 		</p>
 		<p>Observações: {$obs}</p>
 		</div>
 		</li>										
 		</ul>
 		</li>
+        			 
         		</div>
-        		<div class="col-md-9">
-        			<h5><strong>{$horaF}</strong> <a href="#" onclick="fecharServico('{$id}', '{$cliente}', '{$servico}', '{$valor_serv}', '{$funcionario}', '{$nome_serv}')" title="Finalizar Serviço" class="{$classe_status}"> <img class="icon-rounded-vermelho" src="img/check-square.png" width="15px" height="15px"></a>
-
-
-
-        			<span class="{$classe_valor_pago} verde" style="font-size: 12px; font-weight: 300" >({$valor_pagoF})</span>
-
-        			</h5>
-
-        			
+        		<div class="col-md-9 service-column" >
+				<div class="service-item">
+					<h5 class="service-header" >
+					<a href="#" onclick="verificarStatus('{$id}', '{$cliente}', '{$servico}', '{$valor_serv}', '{$funcionario}', '{$nome_serv}', '{$status}')" title="Finalizar Serviço">
+					<strong class="service-time">
+						<h2>{$horaF}</h2>
+					</strong>
+					</a>
+						<div class="service-actions">					
+						
+						</div>
+												
+					</h5>
+					
+				</div>        			
         		</div>
+				<button style='width: 100%; background-color: {$cor};' class="payment-status {$classe_valor_pago}" >{$valor_pagoF}</button>
+				<button style='width: 100%; background-color: {$cor2}; color: {$cor3};' class="payment-status {$classe_finalizado}" >{$finalizado}</button>
         		</div>
         		
         					
         		<hr style="margin-top:-2px; margin-bottom: 3px">                    
-                    <div class="stats esc" align="center">
+                    <div class="stats" align="center">
                       <span style="">                      
-                        <small> <span class="{$ocultar_cartoes}" style=""><img class="icon-rounded-vermelho" src="img/presente.jpg" width="20px" height="20px"></span> <span style="color:{$classe_deb}; font-size:13px">{$nome_cliente}</span> (<i><span style="color:#061f9c; font-size:12px">{$nome_serv}</span></i>) via {$origem}</small></span>
+                        <small> <span class="{$ocultar_cartoes}" style=""><img class="icon-rounded-vermelho" src="img/presente.jpg" width="20px" height="20px"></span> <span style="color:{$classe_deb}; font-size:13px">{$nome_cliente}</span> (<i><span style="color:#061f9c; font-size:12px">{$nome_serv}</span></i>)</small></span>
+						<small><small><button style='border-radius: 10px;border: 0px;background-color: #F0E68C;'>via {$origem}</button></small></small>
                     </div>
                 </div>
         	</div>
 HTML;
-}
-
-}else{
+	}
+} else {
 	echo 'Nenhum horário para essa Data!';
 }
 
@@ -237,5 +360,14 @@ HTML;
 		$('#pgto_restante').val('').change();	
 
 		$('#modalServico').modal('show');
+	}
+
+	function verificarStatus(id, cliente, servico, valor_serv, funcionario, nome_serv, status) {
+		if (status !== 'Concluído') {
+			fecharServico(id, cliente, servico, valor_serv, funcionario, nome_serv);
+		} else {
+			// Opcional: Exibir uma mensagem informando que o serviço já foi concluído
+			alert('Este serviço já foi concluído.');
+		}
 	}
 </script>

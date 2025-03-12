@@ -12,6 +12,13 @@ if(@$agendamentos == 'ocultar'){
 
 ?>
 
+<style>
+	.tooltip-inner {
+		background-color: #48D1CC; /* Amarelo */
+		color: #000; /* Cor do texto */
+	}
+</style>
+
 <div class="row">
 	<div class="col-md-3">
 		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" onclick="inserir()" type="button" class="btn btn-primary btn-flat" ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
@@ -291,7 +298,7 @@ if(@$agendamentos == 'ocultar'){
 						<div class="row">
 						<div class="col-md-4" id="">						
 							<div class="form-group"> 
-								<label>Valor Restante </label> 
+								<label>Valor Restante <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Caso o cliente efetue o pagamento com duas formas diferentes de pagamento. Ex: Pix e Cartão." style="color: blue;"></i></label> 
 								<input type="text" class="form-control" name="valor_serv_agd_restante" id="valor_serv_agd_restante" placeholder="Mais de uma forma PGTO"> 
 							</div>						
 						</div>
@@ -636,4 +643,10 @@ if(@$agendamentos == 'ocultar'){
 			}
 		});
 	}
+</script>
+
+<script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>

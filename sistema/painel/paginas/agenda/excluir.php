@@ -43,8 +43,10 @@ if ($msg_agendamento == 'Sim') {
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
 	$nome_serv = $res[0]['nome'];
 
+	$nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
 
-	$mensagem = '_Agendamento Cancelado_ %0A';
+    $mensagem = '*'.$nome_sistema_maiusculo.'*%0A%0A';
+	$mensagem .= '_Agendamento Cancelado_ ❌%0A';
 	$mensagem .= 'Profissional: *' . $nome_func . '* %0A';
 	$mensagem .= 'Serviço: *' . $nome_serv . '* %0A';
 	$mensagem .= 'Data: *' . $dataF . '* %0A';
@@ -58,11 +60,13 @@ if ($msg_agendamento == 'Sim') {
 	//avisar o profissional
 	$telefone = '55' . preg_replace('/[ ()-]+/', '', $tel_func);
 	require('../../../../ajax/api-texto.php');
+
+	
 }
 
-if ($api == 'Sim') {
-	$mensagem_not = $nome_cliente;
-	$titulo_not = 'Agendamento Cancelado ' . $dataF . ' - ' . $horaF;
-	$id_usu = $usuario;
-	require('../../../../api/notid.php');
-}
+// if ($api == 'Sim') {
+// 	$mensagem_not = $nome_cliente;
+// 	$titulo_not = 'Agendamento Cancelado ' . $dataF . ' - ' . $horaF;
+// 	$id_usu = $usuario;
+// 	require('../../../../api/notid.php');
+// }

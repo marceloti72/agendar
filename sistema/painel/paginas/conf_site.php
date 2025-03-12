@@ -72,7 +72,7 @@ if(@$configuracoes == 'ocultar'){
 
 							<div class="col-md-4">						
 								<div class="form-group"> 
-									<label>Logo (*PNG)</label> 
+									<label>Logo do site(*PNG)</label> 
 									<input class="form-control" type="file" name="foto-logo" onChange="carregarImgLogo();" id="foto-logo">
 								</div>						
 							</div>
@@ -83,7 +83,7 @@ if(@$configuracoes == 'ocultar'){
 							</div>
 
 
-							<div class="col-md-4">						
+							<!-- <div class="col-md-4">						
 								<div class="form-group"> 
 									<label>Ícone (*Png)</label> 
 									<input class="form-control" type="file" name="foto-icone" onChange="carregarImgIcone();" id="foto-icone">
@@ -93,17 +93,11 @@ if(@$configuracoes == 'ocultar'){
 								<div id="divImg">
 									<img src="../img/icon<?php echo $id_conta?>.png"  width="50px" id="target-icone">									
 								</div>
-							</div>
-
-						</div>
-
-
-
-						<div class="row">
+							</div> -->
 
 							<div class="col-md-4">						
 								<div class="form-group"> 
-									<label>Logo Relatório (*Jpg)</label> 
+									<label>Logo dos Relatórios (*Jpg)</label> 
 									<input class="form-control" type="file" name="foto-logo-rel" onChange="carregarImgLogoRel();" id="foto-logo-rel">
 								</div>						
 							</div>
@@ -113,11 +107,19 @@ if(@$configuracoes == 'ocultar'){
 								</div>
 							</div>
 
+						</div>
+
+
+
+						<div class="row">
+
+							
+
 
 
 							<div class="col-md-4">						
 								<div class="form-group"> 
-									<label>Ícone Site (*png)</label> 
+									<label>Ícone do Site (*png)</label> 
 									<input class="form-control" type="file" name="foto-icone-site" onChange="carregarImgIconeSite();" id="foto-icone-site">
 								</div>						
 							</div>
@@ -127,31 +129,9 @@ if(@$configuracoes == 'ocultar'){
 								</div>
 							</div>
 
-
-
-						</div>
-
-
-
-						<div class="row">
-
 							<div class="col-md-4">						
 								<div class="form-group"> 
-									<label>Imagem Área Sobre (Site) (*png)</label> 
-									<input class="form-control" type="file" name="foto-sobre" onChange="carregarImgSobre();" id="foto-sobre">
-								</div>						
-							</div>
-							<div class="col-md-2">
-								<div id="divImg">
-									<img src="../../images/foto-sobre<?php echo $id_conta?>.png"  width="80px" id="target-sobre">									
-								</div>
-							</div>
-
-
-
-							<div class="col-md-4">						
-								<div class="form-group"> 
-									<label>Imagem Banner Index <small>(1500x1000) (*jpg)</small></label> 
+									<label>Imagem principal do site<small>(1500x1000) (*jpg)</small></label> 
 									<input class="form-control" type="file" name="foto-banner-index" onChange="carregarImgBannerIndex();" id="foto-banner-index">
 								</div>						
 							</div>
@@ -166,10 +146,30 @@ if(@$configuracoes == 'ocultar'){
 						</div>
 
 
+
+						<div class="row">
+
+							<div class="col-md-4">						
+								<div class="form-group"> 
+									<label>Imagem Sobre (Site) (*jpg)</label> 
+									<input class="form-control" type="file" name="foto-sobre" onChange="carregarImgSobre();" id="foto-sobre">
+								</div>						
+							</div>
+							<div class="col-md-2">
+								<div id="divImg">
+									<img src="../../images/foto-sobre<?php echo $id_conta?>.jpg"  width="80px" id="target-sobre">									
+								</div>
+							</div>						
+
+
+
+						</div>
+
+
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
-								<label for="exampleInputEmail1">Url do Vídeo Index</label>
+								<label for="exampleInputEmail1">Ou url de Vídeo Sobre (Site)</label>
 								 	<input type="text" class="form-control" id="url_video" name="url_video" value="<?php echo $url_video ?>" placeholder="Url do Youtube Incorporada">    
 							</div> 
 							</div>	

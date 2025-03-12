@@ -42,7 +42,7 @@ if(@$whatsapp == 'ocultar'){
 </div>
 
 
-<div class="container mt-3" style="margin-top: 30px;">
+<!-- <div class="container mt-3" style="margin-top: 30px;">
     <div class="row text-center justify-content-center">
         <div class="col-md-4 widget widget1">
             <div class="card mb-4 shadow-sm">
@@ -93,7 +93,7 @@ if(@$whatsapp == 'ocultar'){
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 
 

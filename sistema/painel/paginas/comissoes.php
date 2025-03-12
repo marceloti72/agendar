@@ -399,7 +399,14 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
         dataType: "text",
 
         success: function (mensagem) {            
-            if (mensagem.trim() == "Baixado com Sucesso") {                
+            if (mensagem.trim() == "Baixado com Sucesso") {    
+				Swal.fire({
+					position: "top-center",
+					icon: "success",
+					title: "Comissão baixada com sucesso!",
+					showConfirmButton: false,
+					timer: 2000
+				});            
                 listar();                
             } else {
                     $('#mensagem-excluir').addClass('text-danger')
@@ -449,6 +456,13 @@ $("#form-excluir").submit(function () {
             $('#mensagem').text('');
             $('#mensagem').removeClass()
             if (mensagem.trim() == "Baixado com Sucesso") {
+				Swal.fire({
+					position: "top-center",
+					icon: "success",
+					title: "Comissões baixadas com sucesso!",
+					showConfirmButton: false,
+					timer: 2000
+				});    
 
                 $('#btn-fechar').click();
                 listar();          

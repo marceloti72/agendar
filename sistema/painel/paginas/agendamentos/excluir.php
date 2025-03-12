@@ -58,9 +58,9 @@ if ($msg_agendamento == 'Sim') {
 	require('../../../../ajax/api-texto.php');
 }
 
-if ($api == 'Sim') {
-	$mensagem_not = $nome_cliente;
-	$titulo_not = 'Agendamento Cancelado ' . $dataF . ' - ' . $horaF;
-	$id_usu = $usuario;
-	require('../../../../api/notid.php');
-}
+// if ($api == 'Sim') {
+// 	$mensagem_not = $nome_cliente;
+// 	$titulo_not = 'Agendamento Cancelado ' . $dataF . ' - ' . $horaF;
+// 	$id_usu = $usuario;
+// 	require('../../../../api/notid.php');
+// }
