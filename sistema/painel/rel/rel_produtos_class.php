@@ -280,9 +280,9 @@ if (isset($_GET['gerar_pdf'])) {
 		</div>
 	</div>
 	<div class="cabecalho" style="border-bottom: solid 1px #0340a3"></div>
-	<div class="footer" align="center">
+	<!-- <div class="footer" align="center">
 		<span style="font-size:10px"><?php echo $nome_sistema ?> Whatsapp: <?php echo $whatsapp_sistema ?></span>
-	</div>
+	</div> -->
 
 	<div style="float: right;margin-right: 20px;">
         <a href="?gerar_pdf=1" target="_blank">

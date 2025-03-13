@@ -4,6 +4,7 @@ include('data_formatada.php');
 
 $dataInicial = $_GET['dataInicial'];
 $dataFinal = $_GET['dataFinal'];
+$id_conta = $_GET['id_conta'];
 
 $partesInicial = explode('-', $dataInicial);
 $dataDiaInicial = $partesInicial[2];

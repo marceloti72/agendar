@@ -38,7 +38,7 @@ if (isset($_GET['gerar_pdf'])) {
 	$pago = urlencode($_GET['pago']);
     $funcionario = urlencode($_GET['funcionario']);
 
-	$html = file_get_contents($url . "sistema/painel/rel/rel_comissoes.php?dataInicial=$dataInicial&dataFinal=$dataFinal&pago=$pago&funcionario=$funcionario");
+	$html = file_get_contents($url . "sistema/painel/rel/rel_comissoes.php?dataInicial=$dataInicial&dataFinal=$dataFinal&pago=$pago&funcionario=$funcionario&id_conta=$id_conta");
 
 	gerarPDF8($html);
 	exit();
@@ -74,7 +74,7 @@ $pago = '%' . $pago . '%';
 if ($funcionario == '') {
 	$nome_func = '';
 } else {
-	$query = $pdo->query("SELECT * FROM usuarios where id = '$funcionario'");
+	$query = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_conta = '$id_conta'");
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
 	$nome_func = ' - Funcionário: ' . $res[0]['nome'];
 	$nome_func2 = $res[0]['nome'];
@@ -266,7 +266,7 @@ $funcionario = '%' . $funcionario . '%';
 		$total_a_pagar = 0;
 		$total_pendente = 0;
 
-		$query = $pdo->query("SELECT * FROM pagar where data_lanc >= '$dataInicial' and data_lanc <= '$dataFinal' and pago LIKE '$pago' and funcionario LIKE '$funcionario' and tipo = 'Comissão' ORDER BY pago asc, data_venc asc");
+		$query = $pdo->query("SELECT * FROM pagar where data_lanc >= '$dataInicial' and data_lanc <= '$dataFinal' and pago LIKE '$pago' and funcionario LIKE '$funcionario' and tipo = 'Comissão' and id_conta = '$id_conta' ORDER BY pago asc, data_venc asc");
 		$res = $query->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg = @count($res);
 		if ($total_reg > 0) {
@@ -312,7 +312,7 @@ $funcionario = '%' . $funcionario . '%';
 						$data_vencF = implode('/', array_reverse(explode('-', $data_venc)));
 
 
-						$query2 = $pdo->query("SELECT * FROM clientes where id = '$pessoa'");
+						$query2 = $pdo->query("SELECT * FROM clientes where id = '$pessoa' and id_conta = '$id_conta'");
 						$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 						$total_reg2 = @count($res2);
 						if ($total_reg2 > 0) {
@@ -324,7 +324,7 @@ $funcionario = '%' . $funcionario . '%';
 						}
 
 
-						$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_baixa'");
+						$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_baixa' and id_conta = '$id_conta'");
 						$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 						$total_reg2 = @count($res2);
 						if ($total_reg2 > 0) {
@@ -335,7 +335,7 @@ $funcionario = '%' . $funcionario . '%';
 
 
 
-						$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente'");
+						$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
 						$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 						$total_reg2 = @count($res2);
 						if ($total_reg2 > 0) {
@@ -346,7 +346,7 @@ $funcionario = '%' . $funcionario . '%';
 
 
 
-						$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_lanc'");
+						$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_lanc' and id_conta = '$id_conta'");
 						$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 						$total_reg2 = @count($res2);
 						if ($total_reg2 > 0) {
@@ -357,7 +357,7 @@ $funcionario = '%' . $funcionario . '%';
 
 
 
-						$query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario'");
+						$query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_conta = '$id_conta'");
 						$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 						$total_reg2 = @count($res2);
 						if ($total_reg2 > 0) {
@@ -371,7 +371,7 @@ $funcionario = '%' . $funcionario . '%';
 						}
 
 
-						$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico'");
+						$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 						$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 						$total_reg2 = @count($res2);
 						if ($total_reg2 > 0) {
@@ -481,9 +481,9 @@ $funcionario = '%' . $funcionario . '%';
 
 
 
-	<div class="footer" align="center">
+	<!-- <div class="footer" align="center">
 		<span style="font-size:10px"><?php echo $nome_sistema ?> Whatsapp: <?php echo $whatsapp_sistema ?></span>
-	</div>
+	</div> -->
 
 	<div style="float: right;margin-right: 20px;">
         <a href="?dataInicial=<?php echo $dataInicial?>&dataFinal=<?php echo $dataFinal?>&pago=<?php echo $pago?>&funcionario=<?php echo $funcionario?>&id_conta=<?php echo $id_conta?>&gerar_pdf=1" target="_blank">

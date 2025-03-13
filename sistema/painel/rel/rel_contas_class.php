@@ -362,9 +362,9 @@ $pago = '%' . $pago . '%';
 
 
 
-	<div class="footer" align="center">
+	<!-- <div class="footer" align="center">
 		<span style="font-size:10px"><?php echo $nome_sistema ?> Whatsapp: <?php echo $whatsapp_sistema ?></span>
-	</div>
+	</div> -->
 
 	<div style="float: right;margin-right: 20px;">
         <a href="?dataInicial=<?php echo $dataInicial?>&dataFinal=<?php echo $dataFinal?>&pago=<?php echo $pago?>&tabela=<?php echo $tabela?>&busca=<?php echo $busca?>&id_conta=<?php echo $id_conta?>&gerar_pdf=1" target="_blank">

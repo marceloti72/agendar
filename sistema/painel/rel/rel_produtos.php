@@ -9,6 +9,28 @@ $dataInicioMes = $ano_atual . "-" . $mes_atual . "-01";
 
 $id_conta = $_GET['id_conta'];
 
+try {
+	$stmt = $pdo->prepare("SELECT * FROM config WHERE id = :id_conta");
+	$stmt->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+	$stmt->execute();
+	$config = $stmt->fetch(PDO::FETCH_ASSOC);
+
+	if ($config) {
+		// Variáveis de Configuração do Sistema
+		$nome_sistema = $config['nome'];
+		$email_sistema = $config['email'];
+		$whatsapp_sistema = $config['telefone_whatsapp'];
+		$tipo_rel = $config['tipo_rel'];
+		$telefone_fixo_sistema = $config['telefone_fixo'];
+		$endereco_sistema = $config['endereco'];
+		
+	} else {
+		echo "Configurações não encontradas para a conta.";
+	}
+} catch (PDOException $e) {
+	echo "Erro ao buscar configurações: " . $e->getMessage();
+}
+
 ?>
 
 <!DOCTYPE html>

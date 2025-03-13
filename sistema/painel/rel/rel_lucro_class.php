@@ -433,9 +433,9 @@ if ($dataInicial == $dataFinal) {
 
 
 
-	<div class="footer" align="center">
+	<!-- <div class="footer" align="center">
 		<span style="font-size:10px"><?php echo $nome_sistema ?> Whatsapp: <?php echo $whatsapp_sistema ?></span>
-	</div>
+	</div> -->
 
 	<div style="float: right;margin-right: 20px;">
         <a href="?dataInicial=<?php echo $dataInicial?>&dataFinal=<?php echo $dataFinal?>&id_conta=<?php echo $id_conta?>&gerar_pdf=1" target="_blank">
