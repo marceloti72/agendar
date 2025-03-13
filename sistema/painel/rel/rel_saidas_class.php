@@ -60,10 +60,10 @@ if ($filtro == '') {
 	$filtro_pdo = '';
 } elseif ($filtro == 'Compra') {
 	$acao_rel = ' Compras ';
-	$filtro_pdo = 'and tipo = "Compra"';
+	$filtro_pdo = ' and tipo = "Compra" ';
 } elseif ($filtro == 'Comissão') {
 	$acao_rel = ' Comissões ';
-	$filtro_pdo = 'and tipo = "Comissão"';
+	$filtro_pdo = ' and tipo = "Comissão" ';
 } else {
 	$acao_rel = 'Despesas';
 }
