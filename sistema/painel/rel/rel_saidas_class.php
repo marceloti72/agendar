@@ -66,6 +66,7 @@ if ($filtro == '') {
 	$filtro_pdo = ' and tipo = "Comissão" ';
 } else {
 	$acao_rel = 'Despesas';
+	$filtro_pdo = ' and tipo = "Conta" ';
 }
 
 
