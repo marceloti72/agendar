@@ -6,6 +6,11 @@ $dataInicial = $_POST['dataInicial'];
 $dataFinal = $_POST['dataFinal'];
 $pgto = urlencode($_POST['pgto']);
 $servico = $_POST['servico'];
+if($servico == ''){
+	$sem_servico = 1;
+}else{
+	$sem_servico = 0;
+}
 
 
 //CARREGAR DOMPDF
@@ -401,6 +406,11 @@ $servico = '%' . $servico . '%';
 	<!-- <div class="footer" align="center">
 		<span style="font-size:10px"><?php echo $nome_sistema ?> Whatsapp: <?php echo $whatsapp_sistema ?></span>
 	</div> -->
+	<?php 
+	if($sem_servico == 1){
+		$servico = '';
+	}
+	?>
 
 	<div style="float: right;margin-right: 20px;">
         <a href="?dataInicial=<?php echo $dataInicial?>&dataFinal=<?php echo $dataFinal?>&pgto=<?php echo $pgto?>&servico=<?php echo $servico?>&id_conta=<?php echo $id_conta?>&gerar_pdf=1" target="_blank">
