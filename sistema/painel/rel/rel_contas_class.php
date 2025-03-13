@@ -4,9 +4,9 @@ include('data_formatada.php');
 
 $dataInicial = $_POST['dataInicial'];
 $dataFinal = $_POST['dataFinal'];
-$pago = urlencode($_POST['pago']);
-$tabela = urlencode($_POST['tabela']);
-$busca = urlencode($_POST['busca']);
+$pago = $_POST['pago'];
+$tabela = $_POST['tabela'];
+$busca = $_POST['busca'];
 
 
 //CARREGAR DOMPDF
@@ -35,9 +35,9 @@ function gerarPDF4($html)
 if (isset($_GET['gerar_pdf'])) {
 	$dataInicial = $GET['dataInicial'];
 	$dataFinal = $GET['dataFinal'];
-	$pago = urlencode($GET['pago']);
-	$tabela = urlencode($GET['tabela']);
-	$busca = urlencode($GET['busca']);
+	$pago = $GET['pago'];
+	$tabela = $GET['tabela'];
+	$busca = $GET['busca'];
 	//ob_start(); // Inicia o buffer de saída
 	$html = file_get_contents($url . "sistema/painel/rel/rel_contas.php?pago=$pago&dataInicial=$dataInicial&dataFinal=$dataFinal&tabela=$tabela&busca=$busca&id_conta=$id_conta");
 	//$html = ob_get_clean(); // Obtém o conteúdo do buffer e limpa-o
