@@ -8,8 +8,16 @@ $pgto = urlencode($_POST['pgto']);
 $servico = $_POST['servico'];
 if($servico == ''){
 	$sem_servico = 1;
+	$servico_pdo = '';
+
 }else{
 	$sem_servico = 0;
+	$servico_pdo = 'and servico = "$servico"';
+}
+if($pgto == ''){
+	$sem_pgto = 1;
+}else{
+	$sem_pgto = 0;
 }
 
 
@@ -80,7 +88,7 @@ if ($total_reg > 0) {
 	$titulo_servico = '';
 }
 
-$servico = '%' . $servico . '%';
+
 
 ?>
 
@@ -261,7 +269,7 @@ $servico = '%' . $servico . '%';
 
 		<?php
 		$total_entradas = 0;
-		$query = $pdo->query("SELECT * FROM receber where data_pgto >= '$dataInicial' and data_pgto <= '$dataFinal' and tipo = 'Serviço' and pago = 'Sim' and servico LIKE '$servico' and pgto LIKE '$pgto' and id_conta = '$id_conta' ORDER BY data_pgto asc");
+		$query = $pdo->query("SELECT * FROM receber where data_pgto >= '$dataInicial' and data_pgto <= '$dataFinal' and tipo = 'Serviço' and pago = 'Sim' $servico_pdo and pgto LIKE '$pgto' and id_conta = '$id_conta' ORDER BY data_pgto asc");
 		$res = $query->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg = @count($res);
 		if ($total_reg > 0) {
@@ -409,6 +417,9 @@ $servico = '%' . $servico . '%';
 	<?php 
 	if($sem_servico == 1){
 		$servico = '';
+	}
+	if($sem_pgto == 1){
+		$pgto = '';
 	}
 	?>
 
