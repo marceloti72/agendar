@@ -12,7 +12,7 @@ if($servico == ''){
 
 }else{
 	$sem_servico = 0;
-	$servico_pdo = 'and servico = "$servico"';
+	$servico_pdo = "and servico = '$servico'";
 }
 if($pgto == ''){
 	$sem_pgto = 1;
