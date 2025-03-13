@@ -43,6 +43,11 @@ if (isset($_GET['gerar_pdf'])) {
 	$pago = $GET['pago'];
 	$tabela = $GET['tabela'];
 	$busca = $GET['busca'];
+	echo $pago;
+	echo $busca;
+	echo $tabela;
+	echo $id_conta;
+	exit();
 	//ob_start(); // Inicia o buffer de saída
 	$html = file_get_contents($url . "sistema/painel/rel/rel_contas.php?pago=$pago&dataInicial=$dataInicial&dataFinal=$dataFinal&tabela=$tabela&busca=$busca&id_conta=$id_conta");
 	//$html = ob_get_clean(); // Obtém o conteúdo do buffer e limpa-o
