@@ -38,16 +38,12 @@ function gerarPDF4($html)
 
 // Verifica se o botão PDF foi clicado
 if (isset($_GET['gerar_pdf'])) {
-	$dataInicial = $GET['dataInicial'];
-	$dataFinal = $GET['dataFinal'];
-	$pago = $GET['pago'];
-	$tabela = $GET['tabela'];
-	$busca = $GET['busca'];
-	echo $pago;
-	echo $busca;
-	echo $tabela;
-	echo $id_conta;
-	exit();
+	$dataInicial = $_GET['dataInicial'];
+	$dataFinal = $_GET['dataFinal'];
+	$pago = $_GET['pago'];
+	$tabela = $_GET['tabela'];
+	$busca = $_GET['busca'];
+	
 	//ob_start(); // Inicia o buffer de saída
 	$html = file_get_contents($url . "sistema/painel/rel/rel_contas.php?pago=$pago&dataInicial=$dataInicial&dataFinal=$dataFinal&tabela=$tabela&busca=$busca&id_conta=$id_conta");
 	//$html = ob_get_clean(); // Obtém o conteúdo do buffer e limpa-o
