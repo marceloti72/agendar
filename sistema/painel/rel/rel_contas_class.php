@@ -8,6 +8,11 @@ $pago = urlencode($_POST['pago']);
 $tabela = urlencode($_POST['tabela']);
 $busca = urlencode($_POST['busca']);
 
+if($pago == ''){
+	$sem_pago = 1;
+}else{
+	$sem_pago = 0;
+}
 
 //CARREGAR DOMPDF
 require_once '../../dompdf/autoload.inc.php';
@@ -365,6 +370,11 @@ if ($tabela == 'receber') {
 	<!-- <div class="footer" align="center">
 		<span style="font-size:10px"><?php echo $nome_sistema ?> Whatsapp: <?php echo $whatsapp_sistema ?></span>
 	</div> -->
+	<?php 
+	if($sem_pago == 1){
+		$pago = '';
+	}
+	?>
 
 	<div style="float: right;margin-right: 20px;">
         <a href="?dataInicial=<?php echo $dataInicial?>&dataFinal=<?php echo $dataFinal?>&pago=<?php echo $pago?>&tabela=<?php echo $tabela?>&busca=<?php echo $busca?>&id_conta=<?php echo $id_conta?>&gerar_pdf=1" target="_blank">
