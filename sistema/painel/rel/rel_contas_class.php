@@ -4,9 +4,9 @@ include('data_formatada.php');
 
 $dataInicial = $_POST['dataInicial'];
 $dataFinal = $_POST['dataFinal'];
-$pago = $_POST['pago'];
-$tabela = $_POST['tabela'];
-$busca = $_POST['busca'];
+$pago = urlencode($_POST['pago']);
+$tabela = urlencode($_POST['tabela']);
+$busca = urlencode($_POST['busca']);
 
 
 //CARREGAR DOMPDF
@@ -35,9 +35,9 @@ function gerarPDF4($html)
 if (isset($_GET['gerar_pdf'])) {
 	$dataInicial = $GET['dataInicial'];
 	$dataFinal = $GET['dataFinal'];
-	$pago = $GET['pago'];
-	$tabela = $GET['tabela'];
-	$busca = $GET['busca'];
+	$pago = urlencode($GET['pago']);
+	$tabela = urlencode($GET['tabela']);
+	$busca = urlencode($GET['busca']);
 	//ob_start(); // Inicia o buffer de saída
 	$html = file_get_contents($url . "sistema/painel/rel/rel_contas.php?pago=$pago&dataInicial=$dataInicial&dataFinal=$dataFinal&tabela=$tabela&busca=$busca&id_conta=$id_conta");
 	//$html = ob_get_clean(); // Obtém o conteúdo do buffer e limpa-o
@@ -60,11 +60,14 @@ if ($dataInicial == $dataFinal) {
 
 if ($pago == '') {
 	$acao_rel = '';
+	$pago_pdo = '';
 } else {
 	if ($pago == 'Sim') {
 		$acao_rel = ' Pagas ';
+		$pago_pdo = ' and pago = "Sim" ';
 	} else {
 		$acao_rel = ' Pendentes ';
+		$pago_pdo = ' and pago = "Não" ';
 	}
 }
 
@@ -77,9 +80,6 @@ if ($tabela == 'receber') {
 	$cor_tabela = 'text-danger';
 	$tabela_pago = 'PAGAS';
 }
-
-
-
 
 ?>
 
@@ -264,7 +264,7 @@ if ($tabela == 'receber') {
 		$total_pagoF = 0;
 		$total_a_pagar = 0;
 		$total_a_pagarF = 0;
-		$query = $pdo->query("SELECT * from $tabela where ($busca >= '$dataInicial' and $busca <= '$dataFinal') and pago = '$pago' and valor > 0 and id_conta = '$id_conta' order by id desc ");
+		$query = $pdo->query("SELECT * from $tabela where ($busca >= '$dataInicial' and $busca <= '$dataFinal') $pago_pdo and valor > 0 and id_conta = '$id_conta' order by id desc ");
 		$res = $query->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg = count($res);
 		if ($total_reg > 0) {
@@ -315,7 +315,7 @@ if ($tabela == 'receber') {
 						$vencimentoF = implode('/', array_reverse(explode('-', $vencimento)));
 						$data_pgtoF = implode('/', array_reverse(explode('-', $data_pgto)));
 
-						if ($data_pgtoF == '00/00/0000') {
+						if ($data_pgtoF == '00/00/0000' || $data_pgto == null) {
 							$data_pgtoF = 'Pendente';
 						}
 

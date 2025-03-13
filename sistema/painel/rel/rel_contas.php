@@ -45,11 +45,14 @@ try {
 
 if ($pago == '') {
 	$acao_rel = '';
+	$pago_pdo = '';
 } else {
 	if ($pago == 'Sim') {
 		$acao_rel = ' Pagas ';
+		$pago_pdo = ' and pago = "Sim" ';
 	} else {
 		$acao_rel = ' Pendentes ';
+		$pago_pdo = ' and pago = "Não" ';
 	}
 }
 
@@ -63,8 +66,6 @@ if ($tabela == 'receber') {
 	$tabela_pago = 'PAGAS';
 }
 
-
-// $pago = '%' . $pago . '%';
 
 ?>
 
@@ -249,7 +250,7 @@ if ($tabela == 'receber') {
 		$total_pagoF = 0;
 		$total_a_pagar = 0;
 		$total_a_pagarF = 0;
-		$query = $pdo->query("SELECT * from $tabela where ($busca >= '$dataInicial' and $busca <= '$dataFinal') and pago = '$pago' and valor > 0 and id_conta = '$id_conta' order by id desc ");
+		$query = $pdo->query("SELECT * from $tabela where ($busca >= '$dataInicial' and $busca <= '$dataFinal') $pago_pdo and valor > 0 and id_conta = '$id_conta' order by id desc ");
 		$res = $query->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg = count($res);
 		if ($total_reg > 0) {
