@@ -29,15 +29,17 @@ if ($dataInicial == $dataFinal) {
 
 if ($filtro == '') {
 	$acao_rel = 'Entradas / Ganhos';
+	$tipo_pdo = "";
 } elseif ($filtro == 'Venda') {
 	$acao_rel = ' Vendas ';
-} elseif ($filtro == 'Servico') {
+	$tipo_pdo = ' and tipo = "Venda" ';
+} elseif ($filtro == 'Serviço') {
 	$acao_rel = ' Serviços ';
+	$tipo_pdo = ' and tipo = "Serviço" ';
 } else {
 	$acao_rel = 'Recebimentos';
+	$tipo_pdo = ' and tipo = "conta" ';
 }
-
-$filtro = '%' . $filtro . '%';
 
 ?>
 
@@ -218,7 +220,8 @@ $filtro = '%' . $filtro . '%';
 
 		<?php
 		$total_entradas = 0;
-		$query = $pdo->query("SELECT * FROM receber where data_pgto >= '$dataInicial' and data_pgto <= '$dataFinal' and tipo LIKE '$filtro' and pago = 'Sim' $sql_cli and id_conta = '$id_conta'  ORDER BY data_pgto asc");
+		$total_contas = 0;
+		$query = $pdo->query("SELECT * FROM receber where data_pgto >= '$dataInicial' and data_pgto <= '$dataFinal' $tipo_pdo and pago = 'Sim' $sql_cli and id_conta = '$id_conta'  ORDER BY data_pgto asc");
 		$res = $query->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg = @count($res);
 		if ($total_reg > 0) {
@@ -259,16 +262,17 @@ $filtro = '%' . $filtro . '%';
 							continue;
 						}
 
-						if ($filtro == '') {
-							if ($valor <= 0 || $valor == "") {
-								continue;
-							}
-						}
+						// if ($filtro == '') {
+						// 	if ($valor <= 0 || $valor == "") {
+						// 		continue;
+						// 	}
+						// }
 
 						if ($valor <= 0 || $valor == "") {
 							$valor = $valor2;
 						}
 
+						$total_contas ++;
 						$total_entradas += $valor;
 
 						$valorF = number_format($valor, 2, ',', '.');
@@ -346,7 +350,7 @@ $filtro = '%' . $filtro . '%';
 	<div class="col-md-12 p-2">
 		<div class="" align="right" style="margin-right: 20px">
 
-			<span class=""> <small><small><small><small>TOTAL DE RECEBIMENTOS</small> : <?php echo @$total_reg ?></small></small></small> </span>
+			<span class=""> <small><small><small><small>TOTAL DE RECEBIMENTOS</small> : <?php echo @$total_contas ?></small></small></small> </span>
 
 			<span class="text-success"> <small><small><small><small>TOTAL R$</small> : <?php echo @$total_entradasF ?></small></small></small> </span>
 
