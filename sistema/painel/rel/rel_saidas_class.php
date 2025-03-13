@@ -53,7 +53,7 @@ if ($dataInicial == $dataFinal) {
 	$texto_apuracao = 'APURAÇÃO DE ' . $dataInicialF . ' ATÉ ' . $dataFinalF;
 }
 
-
+echo $filtro;
 
 if ($filtro == '') {
 	$acao_rel = 'Saídas / Despesas';
@@ -61,7 +61,7 @@ if ($filtro == '') {
 } elseif ($filtro == 'Compra') {
 	$acao_rel = ' Compras ';
 	$filtro_pdo = ' and tipo = "Compra" ';
-} elseif ($filtro == 'Comissão') {
+} elseif ($filtro == 'Comissao') {
 	$acao_rel = ' Comissões ';
 	$filtro_pdo = ' and tipo = "Comissão" ';
 } else {

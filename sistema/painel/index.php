@@ -1254,7 +1254,7 @@ $plano = $res3['plano'];
 									<select class="form-control sel13" name="filtro" style="width:100%;">
 										<option value="">Todas</option>
 										<option value="Conta">Despesas</option>
-										<option value="Comissão">Comissões</option>
+										<option value="Comissao">Comissões</option>
 										<option value="Compra">Compras</option>
 										
 									</select> 
