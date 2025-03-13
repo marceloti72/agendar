@@ -66,13 +66,16 @@ if ($dataInicial == $dataFinal) {
 if ($pago == '') {
 	$acao_rel = '';
 	$pago_pdo = '';
+	$sem_pago = 1;
 } else {
 	if ($pago == 'Sim') {
 		$acao_rel = ' Pagas ';
 		$pago_pdo = 'and pago = "Sim"';
+		$sem_pago = 0;
 	} else {
 		$acao_rel = ' Pendentes ';
 		$pago_pdo = 'and pago = "Não"';
+		$sem_pago = 0;
 	}
 }
 
@@ -497,6 +500,9 @@ $funcionario = '%' . $funcionario . '%';
 		<?php 
 		if($sem_funcionario == 1){
             $funcionario = '';
+		}
+		if($sem_pago == 1){
+            $pago = '';
 		}
 		?>
         <a href="?dataInicial=<?php echo $dataInicial?>&dataFinal=<?php echo $dataFinal?>&pago=<?php echo $pago?>&funcionario=<?php echo $funcionario?>&id_conta=<?php echo $id_conta?>&gerar_pdf=1" target="_blank">
