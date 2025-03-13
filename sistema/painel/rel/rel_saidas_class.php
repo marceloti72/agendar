@@ -57,13 +57,13 @@ if ($dataInicial == $dataFinal) {
 
 if ($filtro == '') {
 	$acao_rel = 'Saídas / Despesas';
-	$sem_filtro = '';
+	$filtro_pdo = '';
 } elseif ($filtro == 'Compra') {
 	$acao_rel = ' Compras ';
-	$sem_filtro = 'and tipo = "Compra"';
+	$filtro_pdo = 'and tipo = "Compra"';
 } elseif ($filtro == 'Comissão') {
 	$acao_rel = ' Comissões ';
-	$sem_filtro = 'and tipo = "Comissões"';
+	$filtro_pdo = 'and tipo = "Comissão"';
 } else {
 	$acao_rel = 'Despesas';
 }
@@ -248,7 +248,7 @@ if ($filtro == '') {
 
 		<?php
 		$total_entradas = 0;
-		$query = $pdo->query("SELECT * FROM pagar where data_pgto >= '$dataInicial' and data_pgto <= '$dataFinal' $sem_filtro and pago = 'Sim' and id_conta = '$id_conta' ORDER BY data_pgto asc");
+		$query = $pdo->query("SELECT * FROM pagar where data_pgto >= '$dataInicial' and data_pgto <= '$dataFinal' $filtro_pdo and pago = 'Sim' and id_conta = '$id_conta' ORDER BY data_pgto asc");
 		$res = $query->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg = @count($res);
 		if ($total_reg > 0) {
