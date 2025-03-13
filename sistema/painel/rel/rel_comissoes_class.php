@@ -65,11 +65,14 @@ if ($dataInicial == $dataFinal) {
 
 if ($pago == '') {
 	$acao_rel = '';
+	$pago_pdo = '';
 } else {
 	if ($pago == 'Sim') {
 		$acao_rel = ' Pagas ';
+		$pago_pdo = 'and pago = "Sim"';
 	} else {
 		$acao_rel = ' Pendentes ';
+		$pago_pdo = 'and pago = "Não"';
 	}
 }
 
@@ -271,7 +274,7 @@ if ($funcionario == '') {
 		$total_a_pagar = 0;
 		$total_pendente = 0;
 
-		$query = $pdo->query("SELECT * FROM pagar where data_lanc >= '$dataInicial' and data_lanc <= '$dataFinal' and pago = '$pago' and funcionario = '$funcionario' and tipo = 'Comissão' and id_conta = '$id_conta' ORDER BY pago asc, data_venc asc");
+		$query = $pdo->query("SELECT * FROM pagar where data_lanc >= '$dataInicial' and data_lanc <= '$dataFinal' $pago_pdo and funcionario = '$funcionario' and tipo = 'Comissão' and id_conta = '$id_conta' ORDER BY pago asc, data_venc asc");
 		$res = $query->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg = @count($res);
 		if ($total_reg > 0) {
