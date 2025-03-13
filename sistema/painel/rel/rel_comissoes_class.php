@@ -5,8 +5,8 @@ include('data_formatada.php');
 
 $dataInicial = $_POST['dataInicial'];
 $dataFinal = $_POST['dataFinal'];
-$pago = urlencode($_POST['pago']);
-$funcionario = urlencode($_POST['funcionario']);
+$pago = $_POST['pago'];
+$funcionario = $_POST['funcionario'];
 if($funcionario == ''){
 	$sem_funcionario = 1;
 }else{
@@ -40,8 +40,8 @@ function gerarPDF8($html)
 if (isset($_GET['gerar_pdf'])) {
 	$dataInicial = $_GET['dataInicial'];
 	$dataFinal = $_GET['dataFinal'];
-	$pago = urlencode($_GET['pago']);
-    $funcionario = urlencode($_GET['funcionario']);
+	$pago = $_GET['pago'];
+    $funcionario = $_GET['funcionario'];
 
 	$html = file_get_contents($url . "sistema/painel/rel/rel_comissoes.php?dataInicial=$dataInicial&dataFinal=$dataFinal&pago=$pago&funcionario=$funcionario&id_conta=$id_conta");
 
@@ -73,7 +73,7 @@ if ($pago == '') {
 	}
 }
 
-$pago = '%' . $pago . '%';
+// $pago = '%' . $pago . '%';
 
 
 if ($funcionario == '') {
@@ -271,7 +271,7 @@ $funcionario = '%' . $funcionario . '%';
 		$total_a_pagar = 0;
 		$total_pendente = 0;
 
-		$query = $pdo->query("SELECT * FROM pagar where data_lanc >= '$dataInicial' and data_lanc <= '$dataFinal' and pago LIKE '$pago' and funcionario LIKE '$funcionario' and tipo = 'Comissão' and id_conta = '$id_conta' ORDER BY pago asc, data_venc asc");
+		$query = $pdo->query("SELECT * FROM pagar where data_lanc >= '$dataInicial' and data_lanc <= '$dataFinal' and pago = '$pago' and funcionario LIKE '$funcionario' and tipo = 'Comissão' and id_conta = '$id_conta' ORDER BY pago asc, data_venc asc");
 		$res = $query->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg = @count($res);
 		if ($total_reg > 0) {
