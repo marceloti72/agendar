@@ -7,6 +7,11 @@ $dataInicial = $_POST['dataInicial'];
 $dataFinal = $_POST['dataFinal'];
 $pago = urlencode($_POST['pago']);
 $funcionario = urlencode($_POST['funcionario']);
+if($funcionario == ''){
+	$sem_funcionario = 1;
+}else{
+	$sem_funcionario = 0;
+}
 
 
 //CARREGAR DOMPDF
@@ -486,6 +491,11 @@ $funcionario = '%' . $funcionario . '%';
 	</div> -->
 
 	<div style="float: right;margin-right: 20px;">
+		<?php 
+		if($sem_funcionario == 1){
+            $funcionario = '';
+		}
+		?>
         <a href="?dataInicial=<?php echo $dataInicial?>&dataFinal=<?php echo $dataFinal?>&pago=<?php echo $pago?>&funcionario=<?php echo $funcionario?>&id_conta=<?php echo $id_conta?>&gerar_pdf=1" target="_blank">
             <button class="btn btn-primary">Gerar PDF</button>
         </a>
