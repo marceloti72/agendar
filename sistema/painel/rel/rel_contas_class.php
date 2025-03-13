@@ -79,7 +79,7 @@ if ($tabela == 'receber') {
 }
 
 
-$pago = '%' . $pago . '%';
+
 
 ?>
 
@@ -264,7 +264,7 @@ $pago = '%' . $pago . '%';
 		$total_pagoF = 0;
 		$total_a_pagar = 0;
 		$total_a_pagarF = 0;
-		$query = $pdo->query("SELECT * from $tabela where ($busca >= '$dataInicial' and $busca <= '$dataFinal') and pago LIKE '$pago' and valor > 0 and id_conta = '$id_conta' order by id desc ");
+		$query = $pdo->query("SELECT * from $tabela where ($busca >= '$dataInicial' and $busca <= '$dataFinal') and pago = '$pago' and valor > 0 and id_conta = '$id_conta' order by id desc ");
 		$res = $query->fetchAll(PDO::FETCH_ASSOC);
 		$total_reg = count($res);
 		if ($total_reg > 0) {
