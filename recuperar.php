@@ -69,8 +69,8 @@ $mensagem.= 'Nome: *'.$nome.'*%0A';
 $mensagem.= 'Nova senha: *'.$senha.'*%0A%0A';     
 $mensagem.= '*Se desejar altera a senha, vá em configuração de perfil.*%0A';     
 
-require("ajax/api-texto.php");
+require("ajax/api-texto-recup.php");
 
-echo 'Sua senha foi Enviada para seu Email!';
+echo 'Sua senha foi Enviada para seu WhatsApp!';
 
  ?>

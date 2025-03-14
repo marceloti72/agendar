@@ -42,6 +42,8 @@ $pagar = 'ocultar';
 $receber = 'ocultar';
 $comissoes = 'ocultar';
 
+$whatsapp  = 'ocultar';
+
 
 //agendamentos / servico
 $agendamentos = 'ocultar';
@@ -61,6 +63,13 @@ $rel_servicos = 'ocultar';
 //dados site
 $textos_index = 'ocultar';
 $comentarios = 'ocultar';
+
+// menudo profissional
+$minha_agenda = 'ocultar';
+$meus_servicos = 'ocultar';
+$minhas_comissoes = 'ocultar';
+$meus_dias = 'ocultar';
+
 
 
 $query = $pdo->query("SELECT * FROM usuarios_permissoes where usuario = '$id_usuario' and id_conta = '$id_conta'");
@@ -97,6 +106,10 @@ if($total_reg > 0){
 
 		if($chave == 'calendario'){
 			$calendario = '';
+		}
+
+		if($chave == 'whatsapp'){
+			$whatsapp = '';
 		}
 
 
@@ -261,6 +274,22 @@ if($total_reg > 0){
 			$comentarios = '';
 		}
 
+		if($chave == 'minha_agenda'){
+			$minha_agenda = '';
+		}
+
+		if($chave == 'meus_servicos'){
+			$meus_servicos = '';
+		}
+
+		if($chave == 'minhas_comissoes'){
+			$minhas_comissoes = '';
+		}
+
+		if($chave == 'meus_dias'){
+			$meus_dias = '';
+		}
+
 
 
 	}
@@ -288,20 +317,27 @@ if($home != 'ocultar'){
 
 
 
-if($usuarios == 'ocultar' and $funcionarios == 'ocultar' and $clientes == 'ocultar' and $clientes_retorno == 'ocultar' and $fornecedores == 'ocultar'){
-	$menu_pessoas = 'ocultar';
+// if($usuarios == 'ocultar' and $funcionarios == 'ocultar' and $clientes == 'ocultar' and $clientes_retorno == 'ocultar' and $fornecedores == 'ocultar'){
+// 	$menu_pessoas = 'ocultar';
+// }else{
+// 	$menu_pessoas = '';
+// }
+
+
+
+if($servicos == 'ocultar' and $cat_servicos == 'ocultar'){
+	$menu_servicos = 'ocultar';
 }else{
-	$menu_pessoas = '';
+	$menu_servicos = '';
 }
 
 
 
-if($servicos == 'ocultar' and $cargos == 'ocultar' and $cat_servicos == 'ocultar' and $grupos == 'ocultar' and $acessos == 'ocultar' and $pgto == 'ocultar' and $dias_bloqueio == 'ocultar'){
-	$menu_cadastros = 'ocultar';
+if($produtos == 'ocultar' and $cat_produtos == 'ocultar' and $estoque == 'ocultar' and $saidas == 'ocultar' and $entradas == 'ocultar'){
+	$menu_produtos = 'ocultar';
 }else{
-	$menu_cadastros = '';
+	$menu_produtos = '';
 }
-
 
 
 if($produtos == 'ocultar' and $cat_produtos == 'ocultar' and $estoque == 'ocultar' and $saidas == 'ocultar' and $entradas == 'ocultar'){

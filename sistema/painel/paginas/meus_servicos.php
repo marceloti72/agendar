@@ -369,7 +369,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		calcular()
+		//calcular()
 
 		$('.sel2').select2({
 			dropdownParent: $('#modalForm')
@@ -499,25 +499,25 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 </script>
 
 
-<script type="text/javascript">
-	function calcular(){
+// <script type="text/javascript">
+// 	function calcular(){
 
-		var quant = $('#quantidade').val();
-		var produto = $('#produto').val();
+// 		var quant = $('#quantidade').val();
+// 		var produto = $('#produto').val();
 
 
 
-    $.ajax({
-        url: 'paginas/' + pag + "/calcular.php",
-        method: 'POST',
-        data: {produto, quant},
-        dataType: "text",
+//     $.ajax({
+//         url: 'paginas/' + pag + "/calcular.php",
+//         method: 'POST',
+//         data: {produto, quant},
+//         dataType: "text",
 
-        success: function (mensagem) {  
+//         success: function (mensagem) {  
 
-           $('#valor').val(mensagem)
-        },      
+//            $('#valor').val(mensagem)
+//         },      
 
-    });
-}
-</script>
+//     });
+// }
+// </script>

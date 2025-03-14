@@ -115,10 +115,10 @@ if(isset($_GET['id'])){
                 Soluções
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" id="section-10" data-section="sessao-10">Sistema para Barbearia</a>
-                <a class="dropdown-item"  id="section-12" data-section="sessao-11">Sistema para Salão de Beleza</a>                
-                <a class="dropdown-item"  id="section-13" data-section="sessao-12">Sistema para Clinica de Estética</a>                
-                <a class="dropdown-item"  id="section-14" data-section="sessao-13">Sistema para Esmalteria</a>                
+                <a class="dropdown-item" href="sistema-para-barbearia.php" >Sistema para Barbearia</a>
+                <a class="dropdown-item" href="sistema-para-salao-de-beleza.php" >Sistema para Salão de Beleza</a>                
+                <a class="dropdown-item"  href="sistema-para-clinica-de-estetica.php">Sistema para Clinica de Estética</a>                
+                <a class="dropdown-item"  href="sistema-para-esmalteria.php">Sistema para Esmalteria</a>                
               </div>
             </li>
             <li class="nav-item dropdown">

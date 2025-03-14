@@ -84,17 +84,38 @@ if(@$_FILES['foto']['name'] != ""){
 
 if($id == ""){
 	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, email = :email, cpf = :cpf, senha = '$hash', nivel = '$cargo', data = curDate(), ativo = 'Sim', telefone = :telefone, endereco = :endereco, foto = '$foto', atendimento = '$atendimento', tipo_chave = '$tipo_chave', chave_pix = :chave_pix, intervalo = '$intervalo', comissao = '$comissao', id_conta = '$id_conta'");
+
+	$query->bindValue(":nome", "$nome");
+	$query->bindValue(":email", "$email");
+	$query->bindValue(":cpf", "$cpf");
+	$query->bindValue(":telefone", "$telefone");
+	$query->bindValue(":endereco", "$endereco");
+	$query->bindValue(":chave_pix", "$chave_pix");
+	$query->execute();
+
+	$ult_id = $pdo->lastInsertId();
+
+	if($atendimento == 'Sim'){
+
+		$pdo->query("INSERT INTO usuarios_permissoes SET permissao = '43', usuario = '$ult_id', id_conta = '$id_conta'");
+		$pdo->query("INSERT INTO usuarios_permissoes SET permissao = '44', usuario = '$ult_id', id_conta = '$id_conta'");
+		$pdo->query("INSERT INTO usuarios_permissoes SET permissao = '45', usuario = '$ult_id', id_conta = '$id_conta'");
+		$pdo->query("INSERT INTO usuarios_permissoes SET permissao = '46', usuario = '$ult_id', id_conta = '$id_conta'");
+
+    }
+
 }else{
 	$query = $pdo->prepare("UPDATE $tabela SET nome = :nome, email = :email, cpf = :cpf, nivel = '$cargo', telefone = :telefone, endereco = :endereco, foto = '$foto', atendimento = '$atendimento', tipo_chave = '$tipo_chave', chave_pix = :chave_pix, intervalo = '$intervalo', comissao = '$comissao' WHERE id = '$id' and id_conta = '$id_conta'");
+
+	$query->bindValue(":nome", "$nome");
+	$query->bindValue(":email", "$email");
+	$query->bindValue(":cpf", "$cpf");
+	$query->bindValue(":telefone", "$telefone");
+	$query->bindValue(":endereco", "$endereco");
+	$query->bindValue(":chave_pix", "$chave_pix");
+	$query->execute();
 }
 
-$query->bindValue(":nome", "$nome");
-$query->bindValue(":email", "$email");
-$query->bindValue(":cpf", "$cpf");
-$query->bindValue(":telefone", "$telefone");
-$query->bindValue(":endereco", "$endereco");
-$query->bindValue(":chave_pix", "$chave_pix");
-$query->execute();
 
 echo 'Salvo com Sucesso';
  ?>

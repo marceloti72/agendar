@@ -200,7 +200,7 @@ $plano = $res3['plano'];
 					</div>
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="sidebar-menu">
-							<li class="header">MENU DE NAVEGAÇÃO</li>
+							<li class="header">MENU ADMINISTRATIVO</li>
 
 
 							<li class="treeview <?php echo @$home ?>">
@@ -280,9 +280,9 @@ $plano = $res3['plano'];
 								
 									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"><i class="fa fa-angle-right"></i>Fornecedores</a></li>									
 
-									<!-- <li class="<?php echo @$grupos ?>"><a href="grupos"><i class="fa fa-angle-right"></i>Grupo Acessos</a></li>
+									<li class="<?php echo @$grupos ?>"><a href="grupos"><i class="fa fa-angle-right"></i>Grupo Acessos</a></li>
 
-									<li class="<?php echo @$acessos ?>"><a href="acessos"><i class="fa fa-angle-right"></i>Acessos</a></li> -->
+									<li class="<?php echo @$acessos ?>"><a href="acessos"><i class="fa fa-angle-right"></i>Acessos</a></li>
 
 										<li class="<?php echo @$pgto ?>"><a href="pgto"><i class="fa fa-angle-right"></i>Formas de Pagamento</a></li>
 
@@ -293,7 +293,7 @@ $plano = $res3['plano'];
 								</ul>
 							</li>							
 
-							<li class="treeview <?php echo @$menu_cadastros ?>">
+							<li class="treeview <?php echo @$menu_servicos ?>">
 								<a href="#">
 								<i class="fa fa-briefcase"></i>
 									<span>Serviços</span>
@@ -408,7 +408,7 @@ $plano = $res3['plano'];
                              </li>	
 
 
-							<li class="treeview">
+							<li class="treeview <?= @$whatsapp?>">
 								<a href="#">
 									<i class="fa fa-whatsapp"></i>
 									<span>Whatsapp</span>
@@ -416,7 +416,7 @@ $plano = $res3['plano'];
 								</a>
 								<ul class="treeview-menu">
 
-									<li class="treeview <?= @$whatsapp ?>"><a href="whatsapp"><i class="fa fa-cog"></i>Configurações</a></li>								
+									<li class="treeview"><a href="whatsapp"><i class="fa fa-cog"></i>Configurações</a></li>								
 								
 									
 																		
@@ -425,7 +425,7 @@ $plano = $res3['plano'];
 							</li>
                          
 
-                            <li class="treeview <?= @$marketings ?>">
+                            <li class="treeview <?= @$marketing ?>">
                                 <a href="marketingp">
                                     <i class="fa fa-paper-plane"></i><span>Campanha Marketing</span>
                                 </a>
@@ -459,16 +459,16 @@ $plano = $res3['plano'];
 							</li>                           
 							
 
-							<?php if(@$atendimento == 'Sim'){ ?>
+							<?php if(@$atendimento == 'Sim'){?>
 
 								<li class="header">MENU DO PROFISSIONAL</li>
-							<li class="treeview">
+							<li class="treeview <?php echo @$minha_agenda ?>">
 								<a href="agenda">
 									<i class="fa fa-calendar-o"></i> <span>Minha Agenda</span>
 								</a>
 							</li>	
 							
-							<li class="treeview">
+							<li class="treeview  <?php echo @$meus_servicos ?>">
 								<a href="#">
 									<i class="fa fa-server"></i>
 									<span>Meus Serviços</span>
@@ -484,14 +484,14 @@ $plano = $res3['plano'];
 							</li>	
 
 
-							<li class="treeview">
+							<li class="treeview  <?php echo @$minhas_comissoes ?>">
 								<a href="minhas_comissoes">
 									<i class="fa fa-server"></i> <span>Minhas Comissões</span>
 								</a>
 							</li>						
 
 
-							<li class="treeview">
+							<li class="treeview  <?php echo @$meus_dias ?>">
 								<a href="#">
 									<i class="fa fa-usd"></i>
 									<span>Meus Horário / Dias</span>
@@ -528,14 +528,19 @@ $plano = $res3['plano'];
 					<ul class="nofitications-dropdown">
 
 
-						<?php if($atendimento == 'Sim'){ 
+						<?php if(@$_SESSION['nivel_usuario'] == 'Administrador'){ 
+							$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and status = 'Agendado' and id_conta = '$id_conta'");
+							$res = $query->fetchAll(PDO::FETCH_ASSOC);
+							$total_agendamentos_hoje_usuario_pendentes = @count($res);
+							$link_ag = 'agendamentos';
+						}else{
+							$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and funcionario = '$id_usuario' and status = 'Agendado' and id_conta = '$id_conta'");
+							$res = $query->fetchAll(PDO::FETCH_ASSOC);
+							$total_agendamentos_hoje_usuario_pendentes = @count($res);
+							$link_ag = 'agenda';
 
-													//totalizando agendamentos dia usuario
-						$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and funcionario = '$id_usuario' and status = 'Agendado' and id_conta = '$id_conta'");
-						$res = $query->fetchAll(PDO::FETCH_ASSOC);
-						$total_agendamentos_hoje_usuario_pendentes = @count($res);
+						}?>
 
-							?>
 						<li class="dropdown head-dpdn">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell" title="Agendamentos hoje"></i><span class="badge text-danger"><?php echo $total_agendamentos_hoje_usuario_pendentes ?></span></a>
 							<ul class="dropdown-menu">
@@ -589,12 +594,12 @@ $plano = $res3['plano'];
 							
 								<li>
 									<div class="notification_bottom" style="background: #ffe8e6">
-										<a href="agenda">Ver Agendamentos</a>
+										<a href="<?php echo $link_ag?>">Ver Agendamentos</a>
 									</div> 
 								</li>
 							</ul>
 						</li>	
-					<?php } ?>
+					
 
 
 

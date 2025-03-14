@@ -136,6 +136,9 @@ $status = $res[$i]['status'];
 $servico = $res[$i]['servico'];
 $valor_pago = $res[$i]['valor_pago'];
 $origem = $res[$i]['origem'];
+if($usuario == $funcionario){
+	$origem = 'Profissional';
+}
 
 $valor_pagoF = number_format($valor_pago, 2, ',', '.');
 if ($valor_pago > 0 and $status == 'Agendado') {
@@ -282,7 +285,7 @@ echo <<<HTML
 		<div class="row">
         		<div class="col-md-3 dropdown-column">
 				<li class="dropdown head-dpdn2" style="list-style-type: none;">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+				<a href="#" class="dropdown-toggle" title="Histórico financeiro do cliente" data-toggle="dropdown" aria-expanded="false" >
 		<img class="icon-rounded-vermelho" src="img/{$imagem}" width="75px" height="75px">
 				</a>
 
@@ -318,8 +321,8 @@ echo <<<HTML
 					
 				</div>        			
         		</div>
-				<button style='width: 100%; background-color: {$cor};' class="payment-status {$classe_valor_pago}" >{$valor_pagoF}</button>
-				<button style='width: 100%; background-color: {$cor2}; color: {$cor3};' class="payment-status {$classe_finalizado}" >{$finalizado}</button>
+				<button style='cursor: default; width: 100%; background-color: {$cor};' class="payment-status {$classe_valor_pago}" >{$valor_pagoF}</button>
+				<button style='cursor: default;width: 100%; background-color: {$cor2}; color: {$cor3};' class="payment-status {$classe_finalizado}" >{$finalizado}</button>
         		</div>
         		
         					
@@ -327,7 +330,7 @@ echo <<<HTML
                     <div class="stats" align="center">
                       <span style="">                      
                         <small> <span class="{$ocultar_cartoes}" style=""><img class="icon-rounded-vermelho" src="img/presente.jpg" width="20px" height="20px"></span> <span style="color:{$classe_deb}; font-size:13px">{$nome_cliente}</span> (<i><span style="color:#061f9c; font-size:12px">{$nome_serv}</span></i>)</small></span>
-						<small><small><button style='border-radius: 10px;border: 0px;background-color: #F0E68C;'>via {$origem}</button></small></small>
+						<small><small><button style='cursor: default;border-radius: 10px;border: 0px;background-color: #F0E68C;'>via {$origem}</button></small></small>
                     </div>
                 </div>
         	</div>
