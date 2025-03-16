@@ -2,6 +2,16 @@
 require_once("../../../conexao.php");
 $tabela = 'produtos';
 
+?>
+<style>
+	@media (max-width: 768px) {
+	    .dataTables_length {
+				display: none;
+			}
+	}
+</style>
+<?php 
+
 $query = $pdo->query("SELECT * FROM $tabela where id_conta = '$id_conta' ORDER BY id desc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);

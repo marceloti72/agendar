@@ -9,6 +9,96 @@ $data_hoje = date('Y-m-d');
 $dataInicial = @$_POST['dataInicial'];
 $dataFinal = @$_POST['dataFinal'];
 $status = '%' . @$_POST['status'] . '%';
+?>
+<style>
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            padding: 10px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .table th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .btn {
+            padding: 5px 10px;
+            margin: 2px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .btn-info { background-color: #17a2b8; }
+        .btn-danger { background-color: #dc3545; }
+        .btn-success { background-color: #28a745; }
+        .dropdown-menu {
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            z-index: 1000;
+        }
+        .dropdown-menu a { color: #dc3545; text-decoration: none; }
+        .text-danger { color: #dc3545; }
+        .verde { color: #28a745; }
+        .vermelho-escuro { background-color: #ffe6e6; }
+        .ocultar { display: none; }
+        .total-footer { margin: 5px 0; }
+        .esc-mobile { display: table-cell; } /* Visível em desktop */
+
+        /* Media Query para Mobile (max-width: 768px) */
+        @media (max-width: 768px) {
+            .esc-mobile {
+                display: none; /* Esconde colunas indesejadas em mobile */
+            }
+            .table th, .table td {
+                padding: 6px;
+                font-size: 10px;
+            }
+            .btn {
+                padding: 8px 10px;
+                font-size: 10px;
+            }
+            .btn i {
+                font-size: 10px;
+            }
+            .dropdown-menu {
+                margin-left: 0 !important;
+                min-width: 100px;
+                font-size: 10px;
+            }
+            .mr-2 { margin-right: 5px; }
+            img { width: 30px; height: 30px; }
+            #mensagem-excluir, .total-footer {
+                font-size: 10px;
+            }
+            .table th:nth-child(1), .table td:nth-child(1) { width: 50%; } /* Produto */
+            .table th:nth-child(2), .table td:nth-child(2) { width: 10%; } /* Valor */
+            .table th:nth-child(8), .table td:nth-child(8) { width: 60%; } /* Ações */
+
+			
+			/* Oculta o elemento "Mostrar" em telas menores que 768px */
+			.dataTables_length {
+				display: none;
+			}
+			
+			
+        }
+    </style>
+<?php 
 
 
 $total_pago = 0;
@@ -34,7 +124,7 @@ if ($total_reg > 0) {
 	<th class="esc">Data PGTO</th> 
 	<th class="esc">Vendido Por</th>
 	<th class="esc">Cliente</th>	
-	<th class="esc">Arquivo</th>	
+	<th class="">Arquivo</th>	
 	<th>Ações</th>
 	</tr> 
 	</thead> 
@@ -166,7 +256,7 @@ HTML;
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
+		<a href="#" class="btn btn-danger btn-xs" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>
@@ -224,7 +314,7 @@ HTML;
 	$(document).ready(function() {
 		$('#tabela').DataTable({
 			"ordering": false,
-			"stateSave": true
+			"stateSave": true,
 		});
 		$('#tabela_filter label input').focus();
 	});

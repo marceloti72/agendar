@@ -5,6 +5,20 @@ require_once("../conexao.php");
 
 $pag = 'funcionarios';
 ?>
+<style>
+	@media (max-width: 768px) {
+	.novo {
+		display: flex;
+		width: 100%;
+		height: 30px;
+		margin-bottom: 10px;
+		font-size: 14px;
+		align-items: center;
+		justify-content: center;
+			
+        }
+	}
+</style>
 
 
 <form id="form-dias">
@@ -63,7 +77,7 @@ $pag = 'funcionarios';
                     </div>
 
 					<div class="col-md-2">						
-						<button type="submit" class="btn btn-primary" style="margin-top:20px">Salvar</button>
+						<button type="submit" class="btn btn-primary novo" style="margin-top:20px">Salvar</button>
 					</div>
 
 					<input type="hidden" name="id" id="id_dias" value="<?php echo $id_usuario ?>">

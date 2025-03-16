@@ -31,9 +31,23 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 
 
 ?>
+<style>
+	@media (max-width: 768px) {
+	.novo {
+		display: flex;
+		width: 100%;
+		height: 30px;
+		margin-bottom: 10px;
+		font-size: 14px;
+		align-items: center;
+		justify-content: center;
+			
+        }
+	}
+</style>
 
 <div class="">      
-	<a class="btn btn-primary" onclick="inserir()" class="btn btn-primary btn-flat btn-pri" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Nova Compra</a>
+	<a class="btn btn-primary novo" onclick="inserir()" class="btn btn-primary btn-flat btn-pri" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Nova Compra</a>
 </div>
 
 <div class="bs-example widget-shadow" style="padding:15px">
@@ -78,6 +92,53 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 		<input type="hidden" id="buscar-contas">
 
 	</div>
+	<style>
+    /* Estilos gerais */
+    .btn-primary {
+        transition: all 0.3s;
+        background-color: #007bff !important; /* Garante azul padrão */
+        color: #fff !important;
+    }
+    .form-control {
+        width: 100%;
+        background-color: #fff !important; /* Fundo branco nos inputs */
+    }
+    .widget-shadow {
+        padding: 15px;
+        background-color: #fff !important; /* Fundo branco no container */
+    }
+    .row, .col-md-5, .col-md-2, .col-md-3, .col-12 {
+        background-color: transparent !important; /* Remove fundos indesejados */
+    }
+
+    /* Media Query para Mobile (max-width: 768px) */
+    @media (max-width: 768px) {
+        .btn-primary {
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .widget-shadow {
+            padding: 10px;
+        }
+        .form-row .col, .form-row .col-auto {
+            margin-bottom: 10px;
+        }
+        .form-control {
+            font-size: 14px;
+            padding: 5px;
+        }
+        small {
+            font-size: 12px;
+        }
+        .col-12 {
+            margin-top: 10px;
+        }
+        .text-muted span {
+            padding: 2px 5px;
+        }
+    }
+</style>
 
 	<hr>
 	<div id="listar">

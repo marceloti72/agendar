@@ -3,173 +3,6 @@
 require_once("verificar.php");
 require_once __DIR__ . '/../../conexao.php';
 
-?>
-<style>
-    /* Estilos gerais */
-    .main-page {
-        padding: 20px;
-        background-color: #f5f7fa;
-        min-height: 100vh;
-    }
-    .widget, .stat, .content-top-2 {
-        margin-bottom: 20px;
-    }
-    .r3_counter_box, .content-top-1 {
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        padding: 15px;
-        transition: transform 0.2s ease;
-    }
-    .r3_counter_box:hover, .content-top-1:hover {
-        transform: translateY(-5px);
-    }
-    .icon-rounded {
-        background-color: #007bff;
-        color: #fff;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        line-height: 40px;
-        font-size: 18px;
-        text-align: center;
-        margin-right: 10px;
-    }
-    .user1 { background-color: #dc3545; } /* Vermelho para débitos */
-    .dollar2 { background-color: #28a745; } /* Verde para ganhos */
-    .dollar1 { background-color: #ffc107; } /* Amarelo para estoque */
-    .stats h5 {
-        font-size: 28px;
-        margin: 0;
-        color: #333;
-    }
-    .stats big {
-        font-weight: bold;
-    }
-    hr {
-        border: 0;
-        border-top: 1px solid #eee;
-        margin: 10px 0;
-    }
-    .top-content h5 {
-        font-size: 18px;
-        color: #555;
-        margin: 0 0 5px;
-    }
-    .top-content label {
-        font-size: 24px;
-        color: #007bff;
-        font-weight: bold;
-    }
-    .card-header h3 {
-        font-size: 20px;
-        color: #333;
-        margin: 0;
-        padding-bottom: 10px;
-    }
-    #Linegraph {
-        width: 100% !important;
-        height: 300px;
-    }
-
-    /* Aviso */
-    .aviso {
-        background: #ffc107;
-        color: #333;
-        padding: 10px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        font-size: 14px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Media Query para Mobile (max-width: 768px) */
-    @media (max-width: 768px) {
-        .main-page {
-            padding: 10px;
-        }
-        .col_3 .col-md-3 {
-            width: 50%; /* 2 por linha */
-            float: left;
-            padding: 5px;
-        }
-        .r3_counter_box {
-            padding: 10px;
-        }
-        .icon-rounded {
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            font-size: 14px;
-        }
-        .stats h5 {
-            font-size: 20px;
-        }
-        .stats span {
-            font-size: 12px;
-        }
-        .row .col-md-4 {
-            width: 100%; /* Empilha verticalmente */
-            padding: 5px;
-        }
-        .content-top-1 {
-            padding: 10px;
-            text-align: center;
-        }
-        .top-content {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        .top-content h5 {
-            font-size: 16px;
-        }
-        .top-content label {
-            font-size: 20px;
-        }
-        .top-content1 {
-            width: 100%;
-        }
-        .pie-title-center {
-            width: 100px !important;
-            height: 100px !important;
-            margin: 0 auto;
-        }
-        .card {
-            padding: 10px;
-        }
-        .card-header h3 {
-            font-size: 18px;
-        }
-        #Linegraph {
-            height: 250px;
-        }
-        .aviso {
-            font-size: 12px;
-            padding: 8px;
-        }
-    }
-
-    /* Ajuste para telas muito pequenas (max-width: 480px) */
-    @media (max-width: 480px) {
-        .col_3 .col-md-3 {
-            width: 100%; /* 1 por linha */
-        }
-        .stats h5 {
-            font-size: 18px;
-        }
-        .pie-title-center {
-            width: 80px !important;
-            height: 80px !important;
-        }
-
-        .agileinfo-cdr{
-            display: none;
-        }
-    }
-</style>
-<?php 
-
-
 
 //verificar se ele tem a permissão de estar nessa página
 if(@$home == 'ocultar'){
@@ -414,138 +247,160 @@ $dados_meses_vendas =  '';
   <input type="hidden" id="dados_grafico_despesa">
    <input type="hidden" id="dados_grafico_venda">
     <input type="hidden" id="dados_grafico_servico">
-    <div class="main-page">
-    <?php if($ativo_sistema == ''){ ?>
-    <div class="aviso">
-        <i class="fa fa-info-circle"></i> <b>Aviso:</b> Prezado Cliente, não identificamos o pagamento de sua última mensalidade, entre em contato conosco o mais rápido possível para regularizar o pagamento, caso contrário seu acesso ao sistema será desativado.
-    </div>
-    <?php } ?>
+<div class="main-page">
 
-    <div class="col_3">
+ <?php if($ativo_sistema == ''){ ?>
+<div style="background: #ffc341; color:#3e3e3e; padding:10px; font-size:14px; margin-bottom:10px">
+<div><i class="fa fa-info-circle"></i> <b>Aviso: </b> Prezado Cliente, não identificamos o pagamento de sua última mensalidade, entre em contato conosco o mais rápido possivel para regularizar o pagamento, caso contário seu acesso ao sistema será desativado.</div>
+</div>
+<?php } ?>
+
+	<div class="col_3">
+
         <a href="clientes">
-            <div class="col-md-3 widget widget1">
-                <div class="r3_counter_box">
-                    <i class="pull-left fa fa-users icon-rounded"></i>
-                    <div class="stats">
-                        <h5><strong><big><?php echo $total_clientes ?></big></strong></h5>
+		<div class="col-md-3 widget widget1" style = 'border-radius: 10px;'>
+			<div class="r3_counter_box" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'>
+				<i class="pull-left fa fa-users icon-rounded"></i>
+				<div class="stats">
+                        <h5><strong><big><big><?php echo $total_clientes ?></big></big></strong></h5>
+
                     </div>
-                    <hr>
-                    <div align="center"><small>Total de Clientes</small></div>
-                </div>
-            </div>
+                    <hr style="margin-top:10px">
+                    <div align="center"><span>Total de Clientes</span></div>
+			</div>
+		</div>
         </a>
 
-        <a href="pagar">
-            <div class="col-md-3 widget widget1">
-                <div class="r3_counter_box">
-                    <i class="pull-left fa fa-money user1 icon-rounded"></i>
-                    <div class="stats">
-                        <h5><strong><big><?php echo $contas_pagar_hoje ?></big></strong></h5>
-                    </div>
-                    <hr>
-                    <div align="center"><small>À Pagar Hoje</small></div>
-                </div>
-            </div>
-        </a>
+	
 
-        <a href="receber">
-            <div class="col-md-3 widget widget1">
-                <div class="r3_counter_box">
-                    <i class="pull-left fa fa-money dollar2 icon-rounded"></i>
-                    <div class="stats">
-                        <h5><strong><big><?php echo $contas_receber_hoje ?></big></strong></h5>
-                    </div>
-                    <hr>
-                    <div align="center"><small>À Receber Hoje</small></div>
-                </div>
-            </div>
-        </a>
+         <a href="pagar">
+        <div class="col-md-3 widget widget1" style = 'border-radius: 10px;'>
+            <div class="r3_counter_box" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'>
+                <i class="pull-left fa fa-money user1 icon-rounded"></i>
+                <div class="stats">
+                        <h5><strong><big><big><?php echo $contas_pagar_hoje ?></big></big></strong></h5>
 
-        <a href="estoque">
-            <div class="col-md-3 widget widget1">
-                <div class="r3_counter_box">
-                    <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
-                    <div class="stats">
-                        <h5><strong><big><?php echo $estoque_baixo ?></big></strong></h5>
                     </div>
-                    <hr>
-                    <div align="center"><small>Estoque Baixo</small></div>
-                </div>
-            </div>
-        </a>
-
-        <div class="col-md-3 widget">
-            <div class="r3_counter_box">
-                <i class="pull-left fa fa-usd <?php echo $classe_saldo_dia ?> icon-rounded"></i>
-                <div class="stats">                    
-                    <h5><strong><?php echo @$saldo_total_diaF ?></strong></h5>
-                </div>
-                <hr>
-                <div align="center"><small>Saldo do Dia</small></div>
+                    <hr style="margin-top:10px">
+                    <div align="center"><span>Contas à Pagar Hoje</span></div>
             </div>
         </div>
-        <div class="clearfix"></div>
-    </div>
+        </a>
 
-    <div class="row" style="margin-top: 20px">
-        <div class="col-md-4 stat stat2">
-            <div class="content-top-1">
+
+		   <a href="receber">
+        <div class="col-md-3 widget widget1" style = 'border-radius: 10px;'>
+            <div class="r3_counter_box" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'>
+                <i class="pull-left fa fa-money dollar2 icon-rounded"></i>
+                <div class="stats">
+                        <h5><strong><big><big><?php echo $contas_receber_hoje ?></big></big></strong></h5>
+
+                    </div>
+                    <hr style="margin-top:10px">
+                    <div align="center"><span>Contas à Receber Hoje</span></div>
+            </div>
+        </div>
+        </a>
+
+         <a href="estoque">
+		<div class="col-md-3 widget widget1" style = 'border-radius: 10px;'>
+			<div class="r3_counter_box" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'>
+				<i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
+				<div class="stats">
+                        <h5><strong><big><big><?php echo $estoque_baixo ?></big></big></strong></h5>
+
+                    </div>
+                    <hr style="margin-top:10px">
+                    <div align="center"><span>Produtos Estoque Baixo</span></div>
+			</div>
+		</div>
+    </a>
+
+
+
+		<div class="col-md-3 widget" style = 'border-radius: 10px;'>
+			<div class="r3_counter_box" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'>
+				<i class="pull-left fa fa-usd <?php echo $classe_saldo_dia ?> icon-rounded"></i>
+				<div class="stats">
+                        <h5><strong><big><?php echo @$saldo_total_diaF ?></big></strong></h5>
+
+                    </div>
+                    <hr style="margin-top:10px">
+                    <div align="center"><span>R$ Saldo do Dia</span></div>
+			</div>
+		</div>
+		<div class="clearfix"> </div>
+	</div>
+
+
+
+	<div class="row" style="margin-top: 20px">
+
+
+
+        <div class="col-md-4 stat stat2" style = 'border-radius: 10px;'>
+
+            <div class="content-top-1" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'>
                 <div class="col-md-7 top-content">
                     <h5>Agendamentos Dia</h5>
-                    <label><?php echo $total_agendamentos_hoje ?>+</label>
+                    <label><?php echo $total_agendamentos_hoje  ?>+</label>
                 </div>
-                <div class="col-md-5 top-content1">
-                    <div id="demo-pie-1" class="pie-title-center" data-percent="<?php echo $porcentagemAgendamentos ?>">
-                        <span class="pie-value"></span>
-                    </div>
+                <div class="col-md-5 top-content1">    
+                    <div id="demo-pie-1" class="pie-title-center" data-percent="<?php echo $porcentagemAgendamentos ?>"> <span class="pie-value"></span> </div>
                 </div>
-                <div class="clearfix"></div>
+                <div class="clearfix"> </div>
             </div>
         </div>
 
-        <div class="col-md-4 stat">
-            <div class="content-top-1">
+        <div class="col-md-4 stat" style = 'border-radius: 10px;'>
+            <div class="content-top-1" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'>
                 <div class="col-md-7 top-content">
                     <h5>Serviços Pagos Hoje</h5>
                     <label><?php echo $total_servicos_hoje ?>+</label>
                 </div>
-                <div class="col-md-5 top-content1">
-                    <div id="demo-pie-2" class="pie-title-center" data-percent="<?php echo $porcentagemServicos ?>">
-                        <span class="pie-value"></span>
-                    </div>
+                <div class="col-md-5 top-content1">    
+                    <div id="demo-pie-2" class="pie-title-center" data-percent="<?php echo $porcentagemServicos ?>"> <span class="pie-value"></span> </div>
                 </div>
-                <div class="clearfix"></div>
+                <div class="clearfix"> </div>
             </div>
         </div>
 
-        <div class="col-md-4 stat">
-            <div class="content-top-1">
+        <div class="col-md-4 stat" style = 'border-radius: 10px;'>
+            <div class="content-top-1" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'>
                 <div class="col-md-7 top-content">
                     <h5>Comissões Pagas Mês</h5>
                     <label><?php echo $total_comissoes_mes ?>+</label>
                 </div>
-                <div class="col-md-5 top-content1">
-                    <div id="demo-pie-3" class="pie-title-center" data-percent="<?php echo $porcentagemComissoes ?>">
-                        <span class="pie-value"></span>
-                    </div>
+                <div class="col-md-5 top-content1">    
+                    <div id="demo-pie-3" class="pie-title-center" data-percent="<?php echo $porcentagemComissoes ?>"> <span class="pie-value"></span> </div>
                 </div>
-                <div class="clearfix"></div>
+                <div class="clearfix"> </div>
             </div>
         </div>
+
     </div>
 
-    <div class="row-one widgettable">
-        <div class="col-md-12 content-top-2 card">
-            <div class="agileinfo-cdr">
-                <div class="card-header">
-                    <h3>Demonstrativo Financeiro</h3>
-                </div>
-                <div id="Linegraph" style="width: 98%; height: 350px"></div>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-    </div>
-</div>
+        <div class="row-one widgettable">
+
+		<div class="col-md-12 content-top-2 card">
+
+			<div class="agileinfo-cdr">
+					<div class="card-header">
+                        <h3>Demonstrativo Financeiro</h3>
+                    </div>
+					
+						<div id="Linegraph" style="width: 98%; height: 350px">
+						</div>
+						
+				</div>
+
+		</div>
+
+
+
+
+		<div class="clearfix"> </div>
+	</div>
 
 
 	

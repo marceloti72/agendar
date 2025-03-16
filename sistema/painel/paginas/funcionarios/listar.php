@@ -5,6 +5,116 @@ $tabela = 'usuarios';
 if($tipo_comissao == 'Porcentagem'){
 		$tipo_comissao = '%';
 	}
+	?>
+	<style>
+        #tabela tr:nth-child(even) { /* Linhas pares */
+            background-color: #f2f2f2;
+        }
+        #tabela tr:nth-child(odd) { /* Linhas ímpares */
+            background-color: #ffffff;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            padding: 10px;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+        .hovv {
+            cursor: pointer;
+            border-radius: 50%;
+            object-fit: cover;
+            width: 50px;
+            height: 50px;
+            transition: transform 0.5s;
+        }
+        .hovv:hover {
+            transform: scale(3);
+        }
+        .btn {
+            padding: 5px 10px;
+            margin: 2px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 4px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-success {
+            background-color: #28a745;
+        }
+        .dropdown-menu {
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        .dropdown-menu a {
+            color: #dc3545;
+            text-decoration: none;
+        }
+        .text-muted {
+            color: #6c757d !important;
+        }
+        .esc {
+            display: table-cell; /* Visível por padrão em desktop */
+        }
+
+        /* Media Query para Mobile (max-width: 768px) */
+        @media (max-width: 768px) {
+            .table {
+                display: block;
+                overflow-x: auto; /* Permite rolagem horizontal se necessário */
+                white-space: nowrap;
+            }
+            .table th, .table td {
+                padding: 8px;
+                font-size: 12px; /* Reduz tamanho da fonte */
+            }
+            .esc {
+                display: none; /* Esconde colunas menos importantes em mobile */
+            }
+            .hovv {
+                width: 30px;
+                height: 30px; /* Reduz tamanho da foto em mobile */
+            }
+            .btn {
+                padding: 4px 8px;
+                font-size: 12px; /* Reduz tamanho dos botões */
+            }
+            .btn i {
+                font-size: 12px;
+            }
+            .dropdown-menu {
+                margin-left: 0 !important; /* Ajusta posição do dropdown */
+                min-width: 120px;
+                font-size: 12px;
+            }
+            #mensagem-excluir {
+                font-size: 12px;
+            }
+
+			.dataTables_length {
+				display: none;
+			}
+        }
+    </style>
+	<?php 
 
 
 $query = $pdo->query("SELECT * FROM $tabela where nivel != 'Administrador' and id_conta = '$id_conta' ORDER BY id desc");
@@ -101,7 +211,7 @@ echo <<<HTML
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
+		<a href="#" class="btn btn-danger btn-xs" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>

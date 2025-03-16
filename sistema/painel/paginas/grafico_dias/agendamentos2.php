@@ -21,7 +21,7 @@ try {
     $sql = "SELECT 
             DAYOFWEEK(data) as dia_semana,
             COUNT(*) as total
-            FROM agendamentos_temp
+            FROM agendamentos
             WHERE data BETWEEN :primeiroDia AND :ultimoDia
             GROUP BY dia_semana
             ORDER BY dia_semana";

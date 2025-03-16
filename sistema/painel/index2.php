@@ -109,155 +109,125 @@ $plano = $res3['plano'];
 	<link href="css/custom.css" rel="stylesheet">
 	<!--//Metis Menu -->
 	<style>
-		#chartdiv {
-			width: 100%;
-			height: 295px;
-		}
+/* Estilos padrão para desktop permanecem */
+#chartdiv {
+  width: 100%;
+  height: 295px;
+}
 
-		
-        .hovv:hover { transform: scale(3); transition: .5s;}
-        .hovv{cursor: pointer; border-radius: 50px;object-fit: cover;} 
+.hovv:hover { transform: scale(3); transition: .5s; }
+.hovv { cursor: pointer; border-radius: 50px; object-fit: cover; }
+.hovv { width: 50px; height: 50px; }
 
-		.hovv{
-    width: 50px;
-    height: 50px;
+#tabela tr:nth-child(even) { background-color: #f2f2f2; }
+#tabela tr:nth-child(odd) { background-color: #ffffff; }
+
+/* Media query para dispositivos móveis (max-width: 768px) */
+@media (max-width: 768px) {
+  body.cbp-spmenu-push {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
 
+  .sticky-header.header-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 1000;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-  
-  @media (max-width: 768px) {
-    .sticky-header {
-        padding: 5px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: nowrap;
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-    .header-left, .header-right {
-        margin: 0;
-        padding: 0;
-        flex-shrink: 1;
-    }
-    #showLeftPush {
-        font-size: 16px;
-        padding: 4px;
-        margin-right: 5px;
-        line-height: 1;
-        width: 24px; /* Simétrico */
-        height: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .nofitications-dropdown {
-        display: flex;
-        align-items: center;
-        margin: 0;
-        padding: 0;
-    }
-    .nofitications-dropdown li {
-        margin-right: 5px;
-        padding: 0;
-        width: 30px; /* Largura fixa igual à altura */
-        height: 30px; /* Altura fixa igual à largura */
-        display: flex; /* Garante que o conteúdo interno se ajuste */
-        align-items: center;
-        justify-content: center;
-        
-    }
-    .nofitications-dropdown li a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        padding: 0; /* Remove padding para controle total */
-    }
-    .nofitications-dropdown li a i {
-        font-size: 16px; /* Tamanho do ícone */
-        width: 16px; /* Largura fixa */
-        height: 16px; /* Altura fixa */
-        line-height: 16px;
-        text-align: center;
-    }
-    .badge {
-        font-size: 8px;
-        padding: 2px 4px;
-        top: -8px;
-        right: -4px; /* Ajusta posição para não interferir na simetria */
-        position: absolute;
-        border-radius: 50%;
-        min-width: 12px;
-        height: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .dropdown-menu {
-        font-size: 10px;
-        max-width: 120px;
-        padding: 2px;
-    }
-    .profile_details {
-        margin-left: 110px;
-        flex-shrink: 1;
-		
-    }
+  #cbp-spmenu-s1.cbp-spmenu-vertical {
+    position: relative !important;
+    width: 100% !important;
+    margin: 60px 0 0 0 !important;
+    padding: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    background: #f8f8f8 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    height: auto !important;
+    min-height: calc(100vh - 60px) !important;
+    overflow-y: auto !important;
+    display: block !important;
+  }
 
-	
-    .prfil-img img {
-        width: 40px;
-        height: 40px;
-        margin-left: -50px;
-        border-radius: 50%;
-		
-    }
-    .user-name {
-        display: none;
-    }
-    .fa-angle-down, .fa-angle-up {
-        font-size: 12px;
-        margin-left: 2px;
-        width: 12px;
-        height: 12px;
-        line-height: 12px;
-        text-align: center;
-    }
-    .dropdown-menu.drp-mnu {
-        font-size: 10px;
-        min-width: 80px;
-        padding: 2px;
-		margin-left: -110px !important;
-    }
-    .profile_details_drop a {
-        display: flex;
-        align-items: center;
-        padding: 0;
-    }
-    /* Sobrescreve conflitos */
-    .header-left, .header-right, .nofitications-dropdown, .profile_details {
-        float: none !important;
-        display: inline-flex !important;
-    }
+  .sidebar-left,
+  .navbar-inverse,
+  .sidebar-menu {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 10px !important;
+  }
 
-	.dropdown-toggle {
-        width: 34px !important; /* Largura igual à altura para ser redondo */
-        height: 34px !important;
-        border-radius: 50%; /* Forma redonda */       
-        
-        text-decoration: none;
-        
-    }
-	.foto_user {        
-		margin-right: -30px;        
-        
-    }
-	
+  #bs-example-navbar-collapse-1.collapse {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+  }
+
+  #showLeftPush2.navbar-toggle {
+    display: none !important;
+  }
+
+  .treeview-menu {
+    display: none;
+    width: 100%;
+    padding: 0 10px;
+    background: #e8e8e8;
+  }
+
+  #page-wrapper {
+    display: none !important;
+    position: relative;
+    width: 100%;
+    margin: 60px 0 0 0;
+    padding: 0;
+    min-height: calc(100vh - 60px);
+  }
+
+  .footer {
+    display: none !important;
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+  }
+
+  body.content-visible #cbp-spmenu-s1.cbp-spmenu-vertical {
+    display: none !important;
+  }
+
+  body.content-visible #page-wrapper {
+    display: block !important;
+  }
+
+  body.content-visible .footer {
+    display: block !important;
+  }
 }
-	</style>
+
+/* Estilo para desktop */
+@media (min-width: 769px) {
+  body.content-visible #cbp-spmenu-s1.cbp-spmenu-vertical {
+    display: block !important;
+  }
+  body.content-visible #page-wrapper {
+    display: block !important;
+  }
+}
+</style>
 	<!--pie-chart --><!-- index page sales reviews visitors pie chart -->
 	<script src="js/pie-chart.js" type="text/javascript"></script>
 	<script type="text/javascript">
@@ -295,6 +265,10 @@ $plano = $res3['plano'];
 
 
 		});
+
+
+
+		
 
 	</script>
 	<!-- //pie-chart --><!-- index page sales reviews visitors pie chart -->
@@ -667,12 +641,7 @@ $plano = $res3['plano'];
 						}?>
 
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell" title="Agendamentos hoje"></i>
-							<?php 								
-								if($total_agendamentos_hoje_usuario_pendentes != 0){?>
-                                    <span class="badge text-danger"><?php echo $total_agendamentos_hoje_usuario_pendentes ?></span><?php 
-								}?>
-							</a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell" title="Agendamentos hoje"></i><span class="badge text-danger"><?php echo $total_agendamentos_hoje_usuario_pendentes ?></span></a>
 							<ul class="dropdown-menu">
 								<li>
 									<div class="notification_header" align="center">
@@ -744,12 +713,7 @@ $plano = $res3['plano'];
 
 							?>
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Aniversariantes de hoje"><i class="fa fa-birthday-cake" style="color:#FFF"></i>
-							<?php 								
-								if($total_aniversariantes_hoje != 0){?>
-                                    <span class="badge" style="background: #2b6b39"><?php echo $total_aniversariantes_hoje ?></span><?php 
-								}?>
-							</a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Aniversariantes de hoje"><i class="fa fa-birthday-cake" style="color:#FFF"></i><span class="badge" style="background: #2b6b39"><?php echo $total_aniversariantes_hoje ?></span></a>
 							<ul class="dropdown-menu">
 								<li>
 									<div class="notification_header" align="center">
@@ -801,12 +765,7 @@ $plano = $res3['plano'];
 
 							?>
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Clientes com retorno pendente"><i class="fa fa-users" style="color:#FFF"></i>
-								<?php 								
-								if($total_clientes_retorno != 0){?>
-                                    <span class="badge" style="background: #c93504"><?php echo $total_clientes_retorno ?></span><?php 
-								}?>
-							</a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Clientes com retorno pendente"><i class="fa fa-users" style="color:#FFF"></i><span class="badge" style="background: #c93504"><?php echo $total_clientes_retorno ?></span></a>
 							<ul class="dropdown-menu">
 								<li>
 									<div class="notification_header" align="center">
@@ -858,11 +817,7 @@ $plano = $res3['plano'];
 
 							?>
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Depoimentos pendentes"><i class="fa fa-comment" style="color:#FFF"></i><?php 
-							if($total_comentarios != 0){?>
-                                    <span class="badge" style="background: #22168a"><?php echo $total_comentarios ?></span><?php 
-								}?>
-							</a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Depoimentos pendentes"><i class="fa fa-comment" style="color:#FFF"></i><span class="badge" style="background: #22168a"><?php echo $total_comentarios ?></span></a>
 							<ul class="dropdown-menu">
 								<li>
 									<div class="notification_header" align="center">
@@ -927,7 +882,7 @@ $plano = $res3['plano'];
 				<div class="profile_details">		
 					<ul>
 						<li class="dropdown profile_details_drop">
-							<a href="#" class="dropdown-toggle foto_user" data-toggle="dropdown" aria-expanded="false">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<div class="profile_img">	
 									<span class="prfil-img"><img src="img/perfil/<?php if(!empty($foto_usuario)){ echo $foto_usuario;}else{?>sem-foto.jpg<?php }?>" alt="" width="50" height="50"> </span> 
 									<div class="user-name esc">
@@ -985,10 +940,13 @@ $plano = $res3['plano'];
 	</div>
 
 
+	
+
+
 
 
 	<!-- Classie --><!-- for toggle left push menu script -->
-		<script src="js/classie.js"></script>
+		<!-- <script src="js/classie.js"></script>
 		<script>
 			var menuLeft = document.getElementById( 'cbp-spmenu-s1' ),
 				showLeftPush = document.getElementById( 'showLeftPush' ),
@@ -1025,7 +983,7 @@ $plano = $res3['plano'];
 			}
 		}
 
-		</script>
+		</script> -->
 	<!-- //Classie --><!-- //for toggle left push menu script -->
 
 
@@ -1047,6 +1005,119 @@ $plano = $res3['plano'];
 	<!-- Bootstrap Core JavaScript -->
 	<script src="js/bootstrap.js"> </script>
 	<!-- //Bootstrap Core JavaScript -->
+
+	<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var menuLeft = document.getElementById("cbp-spmenu-s1");
+    var showLeftPush = document.getElementById("showLeftPush");
+    var body = document.body;
+
+    // Função para verificar se é mobile
+    function isMobile() {
+      return window.innerWidth <= 768;
+    }
+
+    // Estado inicial em mobile
+    if (isMobile()) {
+      menuLeft.style.display = "block";
+      body.classList.remove("cbp-spmenu-push-toright");
+    }
+
+    // Toggle para desktop (cbp-spmenu)
+    showLeftPush.onclick = function (e) {
+      e.preventDefault();
+      if (!isMobile()) {
+        classie.toggle(this, "active");
+        classie.toggle(body, "cbp-spmenu-push-toright");
+        classie.toggle(menuLeft, "cbp-spmenu-open");
+      }
+    };
+
+    // Manipular cliques nos itens do menu
+    var menuItems = document.querySelectorAll(".sidebar-menu a");
+    menuItems.forEach(function (item) {
+      item.addEventListener("click", function (e) {
+        var hasSubmenu = this.nextElementSibling && this.nextElementSibling.classList.contains("treeview-menu");
+        var href = this.getAttribute("href");
+
+        if (isMobile()) {
+          if (hasSubmenu) {
+            // Submenu: apenas expandir/colapsar
+            e.preventDefault();
+            var submenu = this.nextElementSibling;
+            var isOpen = submenu.style.display === "block";
+            document.querySelectorAll(".treeview-menu").forEach(function (sub) {
+              if (sub !== submenu) sub.style.display = "none";
+            });
+            submenu.style.display = isOpen ? "none" : "block";
+          } else if (href && href !== "#" && href !== "" && !this.hasAttribute("data-toggle")) {
+            // Link direto: carregar conteúdo via AJAX
+            e.preventDefault();
+            loadPageContent(href);
+          }
+        }
+      });
+    });
+
+    // Função para carregar o conteúdo dinamicamente
+    function loadPageContent(url) {
+      if (isMobile()) {
+        fetch(url + ".php") // Assume que o href é o nome da página sem extensão
+          .then(response => {
+            if (!response.ok) throw new Error("Página não encontrada");
+            return response.text();
+          })
+          .then(data => {
+            document.getElementById("page-wrapper").innerHTML = data;
+            body.classList.add("content-visible");
+            reinitializeScripts(); // Reaplicar scripts após carregar
+          })
+          .catch(error => {
+            console.error("Erro ao carregar a página:", error);
+            document.getElementById("page-wrapper").innerHTML = "<p>Erro ao carregar o conteúdo.</p>";
+            body.classList.add("content-visible");
+          });
+      } else {
+        window.location.href = url; // Desktop: navegação padrão
+      }
+    }
+
+    // Reaplicar scripts necessários após carregar novo conteúdo
+    function reinitializeScripts() {
+      // Reaplicar DataTables, Select2, etc., se necessário
+      if (typeof $.fn.DataTable !== "undefined") {
+        $(".dataTable").DataTable();
+      }
+      if (typeof $.fn.select2 !== "undefined") {
+        $(".sel15, .selcli").select2();
+      }
+    }
+
+    // Garantir que submenus estejam inicialmente fechados em mobile
+    var submenus = document.querySelectorAll(".treeview-menu");
+    submenus.forEach(function (submenu) {
+      if (isMobile()) {
+        submenu.style.display = "none";
+      }
+    });
+
+    // Ajustar ao redimensionar
+    window.addEventListener("resize", function () {
+      if (isMobile()) {
+        menuLeft.style.display = body.classList.contains("content-visible") ? "none" : "block";
+        submenus.forEach(function (submenu) {
+          submenu.style.display = "none";
+        });
+      } else {
+        menuLeft.style.display = "";
+        body.classList.remove("content-visible");
+        submenus.forEach(function (submenu) {
+          submenu.style.display = "";
+        });
+      }
+    });
+  });
+</script>
 	
 </body>
 </html>
@@ -2259,14 +2330,7 @@ $plano = $res3['plano'];
 		}
 	</script>
 
-	<script>
-	$(document).ready(function () {
-		$('#tabela').DataTable({
-			lengthChange: false,
-			searching: true,
-			paging: true,
-		});
-    });
-	</script>
+
+
 
 
