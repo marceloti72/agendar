@@ -17,6 +17,7 @@ $username = $_POST['username'];
 $plano = $_POST['plano'];
 $frequencia = $_POST['frequencia'];
 $valor = $_POST['valor'];
+echo'ENTREI!!!!!!';
 
 
 if($frequencia == '30'){
@@ -94,7 +95,7 @@ if (count($res2) > 0) {
 
 // Inicia a transação
 try {
-    //$pdo->beginTransaction();
+    $pdo->beginTransaction();
 
     // Cadastra a instituição no AGENDAR
     $res1 = $pdo->prepare("INSERT INTO config SET nome = :nome, telefone_whatsapp = :telefone, email = :email_adm, ativo = :ativo, username = :username, token = :token, email_menuia = :email_menuia, plano = :plano, api = 'Sim', data_cadastro = NOW(),");
@@ -320,7 +321,7 @@ try {
     $res7->bindValue(":data_cad", date('Y-m-d H:i:s'));
     $res7->execute();
 
-    //$pdo->commit(); // Confirma as alterações
+    $pdo->commit(); // Confirma as alterações
     echo 'Salvo com Sucesso!';
 } catch (Exception $e) {
     $pdo->rollBack(); // Desfaz as alterações em caso de erro
