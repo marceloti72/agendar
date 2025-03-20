@@ -30,53 +30,114 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 
 
 ?>
+<style>
+	@media (max-width: 768px) {
+	.novo {
+		display: flex;
+		width: 100%;
+		height: 30px;
+		margin-bottom: 10px;
+		font-size: 14px;
+		align-items: center;
+		justify-content: center;
+			
+        }
+	}
+</style>
 
 <div class="">      
-	<a class="btn btn-primary" onclick="inserir()" class="btn btn-primary btn-flat btn-pri" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Nova Conta</a>
+	<a class="btn btn-dark novo" onclick="inserir()" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Nova Conta</a>
 </div>
 
-<div class="bs-example widget-shadow" style="padding:15px">
+<div class="bs-example widget-shadow" style="padding:15px; background-color: #fff !important;">
+    <div class="row" style="background-color: transparent !important;">
+        <div class="col-md-5 col-12" style="margin-bottom:5px; background-color: transparent !important;">
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <small><i title="Data de Vencimento Inicial" class="fa fa-calendar-o"></i></small>
+                </div>
+                <div class="col">
+                    <input type="date" class="form-control" name="data-inicial" id="data-inicial-caixa" value="<?php echo $data_inicio_mes ?>" required>
+                </div>
+                <div class="col-auto">
+                    <small><i title="Data de Vencimento Final" class="fa fa-calendar-o"></i></small>
+                </div>
+                <div class="col">
+                    <input type="date" class="form-control" name="data-final" id="data-final-caixa" value="<?php echo $data_final_mes ?>" required>
+                </div>
+            </div>
+        </div>
 
-	<div class="row">
-		<div class="col-md-5" style="margin-bottom:5px;">
-			<div style="float:left; margin-right:10px"><span><small><i title="Data de Vencimento Inicial" class="fa fa-calendar-o"></i></small></span></div>
-			<div  style="float:left; margin-right:20px">
-				<input type="date" class="form-control " name="data-inicial"  id="data-inicial-caixa" value="<?php echo $data_inicio_mes ?>" required>
-			</div>
+        <div class="col-md-2 col-12" style="margin-top:5px; background-color: transparent !important;" align="center">    
+            <div> 
+                <small>
+                    <a title="Conta de Ontem" class="text-muted" href="#" onclick="valorData('<?php echo $data_ontem ?>', '<?php echo $data_ontem ?>')"><span>Ontem</span></a> / 
+                    <a title="Conta de Hoje" class="text-muted" href="#" onclick="valorData('<?php echo $data_hoje ?>', '<?php echo $data_hoje ?>')"><span>Hoje</span></a> / 
+                    <a title="Conta do Mês" class="text-muted" href="#" onclick="valorData('<?php echo $data_inicio_mes ?>', '<?php echo $data_final_mes ?>')"><span>Mês</span></a>
+                </small>
+            </div>
+        </div>
 
-			<div style="float:left; margin-right:10px"><span><small><i title="Data de Vencimento Final" class="fa fa-calendar-o"></i></small></span></div>
-			<div  style="float:left; margin-right:30px">
-				<input type="date" class="form-control " name="data-final"  id="data-final-caixa" value="<?php echo $data_final_mes ?>" required>
-			</div>
-		</div>
-
-
-		
-		<div class="col-md-2" style="margin-top:5px;" align="center">	
-			<div > 
-				<small >
-					<a title="Conta de Ontem" class="text-muted" href="#" onclick="valorData('<?php echo $data_ontem ?>', '<?php echo $data_ontem ?>')"><span>Ontem</span></a> / 
-					<a title="Conta de Hoje" class="text-muted" href="#" onclick="valorData('<?php echo $data_hoje ?>', '<?php echo $data_hoje ?>')"><span>Hoje</span></a> / 
-					<a title="Conta do Mês" class="text-muted" href="#" onclick="valorData('<?php echo $data_inicio_mes ?>', '<?php echo $data_final_mes ?>')"><span>Mês</span></a>
-				</small>
-			</div>
-		</div>
-
-
-
-		<div class="col-md-3" style="margin-top:5px;" align="center">	
-			<div > 
-				<small >
-					<a title="Todas as Contas" class="text-muted" href="#" onclick="buscarContas('')"><span>Todas</span></a> / 
-					<a title="Contas Pendentes" class="text-muted" href="#" onclick="buscarContas('Não')"><span>Pendentes</span></a> / 
-					<a title="Contas Pagas" class="text-muted" href="#" onclick="buscarContas('Sim')"><span>Pagas</span></a>
-				</small>
-			</div>
-		</div>
+        <div class="col-md-3 col-12" style="margin-top:5px; background-color: transparent !important;" align="center">    
+            <div> 
+                <small>
+                    <a title="Todas as Contas" class="text-muted" href="#" onclick="buscarContas('')"><span>Todas</span></a> / 
+                    <a title="Contas Pendentes" class="text-muted" href="#" onclick="buscarContas('Não')"><span>Pendentes</span></a> / 
+                    <a title="Contas Pagas" class="text-muted" href="#" onclick="buscarContas('Sim')"><span>Pagas</span></a>
+                </small>
+            </div>
+        </div>
 
 		<input type="hidden" id="buscar-contas">
 
 	</div>
+	<style>
+    /* Estilos gerais */
+    .btn-primary {
+        transition: all 0.3s;
+        background-color: #007bff !important; /* Garante azul padrão */
+        color: #fff !important;
+    }
+    .form-control {
+        width: 100%;
+        background-color: #fff !important; /* Fundo branco nos inputs */
+    }
+    .widget-shadow {
+        padding: 15px;
+        background-color: #fff !important; /* Fundo branco no container */
+    }
+    .row, .col-md-5, .col-md-2, .col-md-3, .col-12 {
+        background-color: transparent !important; /* Remove fundos indesejados */
+    }
+
+    /* Media Query para Mobile (max-width: 768px) */
+    @media (max-width: 768px) {
+        .btn-primary {
+            
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .widget-shadow {
+            padding: 10px;
+        }
+        .form-row .col, .form-row .col-auto {
+            margin-bottom: 10px;
+        }
+        .form-control {
+            font-size: 14px;
+            padding: 5px;
+        }
+        small {
+            font-size: 12px;
+        }
+        .col-12 {
+            margin-top: 10px;
+        }
+        .text-muted span {
+            padding: 2px 5px;
+        }
+    }
+</style>
 
 	<hr>
 	<div id="listar">
@@ -231,7 +292,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 				</div>
 
 				<div class="modal-footer">      
-					<button type="submit" class="btn btn-primary">Salvar</button>
+					<button type="submit" class="btn btn-primary"><i class="fa-regular fa-floppy-disk"></i> Salvar</button>
 				</div>
 			</form>
 

@@ -88,6 +88,10 @@ $data_hoje = date('Y-m-d');
 			.dataTables_length {
 				display: none;
 			}
+
+			.notification_desc2{
+				width: 80px;
+			}
 			
 			
         }
@@ -244,7 +248,7 @@ echo <<<HTML
 		<ul class="dropdown-menu" >
 		<li>
 		<div class="notification_desc2">
-		<p>Confirmar Baixa na Conta? <a href="#" onclick="baixar('{$id}')"><span class="verde">Sim</span></a></p>
+		<p>Confirmar<br> Baixa? <a href="#" onclick="baixar('{$id}')"><span class="verde">Sim</span></a></p>
 		</div>
 		</li>										
 		</ul>

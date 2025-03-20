@@ -105,7 +105,7 @@ echo <<<HTML
 HTML;
 
 }else{
-	echo '<small>Este Cliente não possui pagamento pendente!</small>';
+	echo '<small><i class="fa-solid fa-coins"></i> Este Cliente não possui pagamento pendente!</small>';
 }
 
 ?>

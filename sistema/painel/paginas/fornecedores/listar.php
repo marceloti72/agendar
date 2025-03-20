@@ -78,7 +78,7 @@ echo <<<HTML
 		</li>
 
 
-		<big><a class="btn btn-success btn-xs" href="http://api.whatsapp.com/send?1=pt_BR&phone=$whats&text=" target="_blank" title="Abrir Whatsapp"><i class="fa fa-whatsapp fa-2x" style = 'font-size: 16px;'></i></a></big>
+		<big><a class="btn btn-success btn-xs" href="http://api.whatsapp.com/send?1=pt_BR&phone=$whats&text=" target="_blank" title="Abrir Whatsapp"><i class="fab fa-whatsapp fa-2x" style = 'font-size: 17px;'></i></a></big>
 
 		</td>
 </tr>

@@ -28,7 +28,7 @@ if(@$funcionarios == 'ocultar'){
 </style>
 
 <div class="">      
-	<a class="btn btn-primary novo" onclick="inserir()" class="btn btn-primary btn-flat btn-pri" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Novo Funcionário</a>
+	<a class="btn btn-dark novo" onclick="inserir()" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Novo Funcionário</a>
 </div>
 
 <div class="bs-example widget-shadow" style="padding:15px" id="listar">
@@ -213,7 +213,7 @@ if(@$funcionarios == 'ocultar'){
 				</div>
 
 				<div class="modal-footer">      
-					<button type="submit" class="btn btn-primary">Salvar</button>
+					<button type="submit" class="btn btn-primary"><i class="fa-regular fa-floppy-disk"></i> Salvar</button>
 				</div>
 			</form>
 
@@ -461,7 +461,7 @@ if(@$funcionarios == 'ocultar'){
                     </div>
 
 					<div class="col-md-2">						
-						<button type="submit" class="btn btn-primary" style="margin-top:22px">Salvar</button>
+						<button type="submit" class="btn btn-primary" style="margin-top:22px"><i class="fa fa-plus"></i>Adicionar</button>
 					</div>
 
 					<input type="hidden" name="id" id="id_dias" value="<?php echo $id_usuario ?>">
@@ -529,7 +529,7 @@ if(@$funcionarios == 'ocultar'){
 					</div>
 
 					<div class="col-md-4">						
-						<button type="submit" class="btn btn-primary" style="margin-top:20px">Salvar</button>
+						<button type="submit" class="btn btn-primary" style="margin-top:20px"><i class="fa fa-plus"></i>Adicionar</button>
 					</div>
 
 					<input type="hidden" name="id" id="id_servico">
@@ -611,11 +611,23 @@ $("#form-dias").submit(function () {
             $('#mensagem-dias').removeClass()
             if (mensagem.trim() == "Salvo com Sucesso") {
 
+				Swal.fire({
+					position: "top-center",
+					icon: "success",
+					title: "Alterado com sucesso!",
+					showConfirmButton: false,
+					timer: 1500,
+									
+					willClose: () => {
+					setTimeout(() => {
+						$("#id_d").val('');   
+						listarDias(func);
+						}, 300);
+					}  
+				}); 	
+
                 //$('#btn-fechar-horarios').click();
-                $("#id_d").val('');   
-                listarDias(func);
-
-
+                
             } else {
 
                 $('#mensagem-dias').addClass('text-danger')

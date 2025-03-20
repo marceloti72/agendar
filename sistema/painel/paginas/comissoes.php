@@ -32,21 +32,71 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 
 
 ?>
+<style>
+    /* Estilos gerais */
+    .btn-primary {
+        transition: all 0.3s;
+        background-color: #007bff !important; /* Garante azul padrão */
+        color: #fff !important;
+    }
+    .form-control {
+        width: 100%;
+        background-color: #fff !important; /* Fundo branco nos inputs */
+    }
+    .widget-shadow {
+        padding: 15px;
+        background-color: #fff !important; /* Fundo branco no container */
+    }
+    .row, .col-md-5, .col-md-2, .col-md-3, .col-12 {
+        background-color: transparent !important; /* Remove fundos indesejados */
+    }
+
+    /* Media Query para Mobile (max-width: 768px) */
+    @media (max-width: 768px) {
+        .btn-primary {
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .widget-shadow {
+            padding: 10px;
+        }
+        .form-row .col, .form-row .col-auto {
+            margin-bottom: 10px;
+        }
+        .form-control {
+            font-size: 14px;
+            padding: 5px;
+        }
+        small {
+            font-size: 12px;
+        }
+        .col-12 {
+            margin-top: 10px;
+        }
+        .text-muted span {
+            padding: 2px 5px;
+        }
+    }
+</style>
 
 <div class="bs-example widget-shadow" style="padding:15px">
 
 	<div class="row">
 		<div class="col-md-5" style="margin-bottom:5px;">
-			<div style="float:left; margin-right:10px"><span><small><i title="Data de Vencimento Inicial" class="fa fa-calendar-o"></i></small></span></div>
-			<div  style="float:left; margin-right:20px">
-				<input type="date" class="form-control " name="data-inicial"  id="data-inicial-caixa" value="<?php echo $data_hoje ?>" required>
-			</div>
-
-			<div style="float:left; margin-right:10px"><span><small><i title="Data de Vencimento Final" class="fa fa-calendar-o"></i></small></span></div>
-			<div  style="float:left; margin-right:30px">
-				<input type="date" class="form-control " name="data-final"  id="data-final-caixa" value="<?php echo $data_hoje ?>" required>
-			</div>
-		</div>
+			<div class="col-auto">
+                    <small><i title="Data de Vencimento Inicial" class="fa fa-calendar-o"></i></small>
+                </div>
+                <div class="col">
+                    <input type="date" class="form-control" name="data-inicial" id="data-inicial-caixa" value="<?php echo $data_hoje ?>" required>
+                </div>
+                <div class="col-auto">
+                    <small><i title="Data de Vencimento Final" class="fa fa-calendar-o"></i></small>
+                </div>
+                <div class="col">
+                    <input type="date" class="form-control" name="data-final" id="data-final-caixa" value="<?php echo $data_hoje ?>" required>
+                </div>
+		</div><br>
 
 
 			<div class="col-md-3" >	

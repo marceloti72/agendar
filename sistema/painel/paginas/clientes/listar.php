@@ -109,6 +109,10 @@ $data_atual = date('Y-m-d');
 			.dataTables_length {
 				display: none;
 			}
+
+			.notification_desc2{
+				width: 80px;
+			}
         }
     </style>
 <?php 
@@ -127,13 +131,13 @@ echo <<<HTML
 	<thead> 
 	<tr> 
 	<th>Nome</th>	
-	<th class="esc">Telefone</th> 
+	<th class="esc" style='width: 100px;'>Telefone</th> 
 	<th class="esc">CPF</th> 	
 	<th class="esc">Cadastro</th> 	
 	<th class="esc">Nascimento</th> 
 	<th class="esc">Retorno</th> 
 	<th class="esc">Cartões</th> 
-	<th>Ações</th>
+	<th style='width: 270px;'>Ações</th>
 	</tr> 
 	</thead> 
 	<tbody>	
@@ -227,7 +231,7 @@ echo <<<HTML
 		</li>
 
 
-		<a href="http://api.whatsapp.com/send?1=pt_BR&phone=$whats&text=" target="_blank" class="btn btn-success btn-xs" title="Abrir Whatsapp"><i class="fa fa-whatsapp fa-2x" style = 'font-size: 16px;'></i></a>
+		<a href="http://api.whatsapp.com/send?1=pt_BR&phone=$whats&text=" target="_blank" class="btn btn-success btn-xs" title="Abrir Whatsapp"><i class="fab fa-whatsapp fa-2x" style = 'font-size: 17px;'></i></a>
 
 
 

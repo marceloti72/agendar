@@ -17,11 +17,25 @@ if(@$agendamentos == 'ocultar'){
 		background-color: #48D1CC; /* Amarelo */
 		color: #000; /* Cor do texto */
 	}
+
+	@media (max-width: 768px) {
+	.novo {
+		display: flex;
+		width: 100%;
+		height: 30px;
+		margin-bottom: 10px;
+		font-size: 14px;
+		align-items: center;
+		justify-content: center;
+			
+        }
+	}
+
 </style>
 
 <div class="row">
 	<div class="col-md-3">
-		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" onclick="inserir()" type="button" class="btn btn-primary btn-flat" ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
+		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" onclick="inserir()" type="button" class="btn btn-dark novo" ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
 	</div>
 
 	<div class="col-md-3">
@@ -298,7 +312,7 @@ if(@$agendamentos == 'ocultar'){
 						<div class="row">
 						<div class="col-md-4" id="">						
 							<div class="form-group"> 
-								<label>Valor Restante <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Caso o cliente efetue o pagamento com duas formas diferentes de pagamento. Ex: Pix e Cartão." style="color: blue;"></i></label> 
+								<label>Valor Restante <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Caso o cliente efetue o pagamento com duas formas diferentes. Ex: Pix e Cartão." style="color: blue;"></i></label> 
 								<input type="text" class="form-control" name="valor_serv_agd_restante" id="valor_serv_agd_restante" placeholder="Mais de uma forma PGTO"> 
 							</div>						
 						</div>
@@ -381,6 +395,9 @@ if(@$agendamentos == 'ocultar'){
 <script type="text/javascript">var pag = "<?=$pag?>"</script>
 <script src="js/ajax.js"></script>
 
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+
 
 <!-- calendar -->
 <script type="text/javascript" src="js/monthly.js"></script>
@@ -413,7 +430,6 @@ if(@$agendamentos == 'ocultar'){
 
 });
 </script>
-<!-- //calendar -->
 
 <script type="text/javascript">
 	$(document).ready(function() {

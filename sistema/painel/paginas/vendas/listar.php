@@ -94,6 +94,10 @@ $status = '%' . @$_POST['status'] . '%';
 			.dataTables_length {
 				display: none;
 			}
+
+			.notification_desc2{
+				width: 80px;
+			}
 			
 			
         }

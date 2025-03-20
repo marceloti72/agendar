@@ -20,26 +20,24 @@ $data_atual = date('Y-m-d');
 
 </div>
 
-<div class="footer_section" style="background: #292929; ">
+<div class="footer_section" style="background: #A9A9A9; ">
 	<div class="container" >
 		<div class="footer_content " >
 			<form id="form-agenda" method="post" style="margin-top: -25px !important">
 			<div class="footer_form footer-col">
 				<div class="row" style="margin-top: -40px">
 					<div class="col-6">						
-					<input onkeyup="buscarNome()" class="inputs_agenda cor_place" type="text" name="telefone" id="telefone" placeholder="Telefone com DDD" required />				
+					<input onkeyup="buscarNome()" class="form-control" type="text" name="telefone" id="telefone" placeholder="WhatsApp" required />				
 					</div>
 
 					<div class="col-6">
 						
-					<input type="date"  onchange="mudarFuncionario()" class="inputs_agenda"  name="data" id="data" value="<?php echo $data_atual ?>" required />
+					<input type="date"  onchange="mudarFuncionario()" class="form-control"  name="data" id="data" value="<?php echo $data_atual ?>" required />
 				
 					</div>
 
-
-
 				<div class="col-12">				
-					<input  onclick="buscarNome()" class="inputs_agenda cor_place" type="text" name="nome" id="nome" placeholder="Seu Nome" required />
+					<input  onclick="buscarNome()" class="form-control" type="text" name="nome" id="nome" placeholder="Nome" required />
 				</div>
 
 				</div>
@@ -86,20 +84,16 @@ $data_atual = date('Y-m-d');
 				</small>
 				</div>	
 
-
-				
-
-								
 					<div class="form-group"> 						
 						<input maxlength="100" type="text" class="inputs_agenda cor_place" name="obs" id="obs" placeholder="Observações caso exista alguma.">
 					</div>	
 
-					  <button onclick="salvar()" class="botao-verde" type="submit" style="width:100%;" id="btn_agendar">
+					  <button onclick="salvar()" class="botao-verde" type="submit" style="width:100%; background-color: #006400;border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)' " id="btn_agendar">
                  <span id='botao_salvar'>Confirmar Agendamento</span>
                    
                 </button>
 
-                  <a href="meus-agendamentos.php?u=<?php echo $username?>" class="botao-azul" id='botao_editar' style="width:100%; text-align: center; margin-top: 5px">              
+                  <a href="meus-agendamentos.php?u=<?php echo $username?>" class="botao-azul" id='botao_editar' style="width:100%; text-align: center; margin-top: 5px; background-color: #DAA520;border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'">              
                   Ver Agendamentos
                 </a>
                
@@ -151,7 +145,7 @@ $data_atual = date('Y-m-d');
   <div class="modal fade" id="modalExcluir" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header text-white" style="background-color: #4682B4;">
           <h5 class="modal-title" id="exampleModalLabel">Excluir Agendamento
                    </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px" id="btn-fechar-excluir">
@@ -230,8 +224,10 @@ $data_atual = date('Y-m-d');
 		var funcionario = $('#funcionario').val();
 		var data = $('#data').val();		
 		var hora = $('#hora_rec').val();
+		var telefone = $('#telefone').val();
+		var nome = $('#nome').val();		
 
-		listarHorarios(funcionario, data, hora);
+		listarHorarios(funcionario, data, hora, nome, telefone);
 		listarFuncionario();	
 
 	}
@@ -240,13 +236,13 @@ $data_atual = date('Y-m-d');
 
 
 <script type="text/javascript">
-	function listarHorarios(funcionario, data, hora){	
+	function listarHorarios(funcionario, data, hora, nome, telefone){	
 
 		
 		$.ajax({
 			url: "ajax/listar-horarios2.php",
 			method: 'POST',
-			data: {funcionario, data, hora},
+			data: {funcionario, data, hora, nome, telefone},
 			dataType: "text",
 
 			success:function(result){
@@ -291,7 +287,7 @@ $data_atual = date('Y-m-d');
 				if(split[2] == "" || split[2] == undefined){
 
 				}else{
-					$("#funcionario").val(parseInt(split[2])).change();
+					//$("#funcionario").val(parseInt(split[2])).change();
 				}
 
 

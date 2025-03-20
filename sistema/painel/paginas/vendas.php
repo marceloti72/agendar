@@ -49,7 +49,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 </style>
 
 <div class="">      
-    <a class="btn btn-primary novo" onclick="inserir()" style="border-radius: 10px; box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);">
+    <a class="btn btn-dark novo" onclick="inserir()" style="border-radius: 10px; box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);">
         <i class="fa fa-plus" aria-hidden="true"></i> Nova Venda
     </a>
 </div>
@@ -314,7 +314,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 				</div>
 
 				<div class="modal-footer">      
-					<button type="submit" class="btn btn-primary">Salvar</button>
+					<button type="submit" class="btn btn-primary"><i class="fa-regular fa-floppy-disk"></i> Salvar</button>
 				</div>
 			</form>
 

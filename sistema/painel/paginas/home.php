@@ -3,12 +3,14 @@
 require_once("verificar.php");
 require_once __DIR__ . '/../../conexao.php';
 
+$hoje = date('Y-m-d');
+
 ?>
 <style>
     /* Estilos gerais */
     .main-page {
         padding: 20px;
-        background-color: #f5f7fa;
+        background-color: #C0C0C0;
         min-height: 100vh;
     }
     .widget, .stat, .content-top-2 {
@@ -415,11 +417,69 @@ $dados_meses_vendas =  '';
    <input type="hidden" id="dados_grafico_venda">
     <input type="hidden" id="dados_grafico_servico">
     <div class="main-page">
-    <?php if($ativo_sistema == ''){ ?>
+    <?php 
+        // Configurações Iniciais e Conexões
+        $url_sistema = explode("//", $url);
+        $host = ($url_sistema[1] == 'localhost/agendar/') ? 'localhost' : 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
+        $usuario = ($url_sistema[1] == 'localhost/agendar/') ? 'root' : 'skysee';
+        $senha = ($url_sistema[1] == 'localhost/agendar/') ? '' : '9vtYvJly8PK6zHahjPUg';
+        $banco = 'gestao_sistemas';
+
+        try {
+            $pdo2 = new PDO("mysql:dbname=$banco;host=$host;charset=utf8", "$usuario", "$senha");
+            $pdo2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (Exception $e) {
+            error_log("Erro ao conectar ao banco de dados: " . $e->getMessage());
+            echo 'Erro ao conectar ao banco de dados!';
+        }
+
+        // Verifica Ativação do Sistema
+        $query4 = $pdo->query("SELECT * FROM config WHERE id = '$id_conta'");
+        $res4 = $query4->fetchAll(PDO::FETCH_ASSOC);
+        $ativo_sistema = $res4[0]['ativo'];
+        $data_cad = $res4[0]['data_cadastro'];
+
+        // Calcula Dias Restantes do Teste Grátis
+        $data_inicio = new DateTime($data_cad);
+        $data_fim = new DateTime($hoje);
+        $dateInterval = $data_inicio->diff($data_fim);
+        $dias = $dateInterval->days;
+        $dias_rest = 7 - $dias;
+
+        // Busca informações do cliente
+        $query6 = $pdo2->query("SELECT * FROM clientes WHERE id_conta = '$id_conta'");
+        $res6 = $query6->fetchAll(PDO::FETCH_ASSOC);
+        $id_c = @$res6[0]['id'];
+
+        // Busca informações da mensalidade
+        $query7 = $pdo2->query("SELECT * FROM receber WHERE cliente = '$id_c' AND pago ='Não'");
+        $res7 = $query7->fetchAll(PDO::FETCH_ASSOC);
+        $id_m = isset($res7[0]['id']) ? $res7[0]['id'] : 0;
+
+        // Exibe Avisos sobre Pagamento e Teste Grátis
+        if ($ativo_sistema == '' && isset($id_m)) {
+            echo "<div style=\"background: #B22222; color: white; padding:10px; font-size:14px; margin-bottom:10px; width: 100%; border-radius: 10px;\">
+            <div><i class=\"fa fa-info-circle\"></i> <b>Aviso: </b> Prezado Cliente, não identificamos o pagamento de sua última mensalidade. Click <a href=\"https://www.gestao.skysee.com.br/pagar/{$id_m}\" target=\"_blank\" ><b style=\"color: #ffc341; font-size: 20px \" >AQUI</b></a> e regalarize sua assinatura, caso contário seu acesso ao sistema será desativado.</div>
+            </div>";
+        }
+
+        if ($ativo_sistema == 'teste' && isset($id_m)) {
+            if ($dias_rest == 0) {
+                echo "<div style=\"background: #B22222; color: white; padding:10px; font-size:14px; margin-bottom:10px; width: 100%; border-radius: 10px; \">
+                <div><i class=\"fa fa-info-circle\"></i> <b> Aviso: </b> Prezado Cliente, Seu período de teste do sistema termina <b>HOJE</b>. Click <a href=\"https://www.gestao.skysee.com.br/pagar/{$id_m}\" target=\"_blank\" ><b style=\"color: #ffc341; font-size: 20px \" >AQUI</b></a> e assine nosso serviço.</div>
+                </div>";
+            } else {
+                echo "<div style=\"background: #836FFF; color: white; padding:10px; font-size:14px; margin-bottom:10px; width: 100%; border-radius: 10px; \">
+                <div><i class=\"fa fa-info-circle\"></i> <b> Aviso: </b> Prezado Cliente, Seu período de teste do sistema termina em <b>{$dias_rest} dias</b>. Click <a href=\"https://www.gestao.skysee.com.br/pagar/{$id_m}\" target=\"_blank\" ><b style=\"color: #ffc341; font-size: 20px \" >AQUI</b></a> e assine nosso serviço.</div>
+                </div>";
+            }
+        }?>
+
+    <!-- <?php if($ativo_sistema == ''){ ?>
     <div class="aviso">
         <i class="fa fa-info-circle"></i> <b>Aviso:</b> Prezado Cliente, não identificamos o pagamento de sua última mensalidade, entre em contato conosco o mais rápido possível para regularizar o pagamento, caso contrário seu acesso ao sistema será desativado.
     </div>
-    <?php } ?>
+    <?php } ?> -->
 
     <div class="col_3">
         <a href="clientes">

@@ -19,18 +19,18 @@ $data_inicio_mes = $ano_atual . "-" . $mes_atual . "-01";
 $dia_final_mes = ($mes_atual == '4' || $mes_atual == '6' || $mes_atual == '9' || $mes_atual == '11') ? '30' : (($mes_atual == '2') ? '28' : '31');
 $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
 ?>
-
 <style>
+    /* Estilos gerais (mantenha os que você já tem) */
     .tooltip-inner { background-color: #48D1CC; color: #000; }
     .btn-custom { border-radius: 10px; box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4); }
     .modal-header-custom { background-color: #4682B4; color: white; }
-    .modal-body-scroll { overflow: scroll; max-height: 550px; scrollbar-width: thin; background-color: #FFFACD; }
+    /* .modal-body-scroll JÁ TEM overflow: auto;  Removi altura máxima */
+    .modal-body-scroll { overflow: auto; background-color: #FFFACD; }
     .servico-item, .produto-item { border: 7px solid #5c5c5c; margin-bottom: 5px; }
     .pagamento-header { background-color: #FFA500; display: flex; align-items: center; justify-content: center; }
     .input-background { background-color: #e9e6e6; }
 
-
-    /* Estilos para responsividade */
+     /* Estilos para responsividade */
     @media (max-width: 768px) { /* Ajuste este valor se necessário */
         .modal-dialog {
             width: 95%; /* Ocupa quase toda a largura em telas pequenas */
@@ -65,75 +65,50 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
             margin-bottom: 5px;     /*Espaço entre botões*/
 
         }
-    
-
-	.novo {
-		display: flex;
-		width: 100%;
-		height: 30px;
-		margin-bottom: 10px;
-		font-size: 14px;
-		align-items: center;
-		justify-content: center;
-			
-        }
-        .comanda{
-            width: 100%;
-            height: 80px;
-        }
+    }
+    .novo {
+        display: flex;
+        width: 100%;
+        height: auto; /* Altura automática*/
+        margin-bottom: 10px;
+        font-size: 14px;
+        align-items: center;
+        justify-content: center;
     }
 </style>
 
 <div class="mb-3">
-    <a class="btn btn-dark btn-custom" onclick="inserir()"><i class="fa fa-plus"></i> Nova Comanda</a>
+    <a class="btn btn-primary btn-custom" onclick="inserir()"><i class="fa fa-plus"></i> Nova Comanda</a>
 </div>
 
 <div class="bs-example" style="padding:15px">
     <div class="row" style="margin-top: -20px">
-        <div class="col-md-5 col-sm-12 mb-3">
-            <div class="row">
-                <div class="col-sm-6 mb-2">
-                     <div class="d-inline-block">
-                        <span><small><i title="Data Inicial" class="fa fa-calendar-o"></i></small></span> Data inicial
-                    </div>
-                    <input type="date" class="form-control form-control-sm" id="data-inicial-caixa" value="<?php echo $data_hoje; ?>" required>
-                </div>
-                 <div class="col-sm-6 mb-2">
-                    <div class="d-inline-block">
-                        <span><small><i title="Data Final" class="fa fa-calendar-o"></i></small></span> Data Final
-                    </div>
-                    <input type="date" class="form-control form-control-sm" id="data-final-caixa" value="<?php echo $data_hoje; ?>" required>
-                </div>
-            </div>
+        <div class="col-md-5 mb-2">
+            <div class="d-inline-block me-2"><span><small><i title="Data Inicial" class="fa fa-calendar-o"></i></small></span></div>
+            <div class="d-inline-block me-4"><input type="date" class="form-control" id="data-inicial-caixa" value="<?php echo $data_hoje ?>" required></div>
+            <div class="d-inline-block me-2"><span><small><i title="Data Final" class="fa fa-calendar-o"></i></small></span></div>
+            <div class="d-inline-block"><input type="date" class="form-control" id="data-final-caixa" value="<?php echo $data_hoje ?>" required></div>
         </div>
 
-        <div class="col-md-7 col-sm-12">
-            <div class="row">
-                <div class="col-sm-6 text-center text-sm-start mt-2 mt-sm-0">
-                    <small>
-                        <a class="text-muted me-1" href="#" onclick="valorData('<?php echo $data_ontem; ?>', '<?php echo $data_ontem; ?>')">Ontem</a> /
-                        <a class="text-muted me-1" href="#" onclick="valorData('<?php echo $data_hoje; ?>', '<?php echo $data_hoje; ?>')">Hoje</a> /
-                        <a class="text-muted" href="#" onclick="valorData('<?php echo $data_inicio_mes; ?>', '<?php echo $data_final_mes; ?>')">Mês</a>
-                    </small>
-                </div>
+        <div class="col-md-3 text-center mt-2">
+            <small>
+                <a class="text-muted me-1" href="#" onclick="valorData('<?php echo $data_ontem ?>', '<?php echo $data_ontem ?>')">Ontem</a>/
+                <a class="text-muted me-1" href="#" onclick="valorData('<?php echo $data_hoje ?>', '<?php echo $data_hoje ?>')">Hoje</a>/
+                <a class="text-muted" href="#" onclick="valorData('<?php echo $data_inicio_mes ?>', '<?php echo $data_final_mes ?>')">Mês</a>
+            </small>
+        </div>
 
-                <div class="col-sm-6 text-center text-sm-end mt-2 mt-sm-0">
-                    <small>
-                        <a class="text-muted me-1" href="#" onclick="buscarContas('')">Todas</a> /
-                        <a class="text-muted me-1" href="#" onclick="buscarContas('Aberta')">Abertas</a> /
-                        <a class="text-muted" href="#" onclick="buscarContas('Fechada')">Fechadas</a>
-                    </small>
-                    <input type="hidden" id="buscar-contas" value="Aberta">
-                </div>
-            </div>
+        <div class="col-md-4 text-center mt-2">
+            <small>
+                <a class="text-muted me-1" href="#" onclick="buscarContas('')">Todas</a>/
+                <a class="text-muted me-1" href="#" onclick="buscarContas('Aberta')">Abertas</a>/
+                <a class="text-muted" href="#" onclick="buscarContas('Fechada')">Fechadas</a>
+            </small>
+            <input type="hidden" id="buscar-contas" value="Aberta">
         </div>
     </div>
 
-    <div class="row" style="margin-top: 20px;">
-        <div class="col-12 text-center">
-            <div id="listar"></div>
-        </div>
-    </div>
+    <div id="listar"></div>
 </div>
 
 <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
@@ -171,9 +146,9 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <hr style="border-top: 1px solid #cecece;">
-                               
+
                                  <div class="row mb-2">
                                     <div class="col-md-5">
                                         <div class="form-group">
@@ -202,7 +177,7 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
                                                 ?>
                                             </select>
                                         </div>
-                                    </div><br>
+                                    </div>
                                     <div class="col-md-2 mt-4">
                                         <button type="button" class="btn btn-primary novo" onclick="inserirServico()"><i class="fa fa-plus"></i>Inserir</button>
                                     </div>
@@ -230,7 +205,7 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
                                             <input type="number" class="form-control" name="quantidade" id="quantidade" value="1">
                                         </div>
                                       </div>
-                                      <div class="col-md-3">
+                                      <div class="col-md-4">
                                         <div class="form-group">
                                          <label>Profissional</label>
                                             <select class="form-control sel2" id="funcionario2" name="funcionario2" value="" style="width:100%;" required onchange="listarServicos()">
@@ -244,8 +219,8 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
                                                 ?>
                                             </select>
                                         </div>
-                                      </div><br>
-                                       <div class="col-md-2 mt-4">
+                                      </div>
+                                       <div class="col-md-1 mt-4">
                                          <button type="button" class="btn btn-primary novo" onclick="inserirProduto()"><i class="fa fa-plus"></i>Inserir</button>
                                       </div>
                                 </div>
@@ -270,7 +245,7 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
                                     </div>
                                 </div>
                            </div>
-                            
+
                             <div class="form-group">
                                 <label><small>Forma PGTO</small></label>
                                 <select class="form-control input-background" id="pgto" name="pgto" style="width:100%;" required>
@@ -314,14 +289,13 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
                                     }
                                     ?>
                                 </select>
-                          </div> 
-                                                     
-							<a href="#" id="btn_fechar_comanda" style="width: 100%;margin-bottom: 20px;" onclick="fecharComanda()" class="btn btn-success">Fechar Comanda</a>
+                          </div>
 
-                            <div class="text-center">                           
-							   <button type="button" class="btn btn-danger" style="width: 150px;" onclick="excluirComanda('0')" >Cancelar</button>
-                               <button type="submit" style="width: 150px;" class="btn btn-primary" >Salvar</button>            
-								
+                            <div class="text-center">
+                                <a href="#" id="btn_fechar_comanda"  onclick="fecharComanda()" class="btn btn-success">Fechar Comanda</a>
+                                <button type="button" class="btn btn-danger"  onclick="excluirComanda('0')" >Cancelar</button>
+                                <button type="submit"
+								<button type="submit" class="btn btn-primary" >Salvar</button>
                             </div>
 
                             <input type="hidden" name="id" id="id">
@@ -347,7 +321,9 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
             <div class="modal-body">
                 <div class="row" style="border-bottom: 1px solid #cac7c7;">
                     <div class="col-md-8">
-					</div>
+                    <span><b>Cliente:</b></span>
+                    <span id="cliente_dados"></span>
+                    </div>
                     <div class="col-md-4">
                         <span><b>Valor: </b></span>
                         <span id="valor_dados"></span>
@@ -396,7 +372,7 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
     $('#form_salvar').trigger("reset"); // RESET COMPLETO DO FORMULÁRIO
 
     // As linhas abaixo NÃO são mais necessárias, pois o reset já faz isso
-    $('#id').val('');
+    //$('#id').val('');
     //$('#cliente').val('').trigger('change');
     // ... (todas as outras linhas que setam valores para '' ou valores padrão)
 
@@ -407,8 +383,8 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
 
      //Re-inicializar os select2 após o reset, para que o dropdownParent funcione corretamente
     $('.sel2').select2({
-         dropdownParent: $('#modalForm')
-     });
+          dropdownParent: $('#modalForm')
+      });
     $('#modalForm').modal('show');
 }
 
@@ -514,7 +490,7 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
             return;
         }
 
-         if (!cliente) { //Verificação mais robusta (falsy)
+          if (!cliente) { //Verificação mais robusta (falsy)
             alert("Selecione um Cliente");
             return;
         }
@@ -585,7 +561,7 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
         });
     }
 
-    function listarProdutosDados(id) {
+      function listarProdutosDados(id) {
         $.ajax({
             url: 'paginas/' + pag + "/listar_produtos_dados.php",
             method: 'POST',
@@ -609,6 +585,7 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
         });
     }
 
+
     $("#form_salvar").submit(function(event) {
         event.preventDefault();
         var formData = new FormData(this);
@@ -622,13 +599,13 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
                 $('#mensagem').text('');
                 $('#mensagem').removeClass();
 
-                if (mensagem.trim() == "Salvo com Sucesso") {
-                    // var salvar = $('#salvar_comanda').val();
+                if (msg[0].trim() == "Salvo com Sucesso") {
+                    // var salvar = $('#salvar_comanda').val();  // REMOVIDO
 
-                    // if (salvar == 'Sim') {
-                    //     $("#id").val(msg[1]);
-                    //     fecharComanda();
-                    // }
+                    // if (salvar == 'Sim') {                // REMOVIDO
+                    //     $("#id").val(msg[1]);              // REMOVIDO
+                    //     fecharComanda();                   // REMOVIDO
+                    // }                                      // REMOVIDO
                     $('#btn-fechar').click();
                     listar(); // Atualiza a lista após salvar
                 } else {
@@ -653,5 +630,5 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
 
         var total = total_valores - valor_rest;
         $('#valor_serv').val(total.toFixed(2));
-    }    
+    }
 </script>

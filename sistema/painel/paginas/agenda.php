@@ -10,11 +10,25 @@ $data_atual = date('Y-m-d');
 		background-color: #48D1CC; /* Amarelo */
 		color: #000; /* Cor do texto */
 	}
+	
+	@media (max-width: 768px) {
+	.novo {
+		display: flex;
+		width: 100%;
+		height: 30px;
+		margin-bottom: 10px;
+		font-size: 14px;
+		align-items: center;
+		justify-content: center;
+			
+        
+	}
+	}
 </style>
 
 <div class="row">
 	<div class="col-md-3">
-		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" onclick="inserir()" type="button" class="btn btn-primary " ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
+		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" onclick="inserir()" type="button" class="btn btn-dark novo " ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
 	</div>
 
 	
@@ -166,7 +180,7 @@ if(@count($res) > 0){
 
 
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary">Salvar</button>
+					<button type="submit" class="btn btn-primary"><i class="fa-regular fa-floppy-disk"></i> Salvar</button>
 				</div>
 
 

@@ -28,7 +28,7 @@ if(@$cat_servicos == 'ocultar'){
 </style>
 
 <div class="">      
-	<a class="btn btn-primary novo" onclick="inserir()" class="btn btn-primary btn-flat btn-pri" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Nova Categoria</a>
+	<a class="btn btn-dark novo" onclick="inserir()" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Nova Categoria</a>
 </div>
 
 <div class="bs-example widget-shadow" style="padding:15px" id="listar">
@@ -62,7 +62,7 @@ if(@$cat_servicos == 'ocultar'){
 							</div> 	
 						</div>
 						<div class="col-md-3">
-							<button type="submit" class="btn btn-primary">Salvar</button>
+							<button type="submit" class="btn btn-primary"><i class="fa-regular fa-floppy-disk"></i> Salvar</button>
 						
 						</div>
 					</div>

@@ -77,7 +77,7 @@ $pag = 'funcionarios';
                     </div>
 
 					<div class="col-md-2">						
-						<button type="submit" class="btn btn-primary novo" style="margin-top:20px">Salvar</button>
+						<button type="submit" class="btn btn-primary novo" style="margin-top:20px"><i class="fa-regular fa-plus"></i> Adicionar</button>
 					</div>
 
 					<input type="hidden" name="id" id="id_dias" value="<?php echo $id_usuario ?>">
@@ -127,6 +127,20 @@ $("#form-dias").submit(function () {
             $('#mensagem-dias').text('');
             $('#mensagem-dias').removeClass()
             if (mensagem.trim() == "Salvo com Sucesso") {
+                Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "Alterado com sucesso!",
+                    showConfirmButton: false,
+                    timer: 1500,
+                                    
+                    willClose: () => {
+                    setTimeout(() => {
+                        $("#id_d").val('');   
+                        listarDias(func);
+                        }, 300);
+                    }  
+                }); 
 
                 //$('#btn-fechar-horarios').click();
                 $("#id_d").val('');   

@@ -25,20 +25,33 @@ if(@$whatsapp == 'ocultar'){
     exit();
 }
 ?>
-
+<style>
+	@media (max-width: 768px) {
+	.novo {
+		display: flex;
+		width: 100%;
+		height: 30px;
+		margin-bottom: 10px;
+		font-size: 14px;
+		align-items: center;
+		justify-content: center;
+			
+        }
+	}
+</style>
 
 
 
 <?php if(empty($token) || empty($emailMenuia)): ?>
 <div >      
-	<a class="btn btn-primary" onclick="conectar()" class="btn btn-primary btn-flat btn-pri" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-sign-in" aria-hidden="true"></i> Conectar Conta</a>
+	<a class="btn btn-dark novo" onclick="conectar()" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-sign-in" aria-hidden="true"></i> Conectar Conta</a>
 </div>
 
 <?php else: ?>
 <div>      
-	<a class="btn btn-primary" onclick="inserirW()" class="btn btn-primary btn-flat btn-pri" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Novo Dispositivo</a>
-	<!-- <a class="btn btn-primary" onclick="desconectar()" class="btn btn-primary btn-flat btn-pri" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-sign-out"  aria-hidden="true"></i> Desconectar Conta</a> -->
-	<input type="hidden" id="filtro" value="<?= $filtro;?>">
+	<a class="btn btn-dark novo" onclick="inserirW()" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Novo Dispositivo</a>
+	<!-- <a class="btn btn-danger novo" onclick="desconectar()" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-sign-out"  aria-hidden="true"></i> Desconectar Conta</a>
+	<input type="hidden" id="filtro" value="<?= $filtro;?>"> -->
 </div>
 
 

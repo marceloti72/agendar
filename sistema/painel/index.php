@@ -11,6 +11,23 @@ $id_usuario = $_SESSION['id_usuario'];
 //VERIFICA O STATUS DO WHATSAPP	
 require __DIR__ . '../../../ajax/status.php'; 
 
+?>
+<style>
+	@media (max-width: 768px) {
+	.relatorio {
+		display: flex;
+		width: 100%;
+		height: 30px;
+		margin-bottom: 10px;
+		font-size: 14px;
+		align-items: center;
+		justify-content: center;
+			
+        }
+	}
+</style>
+<?php 
+
 $query = $pdo->query("SELECT * from usuarios where id = '$id_usuario' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
@@ -84,6 +101,9 @@ $plano = $res3['plano'];
 	<link href="../../css/icons.css" rel="stylesheet">
 	<!-- //font-awesome icons CSS-->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+
+	<!-- Incluindo Font Awesome via CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 	<!-- side nav css file -->
 	<link href='css/SidebarNav.min.css' media='all' rel='stylesheet' type='text/css'/>
@@ -310,7 +330,7 @@ $plano = $res3['plano'];
 </head> 
 <body class="cbp-spmenu-push" >
 	<div class="main-content">
-		<div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1" >
+		<div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left"  id="cbp-spmenu-s1" >
 			<!--left-fixed -navigation-->
 			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
 				<nav class="navbar navbar-inverse" >
@@ -321,18 +341,18 @@ $plano = $res3['plano'];
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<h1><a class="navbar-brand" href="index.php"><span class="fa fa-area-chart"></span> Sistema<span class="dashboard_text"><?php echo $nome_sistema ?></span></a></h1>
+						<h1><a style="color: black;" class="navbar-brand" href="index.php"><span class="fa fa-area-chart"></span> Sistema<span class="dashboard_text"><?php echo $nome_sistema ?></span></a></h1>
 					</div>
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="sidebar-menu">
 							<li class="header">MENU ADMINISTRATIVO</li>
 
 
-							<li class="treeview <?php echo @$home ?>">
+							<!-- <li class="treeview <?php echo @$home ?>">
 								<a href="painel">
 									<i class="fa fa-home"></i> <span>Painel</span>
 								</a>
-							</li>
+							</li> -->
 
 							<!-- <li class="treeview <?php echo @$home ?>">
 								<a href="index.php">
@@ -358,6 +378,23 @@ $plano = $res3['plano'];
 								<a href="comanda">
 								<i class="fa fa-clipboard"></i> <span>Nova Comanda</span>
 								</a>
+							</li>
+
+							<li class="treeview <?php echo @$menu_agendamentos ?>">
+								<a href="#">
+									<i class="fe fe-clock"></i>&nbsp;
+									<span>Agendamento / Serviço</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+
+									<li class="<?php echo @$agendamentos ?>"><a href="agendamentos"><i class="fa fa-angle-right"></i>Agendamentos</a></li>
+
+									<li class="<?php echo @$servicos_agenda ?>"><a href="servicos_agenda"><i class="fa fa-angle-right"></i>Serviços</a></li>
+									
+																	
+								
+								</ul>
 							</li>
 
 
@@ -403,11 +440,16 @@ $plano = $res3['plano'];
 
 								<li class="<?php echo @$clientes ?>"><a href="clientes"><i class="fa fa-angle-right"></i>Clientes</a></li>
 								
-									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"><i class="fa fa-angle-right"></i>Fornecedores</a></li>									
+									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"><i class="fa fa-angle-right"></i>Fornecedores</a></li>	
+									
+									<?php 
+									if($id_conta = '0'){?>
+										<li class="<?php echo @$grupos ?>"><a href="grupos"><i class="fa fa-angle-right"></i>Grupo Acessos</a></li>
 
-									<li class="<?php echo @$grupos ?>"><a href="grupos"><i class="fa fa-angle-right"></i>Grupo Acessos</a></li>
+										<li class="<?php echo @$acessos ?>"><a href="acessos"><i class="fa fa-angle-right"></i>Acessos</a></li>
 
-									<li class="<?php echo @$acessos ?>"><a href="acessos"><i class="fa fa-angle-right"></i>Acessos</a></li>
+									<?php }
+									?>									
 
 										<li class="<?php echo @$pgto ?>"><a href="pgto"><i class="fa fa-angle-right"></i>Formas de Pagamento</a></li>
 
@@ -475,27 +517,6 @@ $plano = $res3['plano'];
 								</ul>
 							</li>
 
-
-
-							<li class="treeview <?php echo @$menu_agendamentos ?>">
-								<a href="#">
-									<i class="fe fe-clock"></i>&nbsp;
-									<span>Agendamento / Serviço</span>
-									<i class="fa fa-angle-left pull-right"></i>
-								</a>
-								<ul class="treeview-menu">
-
-									<li class="<?php echo @$agendamentos ?>"><a href="agendamentos"><i class="fa fa-angle-right"></i>Agendamentos</a></li>
-
-									<li class="<?php echo @$servicos_agenda ?>"><a href="servicos_agenda"><i class="fa fa-angle-right"></i>Serviços</a></li>
-									
-																	
-								
-								</ul>
-							</li>
-
-
-
 							<li class="treeview <?php echo @$menu_relatorio ?>" >
 								<a href="#">
 									<i class="fa fa-file-pdf-o"></i>
@@ -535,7 +556,7 @@ $plano = $res3['plano'];
 
 							<li class="treeview <?= @$whatsapp?>">
 								<a href="#">
-									<i class="fa fa-whatsapp"></i>
+									<i class="fab fa-whatsapp"></i>
 									<span>Whatsapp</span>
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
@@ -611,14 +632,14 @@ $plano = $res3['plano'];
 
 							<li class="treeview  <?php echo @$minhas_comissoes ?>">
 								<a href="minhas_comissoes">
-									<i class="fa fa-server"></i> <span>Minhas Comissões</span>
+								<i class="fa fa-dollar-sign"></i> <span>Minhas Comissões</span>
 								</a>
 							</li>						
 
 
 							<li class="treeview  <?php echo @$meus_dias ?>">
 								<a href="#">
-									<i class="fa fa-usd"></i>
+									<i class="fa fa-server"></i>
 									<span>Meus Horário / Dias</span>
 									<i class="fa fa-clock-o pull-right"></i>
 								</a>
@@ -1206,7 +1227,7 @@ $plano = $res3['plano'];
 					<small><div id="mensagem-perfil" align="center"></div></small>
 				</div>
 				<div class="modal-footer">      
-					<button type="submit" class="btn btn-primary">Salvar</button>
+					<button type="submit" class="btn btn-primary"><i class="fa-regular fa-floppy-disk"></i> Salvar</button>
 				</div>
 			</form>
 		</div>
@@ -1225,7 +1246,7 @@ $plano = $res3['plano'];
 <div class="modal fade" id="modalConfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header text-white" style="background-color: #4682B4;">
 				<h4 class="modal-title" id="exampleModalLabel">Editar Configurações</h4>
 				<button id="btn-fechar-config" type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
 					<span aria-hidden="true" >&times;</span>
@@ -1250,9 +1271,9 @@ $plano = $res3['plano'];
 	<div class="modal fade" id="RelEntradas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header text-white" style="background-color: #4682B4;">
 					<h4 class="modal-title" id="exampleModalLabel">Relatório de Ganhos
-						<small>(
+						<small style="color: black;">(
 							<a href="#" onclick="datas('1980-01-01', 'tudo-Ent', 'Ent')">
 								<span style="color:#000" id="tudo-Ent">Tudo</span>
 							</a> / 
@@ -1336,7 +1357,7 @@ $plano = $res3['plano'];
 					</div>
 
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">Gerar Relatório</button>
+						<button type="submit" class="btn btn-primary relatorio"><i class="fa-solid fa-file-lines"></i> Gerar Relatório</button>
 					</div>
 				</form>
 
@@ -1356,9 +1377,9 @@ $plano = $res3['plano'];
 	<div class="modal fade" id="RelSaidas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header text-white" style="background-color: #4682B4;">
 					<h4 class="modal-title" id="exampleModalLabel">Relatório de Saídas
-						<small>(
+						<small style="color: black;">(
 							<a href="#" onclick="datas('1980-01-01', 'tudo-Saida', 'Saida')">
 								<span style="color:#000" id="tudo-Saida">Tudo</span>
 							</a> / 
@@ -1418,7 +1439,7 @@ $plano = $res3['plano'];
 					</div>
 
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">Gerar Relatório</button>
+						<button type="submit" class="btn btn-primary relatorio"><i class="fa-solid fa-file-lines"></i> Gerar Relatório</button>
 					</div>
 				</form>
 
@@ -1439,9 +1460,9 @@ $plano = $res3['plano'];
 	<div class="modal fade" id="RelComissoes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header text-white" style="background-color: #4682B4;">
 					<h4 class="modal-title" id="exampleModalLabel">Relatório de Comissões
-						<small>(
+						<small style="color: black;">(
 							<a href="#" onclick="datas('1980-01-01', 'tudo-Com', 'Com')">
 								<span style="color:#000" id="tudo-Com">Tudo</span>
 							</a> / 
@@ -1522,7 +1543,7 @@ $plano = $res3['plano'];
 					</div>
 
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">Gerar Relatório</button>
+						<button type="submit" class="btn btn-primary relatorio"><i class="fa-solid fa-file-lines"></i> Gerar Relatório</button>
 					</div>
 				</form>
 
@@ -1541,9 +1562,9 @@ $plano = $res3['plano'];
 	<div class="modal fade" id="RelCon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header text-white" style="background-color: #4682B4;">
 					<h4 class="modal-title" id="exampleModalLabel">Relatório de Contas
-						<small>(
+						<small style="color: black;">(
 							<a href="#" onclick="datas('1980-01-01', 'tudo-Con', 'Con')">
 								<span style="color:#000" id="tudo-Con">Tudo</span>
 							</a> / 
@@ -1630,7 +1651,7 @@ $plano = $res3['plano'];
 					</div>
 
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">Gerar Relatório</button>
+						<button type="submit" class="btn btn-primary relatorio"><i class="fa-solid fa-file-lines"></i> Gerar Relatório</button>
 					</div>
 				</form>
 
@@ -1649,9 +1670,9 @@ $plano = $res3['plano'];
 	<div class="modal fade" id="RelLucro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header text-white" style="background-color: #4682B4;">
 					<h4 class="modal-title" id="exampleModalLabel">Demonstrativo de Lucro
-						<small>(
+						<small style="color: black;">(
 							<a href="#" onclick="datas('1980-01-01', 'tudo-Lucro', 'Lucro')">
 								<span style="color:#000" id="tudo-Lucro">Tudo</span>
 							</a> / 
@@ -1698,7 +1719,7 @@ $plano = $res3['plano'];
 					</div>
 
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">Gerar Relatório</button>
+						<button type="submit" class="btn btn-primary relatorio">Gerar Relatório</button>
 					</div>
 				</form>
 
@@ -1719,9 +1740,9 @@ $plano = $res3['plano'];
 	<div class="modal fade" id="RelAniv" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header text-white" style="background-color: #4682B4;">
 					<h4 class="modal-title" id="exampleModalLabel">Relatório de Aniversáriantes
-						<small>(
+						<small style="color: black;">(
 							<a href="#" onclick="datas('1980-01-01', 'tudo-Aniv', 'Aniv')">
 								<span style="color:#000" id="tudo-Aniv">Tudo</span>
 							</a> / 
@@ -1768,7 +1789,7 @@ $plano = $res3['plano'];
 					</div>
 
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">Gerar Relatório</button>
+						<button type="submit" class="btn btn-primary relatorio">Gerar Relatório</button>
 					</div>
 				</form>
 
@@ -1786,9 +1807,9 @@ $plano = $res3['plano'];
 	<div class="modal fade" id="RelServicos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header text-white" style="background-color: #4682B4;">
 					<h4 class="modal-title" id="exampleModalLabel">Relatório de Serviços
-						<small>(
+						<small style="color: black;">(
 							<a href="#" onclick="datas('1980-01-01', 'tudo-Ser', 'Ser')">
 								<span style="color:#000" id="tudo-Ser">Tudo</span>
 							</a> / 
@@ -1882,7 +1903,7 @@ $plano = $res3['plano'];
 					</div>
 
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">Gerar Relatório</button>
+						<button type="submit" class="btn btn-primary relatorio">Gerar Relatório</button>
 					</div>
 				</form>
 
@@ -1997,8 +2018,20 @@ $plano = $res3['plano'];
 				$('#mensagem-config').removeClass()
 				if (mensagem.trim() == "Editado com Sucesso") {
 
-					$('#btn-fechar-config').click();
-					location.reload();			
+					Swal.fire({
+						position: "top-center",
+						icon: "success",
+						title: "Alterado com sucesso!",
+						showConfirmButton: false,
+						timer: 1500,
+										
+						willClose: () => {
+						setTimeout(() => {
+							$('#btn-fechar-config').click();
+							location.reload();
+							}, 300);
+						}  
+					}); 								
 					
 				} else {
 
@@ -2032,8 +2065,21 @@ $plano = $res3['plano'];
 				$('#mensagem-config2').removeClass()
 				if (mensagem.trim() == "Editado com Sucesso") {
 
-					$('#btn-fechar-config2').click();
-					location.reload();			
+					Swal.fire({
+						position: "top-center",
+						icon: "success",
+						title: "Alterado com sucesso!",
+						showConfirmButton: false,
+						timer: 1500,
+										
+						willClose: () => {
+						setTimeout(() => {
+							$('#btn-fechar-config2').click();
+							location.reload();
+							}, 300);
+						}  
+					}); 
+							
 					
 				} else {
 

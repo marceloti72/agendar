@@ -26,7 +26,7 @@ $id_cliente = $res[0]['id'];
 
 </div>
 
-<div class="footer_section" style="background: #FFF;">
+<div class="footer_section" style="background: #A9A9A9; ">
 	<div class="container">
 		<div class="footer_content " >
 			
@@ -121,7 +121,7 @@ $obs = str_replace('"', "**", $obs);
 			
 <div class="list-group" >
 
-  <div class="list-group-item list-group-item-action flex-column align-items-start " style="margin-bottom: 10px">
+  <div class="list-group-item list-group-item-action flex-column align-items-start " style="margin-bottom: 10px; box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);">
     <div class="d-flex w-100 justify-content-between">
       <h6 class="mb-1"><i class="fa fa-calendar" aria-hidden="true"></i> Data: <?php echo $dataF ?>  <i class="fa fa-clock-o text-success" aria-hidden="true" style="margin-left: 10px"></i> Hora: <?php echo $horaF ?></h6> 
       <small><a href="#" onclick="excluir('<?php echo $id ?>', '<?php echo $nome_cliente ?>', '<?php echo $dataF ?>', '<?php echo $horaF ?>', '<?php echo $nome_serv ?>', '<?php echo $nome_func ?>')"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i> </a></small>     
@@ -171,7 +171,7 @@ $obs = str_replace('"', "**", $obs);
   <div class="modal fade" id="modalExcluir" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header text-white" style="background-color: #4682B4;">
           <h5 class="modal-title" id="exampleModalLabel"><small>Excluir Agendamento</small></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px" id="btn-fechar-excluir">
             <span aria-hidden="true">&times;</span>
@@ -193,7 +193,12 @@ $obs = str_replace('"', "**", $obs);
                 <input type="hidden" name="id" id="id_excluir">
 
           <br>
-          <small><div id="mensagem-excluir" align="center"></div></small>
+          <small><div id="mensagem-excluir" align="center"></div></small>	  
+
+			<div class="progress mt-4" id="progresso" style="display: none;">
+			    <div class="progress-bar" id="barra_progresso" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>         
+				
+			</div>
 
            <div align="right"><button type="submit" class="btn btn-danger">Excluir</button></div>
         </div>
@@ -240,17 +245,38 @@ $obs = str_replace('"', "**", $obs);
 		event.preventDefault();
 		var formData = new FormData(this);
 
+		$('#progresso').show(); //Exibe a barra
+		$('#barra_progresso').css('width', '0%').text('0%'); // Reset da barra
+
 		$.ajax({
 			url: "ajax/excluir.php",
 			type: 'POST',
 			data: formData,
+			contentType: false,
+			cache: false,
+			processData:false,					
+			xhr: function() {  // Função personalizada para o XHR
+				var myXhr = $.ajaxSettings.xhr();
+				if (myXhr.upload) { // Verifica se a propriedade de upload existe
+					// Evento de progresso do upload
+					myXhr.upload.addEventListener('progress', function(e) {
+						if (e.lengthComputable) {
+							var percentComplete = (e.loaded / e.total) * 100;
+							$('#barra_progresso').css('width', percentComplete + '%').text(Math.round(percentComplete) + '%');
+						}
+					}, false);
+				}
+				return myXhr;
+			},
 
 			success: function (mensagem) {			
 				$('#mensagem-excluir').text('');
 				$('#mensagem-excluir').removeClass()
-				if (mensagem.trim() == "Cancelado com Sucesso") {    
+				if (mensagem.trim() == "Cancelado com Sucesso") {   
+					$('#progresso').hide(); 
 				    $('#btn-fechar-excluir').click();     	          
 					$('#mensagem').text(mensagem)
+					
 
 					Swal.fire({
 						title: 'Cancelado!',
@@ -266,6 +292,7 @@ $obs = str_replace('"', "**", $obs);
 								
 				} else {
 					//$('#mensagem').addClass('text-danger')
+					$('#progresso').hide();
 					$('#mensagem-excluir').text(mensagem)
 				}
 

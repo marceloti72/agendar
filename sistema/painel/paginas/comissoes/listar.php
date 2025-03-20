@@ -16,6 +16,99 @@ $funcionario = @$_POST['funcionario'];
 #tabela tr:nth-child(odd) { /* Linhas ímpares */
   background-color: #ffffff; /* Tom mais escuro (ou branco) */
 }
+
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+.table th, .table td {
+	padding: 10px;
+	text-align: left;
+	vertical-align: middle;
+}
+.table th {
+	background-color: #f8f8f8;
+	font-weight: bold;
+}
+.table tbody tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+.table tbody tr:nth-child(odd) {
+	background-color: #ffffff;
+}
+.btn {
+	padding: 5px 10px;
+	margin: 2px;
+	font-size: 14px;
+	text-decoration: none;
+	color: #fff;
+	border-radius: 4px;
+	display: inline-block;
+}
+.btn-info { background-color: #17a2b8; }
+.btn-danger { background-color: #dc3545; }
+.btn-success { background-color: #28a745; }
+.dropdown-menu {
+	position: absolute;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 10px;
+	z-index: 1000;
+}
+.dropdown-menu a { color: #dc3545; text-decoration: none; }
+.text-danger { color: #dc3545; }
+.verde { color: #28a745; }
+.vermelho-escuro { background-color: #ffe6e6; }
+.ocultar { display: none; }
+.total-footer { margin: 5px 0; }
+.esc-mobile { display: table-cell; } /* Visível em desktop */
+
+/* Media Query para Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+	.esc-mobile {
+		display: none; /* Esconde colunas indesejadas em mobile */
+	}
+	.table th, .table td {
+		padding: 6px;
+		font-size: 10px;
+	}
+	.btn {
+		padding: 8px 10px;
+		font-size: 10px;
+	}
+	.btn i {
+		font-size: 10px;
+	}
+	.dropdown-menu {
+		margin-left: 0 !important;
+		min-width: 100px;
+		font-size: 10px;
+	}
+	.mr-2 { margin-right: 5px; }
+	img { width: 30px; height: 30px; }
+	#mensagem-excluir, .total-footer {
+		font-size: 10px;
+	}
+	.table th:nth-child(1), .table td:nth-child(1) { width: 40%; } /* Produto */
+	.table th:nth-child(3), .table td:nth-child(3) { width: 10%; } /* Valor */
+	.table th:nth-child(7), .table td:nth-child(7) { width: 60%; } /* Ações */
+
+	
+	/* Oculta o elemento "Mostrar" em telas menores que 768px */
+	.dataTables_length {
+		display: none;
+	}
+
+	.notification_desc2{
+		width: 80px;
+	}
+	
+	
+}
+    
 </style>
 <?php 
 
@@ -52,7 +145,7 @@ echo <<<HTML
 	<tr> 
 	<th>Serviço</th>	
 	<th class="esc">Valor</th> 
-	<th class="esc">Funcionário</th>
+	<th class="">Funcionário</th>
 	<th class="esc">Data Serviço</th>		
 	<th class="esc">Vencimento</th>	
 	<th class="esc">Cliente</th>
@@ -193,7 +286,7 @@ echo <<<HTML
 <tr class="{$classe_debito}">
 <td><i class="fa fa-square {$classe_alerta}"></i> {$nome_serv}</td>
 <td class="esc">R$ {$valorF}</td>
-<td class="esc">{$nome_func}</td>
+<td class="">{$nome_func}</td>
 <td class="esc">{$data_lancF}</td>
 <td class="esc">{$data_vencF}</td>
 <td class="esc">{$nome_cliente}</td>
@@ -205,7 +298,7 @@ echo <<<HTML
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
+		<a href="#" class="btn btn-danger btn-xs" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>
@@ -219,7 +312,7 @@ echo <<<HTML
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a title="Baixar Conta" href="#" class="btn btn-success btn-xs dropdown-toggle {$visivel}" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-dollar-sign"></i></a>
+		<a title="Baixar Conta" href="#" class="btn btn-success btn-xs {$visivel}" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-dollar-sign"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>

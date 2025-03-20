@@ -207,7 +207,7 @@ if(@$configuracoes == 'ocultar'){
 					<small><div id="mensagem-config2" align="center"></div></small>
 				</div>
 				<div class="modal-footer">      
-					<button type="submit" class="btn btn-primary">Salvar Dados</button>
+					<button type="submit" class="btn btn-primary"><i class="fa-regular fa-floppy-disk"></i> Salvar</button>
 				</div>
 			</form>	
 

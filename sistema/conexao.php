@@ -80,6 +80,7 @@ if (isset($_SESSION['id_conta'])) {
 			$depoimentos2 = $config['depoimentos'];
 			$carrossel = $config['carrossel'];
 			$username = $config['username'];
+			$encaixe = $config['encaixe'];
 
 			
 			// Novas variáveis Menuia

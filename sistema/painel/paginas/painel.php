@@ -184,17 +184,17 @@ $total_produtos = @count($res);
                 </div>
             </a>
 
-            <a href="meus_servicos" class="col_3">
+            <a href="servicos_agenda" class="col_3">
                 <div class="widget">
                     <div class="stats">
-                        <h5><i class="fas fa-tools"></i> <strong>SERVIÇOS</strong></h5>
+                        <h5><i class="fas fa-tools"></i> <strong>NOVO SERVIÇO</strong></h5>
                     </div>
                     <hr>
                     <div style="font-size: 12px;" class="sub"><span>Hoje: <?php echo $total_reg; ?></span></div>
                 </div>
             </a>
         
-            <a href="meus_servicos" class="col_3">
+            <!-- <a href="meus_servicos" class="col_3">
                 <div class="widget">
                     <div class="stats">
                         <h5><i class="fas fa-shopping-cart"></i> <strong>VENDA DE PRODUTOS</strong></h5>
@@ -203,9 +203,9 @@ $total_produtos = @count($res);
                     <div style="font-size: 12px;" class="sub"><span>Total de produtos: <?php echo $total_produtos; ?></span></div>
                     <div style="font-size: 12px;" class="sub"><span>Vendidos hoje: <?php echo $total_vendas; ?></span></div>
                 </div>
-            </a> 
+            </a>  -->
             
-            <a href="agenda" class="col_3">
+            <a href="agendamentos" class="col_3">
                 <div class="widget">
                     <div class="stats">
                         <h5><i class="fas fa-calendar-check"></i> <strong>AGENDAMENTO</strong></h5>

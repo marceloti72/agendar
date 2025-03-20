@@ -23,8 +23,8 @@ if ($total_reg > 0) {
 	echo <<<HTML
 	<small>
 	<table class="table table-hover" id="tabela_servicos">
-	<thead> 
-	<tr> 
+	<thead > 
+	<tr > 
 	<th>Serviço</th>	
 	<th class="esc">Valor</th> 
 	<th class="esc">Profissional</th>	

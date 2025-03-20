@@ -112,6 +112,10 @@ if($tipo_comissao == 'Porcentagem'){
 			.dataTables_length {
 				display: none;
 			}
+
+			.notification_desc2{
+				width: 80px;
+			}
         }
     </style>
 	<?php 
@@ -133,7 +137,7 @@ echo <<<HTML
 	<th class="esc">Cargo</th> 	
 	<th class="esc">Cadastro</th>
 	<th class="esc">Comissão <small>({$tipo_comissao})</small></th>	
-	<th>Ações</th>
+	<th style='width: 200px;'>Ações</th>
 	</tr> 
 	</thead> 
 	<tbody>	
@@ -229,10 +233,12 @@ echo <<<HTML
 		
 		<a href="#" class="btn btn-primary btn-xs" onclick="dias('{$id}', '{$nome}')" title="Ver Dias"><i class="fe fe-calendar"></i></a>
 
+		<a href="#" class="btn btn-primary btn-xs" onclick="servico('{$id}', '{$nome}')" title="Definir Serviços"><i class="fe fe-briefcase" ></i></a>
 
-		<a href="http://api.whatsapp.com/send?1=pt_BR&phone=$whats&text=" target="_blank" class="btn btn-success btn-xs" title="Abrir Whatsapp"><i class="fa fa-whatsapp fa-2x" style = 'font-size: 16px;'></i></a>
 
-			<a href="#" class="btn btn-primary btn-xs" onclick="servico('{$id}', '{$nome}')" title="Definir Serviços"><i class="fe fe-briefcase" ></i></a>
+		<a href="http://api.whatsapp.com/send?1=pt_BR&phone=$whats&text=" target="_blank" class="btn btn-success btn-xs" title="Abrir Whatsapp"><i class="fab fa-whatsapp fa-2x" style = 'font-size: 17px;'></i></a>
+
+			
 
 
 		</td>

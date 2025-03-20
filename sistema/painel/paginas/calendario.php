@@ -9,6 +9,13 @@
 		exit();
 	}
 ?>
+<style>
+	@media (max-width: 768px) {
+		.col-lg-12{
+		height: 350px;
+	    }
+    }
+</style>
 
 <!-- FullCalendar -->
 <link href='paginas/calendario/css/fullcalendar.css' rel='stylesheet' />

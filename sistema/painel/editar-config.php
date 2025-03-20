@@ -23,12 +23,13 @@ $porc_servico = @$_POST['porc_servico'];
 $api_mp = @$_POST['api_mp'];
 $token_mp = @$_POST['token_mp'];
 $key_mp = @$_POST['key_mp'];
+$encaixe = @$_POST['encaixe'];
 
 if($minutos_aviso == ""){
 	$minutos_aviso = 0;
 }
 
-$query = $pdo->prepare("UPDATE config SET nome = :nome, email = :email, api = :api, telefone_whatsapp = :whatsapp, telefone_fixo = :telefone_fixo, endereco = :endereco, instagram = :instagram, tipo_comissao = '$tipo_comissao', quantidade_cartoes = '$quantidade_cartoes', texto_fidelidade = :texto_fidelidade, msg_agendamento = :msg_agendamento, cnpj = :cnpj, agendamento_dias = '$agendamento_dias', token = :token, minutos_aviso = '$minutos_aviso', instancia = :instancia, taxa_sistema = :taxa_sistema, lanc_comissao = :lanc_comissao, porc_servico = :porc_servico, pgto_api = :pgto_api, token_mp = :token_mp, key_mp = :key_mp where id = '$id_conta'");
+$query = $pdo->prepare("UPDATE config SET nome = :nome, email = :email, api = :api, telefone_whatsapp = :whatsapp, telefone_fixo = :telefone_fixo, endereco = :endereco, instagram = :instagram, tipo_comissao = '$tipo_comissao', quantidade_cartoes = '$quantidade_cartoes', texto_fidelidade = :texto_fidelidade, msg_agendamento = :msg_agendamento, cnpj = :cnpj, agendamento_dias = '$agendamento_dias', token = :token, minutos_aviso = '$minutos_aviso', instancia = :instancia, taxa_sistema = :taxa_sistema, lanc_comissao = :lanc_comissao, porc_servico = :porc_servico, pgto_api = :pgto_api, token_mp = :token_mp, key_mp = :key_mp, encaixe = :encaixe where id = '$id_conta'");
 $query->bindValue(":api", "$api");
 $query->bindValue(":nome", "$nome");
 $query->bindValue(":email", "$email");
@@ -47,6 +48,7 @@ $query->bindValue(":porc_servico", "$porc_servico");
 $query->bindValue(":pgto_api", "$api_mp");
 $query->bindValue(":token_mp", "$token_mp");
 $query->bindValue(":key_mp", "$key_mp");
+$query->bindValue(":encaixe", "$encaixe");
 
 $query->execute();
 

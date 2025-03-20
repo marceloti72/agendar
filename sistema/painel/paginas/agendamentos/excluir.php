@@ -24,7 +24,7 @@ $telefone = $res[0]['telefone'];
 $pdo->query("DELETE FROM $tabela where id = '$id' and id_conta = '$id_conta'");
 $pdo->query("DELETE FROM horarios_agd where agendamento = '$id' and id_conta = '$id_conta'");
 
-echo 'Excluído com Sucesso';
+
 
 if ($hash != "") {
 	require('../../../../ajax/agendar-delete.php');
@@ -64,3 +64,63 @@ if ($msg_agendamento == 'Sim') {
 // 	$id_usu = $usuario;
 // 	require('../../../../api/notid.php');
 // }
+
+
+if($encaixe == 'Sim'){
+	
+	$link = $url.'agendamentos?u='.$username;
+
+	$query = $pdo->prepare("SELECT * FROM encaixe WHERE data = :data AND profissional = :profissional AND id_conta = :id_conta");
+	$query->execute([':data' => $data, ':profissional' => $usuario, ':id_conta' => $id_conta]);
+	$res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	$num_clientes = count($res);
+
+	if ($num_clientes > 0) {
+		$clientes_info = '';
+		foreach ($res as $cliente) {
+			$mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
+			$mensagem .= '*_Horário disponível_* 📆%0A%0A';
+			$mensagem .= 'Olá '. $cliente['nome'] .', uma vaga foi liberada. Corra para agendar! 😃%0A%0A';
+			$mensagem .= 'Profissional: *' . $nome_func . '* %0A';		
+			$mensagem .= 'Data: *' . $dataF . '* %0A';
+			$mensagem .= 'Hora: *' . $horaF . '* %0A';
+			$mensagem .= 'Link de agendamento:  %0A';
+			$mensagem .= $link . ' %0A';
+
+
+			//avisar o profissional
+			$telefone = '55' . preg_replace('/[ ()-]+/', '', $cliente['whatsapp']);
+			require('../../../../ajax/api-texto.php');
+
+			$clientes_info .= '✅ ' . htmlspecialchars($cliente['nome']) . ', ' . htmlspecialchars($cliente['whatsapp']) . '%0A';
+		}
+
+
+		$mens = $num_clientes . ' cliente' . ($num_clientes > 1 ? 's' : '') . ' que estava' . ($num_clientes > 1 ? 'm' : '') . ' aguardando encaixe para essa data e profissional fora' . ($num_clientes > 1 ? 'm' : '') . ' alertado' . ($num_clientes > 1 ? 's' : '') . '.%0A%0A' . $clientes_info;
+
+		$mensagem = '*_Alerta de Encaixe_* 🚨%0A%0A';
+		$mensagem .= 'Profissional: *' . $nome_func . '* %0A';		
+		$mensagem .= 'Data: *' . $dataF . '* %0A';
+		$mensagem .= 'Hora: *' . $horaF . '* %0A%0A';
+		$mensagem .= $mens.' %0A';
+		
+
+		//avisar o profissional
+		$telefone = '55' . preg_replace('/[ ()-]+/', '', $tel_func);
+		require('../../../../ajax/api-texto.php');
+
+		//avisar o empresa
+		$telefone = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
+		require('../../../../ajax/api-texto.php');
+
+		echo 'Excluído com Sucesso';
+	}else{
+		echo 'Excluído com Sucesso';
+	}
+}else{
+	echo 'Excluído com Sucesso';
+}
+
+
+?>

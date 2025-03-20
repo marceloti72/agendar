@@ -3,6 +3,102 @@ require_once("../../../conexao.php");
 $tabela = 'clientes';
 $data_atual = date('Y-m-d');
 
+?>
+<style>
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            padding: 10px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .table th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .btn {
+            padding: 5px 10px;
+            margin: 2px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .btn-info { background-color: #17a2b8; }
+        .btn-danger { background-color: #dc3545; }
+        .btn-success { background-color: #28a745; }
+        .dropdown-menu {
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            z-index: 1000;
+        }
+        .dropdown-menu a { color: #dc3545; text-decoration: none; }
+        .text-danger { color: #dc3545; }
+        .verde { color: #28a745; }
+        .vermelho-escuro { background-color: #ffe6e6; }
+        .ocultar { display: none; }
+        .total-footer { margin: 5px 0; }
+        .esc-mobile { display: table-cell; } /* Visível em desktop */
+
+        /* Media Query para Mobile (max-width: 768px) */
+        @media (max-width: 768px) {
+            .esc-mobile {
+                display: none; /* Esconde colunas indesejadas em mobile */
+            }
+            .table th, .table td {
+                padding: 6px;
+                font-size: 10px;
+            }
+            .btn {
+                padding: 8px 10px;
+                font-size: 10px;
+            }
+            .btn i {
+                font-size: 10px;
+            }
+            .dropdown-menu {
+                margin-left: 0 !important;
+                min-width: 100px;
+                font-size: 10px;
+            }
+            .mr-2 { margin-right: 5px; }
+            img { width: 30px; height: 30px; }
+            #mensagem-excluir, .total-footer {
+                font-size: 10px;
+            }
+            .table th:nth-child(1), .table td:nth-child(1) { width: 40%; } /* Produto */
+            .table th:nth-child(3), .table td:nth-child(3) { width: 10%; } /* Valor */
+            .table th:nth-child(5), .table td:nth-child(5) { width: 10%; } /* Ações */
+            .table th:nth-child(6), .table td:nth-child(6) { width: 60%; } /* Ações */
+
+			
+			/* Oculta o elemento "Mostrar" em telas menores que 768px */
+			.dataTables_length {
+				display: none;
+			}
+
+			.notification_desc2{
+				width: 80px;
+			}
+			
+			
+        }
+    </style>
+<?php 
+
 $query = $pdo->query("SELECT * FROM $tabela where alertado != 'Sim' and data_retorno < curDate() and id_conta = '$id_conta' ORDER BY data_retorno asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
@@ -15,9 +111,9 @@ echo <<<HTML
 	<tr> 
 	<th>Nome</th>	
 	<th class="esc">Telefone</th> 		
-	<th class="esc">Retorno</th> 
+	<th class="">Retorno</th> 
 	<th class="esc">Último Serviço</th>
-	<th class="esc">Dias</th> 	
+	<th class="">Dias</th> 	
 	<th>Ações</th>
 	</tr> 
 	</thead> 
@@ -80,14 +176,14 @@ echo <<<HTML
 <tr class="">
 <td>{$nome}</td>
 <td class="esc">{$telefone}</td>
-<td class="esc {$classe_retorno}">{$data_retornoF}</td>
+<td class="{$classe_retorno}">{$data_retornoF}</td>
 <td class="esc">{$nome_servico}</td>
-<td class="esc">{$dias}</td>
+<td class="">{$dias}</td>
 <td>
 		
 		<a href="#" class="btn btn-info btn-xs" onclick="mostrar('{$nome}', '{$telefone}', '{$cartoes}', '{$data_cadF}', '{$data_nascF}', '{$endereco}', '{$data_retornoF}', '{$nome_servico}')" title="Ver Dados"><i class="fe fe-search"></i></a>
 
-		<a onclick="alertar('{$id}')" class="btn btn-success btn-xs" href="http://api.whatsapp.com/send?1=pt_BR&phone=$whats&text=Olá $nome, já faz $dias dias que você não vem dar um trato no visual, caso queira fazer um novo agendamento é só acessar nosso site $url_agendamento, será um prazer atendê-lo novamente!!" target="_blank" title="Abrir Whatsapp"><i class="fa fa-whatsapp fa-2x" style = 'font-size: 16px;'></i></a>
+		<a onclick="alertar('{$id}')" class="btn btn-success btn-xs" href="http://api.whatsapp.com/send?1=pt_BR&phone=$whats&text=Olá $nome, já faz $dias dias que você não vem dar um trato no visual, caso queira fazer um novo agendamento é só acessar nosso site $url_agendamento, será um prazer atendê-lo novamente!!" target="_blank" title="Abrir Whatsapp"><i class="fab fa-whatsapp " style='font-size: 18px;' ></i></a>
 
 		</td>
 </tr>

@@ -108,6 +108,10 @@ $tabela = 'usuarios';
             .dataTables_length {
 				display: none;
 			}
+
+            .notification_desc2{
+				width: 80px;
+			}
         }
     </style>
 <?php 
