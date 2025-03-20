@@ -398,6 +398,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                             <label for="emailEmpresaMensal">Email</label>
                             <input type="email" class="form-control" id="emailEmpresaMensal" name="email" required>
                         </div>
+                        <small><div id="mensagem-ativar" align="center"></div></small>
                         <input type="hidden" name="plano" value="2">
                         <input type="hidden" name="frequencia" value="30">
                         <input type="hidden" name="valor" value="79.90">
@@ -434,6 +435,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                             <label for="emailEmpresaAnual">Email</label>
                             <input type="email" class="form-control" id="emailEmpresaAnual" name="email" required>
                         </div>
+                        <small><div id="mensagem-ativar" align="center"></div></small>
                         <input type="hidden" name="plano" value="2">
                         <input type="hidden" name="frequencia" value="365">
                         <input type="hidden" name="valor" value="786.21">
@@ -470,6 +472,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                             <label for="emailIndividualMensal">Email</label>
                             <input type="email" class="form-control" id="emailIndividualMensal" name="email" required>
                         </div>
+                        <small><div id="mensagem-ativar" align="center"></div></small>
                         <input type="hidden" name="plano" value="1">
                         <input type="hidden" name="frequencia" value="30">
                         <input type="hidden" name="valor" value="49.90">
@@ -506,6 +509,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                             <label for="emailIndividualAnual">Email</label>
                             <input type="email" class="form-control" id="emailIndividualAnual" name="email" required>
                         </div>
+                        <small><div id="mensagem-ativar" align="center"></div></small>
                         <input type="hidden" name="plano" value="1">
                         <input type="hidden" name="frequencia" value="365">
                         <input type="hidden" name="valor" value="526.94">
@@ -538,16 +542,23 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function (mensagem) {                           
-                                                        
-                    Swal.fire({
-                    title: "Cadastro efetuado!",                
-                    html: "Segue os dados de acesso:📝<br><spam style = 'color:blue'>Login: <b>" + username +"</b></spam><br><spam style = 'color:blue'>Senha: <b>123</b><br><br><small style = 'color:black'><small>🚨 Altere sua senha assim que acessar, em configurações de perfil.</small></small><br><small style = 'color:black'><small>Um email e WhatsApp foram enviados com os dados de acesso (verifique a caixa de spam)</small></small>",				
-                    icon: "success"
-                    }).then((result) => {
-                        if(result.isConfirmed){
-                        window.location = "login.php";        
-                        }});                                                        
+                success: function (mensagem) {   
+                    if (mensagem.trim() == "Salvo com Sucesso") {
+
+                        Swal.fire({
+                            title: "Cadastro efetuado!",                
+                            html: "Segue os dados de acesso:📝<br><spam style = 'color:blue'>Login: <b>" + username +"</b></spam><br><spam style = 'color:blue'>Senha: <b>123</b><br><br><small style = 'color:black'><small>🚨 Altere sua senha assim que acessar, em configurações de perfil.</small></small><br><small style = 'color:black'><small>Um email e WhatsApp foram enviados com os dados de acesso (verifique a caixa de spam)</small></small>",				
+                            icon: "success"
+                            }).then((result) => {
+                                if(result.isConfirmed){
+                                window.location = "login.php";        
+                        }});          
+
+                    } else {
+
+                        $('#mensagem-ativar').addClass('text-danger')
+                        $('#mensagem-ativar').text(mensagem)
+                    }                                                           
                 
                 },
             });

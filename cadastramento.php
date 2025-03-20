@@ -331,7 +331,7 @@ try {
     $res7->execute();
 
     $pdo->commit(); // Confirma as alterações
-    echo 'Salvo com Sucesso!';
+    echo 'Salvo com Sucesso';
 } catch (Exception $e) {
     $pdo->rollBack(); // Desfaz as alterações em caso de erro
     error_log("Erro ao salvar: " . $e->getMessage());
