@@ -94,7 +94,7 @@ if (count($res2) > 0) {
 
 // Inicia a transação
 try {
-    $pdo->beginTransaction();
+    //$pdo->beginTransaction();
 
     // Cadastra a instituição no AGENDAR
     $res1 = $pdo->prepare("INSERT INTO config SET nome = :nome, telefone_whatsapp = :telefone, email = :email_adm, ativo = :ativo, username = :username, token = :token, email_menuia = :email_menuia, plano = :plano, api = 'Sim', data_cadastro = NOW(),");
@@ -229,44 +229,44 @@ try {
     $primeiroNome = explode(" ", $nome_adm);
 
     // Envia email com PHPMailer (apenas se não for localhost)
-    // if ($url2[1] != 'localhost/escolar/') {
-    //     require './vendor/autoload.php';
+    if ($url2[1] != 'localhost/escolar/') {
+        require './vendor/autoload.php';
 
-    //     $mail = new PHPMailer(true);
+        $mail = new PHPMailer(true);
 
-    //     try {
-    //         //$mail->SMTPDebug = SMTP::DEBUG_SERVER; // Descomente para depuração
-    //         $mail->CharSet = 'UTF-8';
-    //         $mail->isSMTP();
-    //         $mail->Host = 'email-ssl.com.br';
-    //         $mail->SMTPAuth = true;
-    //         $mail->Username = 'contato@skysee.com.br';
-    //         $mail->Password = 'x,H,6,$B6!b[';
-    //         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    //         $mail->Port = 587;
+        try {
+            //$mail->SMTPDebug = SMTP::DEBUG_SERVER; // Descomente para depuração
+            $mail->CharSet = 'UTF-8';
+            $mail->isSMTP();
+            $mail->Host = 'email-ssl.com.br';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'contato@skysee.com.br';
+            $mail->Password = 'x,H,6,$B6!b[';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
 
-    //         $mail->setFrom('contato@skysee.com.br', 'SKYSEE - Soluções em TI');
-    //         $mail->addAddress($email_adm, $primeiroNome[0]);
-    //         $mail->addCC('contato@skysee.com.br');
+            $mail->setFrom('contato@skysee.com.br', 'SKYSEE - Soluções em TI');
+            $mail->addAddress($email_adm, $primeiroNome[0]);
+            $mail->addCC('contato@skysee.com.br');
 
-    //         $mail->isHTML(true);
-    //         $mail->Subject = 'Dados para Acesso';
-    //         $mail->Body = "<small style=\"opacity: 0.5\"><i>Mensagem automática gerada pelo sistema <b>Skysse Soluções em TI</b>, favor não responder.<i></small><br>";
-    //         $mail->Body .= "$saudacao, {$primeiroNome[0]}<br>";
-    //         $mail->Body .= "Seu periodo de 7 dias de teste grátis foi concluido com sucesso. Segue os dados para acesso ao sistema:<br><br>";
-    //         $mail->Body .= "Link do sistema: <a href='{$link_pgto}'>www.agendar.skysee.com.br</a><br>";
-    //         $mail->Body .= "Login: <b>$email_adm</b><br>";
-    //         $mail->Body .= "Senha: <b>123</b><br><br>";
-    //         $mail->Body .= "<b>Obs:</b> Altere sua senha, basta acessar o seu perfil.<br><br>";
+            $mail->isHTML(true);
+            $mail->Subject = 'Dados para Acesso';
+            $mail->Body = "<small style=\"opacity: 0.5\"><i>Mensagem automática gerada pelo sistema <b>Skysse Soluções em TI</b>, favor não responder.<i></small><br>";
+            $mail->Body .= "$saudacao, {$primeiroNome[0]}<br>";
+            $mail->Body .= "Seu periodo de 7 dias de teste grátis foi concluido com sucesso. Segue os dados para acesso ao sistema:<br><br>";
+            $mail->Body .= "Link do sistema: <a href='{$link_pgto}'>www.agendar.skysee.com.br</a><br>";
+            $mail->Body .= "Login: <b>$email_adm</b><br>";
+            $mail->Body .= "Senha: <b>123</b><br><br>";
+            $mail->Body .= "<b>Obs:</b> Altere sua senha, basta acessar o seu perfil.<br><br>";
 
-    //         $mail->addEmbeddedImage('../img/ass_skysee.png', 'logo');
-    //         $mail->Body .= '<img src="cid:logo">';
+            $mail->addEmbeddedImage('../img/ass_skysee.png', 'logo');
+            $mail->Body .= '<img src="cid:logo">';
 
-    //         $mail->send();
-    //     } catch (Exception $e) {
-    //         error_log("Erro ao enviar email: " . $mail->ErrorInfo);
-    //     }
-    // }
+            $mail->send();
+        } catch (Exception $e) {
+            error_log("Erro ao enviar email: " . $mail->ErrorInfo);
+        }
+    }
 
     // Mensagem para WhatsApp
     $mensagem = "*AGENDAR - Sistema de Gestão de Serviços*%0A%0A";
@@ -320,7 +320,7 @@ try {
     $res7->bindValue(":data_cad", date('Y-m-d H:i:s'));
     $res7->execute();
 
-    $pdo->commit(); // Confirma as alterações
+    //$pdo->commit(); // Confirma as alterações
     echo 'Salvo com Sucesso!';
 } catch (Exception $e) {
     $pdo->rollBack(); // Desfaz as alterações em caso de erro
