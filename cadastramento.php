@@ -107,7 +107,7 @@ try {
     $pdo->beginTransaction();
 
     // Cadastra a instituição no AGENDAR
-    $res1 = $pdo->prepare("INSERT INTO config SET nome = :nome, telefone_whatsapp = :telefone, email = :email_adm, ativo = :ativo, username = :username, token = :token, email_menuia = :email_menuia, plano = :plano, api = 'Sim', data_cadastro = NOW(),");
+    $res1 = $pdo->prepare("INSERT INTO config SET nome = :nome, telefone_whatsapp = :telefone, email = :email_adm, ativo = :ativo, username = :username, token = :token, email_menuia = :email_menuia, plano = :plano, api = 'Sim', data_cadastro = NOW()");
     $res1->bindValue(":nome", $nome);
     $res1->bindValue(":telefone", $telefone);
     $res1->bindValue(":email_adm", $email_adm);
