@@ -398,7 +398,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                             <label for="emailEmpresaMensal">Email</label>
                             <input type="email" class="form-control" id="emailEmpresaMensal" name="email" required>
                         </div>
-                        <!-- <small><div id="mensagem-ativar" align="center"></div></small> -->
+                        <small><div class="mensagem-ativar" align="center"></div></small>
                         <input type="hidden" name="plano" value="2">
                         <input type="hidden" name="frequencia" value="30">
                         <input type="hidden" name="valor" value="79.90">
@@ -435,7 +435,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                             <label for="emailEmpresaAnual">Email</label>
                             <input type="email" class="form-control" id="emailEmpresaAnual" name="email" required>
                         </div>
-                        <!-- <small><div id="mensagem-ativar" align="center"></div></small> -->
+                        <small><div class="mensagem-ativar" align="center"></div></small>
                         <input type="hidden" name="plano" value="2">
                         <input type="hidden" name="frequencia" value="365">
                         <input type="hidden" name="valor" value="786.21">
@@ -472,7 +472,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                             <label for="emailIndividualMensal">Email</label>
                             <input type="email" class="form-control" id="emailIndividualMensal" name="email" required>
                         </div>
-                        <small><div id="mensagem-ativar" align="center"></div></small>
+                        <small><div class="mensagem-ativar" align="center"></div></small>
                         <input type="hidden" name="plano" value="1">
                         <input type="hidden" name="frequencia" value="30">
                         <input type="hidden" name="valor" value="49.90">
@@ -509,7 +509,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                             <label for="emailIndividualAnual">Email</label>
                             <input type="email" class="form-control" id="emailIndividualAnual" name="email" required>
                         </div>
-                        <!-- <small><div id="mensagem-ativar" align="center"></div></small> -->
+                        <small><div class="mensagem-ativar" align="center"></div></small>
                         <input type="hidden" name="plano" value="1">
                         <input type="hidden" name="frequencia" value="365">
                         <input type="hidden" name="valor" value="526.94">
