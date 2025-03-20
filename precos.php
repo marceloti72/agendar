@@ -400,7 +400,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                         </div>
                         <input type="hidden" name="plano" value="2">
                         <input type="hidden" name="frequencia" value="30">
-                        <input type="hidden" name="valor" value="59.90">
+                        <input type="hidden" name="valor" value="79.90">
                         <button type="submit" class="btn-concluir mt-3">Concluir</button>
                     </form>
                 </div>
@@ -436,7 +436,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                         </div>
                         <input type="hidden" name="plano" value="2">
                         <input type="hidden" name="frequencia" value="365">
-                        <input type="hidden" name="valor" value="539.00">
+                        <input type="hidden" name="valor" value="786.21">
                         <button type="submit" class="btn-concluir mt-3">Concluir</button>
                     </form>
                 </div>
@@ -472,7 +472,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                         </div>
                         <input type="hidden" name="plano" value="1">
                         <input type="hidden" name="frequencia" value="30">
-                        <input type="hidden" name="valor" value="29.90">
+                        <input type="hidden" name="valor" value="49.90">
                         <button type="submit" class="btn-concluir mt-3">Concluir</button>
                     </form>
                 </div>
@@ -508,7 +508,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                         </div>
                         <input type="hidden" name="plano" value="1">
                         <input type="hidden" name="frequencia" value="365">
-                        <input type="hidden" name="valor" value="314.90">
+                        <input type="hidden" name="valor" value="526.94">
                         <button type="submit" class="btn-concluir mt-3">Concluir</button>
                     </form>
                 </div>
