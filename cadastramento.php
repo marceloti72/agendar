@@ -3,6 +3,15 @@ require_once("sistema/conexao.php");
 
 @session_start();
 
+// INÍCIO - Adicionado para debugging (erro 500)
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Relata erros do MySQLi
+
+// FIM - Adicionado para debugging
+
 
 $numero_aleatorio = rand(1000, 9999);
 $cpf = rand(1000000000, 99999999999);
@@ -17,7 +26,7 @@ $username = $_POST['username'];
 $plano = $_POST['plano'];
 $frequencia = $_POST['frequencia'];
 $valor = $_POST['valor'];
-echo'ENTREI!!!!!!';
+
 
 
 if($frequencia == '30'){
