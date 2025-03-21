@@ -484,7 +484,7 @@ $dados_meses_vendas =  '';
 
     <div class="col_3">
         <a href="clientes">
-            <div class="col-md-3 widget widget1">
+            <div class="col-md-3 widget widget1" style="border-radius: 12px;">
                 <div class="r3_counter_box">
                     <i class="pull-left fa fa-users icon-rounded"></i>
                     <div class="stats">
@@ -497,7 +497,7 @@ $dados_meses_vendas =  '';
         </a>
 
         <a href="pagar">
-            <div class="col-md-3 widget widget1">
+            <div class="col-md-3 widget widget1" style="border-radius: 12px;">
                 <div class="r3_counter_box">
                     <i class="pull-left fa fa-money user1 icon-rounded"></i>
                     <div class="stats">
@@ -510,7 +510,7 @@ $dados_meses_vendas =  '';
         </a>
 
         <a href="receber">
-            <div class="col-md-3 widget widget1">
+            <div class="col-md-3 widget widget1" style="border-radius: 12px;">
                 <div class="r3_counter_box">
                     <i class="pull-left fa fa-money dollar2 icon-rounded"></i>
                     <div class="stats">
@@ -523,7 +523,7 @@ $dados_meses_vendas =  '';
         </a>
 
         <a href="estoque">
-            <div class="col-md-3 widget widget1">
+            <div class="col-md-3 widget widget1" style="border-radius: 12px;">
                 <div class="r3_counter_box">
                     <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
                     <div class="stats">
@@ -535,7 +535,7 @@ $dados_meses_vendas =  '';
             </div>
         </a>
 
-        <div class="col-md-3 widget">
+        <div class="col-md-3 widget" style="border-radius: 12px;">
             <div class="r3_counter_box">
                 <i class="pull-left fa fa-usd <?php echo $classe_saldo_dia ?> icon-rounded"></i>
                 <div class="stats">                    

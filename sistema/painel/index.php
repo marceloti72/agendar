@@ -1,6 +1,7 @@
 <?php 
 @session_start();
 $id_conta = $_SESSION['id_conta'];
+
 require_once("verificar.php");
 require_once("../conexao.php");
 
@@ -336,7 +337,7 @@ $plano = $res3['plano'];
 				<nav class="navbar navbar-inverse" >
 					<div class="navbar-header">
 						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".collapse" aria-expanded="false" id="showLeftPush2">
-							<span class="sr-only">Toggle navigation</span>
+							<span class="sr-only">Toggle navigation</span>				
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
@@ -671,10 +672,11 @@ $plano = $res3['plano'];
 				<button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>
 				<!--toggle button end-->
 				<div class="profile_details_left"><!--notifications of menu start -->
-					<ul class="nofitications-dropdown">
+					<ul class="nofitications-dropdown">						
 
-
-						<?php if(@$_SESSION['nivel_usuario'] == 'Administrador'){ 
+						<?php
+						$id_conta = $_SESSION['id_conta'];
+						if(@$_SESSION['nivel_usuario'] == 'Administrador'){ 
 							$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and status = 'Agendado' and id_conta = '$id_conta'");
 							$res = $query->fetchAll(PDO::FETCH_ASSOC);
 							$total_agendamentos_hoje_usuario_pendentes = @count($res);
