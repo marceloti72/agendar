@@ -97,6 +97,17 @@ require_once("cabecalho2.php") ?>
     box-sizing: border-box;
 }
 
+@media (max-width: 768px) {
+    .product_container{
+      width: 50%;
+      height: 50%;
+    }
+
+
+}
+
+
+
 
 </style>
 
