@@ -1,4 +1,6 @@
 <?php 
+@session_start();
+$id_conta = $_SESSION['id_conta'];
 include('../../conexao.php');
 include('data_formatada.php');
 

@@ -4,6 +4,7 @@ $tabela = 'pagar';
 $data_hoje = date('Y-m-d');
 
 @session_start();
+$id_conta = $_SESSION['id_conta'];
 $id_usuario = $_SESSION['id_usuario'];
 
 $dataInicial = @$_POST['dataInicial'];

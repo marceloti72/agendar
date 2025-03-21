@@ -1,6 +1,9 @@
 <?php
 header('Content-Type: application/json');
 
+@session_start();
+$id_conta = $_SESSION['id_conta'];
+
 $response = array();
    
 require_once("../../../conexao.php");

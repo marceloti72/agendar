@@ -1,5 +1,6 @@
 <?php
-
+@session_start();
+$id_conta = $_SESSION['id_conta'];
 include('../../conexao.php');
 
 $id = $_GET['id'];

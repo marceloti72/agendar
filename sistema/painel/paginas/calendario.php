@@ -1,13 +1,16 @@
-<?php		
-	$query = $pdo->query("SELECT * FROM agendamentos where data >= curDate() and id_conta = '$id_conta'");
-	$res = $query->fetchAll(PDO::FETCH_ASSOC);
-	$total_reg = @count($res);
+<?php	
+@session_start();
+$id_conta = $_SESSION['id_conta'];
 
-	//verificar se ele tem a permissão de estar nessa página
-	if(@$calendario == 'ocultar'){
-		echo "<script>window.location='../index.php'</script>";
-		exit();
-	}
+$query = $pdo->query("SELECT * FROM agendamentos where data >= curDate() and id_conta = '$id_conta'");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$total_reg = @count($res);
+
+//verificar se ele tem a permissão de estar nessa página
+if(@$calendario == 'ocultar'){
+	echo "<script>window.location='../index.php'</script>";
+	exit();
+}
 ?>
 <style>
 	@media (max-width: 768px) {

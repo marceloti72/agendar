@@ -2,6 +2,9 @@
 
 header('Content-Type: application/json');
 
+@session_start();
+$id_conta = $_SESSION['id_conta'];
+
 $response = array();
 
 if(isset($_GET['appkey'])) {

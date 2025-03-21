@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../../../funcoes.php");
+//require_once("../../../../funcoes.php");
   $mensagem = str_replace("%0A", "\n", $mensagem); 
   $mensagem = $mensagem == '' ? '.' : $mensagem;
   
@@ -35,7 +35,7 @@ echo $response;
 //Caso queira pausar o envio, vc pode pegar a hash que está retornando.
 $res_hash = json_decode($response, true);
 
-save_log($pdo, $token, $instancia, $res_hash, 'Campanha(audio)', $numeros_formatados, $mensagem);
+//save_log($pdo, $token, $instancia, $res_hash, 'Campanha(audio)', $numeros_formatados, $mensagem);
 $hash = $res_hash['id'];   
 
 ?>

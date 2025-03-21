@@ -4,6 +4,7 @@ $tabela = 'receber';
 $data_hoje = date('Y-m-d');
 
 @session_start();
+$id_conta = $_SESSION['id_conta'];
 $usuario_logado = @$_SESSION['id_usuario'];
 
 $dataInicial = @$_POST['dataInicial'];

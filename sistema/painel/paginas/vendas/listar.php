@@ -1,5 +1,6 @@
 <?php
 @session_start();
+$id_conta = $_SESSION['id_conta'];
 $nivel_usu = $_SESSION['nivel_usuario'];
 $id_usu = @$_SESSION['id_usuario'];
 require_once("../../../conexao.php");

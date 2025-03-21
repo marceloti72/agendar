@@ -4,6 +4,7 @@ require_once("../../../conexao.php");
 $data_atual = date('Y-m-d');
 
 @session_start();
+$id_conta = $_SESSION['id_conta'];
 $usuario_logado = @$_SESSION['id_usuario'];
 
 $id = @$_POST['id'];

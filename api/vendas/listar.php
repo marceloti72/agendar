@@ -1,4 +1,6 @@
 <?php 
+@session_start();
+$id_conta = $_SESSION['id_conta'];
 require_once("../../sistema/conexao.php");
 $url_img = $_POST['url_img'];
 

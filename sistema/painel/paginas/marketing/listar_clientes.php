@@ -9,6 +9,7 @@ $data_atual = date('Y-m-d');
 $data_semana = date('Y/m/d', strtotime("-7 days", strtotime($data_atual)));
 
 @session_start();
+$id_conta = $_SESSION['id_conta'];
 $id_usuario = $_SESSION['id_usuario'];
 
 $clientes = $_POST['cli'];

@@ -2,6 +2,7 @@
 @session_start();
 require_once("verificar.php");
 require_once("../conexao.php");
+$id_conta = $_SESSION['id_conta'];
 
 $pag = 'clientes';
 

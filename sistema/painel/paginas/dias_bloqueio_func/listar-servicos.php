@@ -3,6 +3,7 @@ require_once("../../../conexao.php");
 $tabela = 'dias_bloqueio';
 
 @session_start();
+$id_conta = $_SESSION['id_conta'];
 $id_usuario = $_SESSION['id_usuario'];
 
 $id_func = $_POST['func'];

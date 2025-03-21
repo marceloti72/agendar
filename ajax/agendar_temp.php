@@ -1,7 +1,4 @@
 <?php 
-
-
-
 require_once("../sistema/conexao.php");
 @session_start();
 $telefone2 = $_POST['telefone'];

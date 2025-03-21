@@ -1,12 +1,13 @@
 <?php
+@session_start();
+$id_conta = $_SESSION['id_conta'];
 $tabela = 'receber';
 require_once("../../../conexao.php");
 $data_atual = date('Y-m-d');
 
 if (@$_POST['id_usuario'] != "") {
 	$usuario_logado = $_POST['id_usuario'];
-} else {
-	@session_start();
+} else {	
 	$usuario_logado = @$_SESSION['id_usuario'];
 }
 

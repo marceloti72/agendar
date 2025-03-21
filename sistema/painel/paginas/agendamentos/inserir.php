@@ -3,6 +3,7 @@ $tabela = 'agendamentos';
 require_once("../../../conexao.php");
 
 @session_start();
+$id_conta = $_SESSION['id_conta'];
 $usuario_logado = $_SESSION['id_usuario'];
 
 $cliente = $_POST['cliente'];

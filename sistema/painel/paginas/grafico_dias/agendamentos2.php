@@ -1,6 +1,8 @@
 <?php 
 header('Content-Type: application/json');
 require_once("../../../conexao.php"); 
+@session_start();
+$id_conta = $_SESSION['id_conta'];
 
 try {
     
@@ -22,14 +24,15 @@ try {
             DAYOFWEEK(data) as dia_semana,
             COUNT(*) as total
             FROM agendamentos
-            WHERE data BETWEEN :primeiroDia AND :ultimoDia
+            WHERE id_conta = :id_conta AND data BETWEEN :primeiroDia AND :ultimoDia
             GROUP BY dia_semana
             ORDER BY dia_semana";
             
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':primeiroDia' => $primeiroDia,
-        ':ultimoDia' => $ultimoDia
+        ':ultimoDia' => $ultimoDia,
+        ':id_conta' => $id_conta
     ]);
     
     $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);

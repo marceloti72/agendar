@@ -1,6 +1,7 @@
 <?php 
 require_once("../conexao.php");
 @session_start();
+$id_conta = $_SESSION['id_conta'];
 $id_usuario = $_SESSION['id_usuario'];
 
 

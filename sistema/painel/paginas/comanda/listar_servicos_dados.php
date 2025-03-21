@@ -10,6 +10,7 @@ if ($id == "") {
 }
 
 @session_start();
+$id_conta = $_SESSION['id_conta'];
 $usuario_logado = @$_SESSION['id_usuario'];
 
 
