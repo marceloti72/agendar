@@ -269,7 +269,7 @@ if($carrossel == 'Sim'){
             <?php if($url_video != "" ){
               echo '<iframe width="100%" height="350" src="'.$url_video.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
             }else{?>
-              <img src="images/foto-sobre<?php echo $id_conta?>.png" class="box_img" alt="about img">
+              <img src="images/foto-sobre<?php echo $id_conta?>.jpg" class="box_img" alt="about img">
             <?php } ?>
           </div>
         </div>
