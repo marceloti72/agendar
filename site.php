@@ -111,17 +111,9 @@ require_once("cabecalho2.php") ?>
         text-align: center;
       }
 
-      .slick-slide {
-    width: 100% !important; /* Força cada slide a ocupar a largura total em mobile */
-    min-width: 0; /* Evita que um min-width fixo interfira */
-    box-sizing: border-box;
-}
+     
 
-@media (max-width: 480px) {
-    .slick-services .slick-slide {
-        width: 100% !important; /* Reforça 1 slide por vez */
-    }
-}
+
 </style>
 
 <body class="sub_page">
