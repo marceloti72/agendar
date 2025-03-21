@@ -609,7 +609,7 @@ $(document).ready(function(){
             {
                 breakpoint: 580,
                 settings: {
-                    slidesToShow: 1                    
+                    slidesToShow: 2                    
                     
                 }
             }
