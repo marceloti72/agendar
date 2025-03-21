@@ -80,7 +80,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-
+echo $username;
 // Verifica se o email já existe no banco de dados
 $query = $pdo->prepare("SELECT email FROM config WHERE email = :email_adm");
 $query->bindValue(":email_adm", $email_adm);
@@ -91,7 +91,7 @@ if (count($res) > 0) {
     echo 'O email já existente no banco de dados!';
     exit();
 }
-echo $username;
+
 $query2 = $pdo->prepare("SELECT username FROM config WHERE username = :username");
 $query2->bindValue(":username", $username);
 $query2->execute();
