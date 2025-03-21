@@ -125,6 +125,7 @@ require_once("cabecalho2.php") ?>
 
 
 <?php 
+$id_conta = '0';
 if($carrossel == 'Sim'){
   $query = $pdo->query("SELECT * FROM textos_index where id_conta = '$id_conta' ORDER BY id asc");
   $res = $query->fetchAll(PDO::FETCH_ASSOC);
