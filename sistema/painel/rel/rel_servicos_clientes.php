@@ -168,7 +168,7 @@ $nome_cliente = @$res2[0]['nome'];
 	<div class="titulo_cab titulo_img"><u>Últimos Serviços Cliente: <?php echo $nome_cliente ?></u></div>
 	<div class="data_img"><?php echo mb_strtoupper($data_hoje) ?></div>
 
-	<img class="imagem" src="<?php echo $url ?>/sistema/img/logo_rel.jpg" width="150px">
+	<img class="imagem" src="<?php echo $url ?>/sistema/img/logo_rel<?php echo $id_conta ?>.jpg" width="150px">
 
 
 	<br><br><br>
