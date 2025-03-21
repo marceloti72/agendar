@@ -398,7 +398,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                             <label for="emailEmpresaMensal">Email</label>
                             <input type="email" class="form-control" id="emailEmpresaMensal" name="email" required>
                         </div>
-                        <small><div class="mensagem-ativar" align="center"></div></small>
+                        <small><div id="mensagem-ativar1" align="center"></div></small>
                         <input type="hidden" name="plano" value="2">
                         <input type="hidden" name="frequencia" value="30">
                         <input type="hidden" name="valor" value="79.90">
@@ -435,7 +435,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                             <label for="emailEmpresaAnual">Email</label>
                             <input type="email" class="form-control" id="emailEmpresaAnual" name="email" required>
                         </div>
-                        <small><div class="mensagem-ativar" align="center"></div></small>
+                        <small><div id="mensagem-ativar2" align="center"></div></small>
                         <input type="hidden" name="plano" value="2">
                         <input type="hidden" name="frequencia" value="365">
                         <input type="hidden" name="valor" value="786.21">
@@ -472,7 +472,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                             <label for="emailIndividualMensal">Email</label>
                             <input type="email" class="form-control" id="emailIndividualMensal" name="email" required>
                         </div>
-                        <small><div class="mensagem-ativar" align="center"></div></small>
+                        <small><div id="mensagem-ativar3" align="center"></div></small>
                         <input type="hidden" name="plano" value="1">
                         <input type="hidden" name="frequencia" value="30">
                         <input type="hidden" name="valor" value="49.90">
@@ -509,7 +509,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                             <label for="emailIndividualAnual">Email</label>
                             <input type="email" class="form-control" id="emailIndividualAnual" name="email" required>
                         </div>
-                        <small><div class="mensagem-ativar" align="center"></div></small>
+                        <small><div id="mensagem-ativar4" align="center"></div></small>
                         <input type="hidden" name="plano" value="1">
                         <input type="hidden" name="frequencia" value="365">
                         <input type="hidden" name="valor" value="526.94">
@@ -533,7 +533,21 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
 
             const formData = new FormData(form);
 
-            const username = formData.get('username');           
+            const username = formData.get('username');    
+            
+            if(plano == 2 && frequencia == 30){
+                n='1';
+            }
+            if(plano == 2 && frequencia == 365){
+                n='2';
+            }
+            if(plano == 1 && frequencia == 30){
+                n='3';
+            }
+            if(plano == 1 && frequencia == 365){
+                n='4';
+            }
+            
 
             $.ajax({
                 url: "cadastramento.php",
@@ -556,8 +570,8 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
 
                     } else {
 
-                        $('#mensagem-ativar').addClass('text-danger')
-                        $('#mensagem-ativar').text(mensagem)
+                        $('#mensagem-ativar'+n).addClass('text-danger')
+                        $('#mensagem-ativar'+n).text(mensagem)
                     }                                                           
                 
                 },
