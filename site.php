@@ -110,6 +110,18 @@ require_once("cabecalho2.php") ?>
         margin: 0 auto;
         text-align: center;
       }
+
+      .slick-slide {
+    width: 100% !important; /* Força cada slide a ocupar a largura total em mobile */
+    min-width: 0; /* Evita que um min-width fixo interfira */
+    box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+    .slick-services .slick-slide {
+        width: 100% !important; /* Reforça 1 slide por vez */
+    }
+}
 </style>
 
 <body class="sub_page">
@@ -607,7 +619,9 @@ $(document).ready(function(){
                 breakpoint: 480,
                 settings: {
                     slidesToShow: 1,
-                    slidesToScroll: 1
+                    slidesToScroll: 1,
+                    infinite: true, // Garante que o carrossel continue funcionando
+                    adaptiveHeight: true // Ajusta a altura automaticamente, se necessário
                 }
             }
         ]
