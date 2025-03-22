@@ -119,8 +119,8 @@ require_once("cabecalho2.php") ?>
     }
 
     .slick-services .img-box img {
-      width: 50%;
-        height: 100px; /* Reduz a altura da imagem */
+      width: 30%;
+        height: 30%; /* Reduz a altura da imagem */
         object-fit: cover;
     }
 
