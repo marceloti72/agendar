@@ -199,66 +199,83 @@ if($carrossel == 'Sim'){
 
   if ($servicos2 == 'Sim') { ?>
     <section class="product_section layout_padding">
-        <div class="container-fluid">
-            <div class="heading_container heading_center">
-                <h2 id="titulo_servicos">Nossos Serviços</h2>
-                <p class="col-lg-8 px-0">
-                    <?php 
-                    $query = $pdo->query("SELECT * FROM cat_servicos WHERE id_conta = '$id_conta' ORDER BY id ASC");
-                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                    $total_reg = @count($res);
-                    if ($total_reg > 0) { 
-                        for ($i = 0; $i < $total_reg; $i++) {
-                            $nome = $res[$i]['nome'];?>
-                            <button id="botao_servicos" style="border-radius: 15px; background-color:rgb(141, 157, 248); color: white; padding: 2 px;"><?php echo $nome;?></button><?php              
-                            
+    <div class="container">
+        <div class="heading_container heading_center ">
+            <h2 class="">
+                Nossos Serviços
+            </h2>
+            <p class="col-lg-8 px-0">
+                <?php 
+                $query = $pdo->query("SELECT * FROM cat_servicos where id_conta = '$id_conta' ORDER BY id asc");
+                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                $total_reg = @count($res);
+                if($total_reg > 0){ 
+                    for($i=0; $i < $total_reg; $i++){
+                        foreach ($res[$i] as $key => $value){}
+                        $id = $res[$i]['id'];
+                        $nome = $res[$i]['nome'];
+
+                        echo $nome;
+
+                        if($i < ($total_reg - 1)){
+                            echo ' / ';
                         }
                     }
+                }
 
-                    $query = $pdo->query("SELECT * FROM servicos WHERE ativo = 'Sim' AND id_conta = '$id_conta' ORDER BY id ASC");
-                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                    $total_reg = @count($res);
-                    if ($total_reg > 0) { 
-                    ?>
-                </p>
-            </div>
-            <div class="product_container">
-                <div class="slick-services">
-                    <?php 
-                    for ($i = 0; $i < $total_reg; $i++) {
-                        $id = $res[$i]['id'];
-                        $nome = $res[$i]['nome']; 
-                        $valor = $res[$i]['valor'];
-                        $foto = $res[$i]['foto'];
-                        $valorF = number_format($valor, 2, ',', '.');
-                        $nomeF = mb_strimwidth($nome, 0, 20, "...");
-                    ?>
-                    <div class="slick-slide">
-                        <div class="box">
-                            <div class="img-box">
-                                <img src="sistema/painel/img/servicos/<?php echo $foto ?>" alt="<?php echo $nome ?>">
-                            </div>
-                            <div class="detail-box">
-                                <h4><?php echo $nomeF ?></h4>
-                                <h6 class="price">
-                                    <span class="new_price">R$ <?php echo $valorF ?></span>
-                                </h6>
-                                <a href="agendamentos?u=<?php echo $username ?>">Agendar</a>
-                            </div>
+                $query = $pdo->query("SELECT * FROM servicos where ativo = 'Sim' and id_conta = '$id_conta' ORDER BY id asc");
+                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                $total_reg = @count($res);
+                if($total_reg > 0){ 
+                ?>
+            </p>
+        </div>
+        <div class="product_container">
+            <div class="product_owl-carousel owl-carousel owl-theme ">
+
+                <?php 
+                for($i=0; $i < $total_reg; $i++){
+                    foreach ($res[$i] as $key => $value){}
+
+                    $id = $res[$i]['id'];
+                    $nome = $res[$i]['nome']; 
+                    $valor = $res[$i]['valor'];
+                    $foto = $res[$i]['foto'];
+                    $valorF = number_format($valor, 2, ',', '.');
+                    $nomeF = mb_strimwidth($nome, 0, 20, "...");
+                ?>
+
+                <div class="item">
+                    <div class="box">
+                        <div class="img-box">
+                            <img src="sistema/painel/img/servicos/<?php echo $foto ?>" alt="">
+                        </div>
+                        <div class="detail-box">
+                            <h4>
+                                <?php echo $nomeF ?>
+                            </h4>
+                            <h6 class="price">
+                                <span class="new_price">
+                                    R$ <?php echo $valorF ?>
+                                </span>
+
+                            </h6>
+                            <a href="agendamentos?u=<?php echo $username?>">
+                                Agendar
+                            </a>
                         </div>
                     </div>
-                    <?php } ?>
                 </div>
-                <div class="btn-box">
-          <a href="servicos?u=<?php echo $username?>">
-            Ver mais Serviços
-          </a>
+                <?php 
+                } 
+                ?>
+            </div>
         </div>
-            </div>            
-        </div>
-    </section>
-<?php } ?>
-<?php } ?>
+      
+
+      <?php }?>
+      </section><?php 
+  }?>
 
   
   <section class="about_section ">
@@ -492,8 +509,7 @@ if($depoimentos2 == 'Sim'){
     //     ]
     //   });
     
-    console.log("Inicializando Slick...");
-    
+        
     $('.slick-services').slick({
       
         dots: true,
@@ -519,7 +535,7 @@ if($depoimentos2 == 'Sim'){
                 }
             },
             {
-              breakpoint: 580, // Celulares
+              breakpoint: 480, // Celulares
                 settings: {
                     slidesToShow: 1, // Mostra 3 slides
                     slidesToScroll: 1, // Passa 3 slides por vez
