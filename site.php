@@ -28,7 +28,7 @@ require_once("cabecalho2.php") ?>
 
 .slick-services .slick-slide {
     padding: 15px;
-    
+    outline: none;
 }
 
 /* Estilos do Box */
@@ -75,7 +75,8 @@ require_once("cabecalho2.php") ?>
     margin-top: 15px;
     padding: 10px 20px;
     background-color: #007bff;
-    color: #fff;    
+    color: #fff;
+    text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
@@ -92,6 +93,45 @@ require_once("cabecalho2.php") ?>
 
 .slick-dots li.slick-active button:before {
     color: #0056b3;
+}
+
+/* Ajustes responsivos para telas pequenas */
+@media (max-width: 580px) {
+    .slick-services {
+        margin: 0;
+    }
+
+    .slick-services .slick-slide {
+        padding: 5px;
+        opacity: 0; /* Esconde todos os slides por padrão */
+        transition: opacity 0.3s ease;
+    }
+
+    .slick-services .slick-slide.slick-active {
+        opacity: 1; /* Mostra apenas o slide ativo */
+    }
+
+    .slick-services .box {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .slick-services .img-box img {
+        height: 150px;
+    }
+
+    .slick-services .detail-box h4 {
+        font-size: 1rem;
+    }
+
+    .slick-services .detail-box .new_price {
+        font-size: 1.1rem;
+    }
+
+    .slick-services .detail-box a {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
 }
 
 
