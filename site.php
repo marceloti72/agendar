@@ -119,7 +119,7 @@ require_once("cabecalho2.php") ?>
     }
 
     .slick-services .img-box img {
-      width: 33%;
+      width: 50%;
         height: 100px; /* Reduz a altura da imagem */
         object-fit: cover;
     }
@@ -642,7 +642,7 @@ $(document).ready(function(){
             {
               breakpoint: 480, // Celulares
                 settings: {
-                    slidesToShow: 3, // Mostra 3 slides
+                    slidesToShow: 2, // Mostra 3 slides
                     slidesToScroll: 3, // Passa 3 slides por vez
                     arrows: false, // Remove setas em mobile, se desejar
                     centerMode: false, // Desativa centerMode para layout fixo
