@@ -119,8 +119,8 @@ require_once("cabecalho2.php") ?>
     }
 
     .slick-services .img-box img {
-      width: 30%;
-        height: 30%; /* Reduz a altura da imagem */
+      width: 50%;
+        height: 50%; /* Reduz a altura da imagem */
         object-fit: cover;
     }
 
@@ -135,7 +135,7 @@ require_once("cabecalho2.php") ?>
 
     .slick-services .detail-box a {
         padding: 6px 12px; /* Reduz o botão */
-        font-size: 0.8rem;
+        font-size: 0.6rem;
     }
 
     /* Garante que o slider mantenha o layout horizontal */
