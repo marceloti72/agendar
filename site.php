@@ -522,43 +522,64 @@ if($depoimentos2 == 'Sim'){
     
     
     
+   
+    console.log("Inicializando Slick Slider...");
+
+    // Inicializa o Slick com configurações básicas
     var slickSlider = $('.slick-services').slick({
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 2,
+        slidesToShow: 4, // Padrão inicial
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
         arrows: true,
         centerMode: false,
-        variableWidth: false,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-            },
-            {
-                breakpoint: 580,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    centerMode: false,
-                    variableWidth: false
-                }
-            }
-        ]
+        variableWidth: false
     });
+
+    // Função para ajustar o número de slides com base na largura da tela
+    function adjustSlickSlides() {
+        var windowWidth = $(window).width();
+        console.log("Ajustando slides | Largura da tela: ", windowWidth, "px");
+
+        if (windowWidth <= 580) {
+            // Celulares
+            slickSlider.slick('slickSetOption', 'slidesToShow', 1, true);
+            slickSlider.slick('slickSetOption', 'slidesToScroll', 1, true);
+            slickSlider.slick('slickSetOption', 'centerMode', false, true);
+            slickSlider.slick('slickSetOption', 'variableWidth', false, true);
+            console.log("Configuração para celular (<= 580px): slidesToShow = 1");
+        } else if (windowWidth <= 768) {
+            // Tablets e celulares maiores
+            slickSlider.slick('slickSetOption', 'slidesToShow', 2, true);
+            slickSlider.slick('slickSetOption', 'slidesToScroll', 1, true);
+            console.log("Configuração para tablets (<= 768px): slidesToShow = 1");
+        } else if (windowWidth <= 1024) {
+            // Tablets e laptops menores
+            slickSlider.slick('slickSetOption', 'slidesToShow', 3, true);
+            slickSlider.slick('slickSetOption', 'slidesToScroll', 1, true);
+            console.log("Configuração para laptops menores (<= 1024px): slidesToShow = 1");
+        } else {
+            // Desktop
+            slickSlider.slick('slickSetOption', 'slidesToShow', 4, true);
+            slickSlider.slick('slickSetOption', 'slidesToScroll', 1, true);
+            console.log("Configuração para desktop (> 1024px): slidesToShow = 2");
+        }
+
+        // Log para confirmar o número de slides visíveis
+        console.log("Slides visíveis após ajuste: ", slickSlider.slick('slickGetOption', 'slidesToShow'));
+    }
+
+    // Aplica ao carregar a página e ao redimensionar a janela
+    $(window).on('resize', adjustSlickSlides).trigger('resize');
+
+    // Log adicional para depuração
+    slickSlider.on('afterChange', function(){
+        console.log("Slide alterado | Slides visíveis: ", slickSlider.slick('slickGetOption', 'slidesToShow'));
+    });
+
 
    
 
