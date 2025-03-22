@@ -2,7 +2,7 @@
 require_once("cabecalho2.php") ?>
 
 <style>
-  /* Estilos gerais da seção */
+ /* Estilos gerais da seção */
 .product_section {
     padding: 60px 0;
     background-color: #f9f9f9;
@@ -22,6 +22,7 @@ require_once("cabecalho2.php") ?>
 /* Estilos do Slick Slider */
 .slick-services {
     margin: 0 -15px;
+    width: 100%; /* Garante que o container ocupe toda a largura */
 }
 
 .slick-services .slick-slide {
@@ -96,15 +97,16 @@ require_once("cabecalho2.php") ?>
 /* Ajustes responsivos para telas pequenas */
 @media (max-width: 580px) {
     .slick-services {
-        margin: 0; /* Remove margens laterais em mobile */
+        margin: 0; /* Remove margens laterais */
     }
 
     .slick-services .slick-slide {
-        padding: 5px; /* Reduz padding em mobile */
+        padding: 5px; /* Reduz padding */
     }
 
     .slick-services .box {
         width: 100%; /* Garante que o box ocupe o slide */
+        max-width: 100%; /* Evita overflow */
     }
 
     .slick-services .img-box img {
@@ -511,8 +513,9 @@ if($depoimentos2 == 'Sim'){
     //   });
     
         
+   
+    console.log("Inicializando Slick Slider...");
     $('.slick-services').slick({
-      
         dots: true,
         infinite: true,
         speed: 500,
@@ -520,33 +523,39 @@ if($depoimentos2 == 'Sim'){
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
+        arrows: true, // Mantém setas para depuração
         responsive: [
             {
-                breakpoint: 1024, // Tablets e laptops menores
+                breakpoint: 1024,
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll: 1
                 }
             },
             {
-                breakpoint: 768, // Tablets e celulares maiores
+                breakpoint: 768,
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 1
                 }
             },
             {
-              breakpoint: 580, // Celulares
+                breakpoint: 580,
                 settings: {
-                    slidesToShow: 1, // Mostra 3 slides
-                    slidesToScroll: 1, // Passa 3 slides por vez
-                    arrows: true, // Remove setas em mobile, se desejar
-                    centerMode: false, // Desativa centerMode para layout fixo
-                    variableWidth: false // Desativa largura variável para controle total
+                    slidesToShow: 1, // Apenas 1 slide
+                    slidesToScroll: 1, // Passa 1 slide por vez
+                    centerMode: false,
+                    variableWidth: false
                 }
             }
         ]
     });
+
+    // Log para verificar o número de slides visíveis após inicialização
+    $(window).on('resize', function(){
+        console.log("Slides visíveis: ", $('.slick-services').slick('slickGetOption', 'slidesToShow'));
+    }).trigger('resize');
+
 
 
 $('.product-slider').slick({
