@@ -499,8 +499,17 @@ if($depoimentos2 == 'Sim'){
       
     </section>
 
-    <!-- Adicionar o script Slick no final da página -->
-    <script>
+    
+
+  <?php }
+} ?>
+
+  <!-- end client section -->
+
+  <?php require_once("rodape2.php") ?>
+
+  <!-- Adicionar o script Slick no final da página -->
+  <script>
     $(document).ready(function(){
       // $('.slick-slider-client').slick({
       //   slidesToShow: 1,
@@ -559,13 +568,6 @@ if($depoimentos2 == 'Sim'){
     });
 });
     </script>
-
-  <?php }
-} ?>
-
-  <!-- end client section -->
-
-  <?php require_once("rodape2.php") ?>
 
 
 
