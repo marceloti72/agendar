@@ -469,7 +469,7 @@ if($depoimentos2 == 'Sim'){
 
   <!-- end client section -->
 
-  <?php require_once("rodape2.php") ?>
+  <?php require_once("./rodape2.php") ?>
 
   <!-- Adicionar o script Slick no final da página -->
   <script>
