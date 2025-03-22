@@ -473,7 +473,7 @@ if($depoimentos2 == 'Sim'){
 
   <!-- Adicionar o script Slick no final da página -->
   <script>
-    // $(document).ready(function(){
+     $(document).ready(function(){
     //   $('.slick-slider-client').slick({
     //     slidesToShow: 1,
     //     slidesToScroll: 1,
@@ -492,9 +492,10 @@ if($depoimentos2 == 'Sim'){
     //     ]
     //   });
     
-
+    console.log("Inicializando Slick...");
     
     $('.slick-services').slick({
+      
         dots: true,
         infinite: true,
         speed: 500,
@@ -592,6 +593,7 @@ $('.product-slider').slick({
             }
         ]
         });
+      });
     </script>
 
 

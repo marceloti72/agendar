@@ -18,7 +18,7 @@
 
   <!-- Inclua o Bootstrap CSS e JS -->
 
-  <head>
+  
   <!-- Bootstrap CSS (escolha uma versão, recomendo 5.3 via CDN) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
   <!-- Remova o local se optar pelo CDN: <link rel="stylesheet" type="text/css" href="css/bootstrap.css" /> -->
@@ -42,13 +42,8 @@
   <!-- (Opcional) Owl Carousel, descomente se estiver usando -->
   <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" /> -->
 </head>
-
   
 
-  
-
-  
-</head>
 
 <style>
     .header_section {
