@@ -19,9 +19,80 @@ require_once("cabecalho2.php") ?>
     color: #666;
 }
 
+/* Estilos do Slick Slider */
+.slick-services {
+    margin: 0 -15px;
+    width: 100%;
+    overflow: hidden; /* Evita overflow em telas pequenas */
+}
 
+.slick-services .slick-slide {
+    padding: 15px;
+    
+}
 
+/* Estilos do Box */
+.box {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
 
+.box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.img-box img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.detail-box {
+    padding: 20px;
+    text-align: center;
+}
+
+.detail-box h4 {
+    font-size: 1.2rem;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.detail-box .price .new_price {
+    font-size: 1.3rem;
+    color: #e67e22;
+    font-weight: bold;
+}
+
+.detail-box a {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;    
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.detail-box a:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos dos controles do Slick */
+.slick-dots li button:before {
+    font-size: 12px;
+    color: #007bff;
+}
+
+.slick-dots li.slick-active button:before {
+    color: #0056b3;
+}
 
 
 
@@ -36,7 +107,7 @@ require_once("cabecalho2.php") ?>
 
 
 <?php 
-$id_conta = '0';
+
 if($carrossel == 'Sim'){
   $query = $pdo->query("SELECT * FROM textos_index where id_conta = '$id_conta' ORDER BY id asc");
   $res = $query->fetchAll(PDO::FETCH_ASSOC);
