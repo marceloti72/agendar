@@ -86,8 +86,6 @@
 <!-- Slick JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 
-
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
@@ -141,68 +139,10 @@ $(document).ready(function(){
 
 
    
-        $('.product-slider').slick({
-          dots: true,           // Exibe pontos de navegação
-        infinite: true,       // Loop infinito
-        speed: 500,           // Velocidade da transição
-        slidesToShow: 4,      // Mostra 4 itens por vez
-        slidesToScroll: 1,    // Rola 1 item por vez
-        autoplay: true,       // Ativa o autoplay
-        autoplaySpeed: 3000,  // Tempo entre os slides (3 segundos)
-        arrows: true,         // Exibe setas de navegação
-        responsive: [         // Configuração responsiva
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3
-                }
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 2
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1
-                }
-            }
-        ]
-        });
+        
 
 
-        $('.slick-slider-client').slick({
-          dots: true,           // Exibe pontos de navegação
-        infinite: true,       // Loop infinito
-        speed: 500,           // Velocidade da transição
-        slidesToShow: 4,      // Mostra 4 itens por vez
-        slidesToScroll: 1,    // Rola 1 item por vez
-        autoplay: true,       // Ativa o autoplay
-        autoplaySpeed: 3000,  // Tempo entre os slides (3 segundos)
-        arrows: true,         // Exibe setas de navegação
-        responsive: [         // Configuração responsiva
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3
-                }
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 2
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1
-                }
-            }
-        ]
-        });
+        
  });
 
   
