@@ -93,20 +93,8 @@ require_once("cabecalho2.php") ?>
     color: #0056b3;
 }
 
-.slick-services, .slick-slide, .slick-item {
-    box-sizing: border-box;
-}
 
-@media (max-width: 768px) {
-    .product_container{
-      width: 50%;
-      height: 50%;
-    }
-
-
-}
-
-
+ 
 
 
 </style>
@@ -579,38 +567,42 @@ if($depoimentos2 == 'Sim'){
 <script type="text/javascript">
 
 $(document).ready(function(){
-    // Inicialização do Slick Slider para serviços
     $('.slick-services').slick({
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 4,
+        slidesToShow: 4, // Padrão para desktop
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
         responsive: [
             {
-                breakpoint: 1024,
+                breakpoint: 1024, // Tablets e laptops menores
                 settings: {
-                    slidesToShow: 3,                    
+                    slidesToShow: 3,
+                    slidesToScroll: 1
                 }
             },
             {
-                breakpoint: 768,
+                breakpoint: 768, // Tablets e celulares maiores
                 settings: {
-                    slidesToShow: 2,                    
+                    slidesToShow: 2,
+                    slidesToScroll: 1
                 }
             },
             {
-                breakpoint: 580,
+                breakpoint: 580, // Celulares
                 settings: {
-                    slidesToShow: 1                    
-                    
+                    slidesToShow: 3, // Mostra 3 slides
+                    slidesToScroll: 3, // Passa 3 slides por vez
+                    centerMode: true, // Centraliza os slides
+                    variableWidth: true, // Permite largura variável
+                    adaptiveHeight: true
                 }
             }
         ]
     });
-  });
+});
   
 $("#form-email").submit(function () {
 
