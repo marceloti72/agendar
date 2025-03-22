@@ -83,10 +83,6 @@
 <!-- Canvas Confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-
 <!-- Máscaras JS -->
 <script type="text/javascript" src="sistema/painel/js/mascaras.js"></script>
 
