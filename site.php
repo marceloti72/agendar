@@ -639,16 +639,16 @@ $(document).ready(function(){
                     slidesToScroll: 1
                 }
             },
-            {
-              breakpoint: 580, // Celulares
-                settings: {
-                    slidesToShow: 2, // Mostra 3 slides
-                    slidesToScroll: 3, // Passa 3 slides por vez
-                    arrows: false, // Remove setas em mobile, se desejar
-                    centerMode: false, // Desativa centerMode para layout fixo
-                    variableWidth: false // Desativa largura variável para controle total
-                }
-            }
+            // {
+            //   breakpoint: 580, // Celulares
+            //     settings: {
+            //         slidesToShow: 2, // Mostra 3 slides
+            //         slidesToScroll: 3, // Passa 3 slides por vez
+            //         arrows: false, // Remove setas em mobile, se desejar
+            //         centerMode: false, // Desativa centerMode para layout fixo
+            //         variableWidth: false // Desativa largura variável para controle total
+            //     }
+            // }
         ]
     });
 });
