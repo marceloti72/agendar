@@ -19,10 +19,111 @@ require_once("cabecalho2.php") ?>
     color: #666;
 }
 
+/* Estilos do Slick Slider */
+.slick-services {
+    margin: 0 -15px;
+}
 
+.slick-services .slick-slide {
+    padding: 15px;
+    outline: none; /* Remove foco indesejado */
+}
 
+/* Estilos do Box */
+.box {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
 
+.box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
 
+.img-box img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.detail-box {
+    padding: 20px;
+    text-align: center;
+}
+
+.detail-box h4 {
+    font-size: 1.2rem;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.detail-box .price .new_price {
+    font-size: 1.3rem;
+    color: #e67e22;
+    font-weight: bold;
+}
+
+.detail-box a {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.detail-box a:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos dos controles do Slick */
+.slick-dots li button:before {
+    font-size: 12px;
+    color: #007bff;
+}
+
+.slick-dots li.slick-active button:before {
+    color: #0056b3;
+}
+
+/* Ajustes responsivos para telas pequenas */
+@media (max-width: 580px) {
+    .slick-services {
+        margin: 0; /* Remove margens laterais em mobile */
+    }
+
+    .slick-services .slick-slide {
+        padding: 5px; /* Reduz padding em mobile */
+    }
+
+    .slick-services .box {
+        width: 100%; /* Garante que o box ocupe o slide */
+    }
+
+    .slick-services .img-box img {
+        height: 150px; /* Reduz altura da imagem */
+    }
+
+    .slick-services .detail-box h4 {
+        font-size: 1rem; /* Reduz tamanho do título */
+    }
+
+    .slick-services .detail-box .new_price {
+        font-size: 1.1rem; /* Reduz tamanho do preço */
+    }
+
+    .slick-services .detail-box a {
+        padding: 8px 16px; /* Reduz botão */
+        font-size: 0.9rem;
+    }
+}
 
 
 
@@ -435,7 +536,7 @@ if($depoimentos2 == 'Sim'){
                 }
             },
             {
-              breakpoint: 480, // Celulares
+              breakpoint: 580, // Celulares
                 settings: {
                     slidesToShow: 1, // Mostra 3 slides
                     slidesToScroll: 1, // Passa 3 slides por vez
