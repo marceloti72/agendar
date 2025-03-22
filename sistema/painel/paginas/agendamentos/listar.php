@@ -143,10 +143,8 @@ if ($total_reg > 0) {
 		$servico = $res[$i]['servico'];
 		$valor_pago = $res[$i]['valor_pago'];
 		$origem = $res[$i]['origem'];
-		if($usuario == $funcionario){
-			$origem = 'Profissional';
-		}
-
+		
+		
 		$valor_pagoF = number_format($valor_pago, 2, ',', '.');
 		if ($valor_pago > 0 and $status == 'Agendado') {
 			$classe_valor_pago = '';
