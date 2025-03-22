@@ -19,19 +19,6 @@ require_once("cabecalho2.php") ?>
     color: #666;
 }
 
-/* Estilos do Slick Slider */
-.slick-services {
-    margin: 0 -15px;
-    width: 100%;
-    overflow: hidden; /* Evita overflow em telas pequenas */
-}
-
-.slick-services .slick-slide {
-    padding: 15px;
-    outline: none;
-}
-
-/* Estilos do Box */
 .box {
     background: #fff;
     border-radius: 10px;
@@ -85,6 +72,15 @@ require_once("cabecalho2.php") ?>
     background-color: #0056b3;
 }
 
+/* Estilos dos controles do Slick */
+.slick-dots li button:before {
+    font-size: 12px;
+    color: #007bff;
+}
+
+.slick-dots li.slick-active button:before {
+    color: #0056b3;
+}
 
 /* Ajustes responsivos para telas pequenas */
 @media (max-width: 580px) {
