@@ -473,24 +473,24 @@ if($depoimentos2 == 'Sim'){
 
   <!-- Adicionar o script Slick no final da página -->
   <script>
-    $(document).ready(function(){
-      $('.slick-slider-client').slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        dots: true,
-        arrows: true,
-        infinite: true,
-        responsive: [
-          {
-            breakpoint: 768,
-            settings: {
-              slidesToShow: 1
-            }
-          }
-        ]
-      });
+    // $(document).ready(function(){
+    //   $('.slick-slider-client').slick({
+    //     slidesToShow: 1,
+    //     slidesToScroll: 1,
+    //     autoplay: true,
+    //     autoplaySpeed: 2000,
+    //     dots: true,
+    //     arrows: true,
+    //     infinite: true,
+    //     responsive: [
+    //       {
+    //         breakpoint: 768,
+    //         settings: {
+    //           slidesToShow: 1
+    //         }
+    //       }
+    //     ]
+    //   });
     
 
     
@@ -518,7 +518,7 @@ if($depoimentos2 == 'Sim'){
                 }
             },
             {
-              breakpoint: 480, // Celulares
+              breakpoint: 580, // Celulares
                 settings: {
                     slidesToShow: 1, // Mostra 3 slides
                     slidesToScroll: 1, // Passa 3 slides por vez
@@ -529,7 +529,7 @@ if($depoimentos2 == 'Sim'){
             }
         ]
     });
-});
+
 
 $('.product-slider').slick({
           dots: true,           // Exibe pontos de navegação
