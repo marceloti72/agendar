@@ -22,12 +22,13 @@ require_once("cabecalho2.php") ?>
 /* Estilos do Slick Slider */
 .slick-services {
     margin: 0 -15px;
-    width: 100%; /* Garante que o container ocupe toda a largura */
+    width: 100%;
+    overflow: hidden; /* Evita overflow em telas pequenas */
 }
 
 .slick-services .slick-slide {
     padding: 15px;
-    outline: none; /* Remove foco indesejado */
+    outline: none;
 }
 
 /* Estilos do Box */
@@ -97,32 +98,38 @@ require_once("cabecalho2.php") ?>
 /* Ajustes responsivos para telas pequenas */
 @media (max-width: 580px) {
     .slick-services {
-        margin: 0; /* Remove margens laterais */
+        margin: 0;
     }
 
     .slick-services .slick-slide {
-        padding: 5px; /* Reduz padding */
+        padding: 5px;
+        opacity: 0; /* Esconde todos os slides por padrão */
+        transition: opacity 0.3s ease;
+    }
+
+    .slick-services .slick-slide.slick-active {
+        opacity: 1; /* Mostra apenas o slide ativo */
     }
 
     .slick-services .box {
-        width: 100%; /* Garante que o box ocupe o slide */
-        max-width: 100%; /* Evita overflow */
+        width: 100%;
+        max-width: 100%;
     }
 
     .slick-services .img-box img {
-        height: 150px; /* Reduz altura da imagem */
+        height: 150px;
     }
 
     .slick-services .detail-box h4 {
-        font-size: 1rem; /* Reduz tamanho do título */
+        font-size: 1rem;
     }
 
     .slick-services .detail-box .new_price {
-        font-size: 1.1rem; /* Reduz tamanho do preço */
+        font-size: 1.1rem;
     }
 
     .slick-services .detail-box a {
-        padding: 8px 16px; /* Reduz botão */
+        padding: 8px 16px;
         font-size: 0.9rem;
     }
 }
@@ -514,6 +521,7 @@ if($depoimentos2 == 'Sim'){
     
         
    
+    
     console.log("Inicializando Slick Slider...");
     $('.slick-services').slick({
         dots: true,
@@ -523,7 +531,9 @@ if($depoimentos2 == 'Sim'){
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
-        arrows: true, // Mantém setas para depuração
+        arrows: true,
+        centerMode: false, // Garante que não há centralização
+        variableWidth: false, // Garante largura fixa
         responsive: [
             {
                 breakpoint: 1024,
@@ -542,13 +552,25 @@ if($depoimentos2 == 'Sim'){
             {
                 breakpoint: 580,
                 settings: {
-                    slidesToShow: 1, // Apenas 1 slide
-                    slidesToScroll: 1, // Passa 1 slide por vez
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
                     centerMode: false,
                     variableWidth: false
                 }
             }
         ]
+    });
+
+    // Log para verificar o número de slides visíveis em tempo real
+    $(window).on('resize', function(){
+        var currentSlides = $('.slick-services').slick('slickGetOption', 'slidesToShow');
+        var windowWidth = $(window).width();
+        console.log("Largura da tela: ", windowWidth, "px | Slides visíveis: ", currentSlides);
+    }).trigger('resize');
+
+    // Forçar aplicação do breakpoint
+    $('.slick-services').on('breakpoint', function(event, slick, breakpoint){
+        console.log("Breakpoint ativado: ", breakpoint, " | Slides visíveis: ", slick.options.slidesToShow);
     });
 
     // Log para verificar o número de slides visíveis após inicialização
