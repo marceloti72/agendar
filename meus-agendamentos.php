@@ -124,7 +124,8 @@ $obs = str_replace('"', "**", $obs);
   <div class="list-group-item list-group-item-action flex-column align-items-start " style="margin-bottom: 10px; box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);">
     <div class="d-flex w-100 justify-content-between">
       <h6 class="mb-1"><i class="fa fa-calendar" aria-hidden="true"></i> Data: <?php echo $dataF ?>  <i class="fa fa-clock-o text-success" aria-hidden="true" style="margin-left: 10px"></i> Hora: <?php echo $horaF ?></h6> 
-      <small><a href="#" onclick="excluir('<?php echo $id ?>', '<?php echo $nome_cliente ?>', '<?php echo $dataF ?>', '<?php echo $horaF ?>', '<?php echo $nome_serv ?>', '<?php echo $nome_func ?>')"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i> </a></small>     
+
+      <small><a href="#" onclick="excluir('<?php echo $id ?>', '<?php echo $nome_cliente ?>', '<?php echo $dataF ?>', '<?php echo $horaF ?>', '<?php echo $nome_serv ?>', '<?php echo $nome_func ?>')"><i class="fa fa-trash text-danger" aria-hidden="true"></i> </a></small>     
     </div>
     <p class="mb-1"><small><b>Profissional:</b> <?php echo $nome_func ?></small></p>
     <small><b>Serviço:</b> <?php echo $nome_serv ?> <b>Valor:</b> R$ <?php echo $valor_serv ?></small>
