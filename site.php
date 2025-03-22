@@ -511,61 +511,61 @@ if($depoimentos2 == 'Sim'){
   <!-- Adicionar o script Slick no final da página -->
   <script>
     $(document).ready(function(){
-      // $('.slick-slider-client').slick({
-      //   slidesToShow: 1,
-      //   slidesToScroll: 1,
-      //   autoplay: true,
-      //   autoplaySpeed: 2000,
-      //   dots: true,
-      //   arrows: true,
-      //   infinite: true,
-      //   responsive: [
-      //     {
-      //       breakpoint: 768,
-      //       settings: {
-      //         slidesToShow: 1
-      //       }
-      //     }
-      //   ]
-      // });
+      $('.slick-slider-client').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        dots: true,
+        arrows: true,
+        infinite: true,
+        responsive: [
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 1
+            }
+          }
+        ]
+      });
     
 
     
-    $('.slick-services').slick({
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 4, // Padrão para desktop
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 3000,
-        responsive: [
-            {
-                breakpoint: 1024, // Tablets e laptops menores
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 1
-                }
-            },
-            {
-                breakpoint: 768, // Tablets e celulares maiores
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1
-                }
-            },
-            {
-              breakpoint: 580, // Celulares
-                settings: {
-                    slidesToShow: 1, // Mostra 3 slides
-                    slidesToScroll: 3, // Passa 3 slides por vez
-                    arrows: false, // Remove setas em mobile, se desejar
-                    centerMode: false, // Desativa centerMode para layout fixo
-                    variableWidth: false // Desativa largura variável para controle total
-                }
-            }
-        ]
-    });
+    // $('.slick-services').slick({
+    //     dots: true,
+    //     infinite: true,
+    //     speed: 500,
+    //     slidesToShow: 4, // Padrão para desktop
+    //     slidesToScroll: 1,
+    //     autoplay: true,
+    //     autoplaySpeed: 3000,
+    //     responsive: [
+    //         {
+    //             breakpoint: 1024, // Tablets e laptops menores
+    //             settings: {
+    //                 slidesToShow: 3,
+    //                 slidesToScroll: 1
+    //             }
+    //         },
+    //         {
+    //             breakpoint: 768, // Tablets e celulares maiores
+    //             settings: {
+    //                 slidesToShow: 2,
+    //                 slidesToScroll: 1
+    //             }
+    //         },
+    //         {
+    //           breakpoint: 580, // Celulares
+    //             settings: {
+    //                 slidesToShow: 1, // Mostra 3 slides
+    //                 slidesToScroll: 3, // Passa 3 slides por vez
+    //                 arrows: false, // Remove setas em mobile, se desejar
+    //                 centerMode: false, // Desativa centerMode para layout fixo
+    //                 variableWidth: false // Desativa largura variável para controle total
+    //             }
+    //         }
+    //     ]
+    // });
 });
     </script>
 
