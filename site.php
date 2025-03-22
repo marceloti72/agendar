@@ -23,7 +23,7 @@ require_once("cabecalho2.php") ?>
 .slick-services {
     margin: 0 -15px;
     width: 100%;
-    overflow: hidden;
+    overflow: hidden; /* Evita overflow em telas pequenas */
 }
 
 .slick-services .slick-slide {
@@ -103,12 +103,12 @@ require_once("cabecalho2.php") ?>
 
     .slick-services .slick-slide {
         padding: 5px;
-        display: none; /* Esconde todos os slides */
+        opacity: 0; /* Esconde todos os slides por padrão */
+        transition: opacity 0.3s ease;
     }
 
     .slick-services .slick-slide.slick-active {
-        display: block; /* Mostra apenas o slide ativo */
-        width: 100% !important; /* Força largura total */
+        opacity: 1; /* Mostra apenas o slide ativo */
     }
 
     .slick-services .box {
@@ -522,13 +522,12 @@ if($depoimentos2 == 'Sim'){
    
     
     
-    
     console.log("Inicializando Slick Slider...");
     var slickSlider = $('.slick-services').slick({
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 4, // Padrão para desktop
+        slidesToShow: 4,
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
@@ -551,7 +550,7 @@ if($depoimentos2 == 'Sim'){
                 }
             },
             {
-                breakpoint: 580,
+                breakpoint: 390,
                 settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1,
@@ -562,53 +561,7 @@ if($depoimentos2 == 'Sim'){
         ]
     });
 
-    // Forçar aplicação de slidesToShow em telas pequenas
-    function adjustSlidesToShow() {
-        var windowWidth = $(window).width();
-        console.log("Ajustando slides | Largura da tela: ", windowWidth, "px");
-        if (windowWidth <= 580) {
-            slickSlider.slick('slickSetOption', 'slidesToShow', 1, true);
-            slickSlider.slick('slickSetOption', 'slidesToScroll', 1, true);
-            console.log("Forçando slidesToShow: 1");
-        } else if (windowWidth <= 768) {
-            slickSlider.slick('slickSetOption', 'slidesToShow', 2, true);
-            slickSlider.slick('slickSetOption', 'slidesToScroll', 1, true);
-            console.log("Forçando slidesToShow: 2");
-        } else if (windowWidth <= 1024) {
-            slickSlider.slick('slickSetOption', 'slidesToShow', 3, true);
-            slickSlider.slick('slickSetOption', 'slidesToScroll', 1, true);
-            console.log("Forçando slidesToShow: 3");
-        } else {
-            slickSlider.slick('slickSetOption', 'slidesToShow', 4, true);
-            slickSlider.slick('slickSetOption', 'slidesToScroll', 1, true);
-            console.log("Forçando slidesToShow: 4");
-        }
-        console.log("Slides visíveis após ajuste: ", slickSlider.slick('slickGetOption', 'slidesToShow'));
-    }
-
-    // Aplicar ao carregar e redimensionar
-    $(window).on('resize', adjustSlidesToShow).trigger('resize');
-
-    // Log para verificar breakpoints
-    $('.slick-services').on('breakpoint', function(event, slick, breakpoint){
-        console.log("Breakpoint ativado: ", breakpoint, " | Slides visíveis: ", slick.options.slidesToShow);
-    });
-
-    // Forçar reaplicação do breakpoint ao redimensionar
-    $(window).on('resize', function(){
-        var windowWidth = $(window).width();
-        if (windowWidth <= 580) {
-            slickSlider.slick('slickSetOption', 'slidesToShow', 1, true);
-            slickSlider.slick('slickSetOption', 'slidesToScroll', 1, true);
-        }
-        console.log("Largura da tela: ", windowWidth, "px | Slides visíveis: ", slickSlider.slick('slickGetOption', 'slidesToShow'));
-    }).trigger('resize');
-
-    $('.slick-services').on('breakpoint', function(event, slick, breakpoint){
-        console.log("Breakpoint ativado: ", breakpoint, " | Slides visíveis: ", slick.options.slidesToShow);
-    });
-
-
+   
 
 
 $('.product-slider').slick({
