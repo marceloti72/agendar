@@ -19,69 +19,7 @@ require_once("cabecalho2.php") ?>
     color: #666;
 }
 
-/* Estilos do Slick Slider */
-.slick-services {
-    margin: 0 -15px;
-}
 
-.slick-item {
-    padding: 15px;
-}
-
-.box {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
-}
-
-.box:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.img-box img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-.detail-box {
-    padding: 20px;
-    text-align: center;
-}
-
-.detail-box h4 {
-    font-size: 1.2rem;
-    color: #222;
-    margin-bottom: 10px;
-}
-
-.detail-box .price .new_price {
-    font-size: 1.3rem;
-    color: #e67e22;
-    font-weight: bold;
-}
-
-.detail-box a {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.detail-box a:hover {
-    background-color: #0056b3;
-}
-
-/* Estilos dos controles do Slick */
 
 
 
