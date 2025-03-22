@@ -498,7 +498,7 @@ if($depoimentos2 == 'Sim'){
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 4, // Padrão para desktop
+        slidesToShow: 1, // Padrão para desktop
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
