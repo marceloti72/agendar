@@ -518,22 +518,22 @@ if($depoimentos2 == 'Sim'){
     //       }
     //     ]
     //   });
-    
-        
+           
    
     
+    
     console.log("Inicializando Slick Slider...");
-    $('.slick-services').slick({
+    var slickSlider = $('.slick-services').slick({
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 4, // Padrão para desktop
+        slidesToShow: 4,
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
         arrows: true,
-        centerMode: false, // Garante que não há centralização
-        variableWidth: false, // Garante largura fixa
+        centerMode: false,
+        variableWidth: false,
         responsive: [
             {
                 breakpoint: 1024,
@@ -561,22 +561,20 @@ if($depoimentos2 == 'Sim'){
         ]
     });
 
-    // Log para verificar o número de slides visíveis em tempo real
+    // Forçar reaplicação do breakpoint ao redimensionar
     $(window).on('resize', function(){
-        var currentSlides = $('.slick-services').slick('slickGetOption', 'slidesToShow');
         var windowWidth = $(window).width();
-        console.log("Largura da tela: ", windowWidth, "px | Slides visíveis: ", currentSlides);
+        if (windowWidth <= 580) {
+            slickSlider.slick('slickSetOption', 'slidesToShow', 1, true);
+            slickSlider.slick('slickSetOption', 'slidesToScroll', 1, true);
+        }
+        console.log("Largura da tela: ", windowWidth, "px | Slides visíveis: ", slickSlider.slick('slickGetOption', 'slidesToShow'));
     }).trigger('resize');
 
-    // Forçar aplicação do breakpoint
     $('.slick-services').on('breakpoint', function(event, slick, breakpoint){
         console.log("Breakpoint ativado: ", breakpoint, " | Slides visíveis: ", slick.options.slidesToShow);
     });
 
-    // Log para verificar o número de slides visíveis após inicialização
-    $(window).on('resize', function(){
-        console.log("Slides visíveis: ", $('.slick-services').slick('slickGetOption', 'slidesToShow'));
-    }).trigger('resize');
 
 
 
