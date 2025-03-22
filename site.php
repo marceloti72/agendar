@@ -85,15 +85,6 @@ require_once("cabecalho2.php") ?>
     background-color: #0056b3;
 }
 
-/* Estilos dos controles do Slick */
-.slick-dots li button:before {
-    font-size: 12px;
-    color: #007bff;
-}
-
-.slick-dots li.slick-active button:before {
-    color: #0056b3;
-}
 
 /* Ajustes responsivos para telas pequenas */
 @media (max-width: 580px) {
