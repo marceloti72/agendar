@@ -94,7 +94,56 @@ require_once("cabecalho2.php") ?>
 }
 
 
- 
+
+
+/* Estilos gerais do Slick */
+.slick-services {
+    margin: 0 -15px;
+}
+
+.slick-services .slick-slide {
+    padding: 15px;
+}
+
+/* Ajustes para celular */
+@media (max-width: 580px) {
+    .slick-services .slick-slide {
+        width: 33.33% !important; /* Cada slide ocupa 1/3 da largura para caber 3 */
+        padding: 5px; /* Reduz o espaçamento */
+    }
+
+    .slick-services .box {
+        width: 100%; /* Garante que o box ocupe o espaço do slide */
+        transform: scale(0.85); /* Reduz o tamanho em 15% para caber bem */
+        margin: 0 auto; /* Centraliza o box dentro do slide */
+    }
+
+    .slick-services .img-box img {
+      width: 33%;
+        height: 100px; /* Reduz a altura da imagem */
+        object-fit: cover;
+    }
+
+    .slick-services .detail-box h4 {
+        font-size: 0.8rem; /* Reduz o tamanho do título */
+        margin-bottom: 5px;
+    }
+
+    .slick-services .detail-box .new_price {
+        font-size: 0.9rem; /* Reduz o tamanho do preço */
+    }
+
+    .slick-services .detail-box a {
+        padding: 6px 12px; /* Reduz o botão */
+        font-size: 0.8rem;
+    }
+
+    /* Garante que o slider mantenha o layout horizontal */
+    .slick-track {
+        display: flex !important;
+        align-items: center;
+    }
+}
 
 
 </style>
@@ -591,13 +640,13 @@ $(document).ready(function(){
                 }
             },
             {
-                breakpoint: 580, // Celulares
+              breakpoint: 480, // Celulares
                 settings: {
                     slidesToShow: 3, // Mostra 3 slides
                     slidesToScroll: 3, // Passa 3 slides por vez
-                    centerMode: true, // Centraliza os slides
-                    variableWidth: true, // Permite largura variável
-                    adaptiveHeight: true
+                    arrows: false, // Remove setas em mobile, se desejar
+                    centerMode: false, // Desativa centerMode para layout fixo
+                    variableWidth: false // Desativa largura variável para controle total
                 }
             }
         ]
