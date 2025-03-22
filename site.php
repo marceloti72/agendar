@@ -555,7 +555,7 @@ if($depoimentos2 == 'Sim'){
                 }
             },
             {
-              breakpoint: 580, // Celulares
+              breakpoint: 480, // Celulares
                 settings: {
                     slidesToShow: 1, // Mostra 3 slides
                     slidesToScroll: 1, // Passa 3 slides por vez
