@@ -302,6 +302,7 @@ $data_atual = date('Y-m-d');
 				if(split[0] == "" || split[0] == undefined){
 
 				}else{
+					alert(split[0])
 					$("#nome").val(split[0]);
 				}
 				
