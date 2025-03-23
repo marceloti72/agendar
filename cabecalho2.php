@@ -336,7 +336,7 @@ try {
                     </li>
                 <?php } ?>
                 <li class="nav-item social-icons active">
-                    <a title="Ir para o Sistema" class="nav-link" href="login.php" target="_blank">
+                    <a title="Ir para o Sistema" class="nav-link" href="login.php?u=<?php echo $username?>" target="_blank">
                         <i class="fas fa-user"></i>
                     </a>
                 </li>

@@ -1261,18 +1261,28 @@ $plano = $res3['plano'];
 </div>
 
 
-<!-- Modal Principal -->
 <div class="modal fade" id="assinaturaModal" tabindex="-1" aria-labelledby="assinaturaModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-      <div class="modal-header" style="background: linear-gradient(45deg, #4682B4, #87CEEB); border-bottom: none;">
-        <h5 class="modal-title text-white" id="assinaturaModalLabel" style="font-size: 25px;">Dados da Assinatura</h5>
-        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9;margin-top: -30px">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header text-white " style="background-color: #4682B4;">
+        <h5 class="modal-title" id="assinaturaModalLabel">Dados da Assinatura</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <div class="modal-body" style="background-color: #DCDCDC;">
+        <?php
+        $data_atual = date('Y-m-d');  
 
-	  <?php                
+        ?>
+
+        <div class="card">
+        <div class="card-body">       
+            <div style="text-align: center;">
+			<h3 class="card-text"><?php echo mb_strtoupper($nome_sistema, 'UTF-8'); ?></h3> 
+            </div>     
+             
+			<?php                
 
             // Configurações Iniciais e Conexões
         $url_sistema = explode("//", $url);
@@ -1323,103 +1333,47 @@ $plano = $res3['plano'];
             $data_venc = null;
             $taxa = 0;
             $sub_total = 0;
-        }?>
+        }
 
-
-
-
-      <div class="modal-body" style="background-color: #F8F9FA; padding: 25px;">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body" style="padding: 20px;">
-            <div class="text-center mb-3">
-              <h3 class="card-text" style="color: #333; font-weight: 700;"><?php echo mb_strtoupper($nome_sistema, 'UTF-8'); ?></h3>
-            </div>
-            <hr style="border-top: 1px solid #E0E0E0;">
+       
+        //$data_vencF = implode('/', array_reverse(explode('-', $data_venc)));
+        ?>
             
+            <hr>
             <?php if($ativo_sistema == 'teste'): ?>
-              <small class="d-block text-center mb-3" style="font-size: 12px; color: #DC3545;">*Em teste grátis</small>
+                <small style="font-size: 10px !important; color: red !important;">*em teste grátis</small>
             <?php endif; ?>
+            <p class="card-text">
+            <strong>Detalhes da Cobrança:</strong>
+            </p>
+            <ul class="list-group list-group-flush">
+            <li class="list-group-item">Valor: R$ <?php echo $valorMensal?></li>
+            <li class="list-group-item">Plano: <?php echo $plano?></li>
+            <li class="list-group-item">Pagamento: <?php echo $frequencia ?></li>
             
-            <p class="card-text" style="font-weight: 600; color: #444;">Detalhes da Cobrança:</p>
-            <ul class="list-group list-group-flush mb-4" style="border: 1px solid #E9ECEF; border-radius: 5px;">			  
-              <li class="list-group-item d-flex justify-content-between" style="background: #fff; padding-top: 10px"><b>Valor:</b> <span>R$ <?php echo $valorMensal?></span></li>
-              <li class="list-group-item d-flex justify-content-between" style="background: #fff;"><b>Plano:</b> <span><?php echo $plano?></span></li>
-              <li class="list-group-item d-flex justify-content-between" style="background: #fff;  padding-bottom: 10px"><b>Pagamento:</b> <span><?php echo $frequencia ?></span></li>			  
-            </ul>
-
+                   
+            </ul><br>
             <?php 
             if($data_venc < $data_atual){?>
-              <p style="color: #DC3545; font-weight: 500;"><strong>Vencida em:</strong> <?php echo date('d/m/Y', strtotime($data_venc)); ?></p>
-            <?php }else{?>
-              <p style="color: #28A745; font-weight: 500;"><strong>Próximo Vencimento:</strong> <?php echo date('d/m/Y', strtotime($data_venc)); ?></p>
-            <?php } ?>
-
-            <div class="d-flex gap-2">
-              <a href="https://www.gestao.skysee.com.br/pagar/<?php echo $id_pg?>" target="_blank" class="btn btn-primary w-100" style="background: #4682B4; border: none; transition: all 0.3s;">Pagar</a>
-              <button type="button" class="btn btn-outline-secondary w-100" data-toggle="modal" data-target="#trocarPlanoModal" style="transition: all 0.3s;">Trocar Plano</button>
-            </div>
-          </div>
+                <p style="color: red;"><strong>Vencida em:</strong> <?php echo date('d/m/Y', strtotime($data_venc)); ?></p><?php 
+            }else{?>
+                <p><strong>Próximo Vencimento:</strong> <?php echo date('d/m/Y', strtotime($data_venc)); ?></p><?php 
+            }            
+            ?>
+            <a href="https://www.gestao.skysee.com.br/pagar/<?php echo $id_pg?>" target="_blank"><button class="form-control bg-info text-white">Pagar</button></a>
+            
         </div>
+        </div>
+
+                
+
       </div>
-      <div class="modal-footer" style="border-top: none; padding: 15px 25px;">
-        <button type="button" class="btn btn-secondary" id="btn-fechar2" data-dismiss="modal" style="border-radius: 5px; padding: 8px 20px;">Fechar</button>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
       </div>
     </div>
   </div>
 </div>
-
-<!-- Modal Trocar Plano -->
-<div class="modal fade" id="trocarPlanoModal" tabindex="-1" aria-labelledby="trocarPlanoModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-      <div class="modal-header" style="background: linear-gradient(45deg, #4682B4, #87CEEB); border-bottom: none;">
-        <h5 class="modal-title text-white" id="trocarPlanoModalLabel" style="font-size: 25px;">Trocar Plano</h5>
-        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9;margin-top: -30px">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-	  <form id="form-troca" method="POST">
-		<div class="modal-body" style="background-color: #F8F9FA; padding: 25px;">
-			<div class="card border-0 shadow-sm">
-			<div class="card-body" style="padding: 20px;">
-				<p class="text-center mb-4" style="color: #444; font-weight: 500;">Escolha o novo plano:</p>
-				<div class="form-group">
-				<select class="form-control" id="novoPlano" name="novoPlano" style="border-radius: 5px;">
-					<option value="individual_mensal">Individual Mensal - R$ 49,90</option>
-					<option value="individual_anual">Individual Anual - R$ 526,94 12% off</option>
-					<option value="empresa_mensal">Empresa Mensal - R$ 79,90</option>
-					<option value="empresa_anual">Empresa Anual - R$ 786,21 18% off</option>
-				</select>
-				</div>
-				<button type="submit" class="btn btn-success w-100 mt-3" style="background: #28A745; border: none; padding: 10px; transition: all 0.3s;">Confirmar Troca</button>
-			</div>
-			</div>
-		</div>
-		<small><div id="mensagem-troca" align="center" class="mt-3"></div></small>
-		<div class="modal-footer" style="border-top: none; padding: 15px 25px;">
-			<button type="button" class="btn btn-secondary" id="btn-fechar" data-dismiss="modal" style="border-radius: 5px; padding: 8px 20px;">Cancelar</button>
-		</div>
-		
-	  </form>
-    </div>
-  </div>
-</div>
-
-<style>
-.btn:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
-.list-group-item {
-  padding: 10px 15px;
-  color: #555;
-}
-
-.modal-content {
-  transition: all 0.3s ease;
-}
-</style>
 
 
 
@@ -2477,53 +2431,6 @@ $plano = $res3['plano'];
 			paging: true,
 		});
     });
-	</script>
-
-	<script>
-		$("#form-troca").submit(function () {		
-		event.preventDefault();
-		
-		var formData = new FormData(this);
-
-		$.ajax({
-			url: 'troca.php',
-			type: 'POST',
-			data: formData,
-
-			success: function (mensagem) {				
-				$('#mensagem-troca').text('');
-				$('#mensagem-troca').removeClass()
-				if (mensagem.trim() == "Alterado com Sucesso") {  
-					Swal.fire({
-						position: "top-center",
-						icon: "success",
-						title: "Troca efetuada com sucesso!",
-						showConfirmButton: false,
-						timer: 2000,
-										
-						willClose: () => {
-						setTimeout(() => {
-							location.reload();
-						
-							}, 300);
-						}  
-					});  
-					
-					
-				} else {
-					$('#mensagem-troca').addClass('text-danger')
-					$('#mensagem-troca').text(mensagem)
-				}
-
-			},
-
-			cache: false,
-			contentType: false,
-			processData: false,
-
-		});
-
-	});
 	</script>
 
 

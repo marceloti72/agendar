@@ -1,6 +1,6 @@
 <?php require_once("sistema/conexao.php") ?>
 <!-- footer section -->
-  <footer class="footer_section" style="background-color: #836FFF ;">
+  <footer class="footer_section" style="background-color:rgb(56, 87, 112);">
     <div class="container">
       <div class="footer_content ">
         <div class="row ">

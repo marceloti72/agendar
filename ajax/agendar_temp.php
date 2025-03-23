@@ -147,7 +147,7 @@ if($total_reg > 0 and $res[0]['id'] != $id){
 $query = $pdo->query("SELECT * FROM clientes where telefone LIKE '$telefone2' and id_conta = '$id_conta' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 if(@count($res) == 0){
-	$query = $pdo->prepare("INSERT INTO clientes SET nome = :nome, telefone = :telefone, data_cad = curDate(), cartoes = '0', alertado = 'Não', id_conta = :id_conta");
+	$query = $pdo->prepare("INSERT INTO clientes SET nome = :nome, telefone = :telefone, data_cad = curDate(), cartoes = '0', alertado = 'Não', origem = 'Site', id_conta = :id_conta");
 
 	$query->bindValue(":nome", "$nome");
 	$query->bindValue(":telefone", "$telefone2");	

@@ -20,7 +20,7 @@ $data_atual = date('Y-m-d');
 
 </div>
 
-<div class="footer_section" style="background: #A9A9A9; ">
+<div class="footer_section" style="background:#585757; ">
 	<div class="container" >
 		<div class="footer_content " >
 			<form id="form-agenda" method="post" style="margin-top: -25px !important">
@@ -40,7 +40,7 @@ $data_atual = date('Y-m-d');
 					<input  onclick="buscarNome()" class="form-control" type="text" name="nome" id="nome" placeholder="Nome" required />
 				</div>
 
-				</div>
+				</div><hr>
 
 
 
@@ -65,7 +65,7 @@ $data_atual = date('Y-m-d');
 
 
 					</select>    
-				</div>		
+				</div>	<br>	
 
                 
 					<div class="form-group">			
@@ -88,13 +88,13 @@ $data_atual = date('Y-m-d');
 						<input maxlength="100" type="text" class="inputs_agenda cor_place" name="obs" id="obs" placeholder="Observações caso exista alguma.">
 					</div>	
 
-					  <button onclick="salvar()" class="botao-verde" type="submit" style="width:100%; background-color: #006400;border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)' " id="btn_agendar">
-                 <span id='botao_salvar'>Confirmar Agendamento</span>
+					  <button onclick="salvar()" class="botao-verde" type="submit" style="width:100%; background-color:rgb(81, 136, 86);border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)' " id="btn_agendar">
+                 <span id='botao_salvar'><i class="fas fa-calendar-check"></i> Confirmar Agendamento</span>
                    
                 </button>
 
-                  <a href="meus-agendamentos.php?u=<?php echo $username?>" class="botao-azul" id='botao_editar' style="width:100%; text-align: center; margin-top: 5px; background-color: #DAA520;border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'">              
-                  Ver Agendamentos
+                  <a href="meus-agendamentos.php?u=<?php echo $username?>" class="botao-azul" id='botao_editar' style="width:100%; text-align: center; margin-top: 5px; background-color:rgb(130, 144, 207);border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'">              
+                  <i class="fas fa-search"></i> Ver Agendamentos
                 </a>
                
 
@@ -296,7 +296,7 @@ $data_atual = date('Y-m-d');
 				}else{
 					$("#servico").val(parseInt(split[5])).change();
 					document.getElementById("botao_editar").style.display = "block";					
-					$("#botao_salvar").text('Novo Agendamento');
+					$("#botao_salvar").html('<i class="fas fa-calendar-check"></i> Novo Agendamento');
 				}
 
 				if(split[0] == "" || split[0] == undefined){

@@ -27,19 +27,28 @@
 	<link rel="stylesheet" type="text/css" href="login/css/main.css">
 <!--===============================================================================================-->
 </head>
+<style>
+	.container-login100 {
+		background-color: #4682B4 ;
+	}
+
+	
+	@media (max-width: 580px) {
+    .panel-heading {
+        margin-left: -20px !important;
+    }
+}
+</style>
 <body>
 	
 	<div class="limiter">
 		<div class="container-login100">
-			<div class="wrap-login100">				
+			<div class="wrap-login100">		
+			    <div class="panel-heading" align="center" style="width: 100%; margin-top: -78px; margin-left: -57px; margin-bottom: 40px;">
+			    	<img src="sistema/img/logo_login.jpg" width="400px">
+			 	</div>		
 				<form action="sistema/autenticar.php" method="post">
-					<span class="login100-form-title p-b-4">
-						Seja Bem-vindo a 
-					</span>
-					<img src="sistema/img/logo2.png" width="250px;" >
-					<span class="login100-form-title p-b-35">
-					<!-- <img src="./img/logo/logo.png" width="150 px" style="filter: invert(100%)"> -->
-					</span>
+					
 					<div class="wrap-input100 validate-input">
 						<input class="input100" type="text" name="usuario">
 						<span class="focus-input100" data-placeholder="Usuário"></span>
@@ -62,7 +71,7 @@
 						</div>
 					</div>
 
-					<div class="text-center p-t-40">
+					<div class="text-center p-t-20">
 						<span class="txt1">
 							Primeiro acesso?
 						</span>
@@ -71,7 +80,7 @@
 							Cadastrar Senha
 						</a>
 					</div>
-					<div class="text-center p-t-40">
+					<div class="text-center p-t-20">
 						<span class="txt1">
 							Esqueceu a senha?
 						</span>

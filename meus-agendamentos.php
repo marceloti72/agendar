@@ -26,7 +26,7 @@ $id_cliente = $res[0]['id'];
 
 </div>
 
-<div class="footer_section" style="background: #A9A9A9; ">
+<div class="footer_section" style="background: #585757; ">
 	<div class="container">
 		<div class="footer_content " >
 			

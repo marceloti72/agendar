@@ -224,7 +224,7 @@ if($carrossel == 'Sim'){
                     if ($total_reg > 0) { 
                         for ($i = 0; $i < $total_reg; $i++) {
                             $nome = $res[$i]['nome'];?>
-                            <button id="botao_servicos" style="border-radius: 15px; background-color:rgb(141, 157, 248); color: white; padding: 2 px;"><?php echo $nome;?></button><?php              
+                            <button id="botao_servicos" style="border-radius: 10px; background-color:rgb(141, 157, 248); color: white; padding: 2 px;border: 0"><?php echo $nome;?></button><?php              
                             
                         }
                     }
@@ -235,6 +235,13 @@ if($carrossel == 'Sim'){
                     if ($total_reg > 0) { 
                     ?>
                 </p>
+                <?php 
+              if($pgto_api == 'Sim'){
+              ?>
+              <img src="images/mp2.png" alt="Banner Mercado Pago" class="img-fluid mb-4 produto-banner" style="max-width: 200px; height: auto;margin: 0;">
+              <?php 
+              }
+              ?>
             </div>
             <div class="product_container">
                 <div class="slick-services">
@@ -317,11 +324,18 @@ if($produtos2 == 'Sim'){
 
     <section class="product_section layout_padding">
       <div class="container-fluid">
-        <div class="heading_container heading_center">
-          <h2 id="titulo_produtos">
-            Nossos Produtos
-          </h2>
-        </div>
+      <div class="heading_container heading_center d-flex align-items-center">
+        <h2 id="titulo_produtos">
+          Nossos Produtos
+        </h2>
+        <?php 
+        if($pgto_api == 'Sim'){
+        ?>
+        <img src="images/mp2.png" alt="Banner Mercado Pago" class="img-fluid mb-4 produto-banner" style="max-width: 200px; height: auto;margin: 0;">
+        <?php 
+        }
+        ?>
+      </div>
         <div class="row">
           <div class="product-slider">
             <?php 

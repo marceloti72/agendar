@@ -35,7 +35,7 @@ if ($res) {
 		$id_usuario = @$res['id'];
 
 		$_SESSION['id_conta'] = @$res['id_conta'];
-		$_SESSION['id_usuario'] = @$res['id'];
+		$_SESSION['id_usuario'] = @$res['id'];		
 
 		if ($ativo == 'Não') {
 
@@ -182,42 +182,15 @@ if ($res) {
 		$_SESSION['cpf_usuario'] = $res['cpf'];
 		$_SESSION['nivel_usuario'] = $res['nivel'];
 
+		// APAGAR ENCAIXES ANTERIORES
+		$data_atual = date('Y-m-d'); // Data atual no formato YYYY-MM-DD
+		$query = $pdo->prepare("DELETE FROM encaixe WHERE data < :data_atual and id_conta = :id_conta");
+		$query->bindValue(":data_atual", $data_atual);
+		$query->bindValue(":id_conta", $id_conta);
+		$query->execute();
+
 		echo "<script language='javascript'> window.location='painel/index.php' </script>";
-		// $nivel = $res['nivel'];
-
-		// if($nivel == 'Admin_master'){
-		// 	echo "<script language='javascript'> window.location='painel-adm' </script>";
-		// }
-
-		// if($nivel == 'Admin'){
-		// 	echo "<script language='javascript'> window.location='painel-adm' </script>";
-		// }
-
-		// if($nivel == 'professor'){
-		// 	echo "<script language='javascript'> window.location='painel-professor' </script>";
-		// }
-
-		// if($nivel == 'secretaria'){
-		// 	echo "<script language='javascript'> window.location='painel-secretaria' </script>";
-		// }
-
-		// if($nivel == 'aluno'){
-		// 	echo "<script language='javascript'> window.location='painel-aluno' </script>";
-		// }
-
-		// if($nivel == 'responsavel'){
-		// 	echo "<script language='javascript'> window.location='painel-responsavel' </script>";
-		// }
-
-		// if($nivel == 'tesoureiro'){
-		// 	echo "<script language='javascript'> window.location='painel-tesoureiro' </script>";
-		// }
-
-		// if($nivel == 'estoquista'){
-		// 	echo "<script language='javascript'> window.location='painel-almoxarifado' </script>";
-		// }
-
-
+		
 
 	} else {
 		echo "<script language='javascript'> window.alert('Senha incorreta!') </script>";
