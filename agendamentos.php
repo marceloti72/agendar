@@ -37,7 +37,7 @@ $data_atual = date('Y-m-d');
 					</div>
 
 				<div class="col-12">				
-					<input class="form-control" type="text" name="nome" id="nome_cliente" placeholder="Nome" required />
+					<input  onclick="buscarNome()" class="form-control" type="text" name="nome" id="nome_cliente" placeholder="Nome" required />
 				</div>
 
 				</div><hr>

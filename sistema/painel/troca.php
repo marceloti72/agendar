@@ -87,7 +87,7 @@ try {
         $id_cliente = $resultado['id'];
 
         // Atualiza a tabela receber
-        $query_receber = $pdo2->prepare("UPDATE receber SET frequencia = :frequencia, valor = :valor WHERE cliente = :id_cliente AND (data_pgto IS NULL OR data_pgto = '' OR data_pgto = 'null')");
+        $query_receber = $pdo2->prepare("UPDATE receber SET frequencia = :frequencia, valor = :valor WHERE cliente = :id_cliente AND data_pgto IS NULL");
         $query_receber->bindValue(":frequencia", $frequencia, PDO::PARAM_INT);
         $query_receber->bindValue(":valor", $valor);
         $query_receber->bindValue(":id_cliente", $id_cliente, PDO::PARAM_INT);
