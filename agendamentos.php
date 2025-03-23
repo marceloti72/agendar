@@ -37,7 +37,7 @@ $data_atual = date('Y-m-d');
 					</div>
 
 				<div class="col-12">				
-					<input  onclick="buscarNome()" class="form-control" type="text" name="nome" id="nome" placeholder="Nome" required />
+					<input class="form-control" type="text" name="nome" id="nome_cliente" placeholder="Nome" required />
 				</div>
 
 				</div><hr>
@@ -301,9 +301,8 @@ $data_atual = date('Y-m-d');
 
 				if(split[0] == "" || split[0] == undefined){
 
-				}else{
-					alert(split[0])
-					$("#nome").val(split[0]);
+				}else{					
+					$("#nome_cliente").val(split[0]);
 				}
 				
 				
