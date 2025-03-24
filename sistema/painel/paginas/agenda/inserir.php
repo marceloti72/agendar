@@ -30,6 +30,7 @@ $intervalo = $res[0]['intervalo'];
 $query = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $tempo = $res[0]['tempo'];
+$nome_servico = $res[0]['nome'];
 
 
 $hora_minutos = strtotime("+$tempo minutes", strtotime($hora));
@@ -152,11 +153,16 @@ $ult_id = $pdo->lastInsertId();
 
 if ($msg_agendamento == 'Sim') {
 	if (strtotime($hora_atual) < strtotime($nova_hora) or strtotime($data_atual) != strtotime($data_agd)) {
+		$nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
 
-		$mensagem = '*Confirmação de Agendamento* ';
-		$mensagem .= '                              _(1 para Confirmar, 2 para Cancelar)_';
+		$mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
+		$mensagem .= '*Confirmação de Agendamento* 📆%0A';
+		$mensagem .= 'Data: ' . $dataF . '%0A';
+		$mensagem .= 'Hora: ' . $horaF . '%0A';
+		$mensagem .= 'Serviço: ' . $nome_servico . '%0A%0A';
+		$mensagem .= '_(1 para *CONFIRMAR*, 2 para *CANCELAR*)_';
 		$id_envio = $ult_id;
-		$data_envio = $data_agd . ' ' . $hora_do_agd;
+		$data_envio = $data_agd . ' ' . $nova_hora;
 
 		if ($minutos_aviso > 0) {
 			require("../../../../ajax/confirmacao.php");
