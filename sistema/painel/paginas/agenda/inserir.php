@@ -23,7 +23,6 @@ if (@$hora == "") {
 	exit();
 }
 
-
 $query = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $intervalo = $res[0]['intervalo'];

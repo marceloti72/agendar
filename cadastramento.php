@@ -5,10 +5,10 @@ require_once("sistema/conexao.php");
 
 // INÍCIO - Adicionado para debugging (erro 500)
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Relata erros do MySQLi
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
+// mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Relata erros do MySQLi
 
 // FIM - Adicionado para debugging
 

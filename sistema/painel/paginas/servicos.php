@@ -6,6 +6,17 @@ require_once("../conexao.php");
 
 $pag = 'servicos';
 
+?>
+<style>
+	.tooltip-inner {
+		background-color: #48D1CC;
+		/* Amarelo */
+		color: #000;
+		/* Cor do texto */
+	}
+</style>
+<?php
+
 if($tipo_comissao == 'Porcentagem'){
 		$item_comissao = '(%)';
 	}else{
@@ -107,7 +118,7 @@ if(@$servicos == 'ocultar'){
 
 						<div class="col-md-6">
 							<div class="form-group">
-								<label for="exampleInputEmail1">Dias Retorno</label>
+								<label for="exampleInputEmail1">Dias Retorno <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Informe aqui os dias de retorno para esse serviço. O cliente receberá um WhatsApp com uma pesquisa de satisfação junto com uma mensagem incentivando a agendar um novo serviço, será enviado o link de agendamento. 🚀" ></i></label>
 								<input type="number" class="form-control" id="dias_retorno" name="dias_retorno" placeholder="Dias Retorno" >    
 							</div> 	
 						</div>
@@ -126,7 +137,7 @@ if(@$servicos == 'ocultar'){
 
 						<div class="col-md-6">
 							<div class="form-group">
-								<label for="exampleInputEmail1">Tempo Extimado</label>
+								<label for="exampleInputEmail1">Tempo Extimado <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Infome aqui o tempo que levar a conclusão do serviço. Isso impacta diretamente sua agenda 📆. " ></i></label>
 								<input type="number" class="form-control" id="tempo" name="tempo" placeholder="Minutos" >    
 							</div> 	
 						</div>
@@ -277,6 +288,12 @@ if(@$servicos == 'ocultar'){
             target.src = "";
         }
     }
+</script>
+
+<script>
+	$(function() {
+		$('[data-toggle="tooltip"]').tooltip()
+	})
 </script>
 
 

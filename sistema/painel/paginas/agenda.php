@@ -176,7 +176,7 @@ if(@count($res) > 0){
 					<br>
 					<input type="hidden" name="id" id="id">
 					<input type="hidden" name="id_funcionario" id="id_funcionario"> 
-					<small><div id="mensagem" align="center" class="mt-3"></div></small>					
+					<small><div id="mensagem-ag" align="center" class="mt-3"></div></small>					
 
 				</div>
 
@@ -436,7 +436,7 @@ if(@count($res) > 0){
 <script>
 
 	$("#form-text").submit(function () {
-		$('#mensagem').text('Carregando...');
+		$('#mensagem-ag').text('Carregando...');
 		event.preventDefault();
 		
 		var formData = new FormData(this);
@@ -447,15 +447,15 @@ if(@count($res) > 0){
 			data: formData,
 
 			success: function (mensagem) {				
-				$('#mensagem').text('');
-				$('#mensagem').removeClass()
+				$('#mensagem-ag').text('');
+				$('#mensagem-ag').removeClass()
 				if (mensagem.trim() == "Salvo com Sucesso") {                   
 					$('#btn-fechar').click();
 					listar();
 					listarHorarios();
 				} else {
-					$('#mensagem').addClass('text-danger')
-					$('#mensagem').text(mensagem)
+					$('#mensagem-ag').addClass('text-danger')
+					$('#mensagem-ag').text(mensagem)
 				}
 
 			},

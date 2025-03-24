@@ -125,6 +125,17 @@ if (@$configuracoes == 'ocultar') {
 					</div>
 				</div>
 
+				<div class="col-md-2">
+					<div class="form-group">
+						<label for="exampleInputEmail1">Pesq.Satisfação <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Importante ferramenta de crescimento. Envia um WhatsApp, no dia que vc irá estipular em cada serviço com data de retorno, com uma peguena pesquisa de satisfação e junto um link de agendamento com mensagem de incentivo para novos agendamentos. 🚀" style="color: blue;"></i></label>
+						<select class="form-control" name="satisfacao" id="satisfacao">
+							<option value="Sim" <?php if ($satisfacao == 'Sim') { ?> selected <?php } ?>>Sim</option>
+							<option value="Não" <?php if ($satisfacao == 'Não') { ?> selected <?php } ?>>Não</option>
+
+						</select>
+					</div>
+				</div>
+
 
 				<div class="col-md-2">
 					<div class="form-group">
@@ -137,18 +148,23 @@ if (@$configuracoes == 'ocultar') {
 					</div>
 				</div>
 
-				<div class="col-md-3">
+				<div class="col-md-2">
 					<div class="form-group">
-						<label for="exampleInputEmail1">Manter Agendamento Dias <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Informe aqui até quantos dias deseja manter os agendamentos concluidos no sistema." style="color: blue;"></i></label>
-						<input type="number" class="form-control" id="agendamento_dias" name="agendamento_dias" value="<?php echo $agendamento_dias ?>" placeholder="Manter no Banco de Dados">
+						<label for="exampleInputEmail1">Habilitar Encaixe <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Se habilitado, quando os horários de um profissional estiverem todos preenchidos, os clientes poderão se cadastrar no ENCAIXE, vagando um horário os clientes serão alertados por WhatsApp do horário disponível e poderão clicar no link de agendamento para concluir." style="color: blue;"></i></label>
+						<select class="form-control" name="encaixe" id="encaixe">
+							<option value="Sim" <?php if ($encaixe == 'Sim') { ?> selected <?php } ?>>Sim</option>
+							<option value="Não" <?php if ($encaixe == 'Não') { ?> selected <?php } ?>>Não</option>
+						</select>
 					</div>
 				</div>
+
+				
 
 			</div>
 
 
 			<div class="row">
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<div class="form-group">
 						<label for="exampleInputEmail1">Taxa de Cartões <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Aqui vc informa quem vai pagar as taxas dos cartões de Debito e Crétido. Lembrando que vc informa os valores das taxas no menu lateral em 'Cadastros -> Formas de Pagamentos'." style="color: blue;"></i></label>
 						<select class="form-control" name="taxa_sistema" id="taxa_sistema">
@@ -191,15 +207,7 @@ if (@$configuracoes == 'ocultar') {
 					</div>
 				</div>
 
-				<div class="col-md-2">
-					<div class="form-group">
-						<label for="exampleInputEmail1">Habilitar Encaixe <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Se habilitado, quando os horários de um profissional estiverem todos preenchidos, os clientes poderão se cadastrar no ENCAIXE, vagando um horário os clientes serão alertados por WhatsApp do horário disponível e poderão clicar no link de agendamento para concluir." style="color: blue;"></i></label>
-						<select class="form-control" name="encaixe" id="encaixe">
-							<option value="Sim" <?php if ($encaixe == 'Sim') { ?> selected <?php } ?>>Sim</option>
-							<option value="Não" <?php if ($encaixe == 'Não') { ?> selected <?php } ?>>Não</option>
-						</select>
-					</div>
-				</div>
+				
 
 			</div>
 

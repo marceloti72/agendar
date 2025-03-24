@@ -189,6 +189,21 @@ if ($res) {
 		$query->bindValue(":id_conta", $id_conta);
 		$query->execute();
 
+
+		//APAGAR AGENDAMENTOS ANTERIORES a 30 dias		
+		$data_anterior = date('Y-m-d', strtotime("-30 days",strtotime($data_atual)));
+
+		$query = $pdo->query("SELECT * FROM agendamentos WHERE data < '$data_anterior' and id_conta = '$id_conta'");
+		$res = $query->fetchAll(PDO::FETCH_ASSOC);
+		$total_reg = @count($res);
+			if($total_reg > 0){
+			for($i=0; $i < $total_reg; $i++){
+				foreach ($res[$i] as $key => $value){}
+					$id = $res[$i]['id'];
+					$pdo->query("DELETE FROM agendamentos WHERE id = '$id'");
+			}
+		}
+
 		echo "<script language='javascript'> window.location='painel/index.php' </script>";
 		
 

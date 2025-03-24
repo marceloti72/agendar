@@ -8,7 +8,7 @@ $pdo->query("DELETE FROM horarios where data < curDate() and data is not null ")
 
 //APAGAR AGENDAENTOS ANTERIORES
 $data_atual = date('Y-m-d');
-$data_anterior = date('Y-m-d', strtotime("-$agendamento_dias days",strtotime($data_atual)));
+$data_anterior = date('Y-m-d', strtotime("-30 days",strtotime($data_atual)));
 
 $query = $pdo->query("SELECT * FROM agendamentos WHERE data < '$data_anterior'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);

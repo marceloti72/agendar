@@ -99,21 +99,24 @@ if (strtotime($data_pgto) <=  strtotime($data_atual)) {
 
 
 	$telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
-	if ($msg_agendamento == 'Sim') {
+	if ($satisfacao == 'Sim') {
 		//agendar mensagem de retorno
+		$nome_cliente = trim($nome_cliente);
+	
 		$link_agenda = $url.'agendar/agendamentos?u='.$username;
 		$nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
-
-        $mensagem = '*'.$nome_sistema_maiusculo.'*%0A%0A';
-		$mensagem .= 'Olá '.$nome_cliente.', tudo bem! 😃%0A';
-		$mensagem .= 'Seu último serviço: '.$nome_servico.'%0A%0A';
-		$mensagem .= 'Queremos ouvir você!%0A';
-		$mensagem .= 'Como foi seu último serviço de conosco?%0A';
-		$mensagem .= 'Você teria alguma sugestão de melhoria? Você é muito importante pra gente!%0A';
-		$mensagem .= 'Faz um tempo que não nós vemos você aqui. Quando você vai dar aquele tapa no visual? Você merece o que há de melhor, conheça nossos pacotes de desconto. *Promoção Especial apenas hoje!* 👇%0A';
-		$mensagem .= 'Acesse e agende: '.$link_agenda;
-		
 		$data_mensagem = $data_retorno . ' 08:00:00';
+
+		$mensagem = '*'.$nome_sistema_maiusculo.'*%0A%0A';
+		$mensagem .= 'Olá *'.$nome_cliente.'*, tudo bem! 😃%0A%0A';	
+		$mensagem .= 'Queremos ouvir você!%0A';
+		$mensagem .= '✅Como foi seu último serviço de *'.$nome_servico.'* conosco?%0A';
+		$mensagem .= '✅Você teria alguma sugestão de melhoria?%0A%0A';
+		$mensagem .= 'Você é muito importante pra gente!%0A';
+		$mensagem .= 'Faz um tempo que não vemos você aqui. Conheça nossos pacotes de desconto.%0A%0A';
+		$mensagem .= '*Promoção Especial apenas hoje!*%0A';
+		$mensagem .= '📆Acesse e agende: '.$link_agenda.'%0A';
+
 		require('../../../../ajax/api-agendar.php');
 	}
 } else {
