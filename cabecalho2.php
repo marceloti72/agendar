@@ -307,7 +307,7 @@ try {
 <header class="header_section">
     <nav class="navbar navbar-expand-lg custom_nav-container">
         <a class="navbar-brand" href="site.php?u=<?php echo $username?>">
-            <img src= "<?php echo $url?>sistema/img/logo<?php echo $id_conta?>.png" alt="Logo"><b id="nome">
+            <img src= "sistema/img/logo<?php echo $id_conta?>.png" alt="Logo"><b id="nome">
             <?php echo $nome_sistema ?></b>
         </a>
         
@@ -318,25 +318,25 @@ try {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="<?php echo $url?>site/<?php echo $username?>">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="site.php?u=<?php echo $username?>">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <?php if ($agendamentos2 == 'Sim') { ?>
                     <li class="nav-item active">
-                        <a class="nav-link" href="<?php echo $url?>agendamentos/<?php echo $username?>">Agendamentos</a>
+                        <a class="nav-link" href="agendamentos.php?u=<?php echo $username?>">Agendamentos</a>
                     </li>
                 <?php } ?>
                 <?php if ($produtos2 == 'Sim') { ?>
                     <li class="nav-item active">
-                        <a class="nav-link active" href="<?php echo $url?>produtos/<?php echo $username?>">Produtos</a>
+                        <a class="nav-link active" href="produtos.php?u=<?php echo $username?>">Produtos</a>
                     </li>
                 <?php } ?>
                 <?php if ($servicos2 == 'Sim') { ?>
                     <li class="nav-item active">
-                        <a class="nav-link" href="<?php echo $url?>servicos/<?php echo $username?>">Serviços</a>
+                        <a class="nav-link" href="servicos.php?u=<?php echo $username?>">Serviços</a>
                     </li>
                 <?php } ?>
                 <li class="nav-item social-icons active">
-                    <a title="Ir para o Sistema" class="nav-link" href="<?php echo $url?>login.php" target="_blank">
+                    <a title="Ir para o Sistema" class="nav-link" href="login.php" target="_blank">
                         <i class="fas fa-user"></i>
                     </a>
                 </li>

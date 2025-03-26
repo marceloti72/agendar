@@ -128,7 +128,7 @@ require_once("cabecalho2.php") ?>
 <body class="sub_page">
   <div class="hero_area">
     <div class="hero_bg_box">
-      <img src="<?php echo $url?>images/banner<?php echo $id_conta?>.jpg" alt="">
+      <img src="images/banner<?php echo $id_conta?>.jpg" alt="">
       
     </div>
 
@@ -238,7 +238,7 @@ if($carrossel == 'Sim'){
                 <?php 
               if($pgto_api == 'Sim'){
               ?>
-              <img src="<?php echo $url?>images/mp2.png" alt="Banner Mercado Pago" class="img-fluid mb-4 produto-banner" style="max-width: 200px; height: auto;margin: 0;">
+              <img src="images/mp2.png" alt="Banner Mercado Pago" class="img-fluid mb-4 produto-banner" style="max-width: 200px; height: auto;margin: 0;">
               <?php 
               }
               ?>
@@ -257,7 +257,7 @@ if($carrossel == 'Sim'){
                     <div class="slick-slide">
                         <div class="box">
                             <div class="img-box">
-                                <img src="<?php echo $url?>sistema/painel/img/servicos/<?php echo $foto ?>" alt="<?php echo $nome ?>">
+                                <img src="sistema/painel/img/servicos/<?php echo $foto ?>" alt="<?php echo $nome ?>">
                             </div>
                             <div class="detail-box">
                                 <h4><?php echo $nomeF ?></h4>
@@ -290,7 +290,7 @@ if($carrossel == 'Sim'){
             <?php if($url_video != "" ){
               echo '<iframe width="100%" height="350" src="'.$url_video.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
             }else{?>
-              <img src="<?php echo $url?>images/foto-sobre<?php echo $id_conta?>.jpg" class="box_img" alt="about img">
+              <img src="images/foto-sobre<?php echo $id_conta?>.jpg" class="box_img" alt="about img">
             <?php } ?>
           </div>
         </div>
@@ -331,7 +331,7 @@ if($produtos2 == 'Sim'){
         <?php 
         if($pgto_api == 'Sim'){
         ?>
-        <img src="<?php echo $url?>images/mp2.png" alt="Banner Mercado Pago" class="img-fluid mb-4 produto-banner" style="max-width: 200px; height: auto;margin: 0;">
+        <img src="images/mp2.png" alt="Banner Mercado Pago" class="img-fluid mb-4 produto-banner" style="max-width: 200px; height: auto;margin: 0;">
         <?php 
         }
         ?>
@@ -353,7 +353,7 @@ if($produtos2 == 'Sim'){
               <div class="product-slide">
                 <div class="box">
                   <div class="img-box">
-                    <img src="<?php echo $url?>sistema/painel/img/produtos/<?php echo $foto ?>" title="<?php echo $descricao ?>">
+                    <img src="sistema/painel/img/produtos/<?php echo $foto ?>" title="<?php echo $descricao ?>">
                   </div>
                   <div class="detail-box">
                     <h5>
@@ -465,7 +465,7 @@ if($depoimentos2 == 'Sim'){
               <div class="item">
                 <div class="box">
                   <div >
-                  <img src="<?php echo $url?>sistema/painel/img/comentarios/<?php echo $foto ?>" alt="" class="img-1" style="aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%;border: 5px solid #be2623; width: 50%;">
+                  <img src="sistema/painel/img/comentarios/<?php echo $foto ?>" alt="" class="img-1" style="aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%;border: 5px solid #be2623; width: 50%;">
                   </div>
                   <div class="detail-box">
                     <h5>
@@ -695,7 +695,7 @@ if($depoimentos2 == 'Sim'){
               </div>
               <div class="col-md-4">
                 <div id="divImg">
-                  <img src="<?php echo $url?>sistema/painel/img/comentarios/sem-foto.jpg"  width="80px" id="target">                  
+                  <img src="sistema/painel/img/comentarios/sem-foto.jpg"  width="80px" id="target">                  
                 </div>
               </div>
 

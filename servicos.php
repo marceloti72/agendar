@@ -15,14 +15,14 @@
         <p class="col-lg-8 px-0">
           <?php 
           $query = $pdo->query("SELECT * FROM cat_servicos where id_conta = '$id_conta' ORDER BY id asc");
-          $res = $query->fetchAll(PDO::FETCH_ASSOC);
-            $total_reg = @count($res);
-            if($total_reg > 0){ 
-            for($i=0; $i < $total_reg; $i++){
-              foreach ($res[$i] as $key => $value){}
-              $id = $res[$i]['id'];
-              $nome = $res[$i]['nome'];?>
-            <button style="border-radius: 10px; background-color:rgb(141, 157, 248); color: white; padding: 5px;border: 0"><?php echo $nome;?></button><?php 
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$total_reg = @count($res);
+if($total_reg > 0){ 
+for($i=0; $i < $total_reg; $i++){
+  foreach ($res[$i] as $key => $value){}
+  $id = $res[$i]['id'];
+  $nome = $res[$i]['nome'];?>
+          <button style="border-radius: 10px; background-color:rgb(141, 157, 248); color: white; padding: 5px;border: 0"><?php echo $nome;?></button><?php 
 
 }
 
@@ -53,7 +53,7 @@ for($i=0; $i < $total_reg; $i++){
         <div class="col-sm-6 col-md-3">
           <div class="box">
             <div class="img-box">
-              <img src="<?php echo $url?>sistema/painel/img/servicos/<?php echo $foto ?>" title="<?php echo $descricao ?>">
+              <img src="sistema/painel/img/servicos/<?php echo $foto ?>" title="<?php echo $descricao ?>">
             </div>
             <div class="detail-box">
               <h5>
@@ -65,7 +65,7 @@ for($i=0; $i < $total_reg; $i++){
                 </span>
                
               </h6>
-              <a href="<?php echo $url?>agendamentos/<?php echo $username?>">
+              <a href="agendamentos">
                   Agendar
                 </a>
             </div>
