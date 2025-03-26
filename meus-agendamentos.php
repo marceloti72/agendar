@@ -250,7 +250,7 @@ $obs = str_replace('"', "**", $obs);
 		$('#barra_progresso').css('width', '0%').text('0%'); // Reset da barra
 
 		$.ajax({
-			url: "ajax/excluir.php",
+			url: "<?php echo $url?>ajax/excluir.php",
 			type: 'POST',
 			data: formData,
 			contentType: false,
@@ -288,7 +288,7 @@ $obs = str_replace('"', "**", $obs);
 						showConfirmButton: false,
 						
 					}).then(() => {
-						window.location.href = 'meus-agendamentos.php';
+						window.location.href = '<?php echo $url?>meus-agendamentos/<?php echo $username?>';
 					});							
 								
 				} else {
@@ -315,7 +315,7 @@ $obs = str_replace('"', "**", $obs);
 	function listarCartoes(tel){
 
 			$.ajax({
-			url: "ajax/listar-cartoes.php",
+			url: "<?php echo $url?>ajax/listar-cartoes.php",
 			method: 'POST',
 			data: {tel},
 			dataType: "text",

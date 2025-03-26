@@ -6,9 +6,9 @@
         <div class="row ">
           <div class="col-md-5 col-lg-5 footer-col">
             <div class="footer_detail">
-              <a href="site.php/u=<?php echo $username?>">
+              <a href="<?php echo $username?>">
                 <h4>
-                <img src="sistema/img/logo<?php echo $id_conta?>.png" alt="Logo" width="50px">
+                <img src="<?php echo $url?>sistema/img/logo<?php echo $id_conta?>.png" alt="Logo" width="50px">
                   <?php echo $nome_sistema ?>
                 </h4>
               </a>
@@ -89,10 +89,10 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <!-- Máscaras JS -->
-<script type="text/javascript" src="sistema/painel/js/mascaras.js"></script>
+<script type="text/javascript" src="<?php echo $url?>sistema/painel/js/mascaras.js"></script>
 
 <!-- Custom JS -->
-<script src="js/custom.js"></script>
+<script src="<?php echo $url?>js/custom.js"></script>
 
 
 

@@ -93,7 +93,7 @@ $data_atual = date('Y-m-d');
                    
                 </button>
 
-                  <a href="meus-agendamentos.php?u=<?php echo $username?>" class="botao-azul" id='botao_editar' style="width:100%; text-align: center; margin-top: 5px; background-color:rgb(130, 144, 207);border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'">              
+                  <a href="<?php echo $url?>meus-agendamentos/<?php echo $username?>" class="botao-azul" id='botao_editar' style="width:100%; text-align: center; margin-top: 5px; background-color:rgb(130, 144, 207);border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'">              
                   <i class="fas fa-search"></i> Ver Agendamentos
                 </a>
                
@@ -240,7 +240,7 @@ $data_atual = date('Y-m-d');
 
 		
 		$.ajax({
-			url: "ajax/listar-horarios2.php",
+			url: "<?php echo $url?>ajax/listar-horarios2.php",
 			method: 'POST',
 			data: {funcionario, data, hora, nome, telefone},
 			dataType: "text",
@@ -274,7 +274,7 @@ $data_atual = date('Y-m-d');
 		listarCartoes(tel);	
 		
 		$.ajax({
-			url: "ajax/listar-nome.php",
+			url: "<?php echo $url?>ajax/listar-nome.php",
 			method: 'POST',
 			data: {tel},
 			dataType: "text",
@@ -346,7 +346,7 @@ $data_atual = date('Y-m-d');
 		var formData = new FormData(this);
 
 		$.ajax({
-			url: "ajax/agendar_temp.php",
+			url: "<?php echo $url?>ajax/agendar_temp.php",
 			type: 'POST',
 			data: formData,
 
@@ -361,7 +361,7 @@ $data_atual = date('Y-m-d');
 					$('#mensagem').text(msg[0])
 					buscarNome()
 
-					window.location="pagamento/"+id_agd+"/100";
+					window.location="<?php echo $url?>pagamento/"+id_agd+"/100";
 
 				}		
 
@@ -393,7 +393,7 @@ $data_atual = date('Y-m-d');
 	function listarCartoes(tel){
 
 			$.ajax({
-			url: "ajax/listar-cartoes.php",
+			url: "<?php echo $url?>ajax/listar-cartoes.php",
 			method: 'POST',
 			data: {tel},
 			dataType: "text",
@@ -415,7 +415,7 @@ $data_atual = date('Y-m-d');
 		var func = $("#funcionario").val();
 		
 		$.ajax({
-			url: "ajax/listar-funcionario.php",
+			url: "<?php echo $url?>ajax/listar-funcionario.php",
 			method: 'POST',
 			data: {func},
 			dataType: "text",
@@ -434,7 +434,7 @@ $data_atual = date('Y-m-d');
 		var serv = $("#servico").val();
 		
 		$.ajax({
-			url: "ajax/listar-servico.php",
+			url: "<?php echo $url?>ajax/listar-servico.php",
 			method: 'POST',
 			data: {serv},
 			dataType: "text",
@@ -452,7 +452,7 @@ $data_atual = date('Y-m-d');
 		var serv = $("#servico").val();
 		
 		$.ajax({
-			url: "ajax/listar-funcionarios.php",
+			url: "<?php echo $url?>ajax/listar-funcionarios.php",
 			method: 'POST',
 			data: {serv},
 			dataType: "text",

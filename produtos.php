@@ -44,7 +44,7 @@ for($i=0; $i < $total_reg; $i++){
         <div class="col-sm-6 col-md-3">
           <div class="box">
             <div class="img-box">
-              <img src="sistema/painel/img/produtos/<?php echo $foto ?>" title="<?php echo $descricao ?>">
+              <img src="<?php echo $url?>sistema/painel/img/produtos/<?php echo $foto ?>" title="<?php echo $descricao ?>">
             </div>
             <div class="detail-box">
               <h5>
@@ -61,7 +61,7 @@ for($i=0; $i < $total_reg; $i++){
                         Comprar Agora
                       </a><?php 
                     }else{?>
-                      <a href="pagamento2/<?php echo $id ?>/<?php echo $id_conta?>">
+                      <a href="<?php echo $url?>pagamento2/<?php echo $id ?>/<?php echo $id_conta?>">
                         Comprar Agora
                       </a><?php 
                     }

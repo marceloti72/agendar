@@ -51,4 +51,3 @@ RewriteRule ^painel(.*)$ index.php?pag=painel [L]
 RewriteRule ^grafico_dias(.*)$ index.php?pag=grafico_dias [L]
 RewriteRule ^grafico_ano(.*)$ index.php?pag=grafico_ano [L]
 
-

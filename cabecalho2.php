@@ -12,7 +12,7 @@
   <meta name="keywords" content="Sistema de Agendamento" />
   <meta name="description" content="Agende aqui o serviço desejado" />
   <meta name="author" content="Marcelo Ferreira" />
-  <link rel="shortcut icon" href="images/favicon<?php echo $id_conta?>.png" type="image/x-icon">
+  <link rel="shortcut icon" href="<?php echo $url?>images/favicon<?php echo $id_conta?>.png" type="image/x-icon">
 
   <title><?php echo $nome_sistema ?></title>
 
@@ -36,8 +36,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Custom Styles -->
-  <link href="css/style.css" rel="stylesheet" />
-  <link href="css/responsive.css" rel="stylesheet" />
+  <link href="<?php echo $url?>css/style.css" rel="stylesheet" />
+  <link href="<?php echo $url?>css/responsive.css" rel="stylesheet" />
 
   <!-- (Opcional) Owl Carousel, descomente se estiver usando -->
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
@@ -307,10 +307,10 @@ try {
 <header class="header_section">
     <nav class="navbar navbar-expand-lg custom_nav-container">
         <a class="navbar-brand" href="site.php?u=<?php echo $username?>">
-            <img src="sistema/img/logo<?php echo $id_conta?>.png" alt="Logo"><b id="nome">
+            <img src= "<?php echo $url?>sistema/img/logo<?php echo $id_conta?>.png" alt="Logo"><b id="nome">
             <?php echo $nome_sistema ?></b>
         </a>
-
+        
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fas fa-bars"></i>
         </button>
@@ -318,25 +318,25 @@ try {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="site.php?u=<?php echo $username?>">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="<?php echo $url?>site/<?php echo $username?>">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <?php if ($agendamentos2 == 'Sim') { ?>
                     <li class="nav-item active">
-                        <a class="nav-link" href="agendamentos?u=<?php echo $username?>">Agendamentos</a>
+                        <a class="nav-link" href="<?php echo $url?>agendamentos/<?php echo $username?>">Agendamentos</a>
                     </li>
                 <?php } ?>
                 <?php if ($produtos2 == 'Sim') { ?>
                     <li class="nav-item active">
-                        <a class="nav-link active" href="produtos?u=<?php echo $username?>">Produtos</a>
+                        <a class="nav-link active" href="<?php echo $url?>produtos/<?php echo $username?>">Produtos</a>
                     </li>
                 <?php } ?>
                 <?php if ($servicos2 == 'Sim') { ?>
                     <li class="nav-item active">
-                        <a class="nav-link" href="servicos?u=<?php echo $username?>">Serviços</a>
+                        <a class="nav-link" href="<?php echo $url?>servicos/<?php echo $username?>">Serviços</a>
                     </li>
                 <?php } ?>
                 <li class="nav-item social-icons active">
-                    <a title="Ir para o Sistema" class="nav-link" href="login.php?u=<?php echo $username?>" target="_blank">
+                    <a title="Ir para o Sistema" class="nav-link" href="<?php echo $url?>login.php" target="_blank">
                         <i class="fas fa-user"></i>
                     </a>
                 </li>
