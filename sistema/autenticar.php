@@ -209,11 +209,11 @@ if ($res) {
 
 	} else {
 		echo "<script language='javascript'> window.alert('Senha incorreta!') </script>";
-		echo "<script language='javascript'> window.location='index.php' </script>";
+		echo "<script language='javascript'> window.location='../login.php' </script>";
 	}
 } else {
 	echo "<script language='javascript'> window.alert('Usuário não encontrado!') </script>";
-	echo "<script language='javascript'> window.location='index.php' </script>";
+	echo "<script language='javascript'> window.location='../login.php' </script>";
 }
 
 ?>
