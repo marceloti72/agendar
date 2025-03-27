@@ -79,7 +79,7 @@ if(isset($_GET['id'])){
 ?>
 
 
-<!-- Google tag (gtag.js) -->
+<!-- Google tag (gtag.js)
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SGLLYY1R8P"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -87,7 +87,7 @@ if(isset($_GET['id'])){
   gtag('js', new Date());
 
   gtag('config', 'G-SGLLYY1R8P');  
-</script>
+</script> -->
 
 <body class="sub_page">
   <div class="hero_area">         
