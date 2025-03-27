@@ -11,12 +11,12 @@
   <!-- Mobile Metas -->
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <!-- Site Metas -->
-  <meta name="keywords" content="sistema de gestão escolar" />
-  <meta name="description" content="sistema completo de gestão escolar" />
+  <meta name="keywords" content="sistema de gestão de serviços" />
+  <meta name="description" content="sistema completo de gestão de serviços" />
   <meta name="author" content="Marcelo Ferreira" />
   <link rel="shortcut icon" href="./img/logo_SS.png" type="image/x-icon">
 
-  <title>Sistema de Gestão Escolar</title>
+  <title>Sistema de Gestão de Serviços</title>
 
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />

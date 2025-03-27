@@ -74,7 +74,7 @@ $(function() {
                 data: {
                     authkey: authkey,
                     message: appkey,
-                    licence: 'hugocursos',
+                    licence: 'skysee',
                     apagarDispositivo: 'true'
                 },
                 success: function(response) {
@@ -151,7 +151,7 @@ $(function() {
             data: {
                 authkey: authkey,
                 message: appkey,
-                  licence: 'hugocursos',
+                  licence: 'skysee',
                 checkDispositivo: 'true'
             },
             success: function (response) {

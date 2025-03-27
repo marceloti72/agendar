@@ -572,7 +572,7 @@ $(document).ready(function()
                 authkey: authkey,
                 appkey: appkey,
                 message: appkey,
-                licence: 'hugocursos',
+                licence: 'skysee',
                 webhook: baseUrl + '/ajax/retornoMenuia.php',
                 conecteQR: 'true'
             },
@@ -659,7 +659,7 @@ $(document).ready(function()
                 data: {
                     authkey: authkey,
                     message: appkey,
-                    licence: 'hugocursos',
+                    licence: 'skysee',
                     checkDispositivo: 'true'
                 },
                 
