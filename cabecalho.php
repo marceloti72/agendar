@@ -77,17 +77,15 @@ if(isset($_GET['id'])){
 }
 
 ?>
-
-
-<!-- Google tag (gtag.js)
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SGLLYY1R8P"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R39PP1R46W"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-SGLLYY1R8P');  
-</script> -->
+  gtag('config', 'G-R39PP1R46W');
+</script>
 
 <body class="sub_page">
   <div class="hero_area">         
