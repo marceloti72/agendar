@@ -588,7 +588,7 @@ $(document).ready(function() { // Se você já tiver jQuery na página
   // Verifica se o navegador suporta Service Workers
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => { // Registra após a página carregar
-      navigator.serviceWorker.register('/sw.js') // Caminho para o seu Service Worker
+      navigator.serviceWorker.register('/app/sw.js') // Caminho para o seu Service Worker
         .then(registration => {
           console.log('Service Worker registrado com sucesso! Escopo:', registration.scope);
         })
