@@ -19,7 +19,7 @@ $manifestData = [
     "short_name" => "Agendar",
     "description" => "Uma breve descrição do seu sistema.",
     // --- Monta a start_url dinamicamente ---
-    "start_url" => "/index.php?u=" . urlencode($username), // Caminho relativo é melhor
+    "start_url" => "app/index.php?u=" . urlencode($username), // Caminho relativo é melhor
     // Ou use o caminho absoluto se precisar:
     // "start_url" => "https://agendar.skysee.com.br/index.php?u=" . urlencode($username),
     "display" => "standalone",
@@ -28,13 +28,13 @@ $manifestData = [
     "orientation" => "portrait-primary",
     "icons" => [
         [
-            "src" => "/icones/icon-192x192.png", // Use caminhos relativos à raiz
+            "src" => "../images/icone_192.png", // Use caminhos relativos à raiz
             "sizes" => "192x192",
             "type" => "image/png",
             "purpose" => "any maskable"
         ],
         [
-            "src" => "/icones/icon-512x512.png",
+            "src" => "../images/icone_512.png",
             "sizes" => "512x512",
             "type" => "image/png",
             "purpose" => "any maskable"
