@@ -26,10 +26,10 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
     .btn-custom { border-radius: 10px; box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4); }
     .modal-header-custom { background-color: #4682B4; color: white; }
     .modal-body-scroll { overflow: scroll; max-height: 550px; scrollbar-width: thin; background-color: #FFFACD; }
-    .servico-item, .produto-item { border: 7px solid #5c5c5c; margin-bottom: 5px; }
-    .pagamento-header { background-color: #FFA500; display: flex; align-items: center; justify-content: center; }
+    .servico-item, .produto-item { border: 3px solid #5c5c5c; margin-bottom: 5px; }
+    .pagamento-header { background-color:rgb(207, 239, 245); display: flex; align-items: center; justify-content: center; padding: 10px; }
     .input-background { background-color: #e9e6e6; }
-
+ 
 
     /* Estilos para responsividade */
     @media (max-width: 768px) { /* Ajuste este valor se necessário */
@@ -252,7 +252,7 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
                                 </div>
                                 <div class="produto-item" id="listar_produtos"></div>
                              </div> </div> <div class="col-md-4">
-                           <div class="modal-header pagamento-header">
+                           <div class="modal-header2 pagamento-header">
                                 <img src="../../images/registradora.png" alt="Ícone Pagamento" style="height: 50px; margin-right: 10px;">
                                 <h4 style="margin: 0;">PAGAMENTO</h4>
                             </div>

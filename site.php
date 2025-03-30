@@ -495,6 +495,13 @@ if($depoimentos2 == 'Sim'){
   <?php }
 } ?>
 
+<script>
+  // Verifica a largura da tela
+  if (window.innerWidth <= 768) { // 768px é um ponto comum para telas pequenas
+    window.location.href = "./app/index.php?u=<?php echo $username?>"; // Substitua pelo URL da página mobile
+  }
+</script>
+
   <!-- end client section -->
 
   <?php require_once("rodape2.php") ?>

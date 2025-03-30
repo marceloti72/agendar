@@ -144,6 +144,44 @@ $plano = $res3['plano'];
     height: 50px;
   }
 
+  .modal-header{
+	background-image: linear-gradient(to left,rgb(172, 172, 172), #787879);
+	text-transform: uppercase;
+  }
+
+  @keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(2); /* Aumenta o tamanho */
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.icon-pulse {
+    display: inline-block; /* Necessário para transform funcionar bem */
+    animation: pulse 1.5s infinite ease-in-out; /* Aplica a animação */
+    /* Ajuste a duração (1.5s) e o timing (ease-in-out) como desejar */
+}
+
+@keyframes wiggle-whatsapp {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }  /* Inclina para a direita */
+    75% { transform: rotate(-5deg); } /* Inclina para a esquerda */
+}
+
+.icon-wiggle-whatsapp {
+    display: inline-block;
+    animation: wiggle-whatsapp 1s infinite ease-in-out;
+    transform-origin: bottom center; /* Define o ponto de rotação */
+}
+
 
   
   @media (max-width: 768px) {
@@ -335,14 +373,14 @@ $plano = $res3['plano'];
 			<!--left-fixed -navigation-->
 			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
 				<nav class="navbar navbar-inverse" >
-					<div class="navbar-header">
+					<div class="navbar-header" style = "background-image: linear-gradient(to left,rgb(212, 130, 78), #913e09);">
 						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".collapse" aria-expanded="false" id="showLeftPush2">
 							<span class="sr-only">Toggle navigation</span>				
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<h1><a style="color: black;" class="navbar-brand" href="index.php"><span class="fa fa-area-chart"></span> Sistema<span class="dashboard_text"><?php echo $nome_sistema ?></span></a></h1>
+						<h1><a style="color: white;text-shadow: 1px 1px 3px black; " class="navbar-brand" href="index.php"><i class="bi bi-clock-history"></i> Agendar<span class="dashboard_text"><?php echo $nome_sistema ?></span></a></h1>
 					</div>
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="sidebar-menu">
@@ -687,12 +725,19 @@ $plano = $res3['plano'];
 							$total_agendamentos_hoje_usuario_pendentes = @count($res);
 							$link_ag = 'agenda';
 
-						}?>
+						}
+						if($total_agendamentos_hoje_usuario_pendentes != 0){
+							$icon2 = 'icon-wiggle-whatsapp';					
+						}else{
+							$icon2='';
+						}
+						?>
 
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell" title="Agendamentos hoje"></i>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell <?php echo $icon2?>" title="Agendamentos hoje"></i>
 							<?php 								
-								if($total_agendamentos_hoje_usuario_pendentes != 0){?>
+								if($total_agendamentos_hoje_usuario_pendentes != 0){							
+									?>
                                     <span class="badge text-danger"><?php echo $total_agendamentos_hoje_usuario_pendentes ?></span><?php 
 								}?>
 							</a>
@@ -765,9 +810,14 @@ $plano = $res3['plano'];
 						$res = $query->fetchAll(PDO::FETCH_ASSOC);
 						$total_aniversariantes_hoje = @count($res);
 
-							?>
+						if($total_aniversariantes_hoje != 0){
+							$icon3 = 'icon-wiggle-whatsapp';					
+						}else{
+							$icon3='';
+						}?>
+
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Aniversariantes de hoje"><i class="fa fa-birthday-cake" style="color:#FFF"></i>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Aniversariantes de hoje"><i class="fa fa-birthday-cake <?php echo $icon3?>" style="color: #FFF"></i>
 							<?php 								
 								if($total_aniversariantes_hoje != 0){?>
                                     <span class="badge" style="background: #2b6b39"><?php echo $total_aniversariantes_hoje ?></span><?php 
@@ -822,9 +872,15 @@ $plano = $res3['plano'];
 						$res = $query->fetchAll(PDO::FETCH_ASSOC);
 						$total_clientes_retorno = @count($res);
 
+						if($total_clientes_retorno != 0){
+							$icon4 = 'icon-wiggle-whatsapp';					
+						}else{
+							$icon4='';
+						}
+
 							?>
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Clientes com retorno pendente"><i class="fa fa-users" style="color:#FFF"></i>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Clientes com retorno pendente"><i class="fa fa-users <?php echo $icon4?>" style="color:#FFF"></i>
 								<?php 								
 								if($total_clientes_retorno != 0){?>
                                     <span class="badge" style="background: #c93504"><?php echo $total_clientes_retorno ?></span><?php 
@@ -879,9 +935,15 @@ $plano = $res3['plano'];
 						$res = $query->fetchAll(PDO::FETCH_ASSOC);
 						$total_comentarios = @count($res);
 
+						if($total_comentarios != 0){
+							$icon5 = 'icon-wiggle-whatsapp';					
+						}else{
+							$icon5='';
+						}
+
 							?>
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Depoimentos pendentes"><i class="fa fa-comment" style="color:#FFF"></i><?php 
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Depoimentos pendentes"><i class="fa fa-comment <?php echo $icon5?>" style="color:#FFF"></i><?php 
 							if($total_comentarios != 0){?>
                                     <span class="badge" style="background: #22168a"><?php echo $total_comentarios ?></span><?php 
 								}?>
@@ -923,13 +985,8 @@ $plano = $res3['plano'];
 						</li>	
 					<?php }
 
-					if($status == 'WhatsApp conectado'){
-                            $icon = 'mdi mdi-qrcode-scan mdi-24px mdi-spin';
-                        }else{
-                            $icon = 'mdi mdi-qrcode-scan mdi-24px';
-                        }?>
-
-                        <li class="dropdown head-dpdn" style="margin-left: 20px; color: <?php echo $cor?>" title='<?php echo $status?>'><small><i class="<?php echo $icon?>"></i></small></li>
+					?>
+                        <li class="dropdown head-dpdn" style="margin-left: 20px; color: <?php echo $cor?>" title='<?php echo $status?>'><small><i class="fab fa-whatsapp fa-2x"></i></small></li>
 
 
 

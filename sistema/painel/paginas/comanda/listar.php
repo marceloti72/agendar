@@ -2,171 +2,141 @@
 require_once("../../../conexao.php");
 @session_start();
 $usuario_logado = @$_SESSION['id_usuario'];
-$id_conta = @$_SESSION['id_conta']; // Certifique-se de que $id_conta está definido!
+$id_conta = @$_SESSION['id_conta'];
 
 $tabela = 'comandas';
 $data_hoje = date('Y-m-d');
 
-$dataInicial = @$_POST['dataInicial'] ?: $data_hoje;  // Usa data de hoje como padrão se dataInicial não for fornecida
-$dataFinal = @$_POST['dataFinal'] ?: $data_hoje;      // Usa data de hoje como padrão se dataFinal não for fornecida
-$status = @$_POST['status'] ?: '';  // Define $status como string vazia se não for fornecido
-$status2 = @$_POST['status'];       // Usado para a mensagem, se não houver comandas
+$dataInicial = @$_POST['dataInicial'] ?: $data_hoje;
+$dataFinal = @$_POST['dataFinal'] ?: $data_hoje;
+$status = @$_POST['status'] ?: '';
+$status2 = @$_POST['status'];
 
-// Estilos CSS (dentro de uma tag <style> para serem incluídos no HTML)
-echo <<<HTML
+if($status != ''){
+    $status_pdo = 'AND status = :status ';
+}else{
+    $status_pdo = '';
+}
+?>
+
 <style>
-/* Estilos gerais para melhorar a aparência e responsividade */
-.widget.cardTarefas {
-    border-radius: 15px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease-in-out;
-    margin-bottom: 20px;
-    overflow: hidden;
-    background-color: #fff;
-	
-}
+    .comanda-container {
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+        margin-right: 20px;
+        background-color: #fff;
+        overflow: hidden;
+        height: 120px; /* Altura fixa para compactar */
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);
+    }
 
-.widget.cardTarefas:hover {
-    transform: scale(1.03);
-}
+    .comanda-top {
+        display: flex;
+        align-items: center;
+        padding: 5px 8px;
+        background-color: #007bff; /* Azul */
+        color: #fff;
+        height: 70%;
+    }
 
-.r3_counter_box {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    .comanda-top img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
 
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
+    .comanda-info {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-.head-dpdn2 .close {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    font-size: 1.5em;
-    color: #dc3545;
-    opacity: 0.7;
-    background: none;
-    border: none;
-}
+    .comanda-info p {
+        margin: 0;
+        font-size: 12px;
+    }
 
-.head-dpdn2 .close:hover {
-    opacity: 1;
-    cursor: pointer;
-}
+    .comanda-info .valor {
+        font-weight: bold;
+        font-size: 16px;
+    }
 
-.dropdown-menu {
-    min-width: 200px;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    display: none; /* Escondido por padrão */
-    position: absolute; /* Posicionamento absoluto */
-    z-index: 1000; /* Garante que fique acima de outros elementos */
-    background-color: white; /*Fundo branco*/
+    .comanda-bottom {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 3px;
+        background-color: #f8f9fa;
+        height: 30%;
+    }
 
-}
+    .comanda-bottom a {
+        text-decoration: none;
+        color: #007bff; /* Azul */
+        font-size: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-/* Mostra o dropdown no hover */
-/* .dropdown:hover .dropdown-menu {
-    display: block;
-} */
+    .comanda-bottom a i {
+        font-size: 14px;
+        margin-bottom: 1px;
+    }
 
-.notification_desc2 p {
-    margin: 0;
-    font-size: 0.9em;
-}
+    .comanda-bottom a:hover {
+        color: #0056b3; /* Azul mais escuro */
+    }
 
-.notification_desc2 a {
-    text-decoration: none;
-}
+    /* Responsividade para mobile */
+    @media (max-width: 768px) {
+        .comanda-container {
+            height: 80px; /* Ainda mais compacto no mobile */
+        }
 
-.notification_desc2 a:hover {
-    text-decoration: underline;
-}
+        .comanda-top {
+            padding: 4px 6px;
+        }
 
-.icon-rounded-vermelho {
-    border-radius: 50%;
-    padding: 5px;
-}
+        .comanda-top img {
+            width: 25px;
+            height: 25px;
+        }
 
-.r3_counter_box h5 {
-    margin-top: 5px;
-    font-size: 1.4em;
-    font-weight: bold;
-}
+        .comanda-info p {
+            font-size: 10px;
+        }
 
-.r3_counter_box h3 strong {
-    color:rgb(255, 255, 255);
-}
+        .comanda-info .valor {
+            font-size: 12px;
+        }
 
-.stats.esc {
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    padding-top: 10px;
-    margin-top: 10px;
-    text-align: center;
-    font-size: 0.9em;
-}
+        .comanda-bottom a {
+            font-size: 8px;
+        }
 
-.stats.esc small {
-    color: #555;
-    display: block; /* Adicionado */
-    width: 100%;    /* Adicionado */
-    white-space: nowrap; /* Adicionado */
-    overflow: hidden;   /* Adicionado */
-    text-overflow: ellipsis; /* Adicionado */
-}
-
-.status-agendado {
-    background-color: #ffc107;
-    color: #000;
-}
-
-.status-concluido {
-    background-color: #28a745;
-    color: #fff;
-}
-
-.status-cancelado {
-    background-color: #dc3545;
-    color: #fff;
-}
-
-.classe_imp {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 1;
-}
-
-@media (max-width: 768px) {
-
-	#valor{
-		font-size: 15px;
-	}
-	#comanda_n{
-		font-size: 10px;
-	}
-	img{
-		width: 75px;
-	}
-}
-
-
+        .comanda-bottom a i {
+            font-size: 12px;
+        }
+    }
 </style>
-HTML;
 
-
-// Monta a query SQL *fora* do loop
-$sql = "SELECT * FROM $tabela WHERE data >= :dataInicial AND data <= :dataFinal AND status LIKE :status AND funcionario = :usuario_logado AND id_conta = :id_conta ORDER BY id ASC";
+<?php
+// Monta a query SQL
+$sql = "SELECT * FROM $tabela WHERE data >= :dataInicial AND data <= :dataFinal $status_pdo AND funcionario = :usuario_logado AND id_conta = :id_conta ORDER BY id ASC";
 $query = $pdo->prepare($sql);
 $query->bindParam(':dataInicial', $dataInicial, PDO::PARAM_STR);
 $query->bindParam(':dataFinal', $dataFinal, PDO::PARAM_STR);
-$query->bindParam(':status', $status, PDO::PARAM_STR);  // Já inclui o '%'
-$query->bindParam(':usuario_logado', $usuario_logado, PDO::PARAM_INT); //User ID é int
+if($status != ''){
+    $query->bindParam(':status', $status, PDO::PARAM_STR);
+}
+$query->bindParam(':usuario_logado', $usuario_logado, PDO::PARAM_INT);
 $query->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
 
 try {
@@ -188,87 +158,67 @@ try {
             $dataF = implode('/', array_reverse(explode('-', $data)));
             $valorF = number_format($valor, 2, ',', '.');
 
-            // Define a cor e a imagem com base no status.  Muito mais limpo com switch.
-            switch ($status) {
-                case 'Aberta':
-                    $cor = '#FFA500'; // Amarelo
-                    $classe_status = 'status-agendado';
-                    $imagem = 'icone-relogio.png';
-                    break;
-                case 'Fechada':
-                    $cor = '#28a745'; // Verde
-                    $classe_status = 'status-concluido';
-                    $imagem = 'icone-relogio-verde.png';
-                    break;
-                default:
-                    $cor = '#f8f9fa'; // Cor padrão (cinza claro, se o status não for nem Aberta nem Fechada)
-                    $imagem = 'icone-relogio.png'; //Uma imagem padrão.
-            }
+            // Define a imagem com base no status
+            $cor_comanda = ($status == 'Aberta') ? '#007bff' : 'red';
 
-            // Busca o nome do cliente (com tratamento de erro)
+            // Busca o nome do cliente
             $query_cliente = $pdo->prepare("SELECT nome FROM clientes WHERE id = :id AND id_conta = :id_conta");
             $query_cliente->execute([':id' => $cliente, ':id_conta' => $id_conta]);
             $res_cliente = $query_cliente->fetch(PDO::FETCH_ASSOC);
             $nome_pessoa = $res_cliente ? htmlspecialchars($res_cliente['nome']) : 'Cliente não encontrado';
 
-            // Busca o nome do funcionário (com tratamento de erro)
+            // Busca o nome do funcionário
             $query_func = $pdo->prepare("SELECT nome FROM usuarios WHERE id = :id AND id_conta = :id_conta");
             $query_func->execute([':id' => $funcionario_id, ':id_conta' => $id_conta]);
             $res_func = $query_func->fetch(PDO::FETCH_ASSOC);
             $nome_funcionario = $res_func ? htmlspecialchars($res_func['nome']) : 'Funcionário não encontrado';
 
-
-            // Gera o HTML para cada comanda.  Note o uso do operador ternário para simplificar.
-			echo <<<HTML
-			<div class="col-xs-12 col-sm-2 col-md-4 col-lg-3 widget cardTarefas">
-				<div class="r3_counter_box {$classe_status}" style="background-color: {$cor};">
-					<div class="dropdown">
-						<button type="button" class="close" title="Excluir comanda" data-toggle="dropdown" aria-expanded="false" style="margin-top: -20px; font-size: 2em; position: relative; z-index:2;">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<ul class="dropdown-menu" style='margin-left: -25px' >
-							<li>
-								<div class="notification_desc2">
-									<p>Confirmar<br> Exclusão? <a href="#" onclick="excluirComanda('{$id}')"><span class="text-danger">Sim</span></a></p>
-								</div>
-							</li>
-						</ul>
-					</div>
-			
-					<a class="classe_imp" href="rel/comprovante_comanda.php?id={$id}" target="_blank" title="Gerar Comprovante" style="position: absolute; top: 10px; right: 10px; z-index: 1;">
-						<i class="fa-solid fa-print"></i>
-					</a>
-			
-					<div class="row">
-						<div class="col-md-3" style="display: flex; flex-direction:column; align-items: center; justify-content: center;">
-							<a href="#" onclick="editar('{$id}', '{$valor}', '{$cliente}', '{$obs}', '{$status}', '{$nome_pessoa}', '{$nome_funcionario}', '{$dataF}')">
-								<img class="icon-rounded-vermelho" src="../../images/comanda2.jpg" width="110px">
-							</a>
-						</div>
-						<div class="col-md-9" style='margin-top: 30px;'>
-							<h3 id='valor'><strong>R$ {$valorF}</strong></h3>
-							<div id='comanda_n'> <small>Comanda Nº: {$id}</small><br><small style='font-size: 10px;'>{$hora}</small>
-							</div>
-						</div>
-					</div>
-					<div class="stats esc">
-						<small>{$nome_pessoa}</small>
-					</div>
-				</div>
-			</div>
-			HTML;
+            // Gera o HTML para cada comanda
+            echo <<<HTML
+            <div class="col-xs-12 col-sm-2 col-md-4 col-lg-3 comanda-container">
+                <div class="comanda-top" style= "background-color: {$cor_comanda} ">
+                    <img src="../../images/comanda2.jpg" alt="Ícone Comanda" style='width: 50px; height: 50px;'>
+                    <div class="comanda-info">
+                        <div>
+                            <p class="valor">R$ {$valorF}</p>
+                            <p>Comanda: {$id}</p>
+                        </div>
+                        <div>
+                            <p>{$hora}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="comanda-bottom">
+                    <a href="#" onclick="editar('{$id}', '{$valor}', '{$cliente}', '{$obs}', '{$status}', '{$nome_pessoa}', '{$nome_funcionario}', '{$dataF}')" title="Abrir Comanda">
+                        <i class="fa fa-eye"></i> Abrir
+                    </a>
+                    <a href="rel/comprovante_comanda.php?id={$id}" target="_blank" title="Gerar Comprovante">
+                        <i class="fa fa-print"></i> Comprovante
+                    </a>
+                    <a href="#" onclick="confirmarExclusao('{$id}')" title="Excluir Comanda">
+                        <i class="fa fa-trash"></i> Excluir
+                    </a>
+                    <!-- <a href="#" onclick="excluirComanda('{$id}')" title="Excluir Comanda">
+                        <i class="fa fa-trash"></i> Excluir
+                    </a> -->
+                </div>
+            </div>
+            HTML;
         }
     } else {
         echo "<small>Não possui nenhuma comanda {$status2}!</small>";
     }
-
 } catch (PDOException $e) {
     echo "<small>Erro ao buscar comandas: " . htmlspecialchars($e->getMessage()) . "</small>";
 }
-
 ?>
 
 <script type="text/javascript">
+    function confirmarExclusao(id) {
+        if (confirm("Confirma Exclusão?")) {
+            excluirComanda(id);
+        }
+    }
     function editar(id, valor, cliente, obs, status, nome_cliente, nome_func, data) {
         if (status.trim() === 'Fechada') {
             $('#cliente_dados').text(nome_cliente);
@@ -279,7 +229,6 @@ try {
 
             listarServicosDados(id);
             listarProdutosDados(id);
-
         } else {
             $('#id').val(id);
             $('#cliente').val(cliente).change();
@@ -304,7 +253,6 @@ try {
         $('#id').val('');
         $('#valor_serv').val('');
         $('#cliente').val('').change();
-        $('#salvar_comanda').val('').change(); // Esse ID não existe no seu código original.  Verifique!
         $('#data_pgto').val('<?= $data_hoje ?>');
         $('#valor_serv_agd_restante').val('');
         $('#data_pgto_restante').val('');
@@ -315,23 +263,21 @@ try {
         calcular();
     }
 
-
     function excluirComanda(id) {
         $.ajax({
-            url: 'paginas/' + pag + "/excluir.php",  // Certifique-se de que 'pag' está definida!
+            url: 'paginas/' + pag + "/excluir.php",
             method: 'POST',
             data: { id },
             dataType: "text",
             success: function(mensagem) {
                 if (mensagem.trim() === "Excluído com Sucesso") {
-                    // $('#btn-fechar').click(); // Não use isso, pois modalExcluir não foi aberto.
-                    listar(); //Recarrega a lista após excluir.
+                    listar();
                 } else {
-                    alert(mensagem); // Usa um alert simples, já que o modal não está aberto.
+                    alert(mensagem);
                 }
             },
             error: function(xhr, status, error) {
-                alert("Erro ao excluir: " + error); // Mostra um erro se a requisição AJAX falhar.
+                alert("Erro ao excluir: " + error);
             }
         });
     }

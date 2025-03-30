@@ -76,7 +76,7 @@ if(isset($_GET['id'])){
     }       
 }
 
-?>
+?>🚀
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-R39PP1R46W"></script>
 <script>

@@ -11,7 +11,7 @@ $hoje = date('Y-m-d');
     /* Estilos gerais */
     .main-page {
         padding: 20px;
-        background-color: #C0C0C0;
+        background-color: #e7edea;
         min-height: 100vh;
     }
     .widget, .stat, .content-top-2 {
@@ -28,7 +28,7 @@ $hoje = date('Y-m-d');
         transform: translateY(-5px);
     }
     .icon-rounded {
-        background-color: #007bff;
+        background-color:rgb(149, 186, 224);
         color: #fff;
         border-radius: 50%;
         width: 40px;
@@ -38,9 +38,9 @@ $hoje = date('Y-m-d');
         text-align: center;
         margin-right: 10px;
     }
-    .user1 { background-color: #dc3545; } /* Vermelho para débitos */
-    .dollar2 { background-color: #28a745; } /* Verde para ganhos */
-    .dollar1 { background-color: #ffc107; } /* Amarelo para estoque */
+    .user1 { background-color: #e7032d; } /* Vermelho para débitos */
+    .dollar2 { background-color: #8bcea6; } /* Verde para ganhos */
+    .dollar1 { background-color: #ffca6e; } /* Amarelo para estoque */
     .stats h5 {
         font-size: 28px;
         margin: 0;
