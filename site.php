@@ -496,10 +496,16 @@ if($depoimentos2 == 'Sim'){
 } ?>
 
 <script>
-  // Verifica a largura da tela
-  if (window.innerWidth <= 768) { // 768px é um ponto comum para telas pequenas
-    window.location.href = "<?php echo $url?>app/index.php?u=<?php echo $username?>"; // Substitua pelo URL da página mobile
-  }
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM carregado. Verificando largura:", window.innerWidth); // Debug
+    if (window.innerWidth <= 768) {
+        var redirectUrl = "<?php echo $url?>app/index.php?u=<?php echo $username?>";
+        console.log("Redirecionando para:", redirectUrl); // Debug
+        window.location.href = redirectUrl;
+    } else {
+        console.log("Largura maior que 768."); // Debug
+    }
+});
 </script>
 
   <!-- end client section -->
