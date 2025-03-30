@@ -498,7 +498,7 @@ if($depoimentos2 == 'Sim'){
 <script>
   // Verifica a largura da tela
   if (window.innerWidth <= 768) { // 768px é um ponto comum para telas pequenas
-    window.location.href = "app/index.php?u=<?php echo $username?>"; // Substitua pelo URL da página mobile
+    window.location.href = "<?php echo $url?>app/index.php?u=<?php echo $username?>"; // Substitua pelo URL da página mobile
   }
 </script>
 
