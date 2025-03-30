@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+<?php 
+    // Validação do username
+    if (isset($_GET['u'])) {
+        $username = filter_var($_GET['u'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    } else {
+    // die("Username não fornecido.");
+    }
+?>
 
  <head>
 	
@@ -10,7 +18,18 @@
     <meta name="author" content="Skysee Soluções de TI" />    
     <meta http-equiv="content-language" content="pt-br" />
     <meta name="robots" content="index, follow"/>
-    <meta name="theme-color" content="#4682B4"> <link rel="manifest" href="manifest.php">
+    
+    <?php 
+    // Gera o link para o manifesto DINAMICAMENTE se o username for conhecido
+    if (!empty($username)) {
+        echo '<link rel="manifest" href="/manifest.php?u=' . urlencode($username) . '">';
+        // Você também pode querer definir a theme-color dinamicamente aqui, se aplicável
+        echo '<meta name="theme-color" content="#4682B4">';
+    } else {
+        // Opcional: O que fazer se não houver username?
+        // Talvez não mostrar o link do manifesto? Ou linkar para um genérico?
+        // echo '<link rel="manifest" href="/manifest_generico.json">';
+    }?>
     
     <!--[if lt IE 9]>
         <script src="js/html5shiv.js"></script>
@@ -148,12 +167,7 @@
 
 <?php 
 
-// Validação do username
-if (isset($_GET['u'])) {
-  $username = filter_var($_GET['u'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-} else {
-  // die("Username não fornecido.");
-}
+
 
 // Configurações da URL
 $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
