@@ -10,7 +10,7 @@
     <meta name="author" content="Skysee Soluções de TI" />    
     <meta http-equiv="content-language" content="pt-br" />
     <meta name="robots" content="index, follow"/>
-    <meta name="theme-color" content="#4682B4"> <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4682B4"> <link rel="manifest" href="manifest.php">
     
     <!--[if lt IE 9]>
         <script src="js/html5shiv.js"></script>
@@ -22,6 +22,7 @@
 	<link rel="stylesheet" type="text/css" href="css/reset.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/fonts-icones.css">
+    <link rel="stylesheet" href="css/botao.css">
     <link rel="shortcut icon" href="https://www.loopnerd.com.br/artigos/css3/menu-sidebar-rotacao-3d/img/favicon.png" type="image/ico" />
    
     
@@ -265,27 +266,11 @@ try {
                         <article class="box-cubo">
                             
                             <div>
-                                <p class="cubo-text">Agendar</p>
+                                <p class="cubo-text"><a href="../agendamentos.php?u=<?php echo $username?>" title="Home">Agendar</a></p>
                             </div>
                             
                             <div>
-                                <p class="cubo-text-transformed"><a href="../agendamentos.php?u=<?php echo $username?>" title="Home">Agendar</a></p>
-                            </div>
-
-                        </article>
-
-                    </div>
-
-                    <div id="cubo">
-                        
-                        <article class="box-cubo">
-                            
-                            <div>
-                                <p class="cubo-text">Serviços</p>
-                            </div>
-                            
-                            <div>
-                                <p class="cubo-text-transformed"><a href="../servicos?u=<?php echo $username?>" title="Sobre">Serviços</a></p>
+                                <p class="cubo-text-transformed">Agendar</p>
                             </div>
 
                         </article>
@@ -297,11 +282,11 @@ try {
                         <article class="box-cubo">
                             
                             <div>
-                                <p class="cubo-text">Produtos</p>
+                                <p class="cubo-text"><a href="../servicos?u=<?php echo $username?>" title="Sobre">Serviços</a></p>
                             </div>
                             
                             <div>
-                                <p class="cubo-text-transformed"><a href="../produtos?u=<?php echo $username?>" title="Sobre">Produtos</a></p>
+                                <p class="cubo-text-transformed">Serviços</p>
                             </div>
 
                         </article>
@@ -313,11 +298,27 @@ try {
                         <article class="box-cubo">
                             
                             <div>
-                                <p class="cubo-text">Meus agendamentos</p>
+                                <p class="cubo-text"><a href="../produtos?u=<?php echo $username?>" title="Sobre">Produtos</a></p>
                             </div>
                             
                             <div>
-                                <p class="cubo-text-transformed"><a href="../meus-agendamentos.php?u=<?php echo $username?>" title="Blog">Meus agendamentos</a></p>
+                                <p class="cubo-text-transformed">Produtos</p>
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                    <div id="cubo">
+                        
+                        <article class="box-cubo">
+                            
+                            <div>
+                                <p class="cubo-text"><a href="../meus-agendamentos.php?u=<?php echo $username?>" title="Blog">Meus agendamentos</a></p>
+                            </div>
+                            
+                            <div>
+                                <p class="cubo-text-transformed">Meus agendamentos</p>
                             </div>
 
                         </article>
@@ -329,12 +330,12 @@ try {
                         <article class="box-cubo">
                             
                             <div>
-                                <p class="cubo-text">Contato</p>
+                                <p class="cubo-text"><a href="http://api.whatsapp.com/send?1=pt_BR&phone=<?php echo $tel_whatsapp ?>" target="_blank"
+                                title="Contato">Contato</a></p>
                             </div>
                             
                             <div>
-                                <p class="cubo-text-transformed"><a href="http://api.whatsapp.com/send?1=pt_BR&phone=<?php echo $tel_whatsapp ?>" target="_blank"
-                           title="Contato">Contato</a></p>
+                                <p class="cubo-text-transformed">Contato</p>
                             </div>
 
                         </article>
@@ -346,11 +347,11 @@ try {
                         <article class="box-cubo">
                             
                             <div>
-                                <p class="cubo-text">Cadastre-se</p>
+                                <p class="cubo-text"><a href="#" id="abrirModalCadastro" title="Portfólio">Cadastre-se</a></p>
                             </div>
                             
                             <div>
-                                <p class="cubo-text-transformed"><a href="#" id="abrirModalCadastro" title="Portfólio">Cadastre-se</a></p>
+                                <p class="cubo-text-transformed">Cadastre-se</p>
                                 
                             </div>
 
@@ -379,16 +380,21 @@ try {
                         <article class="box-cubo">
                             
                             <div>
-                                <p class="cubo-text">Localização</p>
+                                <p class="cubo-text"><a href="<?php echo htmlspecialchars($urlGoogleMaps); ?>" target="_blank" title="Portfólio">Localização</a></p>
                             </div>
                             
                             <div>
-                                <p class="cubo-text-transformed"><a href="<?php echo htmlspecialchars($urlGoogleMaps); ?>" target="_blank" title="Portfólio">Localização</a></p>
+                                <p class="cubo-text-transformed">Localização</p>
                             </div>
 
                         </article>
                         
                     </div>
+                    
+                    <button id="installButton" class="install-btn">
+                        <!-- <span class="icon">⏰</span> Instalar o App -->
+                        <img src="../images/icone_app.jpg" alt="Ícone do App" class="icon">Instalar o App
+                    </button>
 
                 </div><!--Sidebar-->    
 
@@ -429,6 +435,7 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
 
+<script src="app.js"></script>
 
 <script>
 
