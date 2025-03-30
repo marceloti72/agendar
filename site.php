@@ -498,7 +498,7 @@ if($depoimentos2 == 'Sim'){
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     console.log("DOM carregado. Verificando largura:", window.innerWidth); // Debug
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 999) {
         var redirectUrl = "<?php echo $url?>app/index.php?u=<?php echo $username?>";
         console.log("Redirecionando para:", redirectUrl); // Debug
         window.location.href = redirectUrl;
