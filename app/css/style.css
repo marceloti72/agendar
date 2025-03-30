@@ -6,8 +6,8 @@
 .main_header .content { float:left; padding:0px 0; }
 
 .fixed            { display:block; position:fixed; z-index:9;  }
-.main_header_logo { text-align:center; margin:auto; float:none; width:150px; }
-.main_header_logo img { width:150px;  }
+.main_header_logo { text-align:center; margin:auto; float:none; width:250px; }
+.main_header_logo img { width:250px;  }
 
 /*Seu Código*/
 .section-seu-codigo          { padding:10px 0px; background-color:#f4f4f4; }

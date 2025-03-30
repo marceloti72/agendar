@@ -1,6 +1,6 @@
 const CACHE_NAME = 'versao-1'; // Mude a versão quando atualizar os arquivos
 const urlsToCache = [
-    '/', // Página inicial
+    '/app/', // Página inicial
     'index.php', // Ou sua página principal
     'css/style.css', // Seus arquivos CSS
     'js/script.js', // Seus arquivos JS
