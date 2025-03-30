@@ -1,6 +1,5 @@
 // app.js
 let deferredPrompt;
-alert('kjklj')
 
 const installButton = document.getElementById('installButton');
 
