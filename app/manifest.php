@@ -19,7 +19,7 @@ $manifestData = [
     "short_name" => "Agendar",
     "description" => "Uma breve descrição do seu sistema.",
     // --- Monta a start_url dinamicamente ---
-    "start_url" => "app/index.php?u=" . urlencode($username), // Caminho relativo é melhor
+    "start_url" => "https://agendar.skysee.com.br/app/index.php?u=" . urlencode($username), // Caminho relativo é melhor
     // Ou use o caminho absoluto se precisar:
     // "start_url" => "https://agendar.skysee.com.br/index.php?u=" . urlencode($username),
     "display" => "standalone",
