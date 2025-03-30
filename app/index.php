@@ -7,6 +7,7 @@
     } else {
     // die("Username não fornecido.");
     }
+    
 ?>
 
  <head>
@@ -22,7 +23,7 @@
     <?php 
     // Gera o link para o manifesto DINAMICAMENTE se o username for conhecido
     if (!empty($username)) {
-        echo '<link rel="manifest" href="/manifest.php?u=' . urlencode($username) . '">';
+        echo '<link rel="manifest" href="manifest.php?u=' . urlencode($username) . '">';
         // Você também pode querer definir a theme-color dinamicamente aqui, se aplicável
         echo '<meta name="theme-color" content="#4682B4">';
     } else {

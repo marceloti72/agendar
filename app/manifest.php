@@ -1,6 +1,6 @@
 <?php
 // Inicie a sessão para acessar as variáveis de sessão, se necessário
-@session_start();
+//@session_start();
 
 // --- Obtenha o username ---
 // Ajuste esta linha dependendo de onde vem o username
