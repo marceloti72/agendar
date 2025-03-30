@@ -302,17 +302,17 @@ body {
   .slider_section .detail-box a {
     display: inline-block;
     padding: 10px 45px;
-    background-color: #be2623;
+    background-color: #18991f;
     color: #ffffff;
     border-radius: 0;
     -webkit-transition: all .3s;
     transition: all .3s;
-    border: 1px solid #be2623;
+    border: 1px solid #18991f;
   }
   
   .slider_section .detail-box a:hover {
     background-color: transparent;
-    color: #be2623;
+    color: #18991f;
   }
   
   .slider_section .img-box img {

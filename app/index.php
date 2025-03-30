@@ -215,6 +215,9 @@ try {
           $telefone_fixo_sistema = htmlspecialchars($config['telefone_fixo']);
           $endereco_sistema = htmlspecialchars($config['endereco']);          
           $instagram_sistema = htmlspecialchars($config['instagram']);
+          $facebook_sistema = htmlspecialchars($config['facebook']);
+          $tiktok_sistema = htmlspecialchars($config['tiktok']);
+          $x_sistema = htmlspecialchars($config['x']);
           $texto_rodape = htmlspecialchars($config['texto_rodape']);          
           $texto_sobre = htmlspecialchars($config['texto_sobre']);          
           $mapa = $config['mapa'];
@@ -542,16 +545,16 @@ $(document).ready(function() { // Se você já tiver jQuery na página
 <footer class="main_footer container">
     <div class="main_footer_copy">
         <h1>
-            <a href="https://www.facebook.com/SEU_PERFIL_FACEBOOK" target="_blank" title="Siga-nos no Facebook" style="text-decoration: none; margin-right: 10px;">
+            <a href="<?php echo $facebook_sistema?>" target="_blank" title="Siga-nos no Facebook" style="text-decoration: none; margin-right: 10px;">
                 <i class="fab fa-facebook"></i>
             </a>
-            <a href="https://www.instagram.com/SEU_PERFIL_INSTAGRAM" target="_blank" title="Siga-nos no Instagram" style="text-decoration: none; margin-right: 10px;">
+            <a href="<?php echo $instagram_sistema?>" target="_blank" title="Siga-nos no Instagram" style="text-decoration: none; margin-right: 10px;">
                 <i class="fab fa-instagram"></i>
             </a>
-            <a href="https://www.tiktok.com/@SEU_PERFIL_TIKTOK" target="_blank" title="Siga-nos no TikTok" style="text-decoration: none; margin-right: 10px;">
+            <a href="<?php echo $tiktok_sistema?>" target="_blank" title="Siga-nos no TikTok" style="text-decoration: none; margin-right: 10px;">
                 <i class="fab fa-tiktok"></i>
             </a>
-            <a href="https://x.com/SEU_PERFIL_X" target="_blank" title="Siga-nos no X" style="text-decoration: none;">
+            <a href="<?php echo $x_sistema?>" target="_blank" title="Siga-nos no X" style="text-decoration: none;">
                 <i class="fa-brands fa-x-twitter"></i>
             </a>
         </h1><br>

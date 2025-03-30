@@ -76,8 +76,9 @@ $data_atual = date('Y-m-d');
 					</div> 				
 
 
-				<div class="form-group"> 
-					<small>								
+				<div class="form-group"> <br>
+					<!-- <h6><i class="fa fa-clock"></i> Horários dispóniveis</h6>
+					<small>								 -->
 					<div id="listar-horarios">
 						
 					</div>

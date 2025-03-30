@@ -53,6 +53,9 @@ if (isset($_SESSION['id_conta'])) {
 			$telefone_fixo_sistema = $config['telefone_fixo'];
 			$endereco_sistema = $config['endereco'];
 			$instagram_sistema = $config['instagram'];
+			$facebook_sistema = $config['facebook'];
+			$tiktok_sistema = $config['tiktok'];
+			$x_sistema = $config['x'];
 			$tipo_comissao = $config['tipo_comissao'];
 			$texto_rodape = $config['texto_rodape'];
 			$texto_sobre = $config['texto_sobre'];

@@ -63,6 +63,7 @@ $intervalo = $res[0]['intervalo'];
 
 ?>
 <div class="row">
+<h6 style="color: burlywood;"><i class="fa fa-clock"></i><b> Horários dispóniveis</b></h6>
 
 	<?php 
 	$i = 0;
@@ -126,8 +127,9 @@ if($total_reg2 == 0 || strtotime($hora_rec) == strtotime($hora)){
 					}
 				</style>
 				
-
+                
 				<div class="col-3" style='display: <?php echo $esconder ?>'>
+                
 					<div class="form-check form-switch">
 					  <input class="form-check-input" type="radio" role="switch" id="flexSwitchCheckDefault" name="hora" value="<?php echo $hora ?>" <?php echo $hora_agendada ?> style="width:17px; height: 17px; " required <?php echo $checado ?>>
 					  <label class="form-check-label <?php echo $texto_hora ?>" for="flexSwitchCheckDefault">

@@ -113,7 +113,7 @@ if($total_reg2 == 0 || strtotime($hora_rec) == strtotime($hora)){
 		continue;
 	}	
 				?>
-
+                    
 					<div class="col-3" style='display: <?php echo $esconder ?>'>
 					<div class="form-check">
 					  <input class="form-check-input" type="radio" name="hora" value="<?php echo $hora ?>" <?php echo $hora_agendada ?> style="width:17px; height: 17px; " required <?php echo $checado ?>>

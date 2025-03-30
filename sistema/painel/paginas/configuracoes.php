@@ -79,16 +79,15 @@ if (@$configuracoes == 'ocultar') {
 			</div>
 
 
-			<div class="row">
-
-				<div class="col-md-4">
+			<div class="row">	
+			<div class="col-md-2">
 					<div class="form-group">
-						<label for="exampleInputEmail1">Instagram</label>
-						<input type="text" class="form-control" id="instagram_sistema" name="instagram_sistema" placeholder="Link do Perfil no Instagram" value="<?php echo $instagram_sistema ?>">
+						<label for="exampleInputEmail1">Cartões Fidelidade <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Caso queria trabalhar com cartão de fidelidade, basta informar a quantidade de serviços para o brinde ao cliente, caso contrário deixe em branco." style="color: blue;"></i></label>
+						<input type="number" class="form-control" id="quantidade_cartoes" name="quantidade_cartoes" placeholder="Quantidade Cartões Troca" value="<?php echo $quantidade_cartoes ?>">
 					</div>
-				</div>
+				</div>			
 
-				<div class="col-md-8">
+				<div class="col-md-10">
 					<div class="form-group">
 						<label for="exampleInputEmail1">Texto Cartão Fidelidade</label>
 						<input maxlength="255" type="text" class="form-control" id="texto_fidelidade" name="texto_fidelidade" placeholder="Parabéns, você completou seus cartões, você ganhou ..." value="<?php echo @$texto_fidelidade ?>">
@@ -99,14 +98,6 @@ if (@$configuracoes == 'ocultar') {
 			</div>
 
 			<div class="row">
-				<div class="col-md-2">
-					<div class="form-group">
-						<label for="exampleInputEmail1">Cartões Fidelidade <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Caso queria trabalhar com cartão de fidelidade, basta informar a quantidade de serviços para o brinde ao cliente, caso contrário deixe em branco." style="color: blue;"></i></label>
-						<input type="number" class="form-control" id="quantidade_cartoes" name="quantidade_cartoes" placeholder="Quantidade Cartões Troca" value="<?php echo $quantidade_cartoes ?>">
-					</div>
-				</div>
-
-
 				<div class="col-md-2">
 					<div class="form-group">
 						<label for="exampleInputEmail1">Mens.Confirmação <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Marque SIM se quiser que o cliente receba um WahtsApp pedindo a confirmação do serviço. Defina os minutos no próximo campo." style="color: blue;"></i></label>
@@ -157,6 +148,12 @@ if (@$configuracoes == 'ocultar') {
 						</select>
 					</div>
 				</div>
+				<div class="col-md-2">
+					<div class="form-group">
+						<label for="exampleInputEmail1">% Agendamento <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Informe aqui a porcentagem que o cliente pagará ao agendar serviços pelo site. Funciona como um sinal para efetuar o agendamento." style="color: blue;"></i></label>
+						<input type="number" class="form-control" id="porc_servico" name="porc_servico" placeholder="% pagar Agendamento" value="<?php echo $porc_servico ?>">
+					</div>
+				</div>
 
 				
 
@@ -196,16 +193,7 @@ if (@$configuracoes == 'ocultar') {
 							<option value="Pago" <?php if ($lanc_comissao == 'Pago') { ?> selected <?php } ?>>Serviço Pago</option>
 						</select>
 					</div>
-				</div>
-
-
-
-				<div class="col-md-2">
-					<div class="form-group">
-						<label for="exampleInputEmail1">% Agendamento <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Informe aqui a porcentagem que o cliente pagará ao agendar serviços pelo site. Funciona como um sinal para efetuar o agendamento." style="color: blue;"></i></label>
-						<input type="number" class="form-control" id="porc_servico" name="porc_servico" placeholder="% pagar Agendamento" value="<?php echo $porc_servico ?>">
-					</div>
-				</div>
+				</div>	
 
 				
 
@@ -243,6 +231,33 @@ if (@$configuracoes == 'ocultar') {
 							placeholder="Public Key do Mercado Pago" value="<?php echo $key_mp ?>">
 					</div>
 				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="exampleInputEmail1"><i class="fab fa-instagram"></i> Instagram</label>
+						<input type="text" class="form-control" id="instagram_sistema" name="instagram_sistema" placeholder="Link do Perfil no Instagram" value="<?php echo $instagram_sistema ?>">
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="exampleInputEmail1"><i class="fab fa-facebook"></i> Facebook </label>
+						<input type="text" class="form-control" id="facebook_sistema" name="facebook_sistema" placeholder="Link do Perfil no Facebook" value="<?php echo $facebook_sistema ?>">
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="exampleInputEmail1"><i class="fab fa-tiktok"></i> Tik Tok</label>
+						<input type="text" class="form-control" id="tiktok_sistema" name="tiktok_sistema" placeholder="Link do Perfil no Tik Tok" value="<?php echo $tiktok_sistema ?>">
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="exampleInputEmail1"><i class="fa-brands fa-x-twitter"></i></label>
+						<input type="text" class="form-control" id="x_sistema" name="x_sistema" placeholder="Link do Perfil no X" value="<?php echo $x_sistema ?>">
+					</div>
+				</div>
+
 			</div>
 		</div>
 

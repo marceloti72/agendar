@@ -6,7 +6,7 @@ body {
 }
 
 .layout_padding {
-  padding: 90px 0;
+  padding: 40px 0;
 }
 
 .layout_padding2 {
@@ -301,18 +301,19 @@ a:focus {
 
 .slider_section .detail-box a {
   display: inline-block;
-  padding: 10px 45px;
-  background-color: #be2623;
+  padding: 10px 20px;
+  background-color: #18991f;
   color: #ffffff;
   border-radius: 0;
   -webkit-transition: all .3s;
   transition: all .3s;
-  border: 1px solid #be2623;
+  border: 1px solid #18991f;
+  border-radius: 20px;
 }
 
 .slider_section .detail-box a:hover {
   background-color: transparent;
-  color: #be2623;
+  color: #18991f;
 }
 
 .slider_section .img-box img {
@@ -406,17 +407,19 @@ a:focus {
 .product_section .box .detail-box a {
   display: inline-block;
   padding: 5px 25px;
-  background-color: #be2623;
+  background-color: #18991f;
   color: #ffffff;
   border-radius: 25px;
   -webkit-transition: all .3s;
   transition: all .3s;
-  border: 1px solid #be2623;
+  border: 1px solid #18991f;
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);
+  
 }
 
 .product_section .box .detail-box a:hover {
   background-color: transparent;
-  color: #be2623;
+  color: #18991f;
 }
 
 .product_section .btn-box {
@@ -585,17 +588,17 @@ a:focus {
   text-transform: uppercase;
   display: inline-block;
   padding: 10px 55px;
-  background-color: #be2623;
+  background-color: #18991f;
   color: #ffffff;
   border-radius: 0px;
   -webkit-transition: all .3s;
   transition: all .3s;
-  border: 1px solid #be2623;
+  border: 1px solid #18991f;
 }
 
 .contact_section .form_container button:hover {
   background-color: transparent;
-  color: #be2623;
+  color: #18991f;
 }
 
 .contact_section .map_container {
@@ -784,17 +787,17 @@ a:focus {
 .footer_section .footer_form button {
   display: inline-block;
   padding: 10px 45px;
-  background-color: #be2623;
+  background-color: #18991f;
   color: #ffffff;
   border-radius: 0px;
   -webkit-transition: all .3s;
   transition: all .3s;
-  border: 1px solid #be2623;
+  border: 1px solid #18991f;
 }
 
 .footer_section .footer_form button:hover {
   background-color: transparent;
-  color: #be2623;
+  color: #18991f;
 }
 
 
