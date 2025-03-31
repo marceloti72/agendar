@@ -79,7 +79,7 @@ try {
 }
 
 // Atualiza a tabela clientes na gestão
-$query_clientes = $pdo2->prepare("UPDATE clientes SET instituicao = :nome, email = :email, telefone = :telefone, whatsapp = :whatsapp, endereco = :endereco WHERE id_conta = :id_conta");
+$query_clientes = $pdo2->prepare("UPDATE clientes SET instituicao = :instituicao, email = :email, telefone = :telefone, whatsapp = :whatsapp, endereco = :endereco WHERE id_conta = :id_conta");
 $query_clientes->bindValue(":instituicao", "$nome");
 $query_clientes->bindValue(":email", "$email");
 $query_clientes->bindValue(":whatsapp", "$whatsapp");
