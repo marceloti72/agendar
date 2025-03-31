@@ -91,7 +91,7 @@ if ($res) {
 				exit();
 			} else {
 				echo "<script language='javascript'> window.alert('Seu acesso esta bloqueado! Favor entar em contato com a SKYSEE.') </script>";
-				echo "<script language='javascript'> window.location='login.php' </script>";
+				echo "<script language='javascript'> window.location='../login.php' </script>";
 			}
 		}
 
