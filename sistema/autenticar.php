@@ -36,6 +36,7 @@ if ($res) {
 
 		$_SESSION['id_conta'] = @$res['id_conta'];
 		$_SESSION['id_usuario'] = @$res['id'];		
+		$_SESSION['username'] = @$res['username'];		
 
 		if ($ativo == 'Não') {
 

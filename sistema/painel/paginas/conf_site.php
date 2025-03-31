@@ -1,6 +1,7 @@
 <?php 
 @session_start();
 $id_conta = $_SESSION['id_conta'];
+$username = $_SESSION['username'];
 require_once("verificar.php");
 require_once("../conexao.php");
 $pag = 'configuracoes';
@@ -27,6 +28,14 @@ if(@$configuracoes == 'ocultar'){
 <form method="post" id="form-config2">
 				<div class="modal-body">
 
+					<div class="row">
+						<div class="col-md-6">
+							<button type="button" id="btnCopiarUrl" style="background-color: dimgrey;color: white;border: 0;padding: 6px; box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)">
+								<i class="fa-regular fa-copy"></i> Copiar Link do Site
+							</button>
+							<span id="mensagemCopia" style="margin-left: 10px; font-style: italic; color: green;"></span>
+						</div>
+					</div>					
 					<div class="row">					
 						
 						<div class="col-md-6">
@@ -221,5 +230,85 @@ if(@$configuracoes == 'ocultar'){
       $('[data-toggle="tooltip"]').tooltip()
     })
 	
+</script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', (event) => { // Garante que o DOM esteja pronto
+
+const btnCopiar = document.getElementById('btnCopiarUrl');
+const mensagemCopia = document.getElementById('mensagemCopia');
+const urlParaCopiar = 'https://agendar.skysee.com.br/site.php?u=<?php echo $username?>';
+
+if (btnCopiar) { // Verifica se o botão existe
+	btnCopiar.addEventListener('click', () => {
+		mensagemCopia.textContent = ''; // Limpa mensagem anterior
+
+		// --- Método Moderno: Clipboard API (Requer HTTPS ou localhost) ---
+		if (navigator.clipboard && window.isSecureContext) {
+			navigator.clipboard.writeText(urlParaCopiar).then(() => {
+				/* Sucesso */
+				mensagemCopia.textContent = 'Link Copiado!';
+				mensagemCopia.style.color = 'green';
+				console.log('URL copiada com sucesso via Clipboard API');
+
+				// Limpa a mensagem após alguns segundos
+				setTimeout(() => {
+					mensagemCopia.textContent = '';
+				}, 2500);
+
+			}).catch(err => {
+				/* Erro na API moderna - tenta o método legado */
+				console.error('Falha ao copiar com Clipboard API:', err);
+				copiarComExecCommand(urlParaCopiar, mensagemCopia);
+			});
+		} else {
+			// --- Método Legado (Fallback para HTTP ou navegadores antigos) ---
+			console.warn('Clipboard API não disponível/segura. Usando método legado execCommand.');
+			copiarComExecCommand(urlParaCopiar, mensagemCopia);
+		}
+	});
+}
+
+});
+
+// Função separada para o método legado (execCommand)
+function copiarComExecCommand(texto, elementoMensagem) {
+const textArea = document.createElement('textarea');
+textArea.value = texto;
+
+// Estilos para esconder o textarea sem causar scroll
+textArea.style.position = 'fixed';
+textArea.style.top = '-9999px';
+textArea.style.left = '-9999px';
+
+document.body.appendChild(textArea);
+textArea.focus();
+textArea.select(); // Seleciona o conteúdo
+
+try {
+	const successful = document.execCommand('copy'); // Tenta copiar
+	if (successful) {
+		elementoMensagem.textContent = 'Link Copiado!';
+		elementoMensagem.style.color = 'green';
+		console.log('URL copiada com sucesso via execCommand');
+	} else {
+		elementoMensagem.textContent = 'Falha ao copiar.';
+		elementoMensagem.style.color = 'red';
+		console.error('Falha ao copiar com execCommand (retornou false)');
+	}
+} catch (err) {
+	elementoMensagem.textContent = 'Erro ao copiar.';
+	elementoMensagem.style.color = 'red';
+	console.error('Erro ao usar execCommand:', err);
+}
+
+document.body.removeChild(textArea); // Remove o textarea temporário
+
+// Limpa a mensagem após alguns segundos
+ setTimeout(() => {
+	elementoMensagem.textContent = '';
+}, 2500);
+}
+
 </script>
 
