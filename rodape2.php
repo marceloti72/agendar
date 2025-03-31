@@ -133,7 +133,6 @@
          text-align: center; /* Centraliza o container dos contatos */
      }
 
-
     /* Formulário de Cadastro */
     .cad {
         height: 40px; /* Diminui altura do input */
