@@ -7,6 +7,7 @@
     } else {
     // die("Username não fornecido.");
     }
+    $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
     
 ?>
 
@@ -44,10 +45,14 @@
     <link rel="stylesheet" type="text/css" href="css/fonts-icones.css">
     <link rel="stylesheet" href="css/botao.css">
     <link rel="shortcut icon" href="https://www.loopnerd.com.br/artigos/css3/menu-sidebar-rotacao-3d/img/favicon.png" type="image/ico" />
+
+    <!-- Custom Styles -->
+  <link href="<?php echo $url?>css/style.css" rel="stylesheet" />
+  <link href="<?php echo $url?>css/responsive.css" rel="stylesheet" />
    
     
 
-	<title>Menu Sidebar Rotação 3D com Html e css</title>
+	<title>AGENDAR - Sistema de Gestão de Serviço</title>
 
  </head>
 
