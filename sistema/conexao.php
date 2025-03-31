@@ -98,19 +98,19 @@ if (isset($_SESSION['id_conta'])) {
 			$tel_whatsapp = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
 
 			// Verificação de Ativação do Sistema
-			if ($ativo_sistema !== 'Sim' && $ativo_sistema !== '' && $ativo_sistema !== 'teste') {
-				echo '<style type="text/css">
-                        @media only screen and (max-width: 700px) {
-                            .imgsistema_mobile {
-                                width: 300px;
-                            }
-                        }
-                    </style>
-                    <div style="text-align: center; margin-top: 100px">
-                        <img src="sistema/img/bloqueio.png" class="imgsistema_mobile">
-                    </div>';
-				exit();
-			}
+			// if ($ativo_sistema !== 'Sim' && $ativo_sistema !== '' && $ativo_sistema !== 'teste') {
+			// 	echo '<style type="text/css">
+            //             @media only screen and (max-width: 700px) {
+            //                 .imgsistema_mobile {
+            //                     width: 300px;
+            //                 }
+            //             }
+            //         </style>
+            //         <div style="text-align: center; margin-top: 100px">
+            //             <img src="sistema/img/bloqueio.png" class="imgsistema_mobile">
+            //         </div>';
+			// 	exit();
+			// }
 		} else {
 			echo "Configurações não encontradas para a conta.";
 		}
