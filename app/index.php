@@ -413,6 +413,23 @@ try {
                         </article>
                         
                     </div>
+
+                    <div id="cubo">
+                        
+                        <article class="box-cubo">
+                            
+                            <div>
+                                <p class="cubo-text"><a href="../login.php" title="Portfólio">Acesso Restrito</a></p>
+                            </div>
+                            
+                            <div>
+                                <p class="cubo-text-transformed">Acesso Restrito</p>
+                                
+                            </div>
+
+                        </article>
+                        
+                    </div>
                     
                     <button id="installButton" class="install-btn">
                         <!-- <span class="icon">⏰</span> Instalar o App -->
