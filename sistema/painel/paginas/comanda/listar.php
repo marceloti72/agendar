@@ -182,6 +182,7 @@ try {
                         <div>
                             <p class="valor">R$ {$valorF}</p>
                             <p>Comanda: {$id}</p>
+                            <p>Cliente: {$nome_pessoa}</p>
                         </div>
                         <div>
                             <p>{$hora}</p>
