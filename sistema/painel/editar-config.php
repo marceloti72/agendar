@@ -60,5 +60,34 @@ $query->bindValue(":satisfacao", "$satisfacao");
 
 $query->execute();
 
+// Conexão ao segundo banco de dados
+try {
+    $url = "https://{$_SERVER['HTTP_HOST']}/";
+    $url2 = explode("//", $url);
+
+    $host = ($url2[1] == 'localhost/') ? 'localhost' : 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
+    $db = 'gestao_sistemas';
+    $user = ($url2[1] == 'localhost/') ? 'root' : 'skysee';
+    $pass = ($url2[1] == 'localhost/') ? '' : '9vtYvJly8PK6zHahjPUg';
+
+    $pdo2 = new PDO("mysql:dbname=$db;host=$host;charset=utf8", $user, $pass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_EMULATE_PREPARES => false
+    ]);
+} catch (PDOException $e) {
+    die("Erro ao conectar ao banco de dados: " . $e->getMessage());
+}
+
+// Atualiza a tabela clientes na gestão
+$query_clientes = $pdo2->prepare("UPDATE clientes SET instituicao = :nome, email = :email, telefone = :telefone, whatsapp = :whatsapp, endereco = :endereco WHERE id_conta = :id_conta");
+$query_clientes->bindValue(":instituicao", "$nome");
+$query_clientes->bindValue(":email", "$email");
+$query_clientes->bindValue(":whatsapp", "$whatsapp");
+$query_clientes->bindValue(":telefone", "$fixo");
+$query_clientes->bindValue(":endereco", "$endereco");
+$query_clientes->bindValue(":id_conta", "$id_conta");
+$query_clientes->execute();
+
+
 echo 'Editado com Sucesso';
  ?>
