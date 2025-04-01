@@ -20,7 +20,7 @@
 			//'included_segments' => array('All'),
 			'data' => array("foo" => "bar"),
 			'contents' => $content,
-			'android_channel_id'=>'07fc531e-8b8d-4858-8bca-b48e266bf90e', //CANAL PARA SOM PERSONALIZADO
+			//'android_channel_id'=>'07fc531e-8b8d-4858-8bca-b48e266bf90e', //CANAL PARA SOM PERSONALIZADO
 			'headings' => $heading
 			//'send_after' => "2018-12-20 15:50:00 UTC-0200" //PARA PROGRAMAR UM DIA E HORA ESPECÍFICO
 		);

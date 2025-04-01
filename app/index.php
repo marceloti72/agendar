@@ -49,6 +49,20 @@
     <!-- Custom Styles -->
   <link href="<?php echo $url?>css/style.css" rel="stylesheet" />
   <link href="<?php echo $url?>css/responsive.css" rel="stylesheet" />
+
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(function(OneSignal) {
+    OneSignal.init({
+      appId: "00d0cf8f-910f-4ff1-819d-1a429d468a4e",
+      //safari_web_id: "YOUR_SAFARI_WEB_ID",
+      notifyButton: {
+        enable: true,
+      },
+    });
+  });
+</script>
    
     
 

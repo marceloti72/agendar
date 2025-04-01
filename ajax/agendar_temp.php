@@ -22,7 +22,12 @@ $data_agd2 = implode('/', array_reverse(explode('-', $data_agd)));
 
 $hash = "";
 
+$mensagem_not = $nome_cliente;
+ 	//$titulo_not = 'Novo Agendamento ' . $dataF . ' - ' . $horaF;
+ 	//$id_usu = $usuario_logado;
+ 	require('../api/notid.php');
 
+	exit();
 
 $tel_cli = $_POST['telefone'];
 
