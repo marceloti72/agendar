@@ -73,3 +73,85 @@ self.addEventListener('activate', event => {
         })
     );
 });
+
+
+
+// Evento Push: Recebe a notificação do servidor push
+self.addEventListener('push', event => {
+    console.log('[Service Worker] Push Recebido.');
+    let notificationData = {};
+
+    // Tenta pegar dados do payload (se houver)
+    if (event.data) {
+        try {
+            notificationData = event.data.json(); // Tenta decodificar como JSON
+             console.log('[Service Worker] Dados Push:', notificationData);
+        } catch (e) {
+             console.log('[Service Worker] Push tem dados, mas não é JSON:', event.data.text());
+             notificationData.body = event.data.text(); // Usa o texto como corpo se não for JSON
+        }
+    }
+
+    const title = notificationData.title || 'Notificação'; // Título padrão
+    const options = {
+        body: notificationData.body || 'Você recebeu uma nova notificação.', // Corpo padrão
+        icon: notificationData.icon || '/icones/icon-192x192.png', // Ícone padrão
+        badge: notificationData.badge || '/icones/badge-72x72.png', // Ícone pequeno para barra de status (Android)
+        vibrate: [100, 50, 100], // Vibração: vibra 100ms, pausa 50ms, vibra 100ms
+        data: notificationData.data || { url: '/' }, // Dados extras (ex: URL para abrir ao clicar)
+        // actions: [ // Botões de ação (opcional)
+        //   { action: 'explore', title: 'Ver Detalhes' },
+        //   { action: 'close', title: 'Fechar' },
+        // ]
+    };
+
+    // Mostra a notificação
+    event.waitUntil(
+        self.registration.showNotification(title, options)
+    );
+});
+
+// Evento Notification Click: O que acontece quando o usuário clica na notificação
+self.addEventListener('notificationclick', event => {
+    console.log('[Service Worker] Notificação clicada.');
+
+    const notification = event.notification;
+    const action = event.action; // Identificador da ação (se houver botões)
+    const notificationData = notification.data; // Dados passados no 'data' das opções
+
+    notification.close(); // Fecha a notificação
+
+    if (action === 'close') {
+        // Ação de fechar (se você adicionou um botão 'close')
+        return;
+    }
+
+    // Abre uma janela/aba ou foca uma existente
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }) // Procura por janelas abertas do PWA
+            .then(windowClients => {
+                // Verifica se já existe uma janela aberta com a URL desejada
+                for (let i = 0; i < windowClients.length; i++) {
+                    const client = windowClients[i];
+                    // Compara a URL do cliente com a URL nos dados da notificação (se existir)
+                    // Adapte a lógica de comparação se necessário
+                    if (client.url === notificationData.url && 'focus' in client) {
+                         console.log("Focando janela existente:", client.url);
+                        return client.focus(); // Foca a janela existente
+                    }
+                }
+                // Se nenhuma janela correspondente estiver aberta, abre uma nova
+                 console.log("Abrindo nova janela:", notificationData.url || '/');
+                if (clients.openWindow && notificationData.url) {
+                    return clients.openWindow(notificationData.url); // Abre a URL dos dados
+                } else if (clients.openWindow) {
+                    return clients.openWindow('/'); // Abre a página inicial como padrão
+                }
+            })
+    );
+});
+
+// Opcional: Evento para quando a notificação é fechada (sem clique)
+self.addEventListener('notificationclose', event => {
+    console.log('[Service Worker] Notificação fechada.');
+});

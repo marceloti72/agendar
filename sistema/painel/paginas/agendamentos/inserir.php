@@ -123,10 +123,10 @@ $nome_cliente = $res[0]['nome'];
 $telefone = $res[0]['telefone'];
 
 if ($api == 'Sim') {
-	// $mensagem_not = $nome_cliente;
-	// $titulo_not = 'Novo Agendamento ' . $dataF . ' - ' . $horaF;
-	// $id_usu = $funcionario;
-	// require('../../../../api/notid.php');
+	 $mensagem_not = $nome_cliente;
+	 $titulo_not = 'Novo Agendamento ' . $dataF . ' - ' . $horaF;
+	 $id_usu = $funcionario;
+	 require('../../../../api/notid.php');
 
 
 	$telefone = '55' . preg_replace('/[ ()-]+/', '', $tel_func);
