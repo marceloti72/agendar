@@ -65,8 +65,9 @@ if ($id_pg != "") {
                 text: 'Agendamento realizado com sucesso.',
                 icon: 'success',
                 timer: 6000,
-                showConfirmButton: false,                 
-            },
+                showConfirmButton: false,
+                width: '600px', // Define a largura da janela (aumente conforme necessário)
+                padding: '2rem', // Aumenta o espaçamento interno (opcional)
                 didOpen: () => {
                     confetti({
                         particleCount: 150,
