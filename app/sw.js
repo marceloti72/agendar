@@ -2,15 +2,15 @@ const CACHE_NAME = 'versao-1.03'; // Mude a versão quando atualizar os arquivos
 const urlsToCache = [
     '/', // Página inicial
     'index.php', // Ou sua página principal
-    'css/style.css', // Seus arquivos CSS
-    'css/responsive.css', 
-    'sistema/painel/css/custom.css', 
-    'sistema/painel/css/style.css', 
-    'sistema/painel/js/scripts.js', 
+    '../css/style.css', // Seus arquivos CSS
+    '../css/responsive.css', 
+    '../sistema/painel/css/custom.css', 
+    '../sistema/painel/css/style.css', 
+    '../sistema/painel/js/scripts.js', 
     
-    'js/custom.js', // Seus arquivos JS
-    'images/icone_192.png', // Ícone principal
-    'images/icone_512.png', // Ícone principal
+    '../js/custom.js', // Seus arquivos JS
+    '../images/icone_192.png', // Ícone principal
+    '../images/icone_512.png', // Ícone principal
     // Adicione aqui TODOS os arquivos essenciais para a interface básica offline
     // Ex: outras páginas HTML/PHP, imagens importantes, fontes
 ];
