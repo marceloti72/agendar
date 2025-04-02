@@ -262,6 +262,8 @@ try {
           $servicos2 = $config['servicos'];
           $depoimentos2 = $config['depoimentos'];
           $carrossel = $config['carrossel'];
+          $encaixe = $config['encaixe'];
+		  $satisfacao = $config['satisfacao'];
 
           $horas_confirmacaoF = $minutos_aviso . ':00:00';
           $tel_whatsapp = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
