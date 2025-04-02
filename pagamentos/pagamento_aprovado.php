@@ -65,13 +65,7 @@ if ($id_pg != "") {
                 text: 'Agendamento realizado com sucesso.',
                 icon: 'success',
                 timer: 6000,
-                showConfirmButton: false,
-                 width: '95%',                 
-                padding: '2.5em', 
-                customClass: {
-                popup: 'swal-wide', 
-                title: 'swal-title-large', 
-                htmlContainer: 'swal-text-large' 
+                showConfirmButton: false,                 
             },
                 didOpen: () => {
                     confetti({

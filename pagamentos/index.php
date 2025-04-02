@@ -69,9 +69,7 @@ $sobrenome = $_REQUEST["sobrenome"];
 
 <head>
     <title>Pagamento</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <link href="./assets/bootstrap.min.css" rel="stylesheet">
     <link href="./assets/signin.css" rel="stylesheet">
