@@ -13,6 +13,50 @@ $datasParaExibir = [];
 $dataCorrente = new DateTime(); // Começa com hoje
 $dataCorrente->setTime(0, 0, 0);
 
+// Define locale para Português do Brasil ANTES de usar os formatters
+// Certifique-se de que a extensão intl está habilitada no seu PHP
+try {
+    // Ajuste o timezone se necessário
+    $formatterDiaSemana = new IntlDateFormatter('pt_BR', IntlDateFormatter::FULL, IntlDateFormatter::NONE, 'America/Sao_Paulo', IntlDateFormatter::GREGORIAN, 'EEE');
+    $formatterMes = new IntlDateFormatter('pt_BR', IntlDateFormatter::FULL, IntlDateFormatter::NONE, 'America/Sao_Paulo', IntlDateFormatter::GREGORIAN, 'MMM');
+    // Define pattern para remover o ponto final, se houver (varia conforme a versão do ICU)
+    $formatterDiaSemana->setPattern('EEE');
+    $formatterMes->setPattern('MMM');
+} catch (Exception $e) {
+    // Fallback simples se Intl não estiver disponível
+    error_log("Extensão Intl não disponível ou erro: " . $e->getMessage());
+    function formatarDiaSemanaPt($dateObj) {
+        $dias = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
+        return $dias[$dateObj->format('w')];
+    }
+    function formatarMesPt($dateObj) {
+        $meses = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+        return $meses[$dateObj->format('n') - 1];
+    }
+}
+
+for ($i = 0; $i < $numeroDeDiasParaMostrar; $i++) {
+    $dataYmd = $dataCorrente->format('Y-m-d');
+    $datasParaExibir[] = [
+        'dataCompleta' => $dataYmd,
+        // Usa IntlDateFormatter se disponível, senão usa fallback
+        'diaDaSemana' => (isset($formatterDiaSemana)) ? mb_strtoupper($formatterDiaSemana->format($dataCorrente)) : mb_strtoupper(formatarDiaSemanaPt($dataCorrente)),
+        'dia' => $dataCorrente->format('d'),
+        'mes' => (isset($formatterMes)) ? mb_strtoupper(str_replace('.', '', $formatterMes->format($dataCorrente))) : mb_strtoupper(formatarMesPt($dataCorrente)), // Remove ponto final se houver
+        'objetoData' => clone $dataCorrente
+    ];
+    $dataCorrente->modify('+1 day');
+}
+
+// Lógica de Desconto (Exemplo - Substitua pela sua)
+function obterDescontoParaData($dataYmd) {
+    $dataObj = new DateTime($dataYmd);
+    $diaSemanaNum = $dataObj->format('N'); // 1 (Segunda) a 7 (Domingo)
+    if ($diaSemanaNum == 2 || $diaSemanaNum == 3) { return 10; }
+    return 0;
+}
+
+$dataSelecionadaInicial = $data_atual_iso; // Data de hoje no formato correto
 
 ?>
 <style type="text/css">
