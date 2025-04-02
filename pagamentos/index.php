@@ -129,6 +129,12 @@ $sobrenome = $_REQUEST["sobrenome"];
         } ?>
 
     </div>
+
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+    
     <style>
         body {
             font-family: arial

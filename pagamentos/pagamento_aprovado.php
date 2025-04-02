@@ -2,11 +2,8 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Processando Agendamento</title>
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
-    <!-- Canvas Confetti -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <title>Processando Agendamento</title>    
+    
 </head>
 <body>
 <?php
@@ -65,9 +62,7 @@ if ($id_pg != "") {
                 text: 'Agendamento realizado com sucesso.',
                 icon: 'success',
                 timer: 6000,
-                showConfirmButton: false,
-                width: '600px', // Define a largura da janela (aumente conforme necessário)
-                padding: '2rem', // Aumenta o espaçamento interno (opcional)
+                showConfirmButton: false,               
                 didOpen: () => {
                     confetti({
                         particleCount: 150,
