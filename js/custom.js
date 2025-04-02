@@ -1,3 +1,9 @@
+//$("#global-loader").fadeOut("fast");
+
+// ______________ PAGE LOADING
+$(window).on("load", function (e) {
+    $("#global-loader").fadeOut("fast");
+})
 // to get current year
 function getYear() {
     var currentDate = new Date();

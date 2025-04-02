@@ -5,7 +5,7 @@ $serv = $_POST['serv'];
 
 $query = $pdo->query("SELECT * FROM usuarios where (ativo = 'Sim' or ativo = 'teste') and atendimento = 'Sim' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);	
-echo '<option value="">Selecionar Profissional</option>';
+//echo '<option value="">Selecionar Profissional</option>';
 if(@count($res) > 0){
 	for($i=0; $i < @count($res); $i++){
 		$nome_func = @$res[$i]['nome'];

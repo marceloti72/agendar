@@ -61,6 +61,10 @@
 
   
 </head>
+
+<div id="global-loader">
+    <img src="images/loader.gif" class="loader-img loader loader_mobile" alt="">
+</div>
   
 
 
@@ -69,7 +73,7 @@
         background-color: #ffffff;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         padding: 10px 0;
-        position: sticky;
+        
         top: 0;
         z-index: 1000;
     }

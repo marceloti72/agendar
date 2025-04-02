@@ -13,8 +13,8 @@ if(!empty($_POST['funcionario'])){
 $hora = @$_POST['hora'];
 $servico = $_POST['servico'];
 $obs = $_POST['obs'];
-$data = @$_POST['data'];
-$data_agd = @$_POST['data'];
+$data = @$_POST['data_selecionada'];
+$data_agd = @$_POST['data_selecionada'];
 $hora_do_agd = @$_POST['hora'];
 $id = @$_POST['id'];
 
@@ -22,12 +22,7 @@ $data_agd2 = implode('/', array_reverse(explode('-', $data_agd)));
 
 $hash = "";
 
-$mensagem_not = $nome_cliente;
- 	//$titulo_not = 'Novo Agendamento ' . $dataF . ' - ' . $horaF;
- 	//$id_usu = $usuario_logado;
- 	require('../api/notid.php');
 
-	exit();
 
 $tel_cli = $_POST['telefone'];
 
@@ -124,7 +119,6 @@ while (@strtotime($nova_hora) < @strtotime($hora_final_servico)){
 	}
 
 }
-
 
 
 //@$_SESSION['telefone'] = $telefone2;

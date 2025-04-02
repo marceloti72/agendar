@@ -158,7 +158,7 @@
 </style>
 <?php require_once("sistema/conexao.php") ?>
 <!-- footer section -->
-  <footer class="footer_section" style="background-color: #007cff;">
+  <footer class="footer_section" style="background-color:rgb(0, 0, 0);">
     <div class="container">
       <div class="footer_content ">
         <div class="row ">
@@ -209,7 +209,7 @@
               <form id="form_cadastro">
                 <input type="text" style="border-radius: 15px;" name="telefone" id="telefone_rodape" placeholder="Seu Telefone DDD + número" />
                 <input type="text" style="border-radius: 15px;" name="nome" placeholder="Seu Nome" />
-                <button type="submit" style="border-radius: 15px;">
+                <button type="submit" style="border-radius: 15px; background-color: #108554">
                   Cadastrar
                 </button>
               </form>
