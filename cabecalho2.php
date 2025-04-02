@@ -1,6 +1,6 @@
 <?php require_once("sistema/conexao2.php") ?>
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
   <!-- Basic -->
