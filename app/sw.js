@@ -3,8 +3,14 @@ const urlsToCache = [
     '/', // Página inicial
     'index.php', // Ou sua página principal
     'css/style.css', // Seus arquivos CSS
-    'js/script.js', // Seus arquivos JS
-    'img/icone_192.png', // Ícone principal
+    'css/responsive.css', 
+    'sistema/painel/css/custom.css', 
+    'sistema/painel/css/style.css', 
+    'sistema/painel/js/scripts.js', 
+    
+    'js/custom.js', // Seus arquivos JS
+    'images/icone_192.png', // Ícone principal
+    'images/icone_512.png', // Ícone principal
     // Adicione aqui TODOS os arquivos essenciais para a interface básica offline
     // Ex: outras páginas HTML/PHP, imagens importantes, fontes
 ];
