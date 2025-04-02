@@ -66,9 +66,13 @@ if ($id_pg != "") {
                 icon: 'success',
                 timer: 6000,
                 showConfirmButton: false,
-                width: '90%',    
-                maxWidth: '600px',
-                padding: '2rem', // Aumenta o espaçamento interno (opcional)
+                 width: '95%',                 
+                padding: '2.5em', 
+                customClass: {
+                popup: 'swal-wide', 
+                title: 'swal-title-large', 
+                htmlContainer: 'swal-text-large' 
+            },
                 didOpen: () => {
                     confetti({
                         particleCount: 150,
