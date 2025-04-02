@@ -1,5 +1,9 @@
 $(function () {
 
+    $(window).on("load", function (e) {
+        $("#global-loader").fadeOut("fast");
+    })
+
 
     //HEADER
     $(window).scroll(function () {

@@ -144,3 +144,25 @@
 
 }
 /*Fecha o Responsivo*/
+
+#global-loader {
+  position: fixed;
+  z-index: 50000;
+  background: #fff;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;    
+  margin: 0 auto;
+  text-align: center;
+}
+
+.loader-img {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  top: 43%;
+  left: -40px;
+  margin: 0 auto;
+  text-align: center;
+}

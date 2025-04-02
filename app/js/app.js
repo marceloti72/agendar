@@ -1,6 +1,7 @@
 // app.js
 let deferredPrompt;
 
+
 const installButton = document.getElementById('installButton');
 
 // Esconde o botão por padrão até que o evento beforeinstallprompt seja disparado
