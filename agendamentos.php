@@ -1,5 +1,5 @@
 <?php
-require_once("./sistema/conexao.php"); // Ajuste o caminho se necessário
+//require_once("./sistema/conexao.php"); // Ajuste o caminho se necessário
 require_once("./cabecalho2.php"); // Inclui seu cabeçalho (presume que inicia a sessão, define $pdo, $id_conta, $username, $url, etc.)
 $data_atual = date('Y-m-d');
 $data_atual_iso = $data_atual; // Renomeado para clareza, usado no input e valor inicial
