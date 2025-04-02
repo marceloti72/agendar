@@ -66,7 +66,8 @@ if ($id_pg != "") {
                 icon: 'success',
                 timer: 6000,
                 showConfirmButton: false,
-                width: '1200px', // Define a largura da janela (aumente conforme necessário)
+                width: '90%',    
+                maxWidth: '600px',
                 padding: '2rem', // Aumenta o espaçamento interno (opcional)
                 didOpen: () => {
                     confetti({
