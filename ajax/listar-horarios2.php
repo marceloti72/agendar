@@ -7,6 +7,8 @@ $id_conta = @$_SESSION['id_conta']; // Garanta que id_conta está vindo da sess�
 $funcionario = isset($_POST['funcionario']) ? $_POST['funcionario'] : null;
 $data = isset($_POST['data']) ? $_POST['data'] : null;
 $hora_rec = isset($_POST['hora']) ? $_POST['hora'] : null; // Hora pré-selecionada
+$nome = isset($_POST['nome']) ? $_POST['nome'] : null; // Hora pré-selecionada
+$whatsapp = isset($_POST['telefone']) ? $_POST['telefone'] : null; // Hora pré-selecionada
 
 
 // Validações essenciais
@@ -227,10 +229,10 @@ if (!$encontrou_horario) {
             // Código para mostrar o seu modal #modalEncaixe
              $('#modalEncaixe').modal('show');
              // Pré-preenche os dados se possível
-              $('#nomeEncaixe').val('<?php echo addslashes(htmlspecialchars($nome)); ?>');
-              $('#whatsappEncaixe').val('<?php echo addslashes(htmlspecialchars($whatsapp)); ?>');
-              $('#dataEncaixe').val('<?php echo htmlspecialchars($data); ?>');
-              $('#profissionalEncaixe').val('<?php echo htmlspecialchars($funcionario); ?>');
+              $('#nomeEncaixe').val('{$nome}');
+              $('#whatsappEncaixe').val('{$whatsapp}');
+              $('#dataEncaixe').val('{$data}');
+              $('#profissionalEncaixe').val('{$funcionario}');
         }
     });
     // Limpa a div de horários para não mostrar nada além do Swal
@@ -238,18 +240,105 @@ if (!$encontrou_horario) {
     </script>
     <div class="alert alert-warning text-dark small p-1 text-center" role="alert">Nenhum horário disponível!</div>
 
-HTML;
-
-    // Inclui o HTML do modal de encaixe DE NOVO aqui? Ou ele já está na página principal?
-    // Se ele já estiver na página principal, o JS acima vai apenas exibi-lo.
-    // Se não, você precisa incluir o HTML do modal aqui também.
-    // Exemplo (SE NÃO ESTIVER NA PÁGINA PRINCIPAL):
-    /*
+HTML;    
     ?>
-    <div class="modal fade" id="modalEncaixe" ...> ... </div>
-    <script> ... (script do modalEncaixe) ... </script>
+    <div class="modal fade" id="modalEncaixe" tabindex="-1" role="dialog" aria-labelledby="modalEncaixeLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-white" style="background-color: #4682B4;">
+				<h4 class="modal-title">Registrar Encaixe<span id="titulo_servico"></span>  </h4>
+				<a id="btn-fechar-servico" type="button" class="close" data-bs-dismiss="modal" aria-label="Close" style="margin-top: -20px">
+					<span aria-hidden="true">&times;</span>
+				</a>
+			</div>
+            <div class="modal-body">
+                <form id="formEncaixe">
+                    <div class="form-group">
+                        <label for="nomeEncaixe" style="color: black;">Nome</label>
+                        <input type="text" class="form-control" id="nomeEncaixe" name="nomeEncaixe" value="<?php echo $nome?>" placeholder="Nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="whatsappEncaixe"  style="color: black;">WhatsApp</label>
+                        <input type="tel" class="form-control" id="whatsappEncaixe" name="whatsappEncaixe" value="<?php echo $whatsapp?>" required placeholder="(xx) xxxxx-xxxx"> </div>
+                    <input type="hidden" name="dataEncaixe" id="dataEncaixe" value="<?php echo isset($_POST['data']) ? htmlspecialchars($_POST['data']) : ''; ?>">
+                    <input type="hidden" name="profissionalEncaixe" id="profissionalEncaixe" value="<?php echo isset($_POST['funcionario']) ? htmlspecialchars($_POST['funcionario']) : ''; ?>">
+                     <input type="hidden" name="id_conta" value="<?php echo $id_conta; ?>">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</a>
+                <a type="button" class="btn btn-primary" onclick="cadastrarEncaixe()">Registrar</a>
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+        function cadastrarEncaixe() {
+            // Validação básica dos campos (pode ser aprimorada)
+            var nome = $("#nomeEncaixe").val();
+            var whatsapp = $("#whatsappEncaixe").val();
+
+            if (!nome || !whatsapp) {
+                Swal.fire('Erro', 'Preencha todos os campos!', 'error');
+                return;
+            }
+            //Verificação se é um numero de WhatsApp Válido (Melhorado)
+            var whatsappRegex = /^\(\d{2}\)\s?\d{4,5}-\d{4}$/;  //Formato (xx) xxxx-xxxx ou (xx) xxxxx-xxxx
+            if (!whatsappRegex.test(whatsapp)) {
+                Swal.fire('Erro', 'Número de WhatsApp inválido!', 'error');
+                return;
+            }
+
+            // Coleta os dados do formulário e inputs hidden
+            var data = $("#dataEncaixe").val();
+            var profissional = $("#profissionalEncaixe").val();
+            var id_conta = $("input[name='id_conta']").val();
+            
+
+            $.ajax({
+                url: 'ajax/arquivo_cadastro_encaixe.php', // MUDE PARA O CAMINHO CORRETO!
+                method: 'POST',
+                data: {
+                    nome: nome,
+                    whatsapp: whatsapp,
+                    data: data,
+                    profissional: profissional,
+                    id_conta: id_conta
+                },
+                dataType: 'json', // Espera uma resposta JSON
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            title: 'Sucesso!',
+                            text: 'Registro de encaixe realizado com sucesso! Entraremos em contato caso haja disponibilidade.',
+                            icon: 'success',
+                            allowOutsideClick: false,
+                        }).then(() => {
+                        $('#modalEncaixe').modal('hide'); // Fecha o modal após o sucesso
+                        // Limpar Campos
+                        $("#nomeEncaixe").val('');
+                        $("#whatsappEncaixe").val('');
+                        });
+
+                    } else {
+                        Swal.fire('Erro', response.message || 'Erro ao cadastrar encaixe.', 'error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText); // Log do erro completo no console
+                    Swal.fire('Erro', 'Erro ao cadastrar encaixe. Tente novamente mais tarde.', 'error');
+                }
+            });
+        }
+
+//Adiciona uma máscara para o campo WhatsApp
+$(document).ready(function(){
+    $('#whatsappEncaixe').mask('(00) 00000-0000');
+});
+    
+    </script>
     <?php
-    */
+
 
 } else {
     // Envia o HTML gerado com os períodos

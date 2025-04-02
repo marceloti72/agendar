@@ -1,4 +1,4 @@
-const CACHE_NAME = 'versao-1.07'; // Mude a versão quando atualizar os arquivos
+const CACHE_NAME = 'versao-1.08'; // Mude a versão quando atualizar os arquivos
 const urlsToCache = [
     '/', // Página inicial
     'index.php', // Ou sua página principal

@@ -733,6 +733,7 @@ function listarHorarios(funcionario, data, hora, nome, telefone){
          $('#listar-horarios').html('<small class="text-white-50">Selecione Data e Profissional</small>');
          return;
      }
+	 
     $.ajax({
         url: "ajax/listar-horarios2.php", // Verifique o caminho
         method: 'POST',
