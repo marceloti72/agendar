@@ -7,7 +7,8 @@
     } else {
     // die("Username não fornecido.");
     }
-    $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
+    $url = "https://" . $_SERVER['HTTP_HOST'] . "/agendar/";
+    echo $url;
     
 ?>
 
