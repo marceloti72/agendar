@@ -398,6 +398,23 @@ try {
                         
                     </div>
 
+                    <div id="cubo">
+                        
+                        <article class="box-cubo">
+                            
+                            <div>
+                                <p class="cubo-text"><a href="#" id="abrirModalCadastro" title="Portfólio">Depoimentos</a></p>
+                            </div>
+                            
+                            <div>
+                                <p class="cubo-text-transformed">Depoimentos</p>
+                                
+                            </div>
+
+                        </article>
+                        
+                    </div>
+
                     <div id="cubo"><?php 
                         // --- DEFINA O ENDEREÇO COMPLETO DA BARBEARIA AQUI ---
                         // Certifique-se de que seja o mais preciso possível (rua, número, bairro, cidade, estado)
