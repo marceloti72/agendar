@@ -166,3 +166,151 @@
   margin: 0 auto;
   text-align: center;
 }
+
+
+/* Estilos para os Depoimentos DENTRO do Modal */
+#modalVerDepoimentos .modal-body {
+  /* Controla altura máxima e scroll (já feito por modal-dialog-scrollable) */
+  /* max-height: 75vh; */
+  /* overflow-y: auto; */
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+/* Container Pai (mantém flex) */
+#modalVerDepoimentos .depoimento-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #dee2e6;
+}
+#modalVerDepoimentos .depoimento-item:last-child {
+  margin-bottom: 0; padding-bottom: 0; border-bottom: none;
+}
+
+/* --- Container da Imagem --- */
+#modalVerDepoimentos .depoimento-img {
+  width: 50px;         /* Largura FIXA */
+  height: 50px;        /* Altura FIXA */
+  flex-shrink: 0;    /* MUITO IMPORTANTE: Impede que este div encolha */
+  margin-right: 15px;  /* Espaço à direita */
+  border-radius: 50%;  /* Deixa o container redondo */
+  overflow: hidden;    /* Esconde partes da imagem que vazam do círculo */
+  border: 1px solid #eee; /* Borda sutil no container */
+}
+
+/* --- Imagem dentro do Container --- */
+#modalVerDepoimentos .depoimento-img img {
+  width: 100%;         /* Imagem ocupa 100% do container de 50x50 */
+  height: 100%;        /* Imagem ocupa 100% do container de 50x50 */
+  object-fit: cover;   /* Mantém proporção, cobre o espaço e CORTA o excesso */
+  display: block;      /* Remove espaço extra */
+/* border-radius: 50%; NÃO é mais necessário aqui se o PAI tem overflow:hidden e border-radius */
+}
+
+/* --- Container do Texto --- */
+#modalVerDepoimentos .depoimento-texto {
+  flex-grow: 1;         /* Permite que o texto ocupe todo o espaço restante */
+  min-width: 0;         /* IMPORTANTE em flexbox: Permite que este item encolha se necessário, facilitando a quebra de linha */
+  /* As propriedades abaixo garantem a quebra de texto longa */
+  overflow-wrap: break-word; /* Quebra palavras longas */
+  word-wrap: break-word;     /* Alias para compatibilidade */
+  word-break: break-word;  /* Força a quebra se necessário */
+}
+
+/* Estilos do texto (mantidos) */
+#modalVerDepoimentos .depoimento-texto h5 {
+  font-size: 1.1rem; margin-bottom: 5px; font-weight: bold; color: #333;
+}
+#modalVerDepoimentos .depoimento-texto p {
+  font-size: 0.95rem; color: #555; margin-bottom: 0; line-height: 1.5; white-space: pre-wrap;
+}
+
+/* Outros estilos do modal... */
+#modalVerDepoimentos .modal-body { padding-top: 15px; padding-bottom: 15px; }
+#modalVerDepoimentos .btn-inserir-depoimento { margin-bottom: 25px; }
+#modalVerDepoimentos .modal-dialog { /* max-width: 600px; */ }
+
+
+
+/* Estilos para os Planos DENTRO do Modal de Assinaturas */
+#modalAssinaturas .modal-body {
+  background-color: #f8f9fa; /* Fundo levemente cinza para o corpo do modal */
+}
+
+#modalAssinaturas .btn-minha-assinatura {
+  /* Estilo para o botão "Minha Assinatura" */
+  font-weight: bold;
+}
+
+#modalAssinaturas .plano-item {
+  border: 1px solid #dee2e6;
+  transition: box-shadow .3s ease-in-out; /* Suaviza sombra no hover */
+}
+#modalAssinaturas .plano-item:hover {
+   box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; /* Sombra mais forte no hover */
+}
+
+
+#modalAssinaturas .plano-img {
+  height: 150px; /* Altura fixa para imagens dos planos */
+  object-fit: cover; /* Cobre o espaço mantendo proporção */
+  border-bottom: 1px solid #eee; /* Linha sutil abaixo da imagem */
+}
+
+#modalAssinaturas .plano-titulo {
+  color: #343a40;
+  font-weight: bold;
+  margin-top: 10px; /* Espaço acima do título */
+}
+
+#modalAssinaturas .plano-preco {
+  font-size: 1.2em;
+  margin-bottom: 15px;
+}
+
+#modalAssinaturas .plano-beneficios li {
+  margin-bottom: 8px; /* Espaço entre benefícios */
+  font-size: 0.95em;
+  color: #495057;
+  display: flex; /* Alinha ícone e texto */
+  align-items: center;
+}
+#modalAssinaturas .plano-beneficios i {
+   width: 20px; /* Largura fixa para o ícone */
+   text-align: center;
+}
+
+/* Ajusta botão 'Assinar' */
+#modalAssinaturas .btn-assinar {
+  font-weight: bold;
+  /* mt-auto na classe HTML já empurra para baixo */
+}
+
+/* Ajusta tamanho do modal em telas menores se modal-lg for muito */
+@media (max-width: 991px) {
+  #modalAssinaturas .modal-dialog {
+      /* max-width: 95%; */ /* Pode ajustar se necessário */
+  }
+  #modalAssinaturas .plano-item {
+       /* Garante que em telas médias (onde podem ficar 2 colunas) não fiquem tão grandes */
+  }
+}
+
+@media (max-width: 767px) {
+   /* Para mobile, força 1 coluna (Bootstrap faz isso por padrão com col-md-6) */
+   /* Ajustes finos se necessário */
+   #modalAssinaturas .plano-titulo {
+       font-size: 1.2rem;
+   }
+   #modalAssinaturas .plano-preco {
+      font-size: 1.1em;
+   }
+   #modalAssinaturas .plano-beneficios li {
+      font-size: 0.9em;
+   }
+    #modalAssinaturas .plano-img {
+       height: 120px; /* Imagem menor no mobile */
+   }
+}

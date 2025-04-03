@@ -697,10 +697,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <textarea maxlength="500" class="form-control" id="texto_cliente" name="texto" placeholder="Texto Comentário" required> </textarea>   
               </div>  
             </div>
-          </div>
-
-
-                
+          </div>               
 
             <div class="row">
               <div class="col-md-8">            

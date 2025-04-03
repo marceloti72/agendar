@@ -36,6 +36,7 @@
     <!--[if lt IE 9]>
         <script src="js/html5shiv.js"></script>
     <![endif]-->   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     
     <!-- Font Awesome (use apenas uma versão, recomendo CDN) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" 1  crossorigin="anonymous" referrerpolicy="no-referrer" 2  />
@@ -299,6 +300,9 @@ try {
             <div class="box-artigo">
                 
                 <div class="sidebar">
+                    <?php 
+                    if($agendamentos2 == 'Sim'){
+                    ?>
 
                     <div id="cubo">
                         
@@ -315,8 +319,12 @@ try {
                         </article>
 
                     </div>
+                    <?php }?>
 
-                    <div id="cubo">
+                    <?php 
+                    if($servicos2 == 'Sim'){
+                    ?>
+                    <div id="cubo">                        
                         
                         <article class="box-cubo">
                             
@@ -331,7 +339,11 @@ try {
                         </article>
 
                     </div>
+                    <?php }?>
 
+                    <?php 
+                    if($produtos2 == 'Sim'){
+                    ?>
                     <div id="cubo">
                         
                         <article class="box-cubo">
@@ -347,7 +359,11 @@ try {
                         </article>
 
                     </div>
+                    <?php }?>
 
+                    <?php 
+                    if($agendamentos2 == 'Sim'){
+                    ?>
                     <div id="cubo">
                         
                         <article class="box-cubo">
@@ -363,6 +379,27 @@ try {
                         </article>
                         
                     </div>
+                    <?php }?>
+
+                    <?php 
+                    if($agendamentos2 == 'Sim'){
+                    ?>
+                    <div id="cubo">
+                        
+                        <article class="box-cubo">
+                            
+                            <div>
+                                <p class="cubo-text"><a href="#" data-toggle="modal" data-target="#modalAssinaturas2" title="Blog">Planos de Assinatura</a></p>
+                            </div>
+                            
+                            <!-- <div>
+                                <p class="cubo-text-transformed">Planos de Assinatura</p>
+                            </div> -->
+
+                        </article>
+                        
+                    </div>
+                    <?php }?>
 
                     <div id="cubo">
                         
@@ -397,13 +434,16 @@ try {
                         </article>
                         
                     </div>
+                    <?php 
+                    if($depoimentos2 == 'Sim'){
+                    ?>
 
                     <div id="cubo">
                         
                         <article class="box-cubo">
                             
                             <div>
-                                <p class="cubo-text"><a href="#" id="abrirModalCadastro" title="Portfólio">Depoimentos</a></p>
+                                <p class="cubo-text"><a href="#" data-toggle="modal" data-target="#modalVerDepoimentos" title="Portfólio">Depoimentos</a></p>
                             </div>
                             
                             <div>
@@ -414,6 +454,7 @@ try {
                         </article>
                         
                     </div>
+                    <?php }?>
 
                     <div id="cubo"><?php 
                         // --- DEFINA O ENDEREÇO COMPLETO DA BARBEARIA AQUI ---
@@ -455,10 +496,10 @@ try {
                                 <p class="cubo-text"><a href="../login.php" title="Portfólio">Acesso Restrito</a></p>
                             </div>
                             
-                            <div>
+                            <!-- <div>
                                 <p class="cubo-text-transformed">Acesso Restrito</p>
                                 
-                            </div>
+                            </div> -->
 
                         </article>
                         
@@ -481,6 +522,125 @@ try {
 
 </main>
 
+<div class="modal fade" id="modalVerDepoimentos" tabindex="-1" role="dialog" aria-labelledby="modalDepoimentosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+        <?php
+        // Busca os depoimentos
+        $query_modal = $pdo->query("SELECT * FROM comentarios where ativo = 'Sim' and id_conta = '$id_conta' ORDER BY id desc"); // Ordenar por ID desc para mais recentes primeiro?
+        $res_modal = $query_modal->fetchAll(PDO::FETCH_ASSOC);
+        $total_reg_modal = count($res_modal);
+        ?>
+
+            <div class="modal-header text-white" style="background-color: #4682B4;">
+                <h5 class="modal-title" id="modalDepoimentosLabel">Depoimentos dos Clientes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="padding: 5px;">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="text-center btn-inserir-depoimento mb-4">
+                     <a style="border-radius: 15px;" href="#" class="btn btn-success" data-toggle="modal" data-target="#modalComentario2" data-dismiss="modal">
+                         <i class="fa fa-plus"></i> Deixar Meu Depoimento
+                     </a>
+                 </div>
+                 <hr> 
+
+                <?php if ($total_reg_modal > 0): ?>
+                    <?php foreach ($res_modal as $item_modal):
+                        // Sanitiza os dados para exibição segura
+                        $nome_modal = htmlspecialchars($item_modal['nome']);
+                        $texto_modal = nl2br(htmlspecialchars($item_modal['texto'])); // nl2br e htmlspecialchars
+                        $foto_modal = htmlspecialchars($item_modal['foto']);
+                        // Monta o caminho completo da imagem - AJUSTE ESTE CAMINHO
+                        $caminho_foto_modal = '../sistema/painel/img/comentarios/' . ($foto_modal ?: 'sem-foto.jpg');
+                    ?>
+                        <div class="depoimento-item">
+                            <div class="depoimento-img">
+                                <img src="<?php echo $caminho_foto_modal; ?>"
+                                     alt="Foto de <?php echo $nome_modal; ?>"
+                                     onerror="this.onerror=null; this.src='sistema/painel/img/comentarios/sem-foto.jpg';">
+                            </div>
+                            <div class="depoimento-texto">
+                                <h5><?php echo $nome_modal; ?></h5>
+                                <p><?php echo $texto_modal; ?></p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="text-center text-muted">Seja o primeiro a deixar um depoimento!</p>
+                <?php endif; ?>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalComentario2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-white" style="background-color: #4682B4;">
+          <h5 class="modal-title" id="exampleModalLabel">Inserir Depoimento
+                   </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
+            <span aria-hidden="true" style="padding: 5px;">&times;</span>
+          </button>
+        </div>
+        
+        <form id="form2">
+      <div class="modal-body">
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Nome</label>
+                <input type="text" class="form-control" id="nome_cliente2" name="nome" placeholder="Nome" required>    
+              </div>  
+            </div>
+            <div class="col-md-12">
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">Texto <small>(Até 500 Caracteres)</small></label>
+                <textarea maxlength="500" class="form-control" id="texto_cliente2" name="texto" placeholder="Texto Comentário" required> </textarea>   
+              </div>  
+            </div>
+          </div>               
+
+            <div class="row">
+              <div class="col-md-8">            
+                <div class="form-group"> 
+                  <label>Foto</label> 
+                  <input class="form-control" type="file" name="foto" onChange="carregarImg();" id="foto2">
+                </div>            
+              </div>
+              <div class="col-md-4">
+                <div id="divImg">
+                  <img src="../sistema/painel/img/comentarios/sem-foto.jpg"  width="80px" id="target2">                  
+                </div>
+              </div>
+            </div>          
+            <input type="hidden" name="id" id="id">
+             <input type="hidden" name="cliente" value="1">
+
+          <br>
+          <small><div id="mensagem-comentario2" align="center"></div></small>
+        </div>
+
+        <div class="modal-footer">      
+          <button type="submit" class="btn btn-primary">Inserir</button>
+        </div>
+      </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div id="modalCadastroSimples" class="modal-simples">
   <div class="modal-conteudo">
     <span class="modal-fechar">&times;</span>
@@ -500,6 +660,107 @@ try {
   </div>
 </div>
 
+
+
+<div class="modal fade" id="modalAssinaturas" tabindex="-1" role="dialog" aria-labelledby="modalAssinaturasLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document"> {/* modal-lg para mais espaço, modal-dialog-scrollable para scroll */}
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAssinaturasLabel">Planos de Assinatura</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="text-center mb-4">
+                    <a href="/caminho/para/minha_assinatura.php" class="btn btn-outline-secondary btn-minha-assinatura">
+                       <i class="fas fa-user-check"></i> Minha Assinatura Atual
+                    </a>
+                    <hr> {/* Linha separadora opcional */}
+                </div>
+
+                <div class="row justify-content-center">
+
+                    <div class="col-md-6 col-lg-5 mb-4"> {/* Ajuste colunas conforme necessário */}
+                        <div class="plano-item card h-100 shadow-sm"> {/* h-100 para mesma altura */}
+                            <img src="images/planos/bronze.jpg" class="card-img-top plano-img" alt="Plano Bronze"> {/* SUBSTITUA CAMINHO */}
+                            <div class="card-body d-flex flex-column"> {/* Flex column */}
+                                <h5 class="card-title text-center plano-titulo">Plano Bronze</h5>
+                                <p class="plano-preco text-center text-muted">R$ 19,90 / mês</p>
+                                <ul class="list-unstyled mt-3 mb-4 plano-beneficios">
+                                    <li><i class="fas fa-check text-success mr-2"></i>Benefício Bronze 1</li>
+                                    <li><i class="fas fa-check text-success mr-2"></i>Benefício Bronze 2</li>
+                                    <li><i class="fas fa-times text-danger mr-2"></i>Benefício Prata NÃO incluso</li>
+                                </ul>
+                                <button type="button" class="btn btn-lg btn-block btn-outline-primary btn-assinar mt-auto" data-plano="bronze">Assinar Bronze</button> {/* mt-auto empurra para baixo */}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-5 mb-4">
+                        <div class="plano-item card h-100 shadow-sm">
+                             <img src="images/planos/prata.jpg" class="card-img-top plano-img" alt="Plano Prata"> {/* SUBSTITUA CAMINHO */}
+                             <div class="card-body d-flex flex-column">
+                                 <h5 class="card-title text-center plano-titulo">Plano Prata</h5>
+                                 <p class="plano-preco text-center text-muted">R$ 39,90 / mês</p>
+                                 <ul class="list-unstyled mt-3 mb-4 plano-beneficios">
+                                     <li><i class="fas fa-check text-success mr-2"></i>Benefício Bronze 1</li>
+                                     <li><i class="fas fa-check text-success mr-2"></i>Benefício Bronze 2</li>
+                                     <li><i class="fas fa-check text-success mr-2"></i>Benefício Prata INCLUSO</li>
+                                     <li><i class="fas fa-times text-danger mr-2"></i>Benefício Ouro NÃO incluso</li>
+                                 </ul>
+                                 <button type="button" class="btn btn-lg btn-block btn-primary btn-assinar mt-auto" data-plano="prata">Assinar Prata</button>
+                             </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-5 mb-4">
+                         <div class="plano-item card h-100 shadow-sm">
+                             <img src="images/planos/ouro.jpg" class="card-img-top plano-img" alt="Plano Ouro"> {/* SUBSTITUA CAMINHO */}
+                             <div class="card-body d-flex flex-column">
+                                 <h5 class="card-title text-center plano-titulo">Plano Ouro</h5>
+                                  <p class="plano-preco text-center text-muted">R$ 69,90 / mês</p>
+                                 <ul class="list-unstyled mt-3 mb-4 plano-beneficios">
+                                     <li><i class="fas fa-check text-success mr-2"></i>Todos Benefícios Prata</li>
+                                     <li><i class="fas fa-check text-success mr-2"></i>Benefício Ouro 1</li>
+                                     <li><i class="fas fa-check text-success mr-2"></i>Benefício Ouro 2</li>
+                                     <li><i class="fas fa-times text-danger mr-2"></i>Benefício Diamante NÃO incluso</li>
+                                 </ul>
+                                 <button type="button" class="btn btn-lg btn-block btn-warning btn-assinar mt-auto" data-plano="ouro">Assinar Ouro</button> {/* Cor diferente */}
+                             </div>
+                         </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-5 mb-4">
+                         <div class="plano-item card h-100 shadow-sm">
+                              <img src="images/planos/diamante.jpg" class="card-img-top plano-img" alt="Plano Diamante"> {/* SUBSTITUA CAMINHO */}
+                              <div class="card-body d-flex flex-column">
+                                  <h5 class="card-title text-center plano-titulo">Plano Diamante</h5>
+                                  <p class="plano-preco text-center text-muted">R$ 99,90 / mês</p>
+                                  <ul class="list-unstyled mt-3 mb-4 plano-beneficios">
+                                      <li><i class="fas fa-check text-success mr-2"></i>Todos Benefícios Ouro</li>
+                                      <li><i class="fas fa-check text-success mr-2"></i>Benefício Diamante 1</li>
+                                      <li><i class="fas fa-check text-success mr-2"></i>Benefício Diamante 2</li>
+                                      <li><i class="fas fa-star text-warning mr-2"></i>Benefício VIP Extra</li>
+                                  </ul>
+                                  <button type="button" class="btn btn-lg btn-block btn-dark btn-assinar mt-auto" data-plano="diamante">Assinar Diamante</button> {/* Cor diferente */}
+                              </div>
+                         </div>
+                    </div>
+
+                </div> </div> {/* Fim modal-body */}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <!-- SweetAlert2 -->
@@ -507,6 +768,8 @@ try {
 <!-- Canvas Confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script src="js/app.js"></script>
 
@@ -655,6 +918,91 @@ $(document).ready(function() { // Se você já tiver jQuery na página
         });
     });
   }
+
+
+  $("#form2").submit(function () {
+    event.preventDefault();
+    var formData = new FormData(this);
+
+    $.ajax({
+        url: '../sistema/painel/paginas/comentarios/salvar.php',
+        type: 'POST',
+        data: formData,
+
+        success: function (mensagem) {
+            $('#mensagem-comentario2').text('');
+            $('#mensagem-comentario2').removeClass()
+            if (mensagem.trim() == "Salvo com Sucesso") {
+            
+            $('#mensagem-comentario2').addClass('text-success')
+                Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "Comentário Enviado para Aprovação!",
+                    showConfirmButton: false,
+                    timer: 1500,
+                                    
+                    willClose: () => {
+                    setTimeout(() => {
+                        $('#nome_cliente2').val('');
+                        $('#texto_cliente2').val('');
+                        window.location.reload();
+                        }, 300);
+                    }  
+                });                 
+                
+
+            } else {
+                $('#mensagem-comentario2').addClass('text-danger')
+                $('#mensagem-comentario2').text(mensagem)
+            }
+        },
+        cache: false,
+        contentType: false,
+        processData: false,
+    });
+
+  });
+
+  function carregarImg() {
+    var target = document.getElementById('target2');
+    var file = document.querySelector("#foto2").files[0];
+    
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+            target.src = reader.result;
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+
+        } else {
+            target.src = "";
+        }
+    }
+
+
+
+    $(document).ready(function() {
+    // Listener para os botões "Assinar" dentro do modal
+    $('#modalAssinaturas').on('click', '.btn-assinar', function() {
+        const planoSelecionado = $(this).data('plano'); // Pega o valor de data-plano (bronze, prata, etc.)
+
+        console.log("Plano selecionado:", planoSelecionado);
+        // Adicione aqui a sua lógica para lidar com a seleção do plano:
+        // - Redirecionar para uma página de pagamento/checkout com o plano selecionado
+        //   Ex: window.location.href = '/checkout.php?plano=' + planoSelecionado;
+        // - Fazer uma chamada AJAX para iniciar o processo de assinatura
+        // - Etc.
+
+        // Exemplo de feedback
+        alert("Você selecionou o Plano " + planoSelecionado.charAt(0).toUpperCase() + planoSelecionado.slice(1) + "!");
+
+        // Fecha o modal após a ação (opcional)
+        $('#modalAssinaturas').modal('hide');
+    });
+});
 </script>
 </body>
 </html>
