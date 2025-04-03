@@ -787,35 +787,89 @@ function mudarServico(){
     $("#nome_serv").val(nomeServico.trim()); // Atualiza input hidden
 }
 
-// Função para listar funcionários baseados no serviço
+
 function listarFuncionarios(){
     var serv = $("#servico").val();
-    var $selectFunc = $('#funcionario'); // Cache do seletor
+    var $selectFunc = $('#funcionario');
 
-    $selectFunc.html('<option value="">Carregando...</option>').prop('disabled', true).trigger('change.select2');
+    $selectFunc.html('<option value="">Carregando...</option>').prop('disabled', true);
 
-     if (!serv) {
-        $selectFunc.html('<option value="">Selecione um Serviço</option>').prop('disabled', false).trigger('change.select2');
+    if (!serv) {
+        $selectFunc.html('<option value="">Selecione um Serviço</option>').prop('disabled', false);
+        // (Re)Inicializa Select2 mesmo sem serviço
+        $selectFunc.select2({
+            width: '100%', theme: "default", templateResult: formatarOpcaoComImagem,
+            templateSelection: formatarSelecaoComImagem, escapeMarkup: function (m) { return m; }
+        });
         $('#listar-horarios').html('<small class="text-white-50">Selecione Serviço e Profissional</small>');
         return;
     }
 
     $.ajax({
-        url: "ajax/listar-funcionarios.php", // Verifique o caminho
+        url: "ajax/listar-funcionarios.php", // Este PHP DEVE gerar o data-image agora
         method: 'POST',
         data: {serv: serv},
-        dataType: "html",
+        dataType: "html", // Espera as tags <option>
         success:function(result){
             $selectFunc.html('<option value="">Selecione um Profissional</option>' + result).prop('disabled', false);
-            $selectFunc.val('').trigger('change.select2'); // Garante que o placeholder apareça e limpa seleção
-            $('#listar-horarios').html('<small class="text-white-50">Selecione um Profissional</small>'); // Limpa horários
-             $("#nome_func").val(''); // Limpa nome do func no hidden input
+            // REINICIALIZA Select2 DEPOIS de carregar as novas opções
+            $selectFunc.select2({
+                width: '100%', theme: "default", templateResult: formatarOpcaoComImagem,
+                templateSelection: formatarSelecaoComImagem, escapeMarkup: function (m) { return m; }
+            });
+            $('#listar-horarios').html('<small class="text-white-50">Selecione um Profissional</small>');
+            $("#nome_func").val('');
         },
         error: function() {
-            $selectFunc.html('<option value="">Erro ao carregar</option>').prop('disabled', false).trigger('change.select2');
+            $selectFunc.html('<option value="">Erro ao carregar</option>').prop('disabled', false);
+            // (Re)Inicializa Select2 no erro também
+            $selectFunc.select2({ /* ... opções ... */ });
         }
     });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Função para listar funcionários baseados no serviço
+// function listarFuncionarios(){
+//     var serv = $("#servico").val();
+//     var $selectFunc = $('#funcionario'); // Cache do seletor
+
+//     $selectFunc.html('<option value="">Carregando...</option>').prop('disabled', true).trigger('change.select2');
+
+//      if (!serv) {
+//         $selectFunc.html('<option value="">Selecione um Serviço</option>').prop('disabled', false).trigger('change.select2');
+//         $('#listar-horarios').html('<small class="text-white-50">Selecione Serviço e Profissional</small>');
+//         return;
+//     }
+
+//     $.ajax({
+//         url: "ajax/listar-funcionarios.php", // Verifique o caminho
+//         method: 'POST',
+//         data: {serv: serv},
+//         dataType: "html",
+//         success:function(result){
+//             $selectFunc.html('<option value="">Selecione um Profissional</option>' + result).prop('disabled', false);
+//             $selectFunc.val('').trigger('change.select2'); // Garante que o placeholder apareça e limpa seleção
+//             $('#listar-horarios').html('<small class="text-white-50">Selecione um Profissional</small>'); // Limpa horários
+//              $("#nome_func").val(''); // Limpa nome do func no hidden input
+//         },
+//         error: function() {
+//             $selectFunc.html('<option value="">Erro ao carregar</option>').prop('disabled', false).trigger('change.select2');
+//         }
+//     });
+// }
 
 // Função para listar cartões (mantida)
 function listarCartoes(tel){
@@ -961,6 +1015,73 @@ $("#form-excluir").submit(function (event) {
         }
     });
 });
+
+
+// DENTRO DO SEU $(document).ready(function() { ... });
+
+$('.sel2').select2({
+    width: '100%',
+    theme: "default", // Ou seu tema preferido
+    templateResult: formatarOpcaoComImagem,  // Função para formatar opções na lista
+    templateSelection: formatarSelecaoComImagem, // Função para formatar o item selecionado
+    escapeMarkup: function (markup) { return markup; } // MUITO IMPORTANTE: Permite HTML nos templates
+});
+
+
+
+
+// --- FUNÇÕES DE TEMPLATE ---
+
+// Formata como cada opção aparece na lista dropdown
+function formatarOpcaoComImagem (opcao) {
+    if (!opcao.id) { // Ignora o placeholder "Selecione..."
+        return opcao.text;
+    }
+
+    var $opcao = $(opcao.element); // Pega o elemento <option> original
+    var imgUrl = $opcao.data('image'); // Pega o URL da imagem do atributo data-image
+    var nome = opcao.text;
+
+    // Se não houver URL de imagem ou for a imagem padrão "sem foto"
+    if (!imgUrl || imgUrl.includes('sem-foto.jpg')) {
+        // Retorna o texto com um ícone genérico (opcional)
+         // Certifique-se de ter Font Awesome incluído se usar o ícone
+        return $('<span><i class="fas fa-user-circle" style="margin-right: 8px; color: #ccc;"></i> ' + nome + '</span>');
+    }
+
+    // Monta o HTML com a imagem e o texto
+    var $resultado = $(
+        '<span style="display: flex; align-items: center;">' + // Usa flexbox para alinhar
+        '<img src="' + imgUrl + '" style="height: 24px; width: 24px; object-fit: cover; border-radius: 50%; margin-right: 8px;" /> ' + // Estilos da imagem
+        nome + // O texto da opção
+        '</span>'
+    );
+    return $resultado;
+};
+
+// Formata como o item SELECIONADO aparece na caixa do select
+function formatarSelecaoComImagem (opcao) {
+    // Pode ser igual à função acima ou mais simples
+     if (!opcao.id) {
+        return opcao.text;
+    }
+    var $opcao = $(opcao.element);
+    var imgUrl = $opcao.data('image');
+    var nome = opcao.text;
+
+    if (!imgUrl || imgUrl.includes('sem-foto.jpg')) {
+        return $('<span><i class="fas fa-user-circle" style="margin-right: 5px; color: #555;"></i> ' + nome + '</span>');
+    }
+
+    // Imagem um pouco menor no item selecionado (opcional)
+    var $resultado = $(
+        '<span style="display: flex; align-items: center;">' +
+        '<img src="' + imgUrl + '" style="height: 20px; width: 20px; object-fit: cover; border-radius: 50%; margin-right: 5px;" /> ' +
+        nome +
+        '</span>'
+    );
+    return $resultado;
+};
 
 // ]]> <-- Adicione esta linha
 </script>
