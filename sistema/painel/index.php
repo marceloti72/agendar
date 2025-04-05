@@ -531,7 +531,29 @@ $plano = $res3['plano'];
 									<li class="<?php echo @$entradas ?>"><a href="entradas"><i class="fa fa-angle-right"></i>Entradas</a></li>
 								
 								</ul>
-							</li>							
+							</li>	
+							
+							<!-- <li class="treeview <?= @$marketing ?>">
+                                <a href="#" data-toggle="modal" data-target="#modalAssinaturas">
+                                    <i class="fa fa-paper-plane"></i><span>Assinaturas</span>
+                                </a>
+                             </li>	 -->
+
+							 <li class="treeview <?php echo @$menu_financeiro ?>" >
+								<a href="#">
+								<i class="fas fa-crown"></i>
+									<span>Clube do Assinante</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+
+									<li class="<?php echo @$vendas ?>"><a href="assinantes"><i class="fa fa-angle-right"></i>Assinantes</a></li>
+
+									<li class="<?php echo @$compras ?>"><a href="conf_planos"><i class="fa fa-angle-right"></i>Configuração</a></li>			
+																	
+								
+								</ul>
+							</li>
 
 
 
@@ -1460,6 +1482,99 @@ $plano = $res3['plano'];
 	  </form>
     </div>
   </div>
+</div>
+
+
+<div class="modal fade" id="modalAssinaturas">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">...</div>
+            <div class="modal-body">
+
+                <div class="text-center btn-inserir-depoimento mb-4">
+                    <a href="/caminho/para/minha_assinatura.php" class="btn btn-outline-secondary btn-minha-assinatura">
+                       <i class="fas fa-user-check"></i> Minha Assinatura Atual
+                    </a>
+                    <hr>
+                </div>
+
+                <div class="row justify-content-center">
+                    <?php
+                    try {
+                        // Busca os planos ativos para a conta atual, ordenados
+                        $query_planos = $pdo->prepare("SELECT * FROM planos WHERE ativo = 1 AND id_conta = :id_conta ORDER BY ordem ASC, id ASC");
+                        $query_planos->execute([':id_conta' => $id_conta]);
+                        $planos = $query_planos->fetchAll(PDO::FETCH_ASSOC);
+
+                        if (count($planos) > 0) {
+                            foreach ($planos as $plano) {
+                                $id_plano_atual = $plano['id'];
+                                $nome_plano = htmlspecialchars($plano['nome']);
+                                $preco_mensal_plano = number_format($plano['preco_mensal'], 2, ',', '.');
+                                $imagem_plano = htmlspecialchars($plano['imagem'] ?: 'default-plano.jpg'); // Imagem padrão
+                                $caminho_imagem_plano = '../../images/' . $imagem_plano; // AJUSTE O CAMINHO
+
+                                // Busca os serviços associados a este plano
+                                $query_servicos_plano = $pdo->prepare("
+                                    SELECT ps.quantidade, s.nome
+                                    FROM planos_servicos ps
+                                    JOIN servicos s ON ps.id_servico = s.id
+                                    WHERE ps.id_plano = :id_plano AND ps.id_conta = :id_conta
+                                    ORDER BY s.nome ASC
+                                ");
+                                $query_servicos_plano->execute([':id_plano' => $id_plano_atual, ':id_conta' => $id_conta]);
+                                $servicos_incluidos = $query_servicos_plano->fetchAll(PDO::FETCH_ASSOC);
+
+                                // Determina a classe do botão (exemplo)
+                                $btn_class = 'btn-primary';
+                                if (strtolower($plano['nome']) == 'ouro') $btn_class = 'btn-warning';
+                                if (strtolower($plano['nome']) == 'diamante') $btn_class = 'btn-dark';
+                                if (strtolower($plano['nome']) == 'bronze') $btn_class = 'btn-outline-primary';
+
+
+                    ?>
+                                <div class="col-md-6 col-lg-5 mb-4">
+                                    <div class="plano-item card h-100 shadow-sm">
+                                        <img src="<?php echo $caminho_imagem_plano; ?>" class="card-img-top plano-img" style='width: 80px;' alt="Plano <?php echo $nome_plano; ?>" onerror="this.onerror=null; this.src='images/planos/default-plano.jpg';">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title text-center plano-titulo"><?php echo $nome_plano; ?></h5>
+                                            <p class="plano-preco text-center text-muted">R$ <?php echo $preco_mensal_plano; ?> / mês</p>
+                                            <ul class="list-unstyled mt-3 mb-4 plano-beneficios">
+                                                <?php if (count($servicos_incluidos) > 0): ?>
+                                                    <?php foreach ($servicos_incluidos as $servico):
+                                                        $qtd_texto = '';
+                                                        if ($servico['quantidade'] == 0) {
+                                                            $qtd_texto = 'Ilimitado - '; // Ou só o nome do serviço
+                                                        } elseif ($servico['quantidade'] > 1) {
+                                                            $qtd_texto = $servico['quantidade'] . 'x ';
+                                                        }
+                                                    ?>
+                                                        <li><i class="fas fa-check text-success mr-2"></i><?php echo $qtd_texto . htmlspecialchars($servico['nome']); ?></li>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <li><small>Nenhum serviço principal incluído neste plano.</small></li>
+                                                <?php endif; ?>
+                                                 </ul>
+                                            <button type="button" class="btn btn-lg btn-block <?php echo $btn_class; ?> btn-assinar mt-auto" data-plano="<?php echo $id_plano_atual; ?>">Assinar <?php echo $nome_plano; ?></button>
+                                        </div>
+                                    </div>
+                                </div>
+                    <?php
+                            } // Fim foreach $planos
+                        } else {
+                            echo '<div class="col-12"><p class="text-center text-muted">Nenhum plano de assinatura disponível no momento.</p></div>';
+                        }
+                    } catch (PDOException $e) {
+                         error_log("Erro ao buscar planos/serviços: " . $e->getMessage());
+                         echo '<div class="col-12"><p class="text-center text-danger">Erro ao carregar os planos. Tente novamente mais tarde.</p></div>';
+                    }
+                    ?>
+                </div> </div> 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>

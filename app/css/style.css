@@ -236,81 +236,89 @@
 
 /* Estilos para os Planos DENTRO do Modal de Assinaturas */
 #modalAssinaturas .modal-body {
-  background-color: #f8f9fa; /* Fundo levemente cinza para o corpo do modal */
-}
-
-#modalAssinaturas .btn-minha-assinatura {
-  /* Estilo para o botão "Minha Assinatura" */
-  font-weight: bold;
+  background-color: #f8f9fa;
 }
 
 #modalAssinaturas .plano-item {
   border: 1px solid #dee2e6;
-  transition: box-shadow .3s ease-in-out; /* Suaviza sombra no hover */
+  transition: box-shadow .3s ease-in-out;
 }
 #modalAssinaturas .plano-item:hover {
-   box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; /* Sombra mais forte no hover */
+   box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
 }
 
-
+/* Estilo para a Imagem do Plano Centralizada */
 #modalAssinaturas .plano-img {
-  height: 150px; /* Altura fixa para imagens dos planos */
-  object-fit: cover; /* Cobre o espaço mantendo proporção */
-  border-bottom: 1px solid #eee; /* Linha sutil abaixo da imagem */
+  width: 80px !important; /* Largura da imagem */
+  height: 80px !important; /* Altura igual à largura */
+  object-fit: contain; /* 'contain' geralmente é melhor para logos, mostra a imagem inteira dentro da área */
+  /* 'cover' preenche a área, mas pode cortar; escolha o melhor para suas imagens */
+  /* As classes 'mx-auto d-block' no HTML cuidam da centralização */
+  border-radius: 5px; /* Opcional: Leve arredondamento */
 }
 
 #modalAssinaturas .plano-titulo {
   color: #343a40;
   font-weight: bold;
-  margin-top: 10px; /* Espaço acima do título */
+  margin-top: 10px;
 }
 
+/* Estilo Preço Mensal */
 #modalAssinaturas .plano-preco {
   font-size: 1.2em;
-  margin-bottom: 15px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.25rem; /* Menos espaço abaixo */
 }
 
+/* Estilo Preço Anual */
+#modalAssinaturas .plano-preco-anual {
+  /* font-size: 0.9em; */ /* Já usa a classe 'small' do Bootstrap */
+  line-height: 1.3;
+  min-height: 3.5em; /* Altura mínima para alinhar com planos sem preço anual */
+  display: flex; /* Permite alinhar verticalmente */
+  flex-direction: column;
+  justify-content: center;
+}
+
+#modalAssinaturas .plano-beneficios {
+  text-align: left; /* Alinha benefícios à esquerda */
+  padding-left: 15px; /* Pequeno recuo */
+  font-size: 0.9em; /* Fonte um pouco menor para benefícios */
+}
 #modalAssinaturas .plano-beneficios li {
-  margin-bottom: 8px; /* Espaço entre benefícios */
-  font-size: 0.95em;
+  margin-bottom: 6px;
   color: #495057;
-  display: flex; /* Alinha ícone e texto */
+  display: flex;
   align-items: center;
 }
 #modalAssinaturas .plano-beneficios i {
-   width: 20px; /* Largura fixa para o ícone */
+   width: 20px;
    text-align: center;
 }
 
 /* Ajusta botão 'Assinar' */
 #modalAssinaturas .btn-assinar {
   font-weight: bold;
-  /* mt-auto na classe HTML já empurra para baixo */
 }
 
-/* Ajusta tamanho do modal em telas menores se modal-lg for muito */
-@media (max-width: 991px) {
-  #modalAssinaturas .modal-dialog {
-      /* max-width: 95%; */ /* Pode ajustar se necessário */
-  }
-  #modalAssinaturas .plano-item {
-       /* Garante que em telas médias (onde podem ficar 2 colunas) não fiquem tão grandes */
-  }
-}
-
+/* Media query para mobile (se precisar de ajustes extras) */
 @media (max-width: 767px) {
-   /* Para mobile, força 1 coluna (Bootstrap faz isso por padrão com col-md-6) */
-   /* Ajustes finos se necessário */
-   #modalAssinaturas .plano-titulo {
-       font-size: 1.2rem;
-   }
+  #modalAssinaturas .plano-img {
+      width: 90px !important; /* Imagem um pouco menor */
+      height: 90px !important;
+  }
    #modalAssinaturas .plano-preco {
       font-size: 1.1em;
+  }
+  #modalAssinaturas .plano-preco-anual {
+      min-height: 3em; /* Ajusta altura mínima */
+  }
+   #modalAssinaturas .plano-beneficios {
+      font-size: 0.85em;
    }
-   #modalAssinaturas .plano-beneficios li {
-      font-size: 0.9em;
-   }
-    #modalAssinaturas .plano-img {
-       height: 120px; /* Imagem menor no mobile */
+    #modalAssinaturas .btn-assinar {
+       font-size: 0.9em; /* Botão um pouco menor */
+       padding: .5rem .75rem;
    }
 }

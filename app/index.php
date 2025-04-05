@@ -268,6 +268,8 @@ try {
 
           $horas_confirmacaoF = $minutos_aviso . ':00:00';
           $tel_whatsapp = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
+
+          $_SESSION['id_conta'] = $id_conta;
       } else {
           echo "Configurações não encontradas para a conta.";
       }
@@ -389,7 +391,7 @@ try {
                         <article class="box-cubo">
                             
                             <div>
-                                <p class="cubo-text"><a href="#" data-toggle="modal" data-target="#modalAssinaturas2" title="Blog">Planos de Assinatura</a></p>
+                                <p class="cubo-text"><a href="#" data-toggle="modal" data-target="#modalAssinaturas" title="Blog">Clube do Assinante</a></p>
                             </div>
                             
                             <!-- <div>
@@ -662,97 +664,225 @@ try {
 
 
 
-<div class="modal fade" id="modalAssinaturas" tabindex="-1" role="dialog" aria-labelledby="modalAssinaturasLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document"> {/* modal-lg para mais espaço, modal-dialog-scrollable para scroll */}
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalAssinaturasLabel">Planos de Assinatura</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+<div class="modal fade" id="modalAssinaturas">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content text-white" style="background-color: #4682B4;">
+            <div class="modal-header">Planos de Assinaturas</div>
             <div class="modal-body">
 
-                <div class="text-center mb-4">
+                <div class="text-center btn-inserir-depoimento mb-4">
                     <a href="/caminho/para/minha_assinatura.php" class="btn btn-outline-secondary btn-minha-assinatura">
                        <i class="fas fa-user-check"></i> Minha Assinatura Atual
                     </a>
-                    <hr> {/* Linha separadora opcional */}
+                    <hr>
                 </div>
 
                 <div class="row justify-content-center">
+                    <?php
+                    try {
+                        // Busca os planos ativos para a conta atual, ordenados
+                        $query_planos = $pdo->prepare("SELECT * FROM planos WHERE id_conta = :id_conta ORDER BY ordem ASC, id ASC");
+                        $query_planos->execute([':id_conta' => $id_conta]);
+                        $planos = $query_planos->fetchAll(PDO::FETCH_ASSOC);
 
-                    <div class="col-md-6 col-lg-5 mb-4"> {/* Ajuste colunas conforme necessário */}
-                        <div class="plano-item card h-100 shadow-sm"> {/* h-100 para mesma altura */}
-                            <img src="images/planos/bronze.jpg" class="card-img-top plano-img" alt="Plano Bronze"> {/* SUBSTITUA CAMINHO */}
-                            <div class="card-body d-flex flex-column"> {/* Flex column */}
-                                <h5 class="card-title text-center plano-titulo">Plano Bronze</h5>
-                                <p class="plano-preco text-center text-muted">R$ 19,90 / mês</p>
-                                <ul class="list-unstyled mt-3 mb-4 plano-beneficios">
-                                    <li><i class="fas fa-check text-success mr-2"></i>Benefício Bronze 1</li>
-                                    <li><i class="fas fa-check text-success mr-2"></i>Benefício Bronze 2</li>
-                                    <li><i class="fas fa-times text-danger mr-2"></i>Benefício Prata NÃO incluso</li>
-                                </ul>
-                                <button type="button" class="btn btn-lg btn-block btn-outline-primary btn-assinar mt-auto" data-plano="bronze">Assinar Bronze</button> {/* mt-auto empurra para baixo */}
+                        if (count($planos) > 0) {
+                            foreach ($planos as $plano) {
+                                $id_plano_atual = $plano['id'];
+                                $nome_plano = htmlspecialchars($plano['nome']);
+                                $preco_mensal_plano = number_format($plano['preco_mensal'], 2, ',', '.');
+                                $imagem_plano = htmlspecialchars($plano['imagem'] ?: 'default-plano.jpg'); // Imagem padrão
+                                $caminho_imagem_plano = '../images/' . $imagem_plano; // AJUSTE O CAMINHO
+
+                                // Busca os serviços associados a este plano
+                                $query_servicos_plano = $pdo->prepare("
+                                    SELECT ps.quantidade, s.nome
+                                    FROM planos_servicos ps
+                                    JOIN servicos s ON ps.id_servico = s.id
+                                    WHERE ps.id_plano = :id_plano AND ps.id_conta = :id_conta
+                                    ORDER BY s.nome ASC
+                                ");
+                                $query_servicos_plano->execute([':id_plano' => $id_plano_atual, ':id_conta' => $id_conta]);
+                                $servicos_incluidos = $query_servicos_plano->fetchAll(PDO::FETCH_ASSOC);
+
+                                // Determina a classe do botão (exemplo)
+                                $btn_class = 'btn-primary';
+                                if (strtolower($plano['nome']) == 'ouro') $btn_class = 'btn-warning';
+                                if (strtolower($plano['nome']) == 'diamante') $btn_class = 'btn-dark';
+                                if (strtolower($plano['nome']) == 'bronze') $btn_class = 'btn-outline-primary';
+
+
+                    ?>
+                                <div class="col-md-6 col-lg-5 mb-4">
+                            <div class="plano-item card h-100 shadow-sm text-center"> 
+                                <img src="<?php echo $caminho_imagem_plano; ?>"
+                                     class="card-img-top plano-img mt-3 mx-auto d-block" 
+                                     alt="Plano <?php echo $nome_plano; ?>"
+                                     onerror="this.onerror=null; this.src='images/planos/default-plano.jpg';">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title plano-titulo"><?php echo $nome_plano; ?></h5>
+                                    
+                                    <p class="plano-preco">
+                                        <strong>R$ <?php echo $preco_mensal_plano; ?></strong> / mês
+                                    </p>
+
+                                    <?php // Exibe Preço Anual SE existir e for maior que zero
+                                    if (!empty($plano['preco_anual']) && $plano['preco_anual'] > 0):
+                                        $preco_anual_plano = number_format($plano['preco_anual'], 2, ',', '.');
+                                    ?>
+                                        <p class="plano-preco-anual small text-muted mb-3"> 
+                                            ou R$ <?php echo $preco_anual_plano; ?> / ano
+                                            <?php
+                                                // Opcional: Calcular e mostrar economia anual
+                                                $economia = ($plano['preco_mensal'] * 12) - $plano['preco_anual'];
+                                                if ($economia > 0) {
+                                                     echo '<br><span class="text-success font-weight-bold">(Economize R$ ' . number_format($economia, 2, ',', '.') . '!)</span>';
+                                                }
+                                            ?>
+                                        </p>
+                                    <?php else: ?>
+                                        
+                                         <div style="height: 3.5em;" class="mb-3"></div>
+                                    <?php endif; ?>
+                                    
+                                    <ul class="list-unstyled mt-3 mb-4 plano-beneficios text-left"> 
+                                        <?php if (count($servicos_incluidos) > 0): ?>
+                                            <?php foreach ($servicos_incluidos as $servico):
+                                                $qtd_texto = '';
+                                                if ($servico['quantidade'] == 0) { $qtd_texto = 'Ilimitado - '; }
+                                                elseif ($servico['quantidade'] > 1) { $qtd_texto = $servico['quantidade'] . 'x '; }
+                                            ?>
+                                                <li><i class="fas fa-check text-success mr-2"></i><?php echo $qtd_texto . htmlspecialchars($servico['nome']); ?></li>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <li><small>Consulte os benefícios incluídos.</small></li>
+                                        <?php endif; ?>                                     
+                                    </ul>
+                                    
+                                    <button type="button" class="btn btn-lg btn-block <?php echo $btn_class; ?> btn-assinar mt-auto" data-plano="<?php echo $id_plano_atual; ?>">Assinar <?php echo $nome_plano; ?></button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-5 mb-4">
-                        <div class="plano-item card h-100 shadow-sm">
-                             <img src="images/planos/prata.jpg" class="card-img-top plano-img" alt="Plano Prata"> {/* SUBSTITUA CAMINHO */}
-                             <div class="card-body d-flex flex-column">
-                                 <h5 class="card-title text-center plano-titulo">Plano Prata</h5>
-                                 <p class="plano-preco text-center text-muted">R$ 39,90 / mês</p>
-                                 <ul class="list-unstyled mt-3 mb-4 plano-beneficios">
-                                     <li><i class="fas fa-check text-success mr-2"></i>Benefício Bronze 1</li>
-                                     <li><i class="fas fa-check text-success mr-2"></i>Benefício Bronze 2</li>
-                                     <li><i class="fas fa-check text-success mr-2"></i>Benefício Prata INCLUSO</li>
-                                     <li><i class="fas fa-times text-danger mr-2"></i>Benefício Ouro NÃO incluso</li>
-                                 </ul>
-                                 <button type="button" class="btn btn-lg btn-block btn-primary btn-assinar mt-auto" data-plano="prata">Assinar Prata</button>
-                             </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-5 mb-4">
-                         <div class="plano-item card h-100 shadow-sm">
-                             <img src="images/planos/ouro.jpg" class="card-img-top plano-img" alt="Plano Ouro"> {/* SUBSTITUA CAMINHO */}
-                             <div class="card-body d-flex flex-column">
-                                 <h5 class="card-title text-center plano-titulo">Plano Ouro</h5>
-                                  <p class="plano-preco text-center text-muted">R$ 69,90 / mês</p>
-                                 <ul class="list-unstyled mt-3 mb-4 plano-beneficios">
-                                     <li><i class="fas fa-check text-success mr-2"></i>Todos Benefícios Prata</li>
-                                     <li><i class="fas fa-check text-success mr-2"></i>Benefício Ouro 1</li>
-                                     <li><i class="fas fa-check text-success mr-2"></i>Benefício Ouro 2</li>
-                                     <li><i class="fas fa-times text-danger mr-2"></i>Benefício Diamante NÃO incluso</li>
-                                 </ul>
-                                 <button type="button" class="btn btn-lg btn-block btn-warning btn-assinar mt-auto" data-plano="ouro">Assinar Ouro</button> {/* Cor diferente */}
-                             </div>
-                         </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-5 mb-4">
-                         <div class="plano-item card h-100 shadow-sm">
-                              <img src="images/planos/diamante.jpg" class="card-img-top plano-img" alt="Plano Diamante"> {/* SUBSTITUA CAMINHO */}
-                              <div class="card-body d-flex flex-column">
-                                  <h5 class="card-title text-center plano-titulo">Plano Diamante</h5>
-                                  <p class="plano-preco text-center text-muted">R$ 99,90 / mês</p>
-                                  <ul class="list-unstyled mt-3 mb-4 plano-beneficios">
-                                      <li><i class="fas fa-check text-success mr-2"></i>Todos Benefícios Ouro</li>
-                                      <li><i class="fas fa-check text-success mr-2"></i>Benefício Diamante 1</li>
-                                      <li><i class="fas fa-check text-success mr-2"></i>Benefício Diamante 2</li>
-                                      <li><i class="fas fa-star text-warning mr-2"></i>Benefício VIP Extra</li>
-                                  </ul>
-                                  <button type="button" class="btn btn-lg btn-block btn-dark btn-assinar mt-auto" data-plano="diamante">Assinar Diamante</button> {/* Cor diferente */}
-                              </div>
-                         </div>
-                    </div>
-
-                </div> </div> {/* Fim modal-body */}
+                    <?php
+                            } // Fim foreach $planos
+                        } else {
+                            echo '<div class="col-12"><p class="text-center text-muted">Nenhum plano de assinatura disponível no momento.</p></div>';
+                        }
+                    } catch (PDOException $e) {
+                         error_log("Erro ao buscar planos/serviços: " . $e->getMessage());
+                         echo '<div class="col-12"><p class="text-center text-danger">Erro ao carregar os planos. Tente novamente mais tarde.</p></div>';
+                    }
+                    ?>
+                </div> </div> 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAssinante2" tabindex="-1" role="dialog" aria-labelledby="modalAssinante2Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+             <form id="form-assinante2" method="post">
+                <div class="modal-header text-white">
+                    <h5 class="modal-title" id="modalAssinante2Label">Adicionar Assinatura</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="id_assinante" name="id_assinante"> 
+                    <input type="hidden" id="id_cliente_encontrado" name="id_cliente_encontrado"> 
+                    <input type="hidden" name="id_conta" value="<?= $id_conta ?>">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ass_telefone">Telefone / WhatsApp <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                     <input type="text" class="form-control" id="ass_telefone" name="telefone" placeholder="(DDD) Número" required onblur="buscarClientePorTelefone(this.value)">
+                                     <div class="input-group-append">
+                                         <span class="input-group-text" id="telefone-loading" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
+                                         <span class="input-group-text" id="telefone-status"></span>
+                                     </div>
+                                 </div>
+                                 <small id="mensagem-busca-cliente" class="form-text"></small>
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                             <div class="form-group">
+                                 <label for="ass_nome">Nome Completo <span class="text-danger">*</span></label>
+                                 <input type="text" class="form-control" id="ass_nome" name="nome" required>
+                             </div>
+                        </div>
+                    </div>
+
+                     <div class="row">
+                         <div class="col-md-6">
+                             <div class="form-group">
+                                 <label for="ass_cpf">CPF</label>
+                                 <input type="text" class="form-control" id="ass_cpf" name="cpf">
+                             </div>
+                        </div>
+                         <div class="col-md-6">
+                             <div class="form-group">
+                                 <label for="ass_email">Email</label>
+                                 <input type="email" class="form-control" id="ass_email" name="email">
+                             </div>
+                        </div>
+                    </div>
+
+                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ass_plano_freq">Plano e Frequência <span class="text-danger">*</span></label>
+                                <select class="form-control" id="ass_plano_freq" name="plano_freq_selecionado" required>
+                                     <option value="">-- Selecione o Plano e a Frequência --</option>
+                                     <?php
+                                     // Reutiliza $planos_disponiveis que já buscamos na página principal
+                                     // Este loop agora está DENTRO do modal
+                                     if(isset($planos_disponiveis) && count($planos_disponiveis) > 0){
+                                        foreach ($planos_disponiveis as $plano_opt):
+                                            $id_plano_opt = $plano_opt['id'];
+                                            $nome_plano_opt = htmlspecialchars($plano_opt['nome']);
+
+                                            // Busca os preços novamente para garantir que temos ambos aqui
+                                            $query_precos = $pdo->prepare("SELECT preco_mensal, preco_anual FROM planos WHERE id = :id AND id_conta = :id_conta ORDER BY id ASC");
+                                            $query_precos->execute([':id' => $id_plano_opt, ':id_conta' => $id_conta_corrente]);
+                                            $precos = $query_precos->fetch(PDO::FETCH_ASSOC);
+
+                                            if ($precos) {
+                                                $preco_m_fmt = number_format($precos['preco_mensal'], 2, ',', '.');
+                                                echo "<option value='{$id_plano_opt}-30'>{$nome_plano_opt} - Mensal (R$ {$preco_m_fmt})</option>";
+
+                                                if (!empty($precos['preco_anual']) && $precos['preco_anual'] > 0) {
+                                                    $preco_a_fmt = number_format($precos['preco_anual'], 2, ',', '.');
+                                                    echo "<option value='{$id_plano_opt}-365'>{$nome_plano_opt} - Anual (R$ {$preco_a_fmt})</option>";
+                                                }
+                                            }
+                                        endforeach;
+                                    } else {
+                                        echo '<option value="">Nenhum plano cadastrado</option>';
+                                    }
+                                     ?>
+                                </select>
+                            </div>
+                        </div>
+                         <!-- <div class="col-md-6">
+                             <div class="form-group">
+                                 <label for="ass_vencimento">Data de Vencimento <span class="text-danger">*</span></label>
+                                 <input type="date" class="form-control" id="ass_vencimento" name="data_vencimento" required>
+                             </div>
+                        </div> -->
+                    </div>
+
+                    <small><div id="mensagem-assinante" class="mt-2"></div></small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>                    
+                    <button type="button" class="btn btn-primary" id="btnSalvarAssinante">Salvar Assinante</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -1002,6 +1132,45 @@ $(document).ready(function() { // Se você já tiver jQuery na página
         // Fecha o modal após a ação (opcional)
         $('#modalAssinaturas').modal('hide');
     });
+});
+
+
+$('#form-assinante').on('submit', function(e) {
+     e.preventDefault(); // Impede envio normal
+     const form = this;
+     const formData = new FormData(form); // Pega todos os dados, incluindo id_cliente_encontrado
+     const $btnSubmit = $('#btnSalvarAssinante');
+     const $msgDiv = $('#mensagem-assinante');
+
+     $btnSubmit.prop('disabled', true).text('Salvando...');
+     $msgDiv.text('').removeClass('text-danger text-success');
+
+     $.ajax({
+        url: 'salvar_assinante.php',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(response) {
+             if (response.success) {
+                 $msgDiv.addClass('text-success').text(response.message);
+                  setTimeout(function() {
+                     $('#modalAssinante').modal('hide');
+                     window.location="../pagamentos/assinatura.php?id_pg=245";
+                  }, 1500);
+             } else {
+                 $msgDiv.addClass('text-danger').text(response.message);
+                 $btnSubmit.prop('disabled', false).text('Salvar Assinante');
+             }
+         },
+         error: function(xhr) {
+             $msgDiv.addClass('text-danger').text('Erro de comunicação. Verifique o console.');
+             console.error("Erro ao salvar assinante:", xhr.responseText);
+             $btnSubmit.prop('disabled', false).text('Salvar Assinante');
+         }
+     });
 });
 </script>
 </body>
