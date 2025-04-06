@@ -70,7 +70,7 @@ if ($_GET["acc"] == "check") {
 
     if(isset($id_pg) && $id_pg != "null") // Garantindo apenas a primeira vez será atualiza
     {
-        $pdo->query("UPDATE agendamentos SET ref_pix = '$id_mercadopago', valor_pago = '$valor_pago' where id = '$id_pg' and id_conta = '$id_conta'"); 
+        $pdo->query("UPDATE receber SET ref_pix = '$id_mercadopago' where id = '$id_pg' and id_conta = '$id_conta'"); 
     }
    
  
@@ -89,7 +89,7 @@ if ($_GET["acc"] == "check") {
         $ref_pix = $id_mercadopago;
         $valor_pago = $transaction_amount;
         $forma_pgto = $payment_method_id;
-        require("pagamento_aprovado3.php");
+        require("pagamento_aprovado_ass.php");
         
         
         echo json_encode(array("status" => "pago"));

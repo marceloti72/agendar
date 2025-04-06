@@ -96,16 +96,19 @@ try {
     $query_plano_rec->execute([':id_plano' => $id_plano, ':id_conta' => $id_conta]);
     $plano_info_rec = $query_plano_rec->fetch(PDO::FETCH_ASSOC);
     if (!$plano_info_rec) { throw new Exception("Plano selecionado inválido ao gerar cobrança."); }
+    $nome_plano = $plano_info_rec['nome'];
 
     // Determina valor, descrição e frequência
      if ($frequencia_escolhida == 365 && !empty($plano_info_rec['preco_anual'])) {
          $valor_cobrar = $plano_info_rec['preco_anual'];
          $descricao_cobranca = "Assinatura Plano " . $plano_info_rec['nome'] . " - Anual";
          $frequencia_plano = 365;
+         $nome_freq = 'Anual';
      } else {
          $valor_cobrar = $plano_info_rec['preco_mensal'];
          $descricao_cobranca = "Assinatura Plano " . $plano_info_rec['nome'] . " - Mensal";
          $frequencia_plano = 30;
+         $nome_freq = 'Mensal';
      }
 
      
@@ -142,4 +145,36 @@ try {
 }
 
 echo json_encode($response);
+
+if ($api == 'Sim') {
+   $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);   
+   $dataF = implode('/', array_reverse(explode('-', $data_vencimento_str)));
+
+   $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
+
+   $mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
+   $mensagem .= '*Assinatura realizada com sucesso!* 😀%0A%0A';
+   $mensagem .= 'Olá '.$nome.', seja bem-vindo ao nosso *CLUBE DO ASSINANTE* 👑.%0A%0A';
+   $mensagem .= '_Estamos processando seu pagamento, retornaremos com a confirmarção em breve._%0A%0A';
+   $mensagem .= 'Segue os dados da assinatura:%0A';
+   $mensagem .= '*Assinante:* ' . $nome . '%0A';
+   $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
+   $mensagem .= '*Data de Vencimento:* ' . $dataF . '%0A';   
+
+   require('../ajax/api-texto.php');
+
+
+   $telefone = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema); 
+
+   $mensagem = '*Assinatura realizada pelo site!* 👑%0A%0A';   
+   $mensagem .= '_Estamos processando o pagamento, retornaremos com a confirmarção em breve_.%0A%0A';
+   $mensagem .= 'Segue os dados da assinatura:%0A';
+   $mensagem .= '*Assinante:* ' . $nome . '%0A';
+   $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
+   $mensagem .= '*Data de Vencimento:* ' . $dataF . '%0A';   
+
+   require('../ajax/api-texto.php');
+}
+
+
 ?>

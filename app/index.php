@@ -758,7 +758,7 @@ try {
                                         <?php endif; ?>                                     
                                     </ul>
                                     
-                                    <button type="button" class="btn btn-lg btn-block <?php echo $btn_class; ?> btn-assinar mt-auto" data-plano="<?php echo $id_plano_atual; ?>">Assinar <?php echo $nome_plano; ?></button>
+                                    <button type="button" class="btn btn-lg btn-block <?php echo $btn_class; ?> btn-assinar mt-auto" data-toggle="modal" data-target="#modalAssinante2" data-plano="<?php echo $id_plano_atual; ?>">Assinar <?php echo $nome_plano; ?></button>
                                 </div>
                             </div>
                         </div>
@@ -784,7 +784,7 @@ try {
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
              <form id="form-assinante2" method="post">
-                <div class="modal-header text-white">
+                <div class="modal-header text-white" style="background-color: #4682B4;">
                     <h5 class="modal-title" id="modalAssinante2Label">Adicionar Assinatura</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px;">
                         <span aria-hidden="true">&times;</span>
@@ -839,8 +839,15 @@ try {
                                 <select class="form-control" id="ass_plano_freq" name="plano_freq_selecionado" required>
                                      <option value="">-- Selecione o Plano e a Frequência --</option>
                                      <?php
-                                     // Reutiliza $planos_disponiveis que já buscamos na página principal
-                                     // Este loop agora está DENTRO do modal
+                                     // Busca os planos disponíveis para o select do modal
+                                    $planos_disponiveis = [];
+                                    try {
+                                        $query_p = $pdo->prepare("SELECT id, nome FROM planos WHERE id_conta = :id_conta ORDER BY nome ASC");
+                                        $query_p->execute([':id_conta' => $id_conta]);
+                                        $planos_disponiveis = $query_p->fetchAll(PDO::FETCH_ASSOC);
+                                    } catch (PDOException $e) {
+                                        error_log("Erro ao buscar planos para modal: " . $e->getMessage());
+                                    }
                                      if(isset($planos_disponiveis) && count($planos_disponiveis) > 0){
                                         foreach ($planos_disponiveis as $plano_opt):
                                             $id_plano_opt = $plano_opt['id'];
@@ -848,7 +855,7 @@ try {
 
                                             // Busca os preços novamente para garantir que temos ambos aqui
                                             $query_precos = $pdo->prepare("SELECT preco_mensal, preco_anual FROM planos WHERE id = :id AND id_conta = :id_conta ORDER BY id ASC");
-                                            $query_precos->execute([':id' => $id_plano_opt, ':id_conta' => $id_conta_corrente]);
+                                            $query_precos->execute([':id' => $id_plano_opt, ':id_conta' => $id_conta]);
                                             $precos = $query_precos->fetch(PDO::FETCH_ASSOC);
 
                                             if ($precos) {
@@ -876,11 +883,11 @@ try {
                         </div> -->
                     </div>
 
-                    <small><div id="mensagem-assinante" class="mt-2"></div></small>
+                    <small><div id="mensagem-assinante2" class="mt-2"></div></small>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer text-white" style="background-color: #4682B4;">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>                    
-                    <button type="button" class="btn btn-primary" id="btnSalvarAssinante">Salvar Assinante</button>
+                    <button type="button" class="btn btn-success" id="btnSalvarAssinante2">Assinar</button>
                 </div>
             </form>
         </div>
@@ -906,6 +913,8 @@ try {
 <script>
 
 $('#telefone_rodape').mask('(00) 00000-0000');
+$('#ass_telefone').mask('(00) 00000-0000');
+$('#ass_cpf').mask('000.000.000-00', {reverse: true});
 //$('#telefone_compra').mask('(00) 00000-0000');
     // Pega os elementos
 var modal = document.getElementById("modalCadastroSimples");
@@ -928,6 +937,10 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
+
+$('#btnSalvarAssinante2').on('click', function() {
+    $('#form-assinante2').submit(); // Dispara o evento submit do formulário
+});
 
 // Lógica AJAX para o formulário (adaptada do seu exemplo anterior, usando jQuery ainda)
 // Se você NÃO estiver usando jQuery, precisará reescrever esta parte com XMLHttpRequest ou fetch API.
@@ -1135,12 +1148,12 @@ $(document).ready(function() { // Se você já tiver jQuery na página
 });
 
 
-$('#form-assinante').on('submit', function(e) {
+$('#form-assinante2').on('submit', function(e) {    
      e.preventDefault(); // Impede envio normal
      const form = this;
      const formData = new FormData(form); // Pega todos os dados, incluindo id_cliente_encontrado
      const $btnSubmit = $('#btnSalvarAssinante');
-     const $msgDiv = $('#mensagem-assinante');
+     const $msgDiv = $('#mensagem-assinante2');
 
      $btnSubmit.prop('disabled', true).text('Salvando...');
      $msgDiv.text('').removeClass('text-danger text-success');
@@ -1154,11 +1167,11 @@ $('#form-assinante').on('submit', function(e) {
         cache: false,
         processData: false,
         success: function(response) {
-             if (response.success) {
+             if (response.success) {                
                  $msgDiv.addClass('text-success').text(response.message);
                   setTimeout(function() {
-                     $('#modalAssinante').modal('hide');
-                     window.location="../pagamentos/assinatura.php?id_pg=245";
+                     //$('#modalAssinante2').modal('hide');
+                     window.location="../pagar_ass/245";
                   }, 1500);
              } else {
                  $msgDiv.addClass('text-danger').text(response.message);
