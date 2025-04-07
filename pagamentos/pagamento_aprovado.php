@@ -10,11 +10,14 @@
 </head>
 <body>
 <?php
-@session_start();
-$username = $_SESSION['username'];
-
 $id_pg = @$_GET['id_agd'];
 $id_conta = @$_GET['id_conta'];
+
+$query = $pdo->query("SELECT * FROM config WHERE id = '$id_conta'");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$username = @$res[0]['username'];
+
+
 if ($id_pg != null) {
     if (@$porc_servico > 0) {
         echo 'Faça o pagamento antes de ir para o agendamento';

@@ -50,8 +50,7 @@ if(isset($_GET['id_pg'])){
     $token = @$res[0]['token_mp'];
     $instancia = @$res[0]['key_mp'];
     $username = @$res[0]['username'];
-
-    $_SESSION['username'] = $username;
+    
     
     $access_token = $token;
     $public_key     = $instancia;
