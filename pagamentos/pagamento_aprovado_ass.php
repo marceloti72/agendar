@@ -22,11 +22,13 @@ $instancia = @$res[0]['instancia'];
 $pgto_api = @$res[0]['pgto_api'];
 $api = @$res[0]['api'];
 
-if ($id_pg != null) {    
+if ($id_pg != null) {  
+    echo 'Entrei pelo id_pg';  
     require("../sistema/conexao.php");
     $valor_pago = '0';
     $query = $pdo->query("SELECT * FROM receber WHERE id = '$id_pg'");
 } else {
+    echo 'Entrei pelo ref_pix';
     $query = $pdo->query("SELECT * FROM receber WHERE ref_pix = '$ref_pix'");
 }
 
@@ -58,7 +60,7 @@ $valor_mensal = @$res[0]['preco_mensal'];
 $valor_anual = @$res[0]['preco_anual'];
 
 
-$servico_conc = $nome_serv . " (Site)";
+//$servico_conc = $nome_serv . " (Site)";
 
 // if ($id_pg == "") {
 //     $pdo->query("INSERT INTO receber SET descricao = '$servico_conc', tipo = 'Serviço', valor = '$valor_pago', data_lanc = CURDATE(), data_venc = CURDATE(), data_pgto = CURDATE(), usuario_lanc = '0', usuario_baixa = '0', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = 'Sim', servico = '$servico', funcionario = '$funcionario', obs = '', pgto = '$forma_pgto', referencia = '$ult_id', id_conta = '$id_conta'");
