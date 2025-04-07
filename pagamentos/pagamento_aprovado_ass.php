@@ -68,27 +68,27 @@ if ($id_pg != "") {
 
     if ($dias_frequencia == 30) {
         $nova_data_vencimento = date('Y/m/d', strtotime("+1 month", strtotime($data)));
+        $nome_freq = 'Mensal';
     
     } else if ($dias_frequencia == 365) {
         $nova_data_vencimento = date('Y/m/d', strtotime("+1 year", strtotime($data)));
+        $nome_freq = 'Anual';
 
     } else {
         $nova_data_vencimento = date('Y/m/d', strtotime("+$dias_frequencia days", strtotime($data)));
+        $nome_freq = '';
     }
 
     
     if (@$dias_frequencia > 0) {
-        $pdo->query("INSERT INTO receber set descricao = '$descricao', cliente = '$cliente', valor = '$valor', data_lanc = curDate(), data_venc = '$nova_data_vencimento', frequencia = '$frequencia', pago = 'Não' tipo = 'Assinatura', pessoa = '$pessoa', subtotal = '$valor'");
+        $pdo->query("INSERT INTO receber set descricao = '$descricao', cliente = '$cliente', valor = '$valor', data_lanc = curDate(), data_venc = '$nova_data_vencimento', frequencia = '$frequencia', pago = 'Não', tipo = 'Assinatura', pessoa = '$pessoa', subtotal = '$valor'");
         $id_ult_registro = $pdo->lastInsertId();
 
         $valorF = @number_format($valor, 2, ',', '.');
 
 
         if($api == 'Sim'){
-        
-            // PEGAR UM DIA ANTES DO VENCIMENTO #############################################################
-            $data_cobranca = date('Y-m-d', strtotime("-1 days", strtotime($nova_data_vencimento)));
-                    
+
             //telefone da empresa
             $query = $pdo->query("SELECT * FROM clientes where id = '$pessoa'");
             $res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -97,22 +97,44 @@ if ($id_pg != "") {
             
             $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
             //lembrete do vencimento da conta
-            $link_pgto = $url . 'receber/' . $id_ult_registro;
+            $link_pgto = $url . 'pagar_ass/' . $id_ult_registro;
             $telefone_envio = '55' . preg_replace('/[ ()-]+/', '', $telefone);
             $nova_data_vencimentoF = implode('/', array_reverse(@explode('-', $nova_data_vencimento)));
-            
+
+
+            $nome_sistema_maiusculo = mb_strtoupper($empresa);              
+            $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
+
+            $mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';            
+            $mensagem .= 'Olá '.$nome_cliente.', estou voltando para avisar que seu pagamento foi processado com sucesso! Obrigado 😃%0A%0A';
+            $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
+            $mensagem .= '*Próximo Vencimento:* ' . $nova_data_vencimentoF . '%0A'; 
+            require('../ajax/api-texto.php');
+
+
+            $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone_empresa); 
+
+            $mensagem = '*Pagamento processado com sucesso!* ✔%0A%0A';        
+            $mensagem .= 'Dados da assinatura:%0A';
+            $mensagem .= '*Assinante:* ' . $nome . '%0A';
+            $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
+            $mensagem .= '*Próximo Vencimento:* ' . $nova_data_vencimentoF . '%0A';   
+
+            require('../ajax/api-texto.php');        
+
+
+        
+            // PEGAR UM DIA ANTES DO VENCIMENTO #############################################################
+            $data_cobranca = date('Y-m-d', strtotime("-1 days", strtotime($nova_data_vencimento)));                       
 
             //lembrete do vencimento da conta
 
-            $mensagem = $sino . ' _Lembrete Automático de Vencimento!_ %0A%0A';
-
-            $mensagem .= '* '.$empresa.'* %0A%0A';
-
-            $mensagem .= '*' . $saudacao . '* tudo bem? 😃%0A%0A';
-
-            $mensagem .= 'Queremos lembra que sua assinatura vençerar amanhã %0A';
+            $mensagem = '🔔 _Lembrete Automático de Vencimento!_ %0A%0A';
+            $mensagem .= '* '.$nome_sistema_maiusculo.'* %0A%0A';
+            $mensagem .= '*Olá '.$nome_cliente.', tudo bem? 😃%0A%0A';
+            $mensagem .= 'Queremos lembra que sua assinatura vençerá amanhã.%0A';
             $mensagem .= 'Dados da assinatura: %0A%0A';
-            $mensagem .= 'Plano: *' . $nome_plano . '* %0A';
+            $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
             $mensagem .= 'Valor: *R$ ' . $valorF . '* %0A';
             $mensagem .= 'Vencimento: *' . $nova_data_vencimentoF . '* %0A%0A';
 
