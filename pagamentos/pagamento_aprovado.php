@@ -13,11 +13,7 @@
 
 $id_pg = @$_GET['id_agd'];
 $id_conta = @$_GET['id_conta'];
-
-$query = $pdo->query("SELECT * FROM config WHERE id = '$id_conta'");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$username = @$res[0]['username'];
-
+$username = @$_GET['u'];
 
 if ($id_pg != null) {
     if (@$porc_servico > 0) {

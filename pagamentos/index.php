@@ -16,6 +16,11 @@ if ($pgto_api != 'Sim') {
     echo "<script>window.location='$url/pagamentos/pagamento_aprovado.php?id_agd=$id_pg'</script>";
 }
 
+$query = $pdo->query("SELECT * FROM config WHERE id = '$id_conta'");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$username = @$res[0]['username'];
+
+
 $query = $pdo->query("SELECT * FROM agendamentos where id = '$id_pg'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
@@ -43,7 +48,7 @@ $valorF = number_format($valor, 2, ',', '.');
 if ($ref_pix != "") {
     require('consultar_pagamento.php');
     if ($status_api == 'approved') {
-        echo "<script>window.location='$url/pagamentos/pagamento_aprovado.php?id_agd=$id_pg'&id_conta=$id_conta</script>";
+        echo "<script>window.location='$url/pagamentos/pagamento_aprovado.php?id_agd=$id_pg'&id_conta=$id_conta&u=$username</script>";
         exit();
     }
 }
