@@ -42,6 +42,7 @@ if(isset($_GET['id_pg'])){
     $id_conta = $res[0]['id_conta'];
 
     $_SESSION['id_conta'] = $id_conta;
+    
 
 
     $query = $pdo->query("SELECT * FROM config WHERE id = '$id_conta'");
@@ -49,6 +50,8 @@ if(isset($_GET['id_pg'])){
     $token = @$res[0]['token_mp'];
     $instancia = @$res[0]['key_mp'];
     $username = @$res[0]['username'];
+
+    $_SESSION['username'] = $username;
     
     $access_token = $token;
     $public_key     = $instancia;
