@@ -10,7 +10,7 @@
 </head>
 <body>
 <?php
-$id_pg = @$_GET['id_agd'];
+$id_pg = @$_GET['id_pg'];
 $id_conta = @$_GET['id_conta'];
 
 $query = $pdo->query("SELECT * FROM config WHERE id = '$id_conta'");
