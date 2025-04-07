@@ -152,7 +152,7 @@ if ($status == 'Agendado') {
 	$imagem = 'relogio-vermelho.png';
 	$classe_status = '';
 	$classe_finalizado = '';
-	$finalizado = 'Em aberto';
+	
 	$cor2 = '';
 	$cor3 = '';
 } else {
@@ -247,12 +247,10 @@ if($total_reg2 > 0){
 
 if ($valor_serv == $valor_pago) {
 	$valor_pagoF = 'Pagamento concluido!';
-	$cor = '#90EE90';
-	$finalizado = '';
+	$cor = '#90EE90';	
 } else {
 	$valor_pagoF = 'Sinal pago R$ ' . $valor_pagoF;
-	$cor = '';
-	$finalizado = '';
+	$cor = '';	
 }
 
 if($valor_pago > 0){
