@@ -1,7 +1,5 @@
 <?php
 header('Content-Type: application/json');
-@session_start();
-$id_conta = $_SESSION['id_conta'];
 
 include("config.php");
 //require("../sistema/conexao.php");
@@ -87,7 +85,7 @@ if ($_GET["acc"] == "check") {
     }
    
     if ($status == "approved") { // PAGAMENTO APROVADO;
-        $id_pg = ''; // Defindo como vazio novamente
+        $id_pg = null; // Defindo como vazio novamente
         $ref_pix = $id_mercadopago;
         $valor_pago = $transaction_amount;
         $forma_pgto = $payment_method_id;
