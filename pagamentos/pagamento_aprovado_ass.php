@@ -21,7 +21,7 @@ $token = @$res[0]['token'];
 $instancia = @$res[0]['instancia'];
 $pgto_api = @$res[0]['pgto_api'];
 $api = @$res[0]['api'];
-
+echo $id_pg;
 if ($id_pg != null) {  
     echo 'Entrei pelo id_pg';  
     require("../sistema/conexao.php");
