@@ -1,8 +1,16 @@
 <?php
 
-
+if ($id_pg != null) {
+	if (@$porc_servico > 0) {
+		echo 'Faça o pagamento antes de ir para o agendamento';
+		exit();
+	}
+	require("../sistema/conexao.php");
+	$valor_pago = '0';
+	$query = $pdo->query("SELECT * FROM agendamentos where id = '$id_pg'");
+} else {
 	$query = $pdo->query("SELECT * FROM agendamentos where ref_pix = '$ref_pix'");
-
+}
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 $cliente = $res[0]['cliente'];
