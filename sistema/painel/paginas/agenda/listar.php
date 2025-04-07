@@ -150,7 +150,8 @@ if ($valor_pago > 0 and $status == 'Agendado') {
 
 if ($status == 'Agendado') {
 	$imagem = 'relogio-vermelho.png';
-	$classe_status = '';		
+	$classe_status = '';
+	$classe_finalizado = 'ocultar';		
 	$cor2 = '';
 	$cor3 = '';
 } else {
