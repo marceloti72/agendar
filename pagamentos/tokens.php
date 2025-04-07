@@ -34,6 +34,25 @@ if(isset($_GET['id_pg'])){
     $access_token = $token;
     $public_key     = $instancia;
 
+}else if(isset($_GET['id_agd'])){
+    $id_agd = $_GET['id_agd'];
+
+    $query = $pdo->query("SELECT * FROM agendamentos WHERE id = '$id_agd'");
+    $res = $query->fetchAll(PDO::FETCH_ASSOC);
+    $id_conta = $res[0]['id_conta'];
+
+    $_SESSION['id_conta'] = $id_conta;
+
+
+    $query = $pdo->query("SELECT * FROM config WHERE id = '$id_conta'");
+    $res = $query->fetchAll(PDO::FETCH_ASSOC);
+    $token = @$res[0]['token_mp'];
+    $instancia = @$res[0]['key_mp'];
+    $username = @$res[0]['username'];
+    
+    $access_token = $token;
+    $public_key     = $instancia;
+
 }else{
     
     $id_conta = $_SESSION['id_conta'];

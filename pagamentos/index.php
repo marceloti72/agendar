@@ -6,7 +6,7 @@
 include("config.php");
 require("../sistema/conexao.php");
 
-$id_pg = $_GET['id_conta'];
+$id_pg = $_GET['id_agd'];
 $total = $_GET['total'];
 $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
 

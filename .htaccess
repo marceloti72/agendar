@@ -14,7 +14,7 @@ RewriteRule ^index.php(.*)$ index.php [L]
 
 RewriteRule ^pagar/(.*)$ pagamentos/index.php?id_conta=$1 [L]
 RewriteRule ^pagar_ass/(.*)$ pagamentos/assinatura.php?id_pg=$1 [L]
-RewriteRule ^pagamento/(.*)/(.*)$ pagamentos/index.php?id_conta=$1&total=$2 [L]
+RewriteRule ^pagamento/(.*)/(.*)$ pagamentos/index.php?id_agd=$1&total=$2 [L]
 RewriteRule ^pagamento2/(.*)/(.*)$ pagamentos/pagar_produto.php?id_produto=$1&id_conta=$2 [L]
 # RewriteRule ^pagamento2/(.*)$ pagamentos/pagar_produto.php?id_produto=$1 [L]
 
