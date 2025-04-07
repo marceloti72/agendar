@@ -104,7 +104,7 @@ if ($id_pg != "") {
 
             $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone_empresa); 
 
-            $mensagem = '*Pagamento processado com sucesso!* ✔%0A%0A';        
+            $mensagem = '✅ *Pagamento processado com sucesso!*%0A%0A';        
             $mensagem .= 'Dados da assinatura:%0A';
             $mensagem .= '*Assinante:* ' . $nome_cliente . '%0A';
             $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
