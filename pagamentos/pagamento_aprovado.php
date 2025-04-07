@@ -85,7 +85,7 @@ if ($id_pg != "") {
                     }
                 }
             }).then(() => {
-                window.location.href = '../meus-agendamentos.php';
+                window.location.href = '../meus-agendamentos.php?u=$username';
             });
         });
     </script>";
