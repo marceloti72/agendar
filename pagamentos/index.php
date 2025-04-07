@@ -205,7 +205,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                                 .then((response) => {
                                     // receber o resultado do pagamento
                                     if (response.status == true) {                    
-                                        window.location.href = "<?= $url; ?>pagamentos/index.php?id=" + response.id + '&id_conta=' + id_conta;
+                                        window.location.href = "<?= $url; ?>pagamentos/index.php?id=" + response.id + '&id_agd=' + id_conta;
                                     }
                                     if (response.status != true) {
                                         alert(response.message);
@@ -249,7 +249,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                 },
                 callbacks: {
                     onReady: () => {
-                        check("<?= $_GET["id"]; ?>", "<?= $_GET["id_conta"]; ?>");
+                        check("<?= $_GET["id"]; ?>", "<?= $_GET["id_agd"]; ?>");
                     },
                     onError: (error) => {},
                 },
