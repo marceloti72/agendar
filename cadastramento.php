@@ -146,7 +146,6 @@ try {
         ['nome' => 'Ouro',     'imagem' => 'ouro.png',     'ordem' => 30],
         ['nome' => 'Diamante', 'imagem' => 'diamante.png', 'ordem' => 40] // Usei .png conforme seu pedido
     ];
-
     try {
         // PASSO 1: VERIFICAR SE JÁ EXISTEM PLANOS PARA ESTA CONTA
         $check_planos = $pdo->prepare("SELECT COUNT(*) FROM planos WHERE id_conta = :id_conta");
