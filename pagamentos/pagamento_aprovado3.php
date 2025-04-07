@@ -26,6 +26,7 @@ $hash = $res[0]['hash'];
 $ref_pix = $res[0]['ref_pix'];
 $data_agd = $res[0]['data'];
 $hora_do_agd = $res[0]['hora'];
+$id_conta = $res[0]['id_conta'];
 
 if (@$forma_pgto == "pix") {
 	$forma_pgto = "Pix";

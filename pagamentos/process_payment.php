@@ -89,7 +89,7 @@ if ($_GET["acc"] == "check") {
         $ref_pix = $id_mercadopago;
         $valor_pago = $transaction_amount;
         $forma_pgto = $payment_method_id;
-        require("pagamento_aprovado.php");
+        require("pagamento_aprovado3.php");
         
         
         echo json_encode(array("status" => "pago"));
