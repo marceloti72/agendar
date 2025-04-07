@@ -157,7 +157,7 @@ $sobrenome = $_REQUEST["sobrenome"];
 
                         formData.external_reference = '<?= $ref; ?>';
                         formData.description = '<?= $descricao; ?>';
-                        var id_conta = '<?= $id_pg; ?>';
+                        var id_pg = '<?= $id_pg; ?>';
 
                         return new Promise((resolve, reject) => {
                             fetch("<?= $url; ?>pagamentos/process_payment_ass.php", {
@@ -171,7 +171,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                                 .then((response) => {
                                     // receber o resultado do pagamento
                                     if (response.status == true) {                    
-                                        window.location.href = "<?= $url; ?>pagamentos/assinatura.php?id=" + response.id + '&id_pg=' + id_conta;
+                                        window.location.href = "<?= $url; ?>pagamentos/assinatura.php?id=" + response.id + '&id_pg=' + id_pg;
                                     }
                                     if (response.status != true) {
                                         alert(response.message);
