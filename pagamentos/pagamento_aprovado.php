@@ -10,6 +10,9 @@
 </head>
 <body>
 <?php
+@session_start();
+$username = $_SESSION['username'];
+
 $id_pg = @$_GET['id_agd'];
 $id_conta = @$_GET['id_conta'];
 if ($id_pg != null) {
