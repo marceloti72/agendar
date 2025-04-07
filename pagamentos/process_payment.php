@@ -1,5 +1,7 @@
 <?php
 header('Content-Type: application/json');
+@session_start();
+$id_conta = $_SESSION['id_conta'];
 
 include("config.php");
 //require("../sistema/conexao.php");
@@ -40,7 +42,7 @@ $status_pag_motivo = array(
 if ($_GET["acc"] == "check") {
 
     $id = $_GET['id'];
-    $id_pg = $_GET['id_conta'];
+    $id_pg = $_GET['id_agd'];
 
     $curl = curl_init();
     curl_setopt_array($curl, array(
