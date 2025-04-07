@@ -3,8 +3,11 @@
 //ini_set('display_startup_errors', 0);
 //error_reporting(E_ALL);
 
+
 include("config.php");
 require("../sistema/conexao.php");
+@session_start();
+$id_conta = $_SESSION['id_conta'];
 
 $id_pg = $_GET['id_agd'];
 $total = $_GET['total'];
@@ -16,7 +19,7 @@ if ($pgto_api != 'Sim') {
     echo "<script>window.location='$url/pagamentos/pagamento_aprovado.php?id_agd=$id_pg'</script>";
 }
 
-$query = $pdo->query("SELECT * FROM agendamentos where id = '$id_pg'");
+$query = $pdo->query("SELECT * FROM agendamentos where id = '$id_pg' AND id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 $cliente = $res[0]['cliente'];

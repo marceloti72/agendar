@@ -1,6 +1,6 @@
 <?php
 
-if ($id_pg != null) {
+if ($id_pg != '') {
 	if (@$porc_servico > 0) {
 		echo 'Faça o pagamento antes de ir para o agendamento';
 		exit();

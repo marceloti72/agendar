@@ -87,7 +87,7 @@ if ($_GET["acc"] == "check") {
     }
    
     if ($status == "approved") { // PAGAMENTO APROVADO;
-        $id_pg = null; // Defindo como vazio novamente
+        $id_pg = ''; // Defindo como vazio novamente
         $ref_pix = $id_mercadopago;
         $valor_pago = $transaction_amount;
         $forma_pgto = $payment_method_id;
