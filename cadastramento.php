@@ -134,6 +134,75 @@ try {
     $res2->execute();
 
     $id_usuario = $pdo->lastInsertId();
+
+
+    // Cadastra o planos
+    // Dados dos planos padrão
+    $planos_para_cadastrar = [
+        // Adicione preços e status ativo conforme a definição da sua tabela planos
+        // Coloquei NULL para preco_anual como exemplo, ajuste se necessário
+        ['nome' => 'Bronze',   'imagem' => 'bronze.png',   'ordem' => 10],
+        ['nome' => 'Prata',    'imagem' => 'prata.png',    'ordem' => 20],
+        ['nome' => 'Ouro',     'imagem' => 'ouro.png',     'ordem' => 30],
+        ['nome' => 'Diamante', 'imagem' => 'diamante.png', 'ordem' => 40] // Usei .png conforme seu pedido
+    ];
+
+    try {
+        // PASSO 1: VERIFICAR SE JÁ EXISTEM PLANOS PARA ESTA CONTA
+        $check_planos = $pdo->prepare("SELECT COUNT(*) FROM planos WHERE id_conta = :id_conta");
+        $check_planos->execute([':id_conta' => $id_conta]);
+        $count = $check_planos->fetchColumn();
+
+        if ($count == 0) {            
+            $sql = "INSERT INTO planos (nome, imagem, ordem, id_conta, data_cadastro)
+                    VALUES (:nome, :imagem, :ordem, :id_conta, NOW())"; // Usar NOW() do SQL para data atual
+            $query_insert_plano = $pdo->prepare($sql);
+
+            $inseridos_count = 0;
+            // PASSO 3: LOOP PELOS PLANOS E EXECUTA A QUERY PARA CADA UM
+            foreach ($planos_para_cadastrar as $plano) {
+                // Monta o array de parâmetros para este plano específico
+                $params = [
+                    ':nome' => $plano['nome'],
+                    ':imagem' => $plano['imagem'],
+                    ':ordem' => $plano['ordem'],                    
+                    ':id_conta' => $id_conta, // A variável da conta atual
+                ];
+
+                // Tenta executar a query para este plano
+                if ($query_insert_plano->execute($params)) {
+                    $inseridos_count++;
+                } else {
+                    // Loga um erro se um plano específico falhar
+                    error_log("Falha ao inserir plano padrão '{$plano['nome']}' para id_conta {$id_conta}. Erro: " . print_r($query_insert_plano->errorInfo(), true));
+                }
+            } // Fim do foreach
+
+            if ($inseridos_count == count($planos_para_cadastrar)) {
+                 error_log("{$inseridos_count} planos padrão inseridos com sucesso para id_conta {$id_conta}.");
+                 // echo "Planos padrão criados!"; // Mensagem de sucesso (opcional)
+            } else {
+                 error_log("Atenção: Falha ao inserir um ou mais planos padrão para id_conta {$id_conta}. Inseridos: {$inseridos_count}");
+                 // echo "Erro ao criar alguns planos padrão."; // Mensagem de erro (opcional)
+            }
+
+        } else {
+            // Planos já existem, não faz nada ou apenas loga
+            error_log("Planos padrão já existem para id_conta {$id_conta}. Nenhuma nova inserção realizada.");
+            // echo "Planos padrão já existem."; // Mensagem informativa (opcional)
+        }
+    } catch (PDOException $e) {
+        // Trata erros de banco de dados durante a verificação ou inserção
+        echo "Erro ao verificar/cadastrar planos padrão: " . $e->getMessage(); // Mantenha ou remova o echo
+        error_log("Erro PDO ao inserir planos padrão para id_conta {$id_conta}: " . $e->getMessage());
+        // Se este bloco estiver dentro de uma transação maior, considere $pdo->rollBack(); aqui.
+    } catch (Exception $e) {
+        // Trata outros erros gerais
+         echo "Erro inesperado ao configurar planos: " . $e->getMessage(); // Mantenha ou remova o echo
+         error_log("Erro geral ao inserir planos padrão para id_conta {$id_conta}: " . $e->getMessage());
+         // Se estiver dentro de uma transação maior, considere $pdo->rollBack(); aqui.
+    }
+// Fim do else que verifica $id_conta
    
 
     // Configurações do banco de dados (variam conforme ambiente)
