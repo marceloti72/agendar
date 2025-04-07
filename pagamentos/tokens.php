@@ -12,7 +12,7 @@ if(isset($_GET['id_pg'])){
     $instancia = @$res[0]['key_mp'];
     $username = @$res[0]['username'];
 
-    $_SESSION['id_conta'] = @$res['id_conta'];
+    $_SESSION['id_conta'] = @$res[0]['id_conta'];
 
     $access_token = $token;
     $public_key     = $instancia;
@@ -26,7 +26,7 @@ if(isset($_GET['id_conta'])){
     $token = @$res[0]['token_mp'];
     $instancia = @$res[0]['key_mp'];
 
-    $_SESSION['id_conta'] = @$res['id_conta'];
+    $_SESSION['id_conta'] = @$res[0]['id_conta'];
 
     $access_token = $token;
     $public_key     = $instancia;
