@@ -151,7 +151,8 @@ if ($valor_pago > 0 and $status == 'Agendado') {
 if ($status == 'Agendado') {
 	$imagem = 'relogio-vermelho.png';
 	$classe_status = '';
-	$classe_finalizado = 'ocultar';		
+	$classe_finalizado = '';	
+	$finalizado = 'Em aberto';	
 	$cor2 = '';
 	$cor3 = '';
 } else {
@@ -247,9 +248,13 @@ if($total_reg2 > 0){
 if ($valor_serv == $valor_pago) {
 	$valor_pagoF = 'Pagamento concluido!';
 	$cor = '#90EE90';	
+	$classe_finalizado = 'ocultar';	
+	$finalizado = '';
 } else {
 	$valor_pagoF = 'Sinal pago R$ ' . $valor_pagoF;
 	$cor = '';	
+	$classe_finalizado = 'ocultar';	
+	$finalizado = '';
 }
 
 if($valor_pago > 0){
