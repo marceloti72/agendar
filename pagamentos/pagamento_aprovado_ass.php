@@ -21,18 +21,11 @@ $token = @$res[0]['token'];
 $instancia = @$res[0]['instancia'];
 $pgto_api = @$res[0]['pgto_api'];
 $api = @$res[0]['api'];
-echo $id_pg;
-if ($id_pg != null) {  
-    echo 'Entrei pelo id_pg';  
-    require("../sistema/conexao.php");
-    $valor_pago = '0';
-    $query = $pdo->query("SELECT * FROM receber WHERE id = '$id_pg'");
-} else {
-    echo 'Entrei pelo ref_pix';
-    $query = $pdo->query("SELECT * FROM receber WHERE ref_pix = '$ref_pix'");
-}
 
+
+$query = $pdo->query("SELECT * FROM receber WHERE ref_pix = '$ref_pix'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
 $total_reg = @count($res);
 $cliente = $res[0]['cliente'];
 $pessoa = $res[0]['pessoa'];
