@@ -1171,9 +1171,9 @@ $('#form-assinante2').on('submit', function(e) {
         success: function(response) {
              if (response.success) {                
                  $msgDiv.addClass('text-success').text(response.message);
-                  setTimeout(function() {
+                  setTimeout(function() {                    
                      //$('#modalAssinante2').modal('hide');
-                     window.location="../pagar_ass/245";
+                     window.location="../pagar_ass/"+response.id_receber;
                   }, 1500);
              } else {
                  $msgDiv.addClass('text-danger').text(response.message);

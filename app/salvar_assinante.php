@@ -125,6 +125,9 @@ try {
     $query_ins_rec->bindValue(':cliente_id', $idAssinanteFinal, PDO::PARAM_INT); // ID do cliente
 
     $query_ins_rec->execute();
+
+    $idReceber = $pdo->lastInsertId();
+    $response['id_receber'] = $idReceber;
     if($query_ins_rec->rowCount() <= 0){ throw new Exception("Falha ao criar cobrança inicial."); }    
 
 
