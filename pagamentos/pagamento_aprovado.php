@@ -88,7 +88,7 @@ if ($id_pg != "") {
                     }
                 }
             }).then(() => {
-                window.location.href = '../meus-agendamentos.php?u=$username';
+                window.location.href = 'https://agendar.skysee.com.br/app/index.php?u=$username';
             });
         });
     </script>";
