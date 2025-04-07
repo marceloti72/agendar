@@ -10,8 +10,6 @@
 </head>
 <body>
 <?php
-@session_start();
-$id_conta = $_SESSION['id_conta'];
 
 $id_pg = @$_GET['id_agd'];
 $id_conta = @$_GET['id_conta'];
@@ -94,7 +92,7 @@ if ($id_pg != "") {
                     }
                 }
             }).then(() => {
-                window.location.href = '../meus-agendamentos.php?u={$username}';
+                window.location.href = '../meus-agendamentos.php?u=$username';
             });
         });
     </script>";
