@@ -283,7 +283,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                                 //window.location = "../meus-agendamentos.php";
                                 //$("#btn_form").click();
 
-                                window.location = "pagamento_aprovado.php?id_agd="+<?= $_GET["id_conta"]; ?>+"&id_conta="+<?=$id_conta;?>;
+                                window.location = "pagamento_aprovado.php?id_agd="+<?= $_GET["id_agd"]; ?>+"&id_conta="+<?=$id_conta;?>;
                             }, 6000);
                         }
                     } else {
