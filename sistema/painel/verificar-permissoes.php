@@ -27,6 +27,7 @@ $grupos = 'ocultar';
 $acessos = 'ocultar';
 $pgto = 'ocultar';
 $dias_bloqueio = 'ocultar';
+$assinaturas3 = 'ocultar';
 
 //grupo produtos
 $produtos = 'ocultar';
@@ -135,6 +136,9 @@ if($total_reg > 0){
 
 		if($chave == 'fornecedores'){
 			$fornecedores = '';
+		}
+		if($chave == 'assinaturas'){
+			$assinaturas3 = '';
 		}
 
 

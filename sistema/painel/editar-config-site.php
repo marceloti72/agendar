@@ -12,6 +12,7 @@ $posicao_video = @$_POST['posicao_video'];
 $agendamentos = @$_POST['agendamentos2'];
 $produtos = @$_POST['produtos2'];
 $servicos = @$_POST['servicos2'];
+$assinaturas = @$_POST['assinaturas2'];
 $depoimentos = @$_POST['depoimentos2'];
 $carrossel = @$_POST['carrossel'];
 
@@ -101,7 +102,7 @@ if(@$_FILES['foto-icone-site']['name'] != ""){
 }
 
 
-$query = $pdo->prepare("UPDATE config SET texto_rodape = :texto_rodape, texto_sobre = :texto_sobre, mapa = :mapa, url_video = :url_video, agendamentos = :agendamentos, produtos = :produtos, servicos = :servicos, depoimentos = :depoimentos, carrossel = :carrossel where id = :id_conta");
+$query = $pdo->prepare("UPDATE config SET texto_rodape = :texto_rodape, texto_sobre = :texto_sobre, mapa = :mapa, url_video = :url_video, agendamentos = :agendamentos, produtos = :produtos, servicos = :servicos, assinaturas =:assinaturas, depoimentos = :depoimentos, carrossel = :carrossel where id = :id_conta");
 
 $query->bindValue(":texto_rodape", "$texto_rodape");
 $query->bindValue(":texto_sobre", "$texto_sobre");
@@ -110,6 +111,7 @@ $query->bindValue(":url_video", "$url_video");
 $query->bindValue(":agendamentos", "$agendamentos");
 $query->bindValue(":produtos", "$produtos");
 $query->bindValue(":servicos", "$servicos");
+$query->bindValue(":assinaturas", "$assinaturas");
 $query->bindValue(":depoimentos", "$depoimentos");
 $query->bindValue(":carrossel", "$carrossel");
 $query->bindValue(":id_conta", "$id_conta");

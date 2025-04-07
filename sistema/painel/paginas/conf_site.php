@@ -203,6 +203,10 @@ if(@$configuracoes == 'ocultar'){
 							<label class="form-check-label" for="servicos2">Serviços</label>
 							</div>
 							<div class="form-check form-switch">
+							<input class="form-check-input" type="checkbox" role="switch" id="assinaturas2" name="assinaturas2" value="Sim" <?php if($assinaturas2 == 'Sim'){ echo 'checked'; } ?>>
+							<label class="form-check-label" for="servicos2">Clube do Assinante</label>
+							</div>
+							<div class="form-check form-switch">
 							<input class="form-check-input" type="checkbox" role="switch" id="depoimentos2" name="depoimentos2" value="Sim" <?php if($depoimentos2 == 'Sim'){ echo 'checked'; } ?>>
 							<label class="form-check-label" for="depoimentos2">Depoimentos</label>
 						</div>

@@ -161,6 +161,10 @@ for($i=0; $i < $total_reg; $i++){
 		$senhaF = $senha;
 	}
 
+    if($foto == ''){
+        $foto = 'sem-foto.jpg';
+    }
+
 
 	if($ativo == 'Sim'){
 			$icone = 'fe-x';

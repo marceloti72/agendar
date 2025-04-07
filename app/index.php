@@ -261,6 +261,7 @@ try {
           $agendamentos2 = $config['agendamentos'];
           $produtos2 = $config['produtos'];
           $servicos2 = $config['servicos'];
+          $assinaturas2 = $config['assinaturas'];
           $depoimentos2 = $config['depoimentos'];
           $carrossel = $config['carrossel'];
           $encaixe = $config['encaixe'];
@@ -386,7 +387,7 @@ try {
                     <?php }?>
 
                     <?php 
-                    if($agendamentos2 == 'Sim'){
+                    if($assinaturas2 == 'Sim'){
                     ?>
                     <div id="cubo">
                         

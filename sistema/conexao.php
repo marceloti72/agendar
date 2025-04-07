@@ -85,6 +85,7 @@ if (isset($_SESSION['id_conta'])) {
 			$username = $config['username'];
 			$encaixe = $config['encaixe'];
 			$satisfacao = $config['satisfacao'];
+			$assinaturas2 = $config['assinaturas'];
 
 			
 			// Novas variáveis Menuia

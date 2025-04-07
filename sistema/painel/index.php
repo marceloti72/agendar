@@ -482,7 +482,7 @@ $plano = $res3['plano'];
 									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"><i class="fa fa-angle-right"></i>Fornecedores</a></li>	
 									
 									<?php 
-									if($id_conta = '0'){?>
+									if($id_conta == '0'){?>
 										<li class="<?php echo @$grupos ?>"><a href="grupos"><i class="fa fa-angle-right"></i>Grupo Acessos</a></li>
 
 										<li class="<?php echo @$acessos ?>"><a href="acessos"><i class="fa fa-angle-right"></i>Acessos</a></li>
@@ -539,21 +539,25 @@ $plano = $res3['plano'];
                                 </a>
                              </li>	 -->
 
-							 <li class="treeview <?php echo @$menu_financeiro ?>" >
-								<a href="#">
-								<i class="fas fa-crown"></i>
-									<span>Clube do Assinante</span>
-									<i class="fa fa-angle-left pull-right"></i>
-								</a>
-								<ul class="treeview-menu">
+							 <?php 
+							 if($assinaturas2 == 'Sim'){?>
+								<li class="treeview <?php echo @$assinaturas3 ?>" >
+									<a href="#">
+									<i class="fas fa-crown"></i>
+										<span>Clube do Assinante</span>
+										<i class="fa fa-angle-left pull-right"></i>
+									</a>
+									<ul class="treeview-menu">
 
-									<li class="<?php echo @$vendas ?>"><a href="assinantes"><i class="fa fa-angle-right"></i>Assinantes</a></li>
+										<li class="<?php echo @$vendas ?>"><a href="assinantes"><i class="fa fa-angle-right"></i>Assinantes</a></li>
 
-									<li class="<?php echo @$compras ?>"><a href="conf_planos"><i class="fa fa-angle-right"></i>Configuração</a></li>			
-																	
-								
-								</ul>
-							</li>
+										<li class="<?php echo @$compras ?>"><a href="conf_planos"><i class="fa fa-angle-right"></i>Configuração</a></li>			
+																		
+									
+									</ul>
+								</li>
+							<?php 
+							 }?>
 
 
 
