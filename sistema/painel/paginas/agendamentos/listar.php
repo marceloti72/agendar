@@ -253,9 +253,11 @@ if ($total_reg > 0) {
 		if ($valor_serv == $valor_pago) {
 			$valor_pagoF = 'Pagamento concluido!';
 			$cor = '#90EE90';
+			$finalizado = '';
 		} else {
 			$valor_pagoF = 'Sinal pago R$ ' . $valor_pagoF;
 			$cor = '';
+			$finalizado = '';
 		}
 
 		if ($valor_pago > 0) {
