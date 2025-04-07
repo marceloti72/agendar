@@ -27,7 +27,7 @@ $valorF = number_format($valor, 2, ',', '.');
 if ($ref_pix != "") {
     require('consultar_pagamento.php');
     if ($status_api == 'approved') {
-        echo "<script>window.location='$url/pagamentos/pagamento_aprovado_ass.php?id_agd=$id_pg'&id_conta=$id_conta</script>";
+        echo "<script>window.location='$url/pagamentos/pagamento_aprovado_ass.php?id_pg=$id_pg'&id_conta=$id_conta</script>";
         exit();
     }
 }
