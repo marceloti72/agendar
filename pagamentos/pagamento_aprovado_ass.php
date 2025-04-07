@@ -98,6 +98,7 @@ if ($id_pg != "") {
             $mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';            
             $mensagem .= 'Olá *'.$nome_cliente.'*, estou voltando para avisar que seu pagamento foi processado com sucesso! Obrigado 😃%0A%0A';
             $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
+            $mensagem .= '*Valor:* R$ '.$valorF.'%0A';
             $mensagem .= '*Próximo Vencimento:* ' . $nova_data_vencimentoF . '%0A'; 
             require('../ajax/api-texto.php');
 
@@ -108,6 +109,7 @@ if ($id_pg != "") {
             $mensagem .= 'Dados da assinatura:%0A';
             $mensagem .= '*Assinante:* ' . $nome_cliente . '%0A';
             $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
+            $mensagem .= '*Valor:* R$ '.$valorF.'%0A';
             $mensagem .= '*Próximo Vencimento:* ' . $nova_data_vencimentoF . '%0A';   
 
             require('../ajax/api-texto.php');        

@@ -101,11 +101,13 @@ try {
     // Determina valor, descrição e frequência
      if ($frequencia_escolhida == 365 && !empty($plano_info_rec['preco_anual'])) {
          $valor_cobrar = $plano_info_rec['preco_anual'];
+         $valorF = @number_format($valor_cobrar, 2, ',', '.');
          $descricao_cobranca = "Assinatura Plano " . $plano_info_rec['nome'] . " - Anual";
          $frequencia_plano = 365;
          $nome_freq = 'Anual';
      } else {
          $valor_cobrar = $plano_info_rec['preco_mensal'];
+         $valorF = @number_format($valor_cobrar, 2, ',', '.');
          $descricao_cobranca = "Assinatura Plano " . $plano_info_rec['nome'] . " - Mensal";
          $frequencia_plano = 30;
          $nome_freq = 'Mensal';
@@ -162,6 +164,7 @@ if ($api == 'Sim') {
    $mensagem .= 'Segue os dados da assinatura:%0A';
    $mensagem .= '*Assinante:* ' . $nome . '%0A';
    $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
+   $mensagem .= '*Valor:* R$ '.$valorF.'%0A';
    $mensagem .= '*Data de Vencimento:* ' . $dataF . '%0A';   
 
    require('../ajax/api-texto.php');
@@ -174,6 +177,7 @@ if ($api == 'Sim') {
    $mensagem .= 'Segue os dados da assinatura:%0A';
    $mensagem .= '*Assinante:* ' . $nome . '%0A';
    $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
+   $mensagem .= '*Valor:* R$ '.$valorF.'%0A';
    $mensagem .= '*Data de Vencimento:* ' . $dataF . '%0A';   
 
    require('../ajax/api-texto.php');
