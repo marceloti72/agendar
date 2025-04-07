@@ -44,6 +44,7 @@ $forma_pgto = $res[0]['pgto'];
 $frequencia = $res[0]['frequencia'];
 $descricao = $res[0]['descricao'];
 $valor = $res[0]['valor'];
+$id_pg = $res[0]['id'];
 
 
 $query = $pdo->query("SELECT * FROM assinantes WHERE id = '$cliente' AND id_conta = '$id_conta'");
