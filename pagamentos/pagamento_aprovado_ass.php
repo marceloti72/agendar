@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Processando Agendamento</title>
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
-    <!-- Canvas Confetti -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-</head>
-<body>
+
 <?php
 $id_pg = @$_GET['id_pg'];
 $id_conta = @$_GET['id_conta'];
@@ -67,15 +57,15 @@ if ($id_pg != "") {
     $dias_frequencia = $frequencia;
 
     if ($dias_frequencia == 30) {
-        $nova_data_vencimento = date('Y/m/d', strtotime("+1 month", strtotime($data)));
+        $nova_data_vencimento = date('Y-m-d', strtotime("+1 month", strtotime($data)));
         $nome_freq = 'Mensal';
     
     } else if ($dias_frequencia == 365) {
-        $nova_data_vencimento = date('Y/m/d', strtotime("+1 year", strtotime($data)));
+        $nova_data_vencimento = date('Y-m-d', strtotime("+1 year", strtotime($data)));
         $nome_freq = 'Anual';
 
     } else {
-        $nova_data_vencimento = date('Y/m/d', strtotime("+$dias_frequencia days", strtotime($data)));
+        $nova_data_vencimento = date('Y-m-d', strtotime("+$dias_frequencia days", strtotime($data)));
         $nome_freq = '';
     }
 
@@ -106,7 +96,7 @@ if ($id_pg != "") {
             $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
 
             $mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';            
-            $mensagem .= 'Olá '.$nome_cliente.', estou voltando para avisar que seu pagamento foi processado com sucesso! Obrigado 😃%0A%0A';
+            $mensagem .= 'Olá *'.$nome_cliente.'*, estou voltando para avisar que seu pagamento foi processado com sucesso! Obrigado 😃%0A%0A';
             $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
             $mensagem .= '*Próximo Vencimento:* ' . $nova_data_vencimentoF . '%0A'; 
             require('../ajax/api-texto.php');
@@ -116,7 +106,7 @@ if ($id_pg != "") {
 
             $mensagem = '*Pagamento processado com sucesso!* ✔%0A%0A';        
             $mensagem .= 'Dados da assinatura:%0A';
-            $mensagem .= '*Assinante:* ' . $nome . '%0A';
+            $mensagem .= '*Assinante:* ' . $nome_cliente . '%0A';
             $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
             $mensagem .= '*Próximo Vencimento:* ' . $nova_data_vencimentoF . '%0A';   
 
@@ -182,40 +172,7 @@ if ($id_pg != "") {
 
         }
     }
-        
+       
     
-    echo "<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                title: 'Sucesso!',
-                text: 'Agendamento realizado com sucesso.',
-                icon: 'success',
-                timer: 6000,
-                showConfirmButton: false,
-                width: '600px', // Define a largura da janela (aumente conforme necessário)
-                padding: '2rem', // Aumenta o espaçamento interno (opcional)
-                didOpen: () => {
-                    confetti({
-                        particleCount: 150,
-                        spread: 90,
-                        origin: { y: 0.5 },
-                        colors: ['#ff0000', '#00ff00', '#0000ff'], // Cores personalizadas (vermelho, verde, azul)
-                        angle: 90,                          // Direção do lançamento
-                        decay: 0.9,                         // Velocidade de desaceleração
-                        startVelocity: 45                   // Velocidade inicial
-                    });
-                    // Acessa o canvas criado pelo confetti e define o zIndex
-                    const confettiCanvas = document.querySelector('canvas');
-                    if (confettiCanvas) {
-                        confettiCanvas.style.zIndex = '9999';
-                    }
-                }
-            }).then(() => {
-                window.location.href = '../meus-agendamentos.php';
-            });
-        });
-    </script>";
 }
-?>
-</body>
-</html>
+
