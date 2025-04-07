@@ -1,49 +1,16 @@
 <?php 
-if(isset($_GET['id_pg'])){
-    $id_pg = $_GET['id_pg'];
+@session_start();
+$id_conta = $_SESSION['id_conta'];
 
-    $query = $pdo->query("SELECT id_conta FROM receber WHERE id = '$id_pg'");
-    $res = $query->fetch(PDO::FETCH_ASSOC);
-    $id_conta = $res['id_conta'];
+$query = $pdo->query("SELECT * FROM config WHERE id = '$id_conta'");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$token = @$res[0]['token'];
+$token = @$res[0]['token_mp'];
+$instancia = @$res[0]['key_mp'];
 
-    $query = $pdo->query("SELECT * FROM config WHERE id = '$id_conta'");
-    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-    $token = @$res[0]['token_mp'];
-    $instancia = @$res[0]['key_mp'];
-    $username = @$res[0]['username'];
+$access_token = $token;
+$public_key     = $instancia;
 
-    $_SESSION['id_conta'] = @$res[0]['id_conta'];
-
-    $access_token = $token;
-    $public_key     = $instancia;
-    }
-if(isset($_GET['id_conta'])){
-    $id_conta = $_GET['id_conta'];
-
-    $query = $pdo->query("SELECT * FROM config WHERE id = '$id_conta'");
-    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-    $token = @$res[0]['token'];
-    $token = @$res[0]['token_mp'];
-    $instancia = @$res[0]['key_mp'];
-
-    $_SESSION['id_conta'] = @$res[0]['id_conta'];
-
-    $access_token = $token;
-    $public_key     = $instancia;
-}
-
-if(isset($_SESSION['id_conta'])){
-    $id_conta = $_SESSION['id_conta'];
-
-    $query = $pdo->query("SELECT * FROM config WHERE id = '$id_conta'");
-    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-    $token = @$res[0]['token'];
-    $token = @$res[0]['token_mp'];
-    $instancia = @$res[0]['key_mp'];
-
-    $access_token = $token;
-    $public_key     = $instancia;
-}
 
 
 

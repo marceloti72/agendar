@@ -3,10 +3,25 @@
 //ini_set('display_startup_errors', 0);
 //error_reporting(E_ALL);
 
+
+$id_pg = $_GET['id_pg'];
+
+$query = $pdo->query("SELECT id_conta FROM receber WHERE id = '$id_pg'");
+$res = $query->fetch(PDO::FETCH_ASSOC);
+$id_conta = $res['id_conta'];
+
+$_SESSION['id_conta'] = $id_conta;
+
+$query = $pdo->query("SELECT * FROM config WHERE id = '$id_conta'");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$username = @$res[0]['username'];   
+
+
+
 include("config.php");
 require("../sistema/conexao.php");
 
-$id_pg = $_GET['id_pg'];
+
 
 $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
 
