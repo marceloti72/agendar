@@ -160,13 +160,6 @@ $sobrenome = $_REQUEST["sobrenome"];
                         var id_conta = '<?= $id_pg; ?>';
 
                         return new Promise((resolve, reject) => {
-                            var formDataString = '';
-
-for (var pair of formData.entries()) {
-    formDataString += pair[0] + ': ' + pair[1] + '\n';
-}
-
-alert(formDataString);
                             fetch("<?= $url; ?>pagamentos/process_payment_ass.php", {
                                     method: "POST",
                                     headers: {
