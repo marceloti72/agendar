@@ -8,8 +8,8 @@ if(isset($_GET['id_pg'])){
 
     $query = $pdo->query("SELECT * FROM config WHERE id = '$id_conta'");
     $res = $query->fetchAll(PDO::FETCH_ASSOC);
-    $token = @$res[0]['token'];
-    $instancia = @$res[0]['instancia'];
+    $token = @$res[0]['token_mp'];
+    $instancia = @$res[0]['key_mp'];
     $username = @$res[0]['username'];
     }
 if(isset($_GET['id_conta'])){
@@ -18,8 +18,8 @@ if(isset($_GET['id_conta'])){
     $query = $pdo->query("SELECT * FROM config WHERE id = '$id_conta'");
     $res = $query->fetchAll(PDO::FETCH_ASSOC);
     $token = @$res[0]['token'];
-    $instancia = @$res[0]['instancia'];
-    $username = @$res[0]['username'];
+    $token = @$res[0]['token_mp'];
+    $instancia = @$res[0]['key_mp'];
 }
 
 $access_token = $token;
