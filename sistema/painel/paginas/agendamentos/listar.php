@@ -166,9 +166,7 @@ if ($total_reg > 0) {
 
 		if ($status == 'Agendado') {
 			$imagem = 'relogio-vermelho.png';
-			$classe_status = '';
-			$classe_finalizado = '';
-			
+			$classe_status = '';						
 			$cor2 = '';
 			$cor3 = '';
 		} else {
