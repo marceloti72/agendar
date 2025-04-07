@@ -40,7 +40,7 @@ $status_pag_motivo = array(
 if ($_GET["acc"] == "check") {
 
     $id = $_GET['id'];
-    $id_pg = $_GET['id_conta'];
+    $id_pg = $_GET['id_pg'];
 
     $curl = curl_init();
     curl_setopt_array($curl, array(

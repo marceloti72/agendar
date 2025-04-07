@@ -265,6 +265,8 @@ try {
           $carrossel = $config['carrossel'];
           $encaixe = $config['encaixe'];
 		  $satisfacao = $config['satisfacao'];
+          $access_token = $config['token_mp'];
+	      $public_key = $config['key_mp'];
 
           $horas_confirmacaoF = $minutos_aviso . ':00:00';
           $tel_whatsapp = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);

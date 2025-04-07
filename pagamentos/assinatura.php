@@ -27,7 +27,7 @@ $valorF = number_format($valor, 2, ',', '.');
 if ($ref_pix != "") {
     require('consultar_pagamento.php');
     if ($status_api == 'approved') {
-        echo "<script>window.location='$url/pagamentos/pagamento_aprovado.php?id_agd=$id_pg'&id_conta=$id_conta</script>";
+        echo "<script>window.location='$url/pagamentos/pagamento_aprovado_ass.php?id_agd=$id_pg'&id_conta=$id_conta</script>";
         exit();
     }
 }
@@ -171,7 +171,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                                 .then((response) => {
                                     // receber o resultado do pagamento
                                     if (response.status == true) {                    
-                                        window.location.href = "<?= $url; ?>pagamentos/index.php?id=" + response.id + '&id_conta=' + id_conta;
+                                        window.location.href = "<?= $url; ?>pagamentos/assinatura.php?id=" + response.id + '&id_pg=' + id_conta;
                                     }
                                     if (response.status != true) {
                                         alert(response.message);
@@ -215,7 +215,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                 },
                 callbacks: {
                     onReady: () => {
-                        check("<?= $_GET["id"]; ?>", "<?= $_GET["id_conta"]; ?>");
+                        check("<?= $_GET["id"]; ?>", "<?= $_GET["id_pg"]; ?>");
                     },
                     onError: (error) => {},
                 },
@@ -233,9 +233,9 @@ $sobrenome = $_REQUEST["sobrenome"];
         <?php } ?>
         var redi = "<?= $URL_REDIRECIONAR; ?>";
 
-        function check(id, id_conta) {
+        function check(id, id_pg) {
             var settings = {
-                "url": "<?= $url; ?>pagamentos/process_payment_ass.php?acc=check&id=" + id + "&id_conta=" + id_conta,
+                "url": "<?= $url; ?>pagamentos/process_payment_ass.php?acc=check&id=" + id + "&id_pg=" + id_pg,
                 "method": "GET",
                 "timeout": 0
             };
@@ -249,7 +249,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                                 //window.location = "../meus-agendamentos.php";
                                 //$("#btn_form").click();
 
-                                window.location = "pagamento_aprovado_ass.php?id_agd="+<?= $_GET["id_conta"]; ?>+"&id_conta="+<?=$id_conta;?>;
+                                window.location = "pagamento_aprovado_ass.php?id_pg="+<?= $_GET["id_pg"]; ?>+"&id_conta="+<?=$id_conta;?>;
                             }, 6000);
                         }
                     } else {
