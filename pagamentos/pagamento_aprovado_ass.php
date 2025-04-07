@@ -46,7 +46,7 @@ $descricao = $res[0]['descricao'];
 $valor = $res[0]['valor'];
 
 
-$query = $pdo->query("SELECT * FROM assinante WHERE id = '$cliente' AND id_conta = '$id_conta'");
+$query = $pdo->query("SELECT * FROM assinantes WHERE id = '$cliente' AND id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $id_plano = @$res[0]['id_plano'];
 
