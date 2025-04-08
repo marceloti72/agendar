@@ -1372,7 +1372,7 @@ $plano = $res3['plano'];
             error_log("Erro ao conectar ao banco de dados: " . $e->getMessage());
             echo 'Erro ao conectar ao banco de dados!';
         }
-		echo $id_conta;
+		
 
         // Busca informações do cliente        
         $query8 = $pdo2->prepare("SELECT * FROM clientes WHERE id_conta = :id_conta");
@@ -1417,7 +1417,7 @@ $plano = $res3['plano'];
         <div class="card border-0 shadow-sm">
           <div class="card-body" style="padding: 20px;">
             <div class="text-center mb-3">
-              <h3 class="card-text" style="color: #333; font-weight: 700;"><?php echo mb_strtoupper($nome_sistema, 'UTF-8'); ?></h3>
+              <h3 class="card-text" style="color: #333; font-weight: 700;"><?php echo mb_strtoupper($id_conta, 'UTF-8'); ?></h3>
             </div>
             <hr style="border-top: 1px solid #E0E0E0;">
             
