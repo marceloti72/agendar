@@ -401,7 +401,17 @@ try {
              <div id="detalhes-plano-assinante" class="mb-3">
                  <p class="text-muted small">Carregando benefícios...</p>
              </div>
+            
+             <div class="text-center mb-3">                
+                 <button type="button" class="btn btn-outline-info btn-sm" id="btnVerHistoricoUso" style="display: none;">
+                     <i class="fas fa-history"></i> Ver Histórico de Uso Detalhado (Ciclo Atual)
+                 </button>
+             </div>              
+             <div id="detalhes-historico-uso-detalhado" style="display: none; max-height: 250px; overflow-y: auto;">                 
+             </div>
+             
              <hr>
+
 
              <h6>Histórico de Cobranças / Pagamentos:</h6>
              <div id="detalhes-historico-pagamentos" style="max-height: 250px; overflow-y: auto;">                 
@@ -665,6 +675,8 @@ function abrirModalAssinante(assinante = null) {
      const $detalhesPlanoDiv = $('#detalhes-plano-assinante');
      const $statusAtivoSpan = $('#vis_status_texto');
      const $historicoDiv = $('#detalhes-historico-pagamentos'); // Div para o histórico
+     const $historicoUsoDiv = $('#detalhes-historico-uso-detalhado'); // Div para histórico DETALHADO de USO
+     const $btnVerHistoricoUso = $('#btnVerHistoricoUso'); // Botão para ver histórico de USO
 
      // Reset inicial
      $conteudoDiv.hide().css('opacity', '1');
@@ -673,6 +685,8 @@ function abrirModalAssinante(assinante = null) {
      $detalhesPlanoDiv.html('<p class="text-muted small">Carregando benefícios...</p>');
      $historicoDiv.html('<p class="text-muted small">Carregando histórico...</p>'); // Limpa histórico
      $statusAtivoSpan.text('');
+     $historicoUsoDiv.html('').hide(); // Esconde e limpa div do histórico de uso
+     $btnVerHistoricoUso.hide().removeData('id-assinante').removeData('id-receber'); // Esconde e limpa dados anteriores do botão
      $modal.modal('show');
 
      $.ajax({
@@ -687,7 +701,9 @@ function abrirModalAssinante(assinante = null) {
                  const ass = response.assinante;
                  const plano = response.plano;
                  const servicos = response.servicos;
-                 const historico = response.historico; // Pega o histórico da resposta
+                 const historico = response.historico; // Pega o histórico da resposta                
+                 const idReceberPendente = ass.id_receber_pendente; // Pega ID do ciclo atual
+                 const idAssinante = ass.id; // Pega ID do assinante
                  
 
                  // Aplica opacidade se inativo
@@ -731,6 +747,9 @@ function abrirModalAssinante(assinante = null) {
                  } else { beneficiosHtml += '<li><small class="text-muted">Nenhum serviço específico listado.</small></li>'; }
                  beneficiosHtml += '</ul>';
                  $detalhesPlanoDiv.html(beneficiosHtml);
+
+
+                 
 
                  // --- MONTAGEM DO HISTÓRICO DE PAGAMENTOS ---
                  let historicoHtml = '<p class="text-muted small">Nenhum histórico de cobrança encontrado.</p>'; // Padrão
@@ -782,7 +801,23 @@ function abrirModalAssinante(assinante = null) {
                  $historicoDiv.html(historicoHtml); // Popula a div de histórico
                  // --- FIM DO HISTÓRICO ---
 
+                 // --- Prepara o botão para carregar histórico de USO ---
+                if (idReceberPendente && idReceberPendente > 0) { // Só mostra botão se houver ciclo pendente válido
+                    $btnVerHistoricoUso
+                        .data('id-assinante', idAssinante) // Guarda o ID do assinante no botão
+                        .data('id-receber', idReceberPendente) // Guarda o ID do ciclo no botão
+                        .show(); // Mostra o botão
+                    // Garante que a área de detalhes esteja escondida inicialmente
+                    $historicoUsoDiv.html('').hide();
+                } else {
+                    $btnVerHistoricoUso.hide(); // Esconde se não há ciclo pendente
+                    // Mostra um aviso na DIV de histórico de uso
+                    $historicoUsoDiv.html('<p class="text-muted small text-center">Nenhuma cobrança pendente para exibir histórico de uso.</p>').show();
+                }
+                // --- Fim da preparação do botão ---
+
                  $conteudoDiv.show(); // Mostra todo o conteúdo
+
 
              } else { // Falha geral do AJAX ou assinante não encontrado
                   $mensagemDiv.text(response.message || 'Erro ao buscar detalhes.').addClass('text-danger');
@@ -1244,6 +1279,66 @@ $('#form-registrar-uso').on('submit', function(e) {
              $btnSubmit.prop('disabled', false).text('Registrar Uso'); // Reabilita botão
         }
     });
+});
+
+
+// Listener para o botão "Ver/Esconder Histórico de Uso Detalhado" (COM TOGGLE)
+$('#btnVerHistoricoUso').on('click', function() {
+    const $button = $(this);
+    const idAssinante = $button.data('id-assinante');
+    const idReceber = $button.data('id-receber');
+    const $historicoUsoDetalhadoDiv = $('#detalhes-historico-uso-detalhado');
+
+    // 1. Verifica se a div de histórico JÁ ESTÁ visível
+    if ($historicoUsoDetalhadoDiv.is(':visible')) {
+        // Se está visível, apenas esconde com um efeito
+        $historicoUsoDetalhadoDiv.slideUp('fast'); // Efeito "recolher"
+        // Opcional: Muda o texto/ícone do botão de volta para "Ver"
+        $button.html('<i class="fas fa-history"></i> Ver Histórico Detalhado');
+
+    } else {
+        // Se está escondida, executa a lógica para buscar e mostrar os dados
+
+        // Verifica se os IDs necessários estão presentes no botão
+        if (!idAssinante || !idReceber) {
+            $historicoUsoDetalhadoDiv
+                .html('<p class="text-danger small text-center">Erro: IDs necessários não encontrados no botão.</p>')
+                .slideDown('fast'); // Mostra o erro
+            return;
+        }
+
+        // Mostra loading e faz a chamada AJAX
+        $historicoUsoDetalhadoDiv
+            .html('<p class="text-center text-muted"><i class="fas fa-spinner fa-spin"></i> Carregando histórico de uso...</p>')
+            .slideDown('fast'); // Mostra o loading com efeito "expandir"
+        $button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Carregando...'); // Desabilita e mostra loading no botão
+
+        $.ajax({
+            url: 'paginas/<?= $pagina ?>/buscar_historico_uso_ajax.php', // Verifique o caminho
+            method: 'POST', // Ou GET, ajuste o PHP
+            data: {
+                id_assinante: idAssinante,
+                id_receber: idReceber,
+                id_conta: '<?= $id_conta_corrente ?>'
+            },
+            // dataType: 'html', // Espera HTML diretamente
+            success: function(responseHtml) {
+                 // Coloca o HTML retornado (a tabela ou mensagem) na div
+                $historicoUsoDetalhadoDiv.html(responseHtml);
+                // Opcional: Muda o texto/ícone do botão para "Esconder"
+                $button.html('<i class="fas fa-eye-slash"></i> Esconder Histórico');
+            },
+            error: function(xhr) {
+                console.error("Erro ao buscar histórico de uso:", xhr.responseText);
+                $historicoUsoDetalhadoDiv.html('<p class="text-center text-danger">Erro ao carregar histórico de uso.</p>');
+                 // Opcional: Volta o texto do botão para "Ver" em caso de erro
+                 $button.html('<i class="fas fa-history"></i> Ver Histórico Detalhado');
+            },
+            complete: function() {
+                 $button.prop('disabled', false); // Reabilita o botão SEMPRE ao final
+            }
+        });
+    }
 });
 
 </script>

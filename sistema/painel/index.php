@@ -1355,7 +1355,8 @@ $plano = $res3['plano'];
         </button>
       </div>
 
-	  <?php                
+	  <?php     
+	  $id_conta = $_SESSION['id_conta'];           
 
             // Configurações Iniciais e Conexões
         $url_sistema = explode("//", $url);
