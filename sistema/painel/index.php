@@ -1356,7 +1356,7 @@ $plano = $res3['plano'];
       </div>
 
 	  <?php     
-	  $id_conta = $_SESSION['id_conta'];           
+	           
 
             // Configurações Iniciais e Conexões
         $url_sistema = explode("//", $url);
@@ -1372,6 +1372,7 @@ $plano = $res3['plano'];
             error_log("Erro ao conectar ao banco de dados: " . $e->getMessage());
             echo 'Erro ao conectar ao banco de dados!';
         }
+		echo $id_conta;
 
         // Busca informações do cliente        
         $query8 = $pdo2->prepare("SELECT * FROM clientes WHERE id_conta = :id_conta");
