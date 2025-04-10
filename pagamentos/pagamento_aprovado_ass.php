@@ -96,7 +96,7 @@ if ($id_pg != "") {
             $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
 
             $mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';            
-            $mensagem .= 'Olá *'.$nome_cliente.'*, estou voltando para avisar que seu pagamento foi processado com sucesso! Obrigado 😃%0A%0A';
+            $mensagem .= 'Olá *'.$nome_cliente.'*, seu pagamento foi processado com sucesso! Obrigado 😃%0A%0A';
             $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
             $mensagem .= '*Valor:* R$ '.$valorF.'%0A';
             $mensagem .= '*Próximo Vencimento:* ' . $nova_data_vencimentoF . '%0A'; 

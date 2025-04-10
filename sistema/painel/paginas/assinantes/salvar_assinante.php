@@ -123,16 +123,23 @@ try {
     $query_plano_rec->execute([':id_plano' => $id_plano, ':id_conta' => $id_conta_corrente]);
     $plano_info_rec = $query_plano_rec->fetch(PDO::FETCH_ASSOC);
     if (!$plano_info_rec) { throw new Exception("Plano selecionado inválido ao gerar cobrança."); }
+    $nome_plano = $plano_info_rec['nome'];
+
 
     // Determina valor, descrição e frequência
-     if ($frequencia_escolhida == 365 && !empty($plano_info_rec['preco_anual'])) {
-         $valor_cobrar = $plano_info_rec['preco_anual'];
+     if ($frequencia_escolhida == 365 && !empty($plano_info_rec['preco_anual'])) {        
+         $valor_cobrar = $plano_info_rec['preco_anual'];         
+         $valorF = @number_format($valor_cobrar, 2, ',', '.');
          $descricao_cobranca = "Assinatura Plano " . $plano_info_rec['nome'] . " - Anual";
          $frequencia_plano = 365;
+         $nome_freq = 'Anual';
      } else {
+        
          $valor_cobrar = $plano_info_rec['preco_mensal'];
+         $valorF = @number_format($valor_cobrar, 2, ',', '.');
          $descricao_cobranca = "Assinatura Plano " . $plano_info_rec['nome'] . " - Mensal";
          $frequencia_plano = 30;
+         $nome_freq = 'Mensal';
      }
 
      // Lógica para 'receber': Sempre cria um novo ao adicionar, atualiza ao editar?
@@ -176,6 +183,8 @@ try {
 
           $query_ins_rec->execute();
           if($query_ins_rec->rowCount() <= 0){ throw new Exception("Falha ao criar cobrança inicial."); }
+
+          $ult_id_receber = $pdo->lastInsertId();
      }
 
 
@@ -196,4 +205,45 @@ try {
 }
 
 echo json_encode($response);
+
+if ($api == 'Sim') {
+    $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);   
+    $dataF = implode('/', array_reverse(explode('-', $data_vencimento)));
+    // Link de pagamento
+    $link_pgto = 'https://www.agendar.skysee.com.br/pagar_ass/' . $ult_id_receber;
+ 
+    $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
+ 
+    $mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
+    $mensagem .= '*Assinatura realizada com sucesso!* 😀%0A%0A';
+    $mensagem .= 'Olá '.$nome.', seja bem-vindo ao nosso *CLUBE DO ASSINANTE* 👑.%0A%0A';    
+    $mensagem .= '*Segue os dados da assinatura:* 📝%0A';
+    $mensagem .= '*Assinante:* ' . $nome . '%0A';
+    $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
+    $mensagem .= '*Valor:* R$ '.$valorF.'%0A';
+    $mensagem .= '*Data de Vencimento:* ' . $dataF . '%0A%0A'; 
+    if($pgto_api == 'Sim'){
+        $mensagem .= '*Link para pagamento:* 🔗%0A'; 
+        $mensagem .= $link_pgto; 
+    }else{
+        $mensagem .= '*Dados para pagamento:*%0A'; 
+        $mensagem .= $dados_pagamento; 
+    } 
+      
+ 
+    require('../../../../ajax/api-texto.php');
+
+      
+    $telefone = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema); 
+ 
+    $mensagem = '*Assinatura realizada pelo site!* 👑%0A%0A';       
+    $mensagem .= '*Segue os dados da assinatura:* 📝%0A';
+    $mensagem .= '*Assinante:* ' . $nome . '%0A';
+    $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
+    $mensagem .= '*Valor:* R$ '.$valorF.'%0A';
+    $mensagem .= '*Data de Vencimento:* ' . $dataF . '%0A';   
+ 
+    require('../../../../ajax/api-texto.php');
+ }
+
 ?>

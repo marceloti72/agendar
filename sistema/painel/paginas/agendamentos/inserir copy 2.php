@@ -1,5 +1,4 @@
 <?php
-header('Content-Type: application/json');
 $tabela = 'agendamentos';
 require_once("../../../conexao.php");
 
@@ -17,8 +16,6 @@ $servico = $_POST['servico'];
 $data_agd = $_POST['data'];
 $hora_do_agd = @$_POST['hora'];
 $hash = '';
-$quantidade_a_usar = 1;
-$response['success'] = true;
 
 if (@$hora == "") {
 	echo 'Selecione um Horário antes de agendar!';
@@ -116,68 +113,7 @@ if ($total_reg > 0 and $res[0]['id'] != $id) {
 }
 
 
-// --- 3. VERIFICAÇÃO DE ASSINATURA (ADICIONADO) ---
-$coberto_pela_assinatura = false;
-$mensagem_assinatura = 'Salvo com sucesso!'; // Mensagem para o alert final
-$id_assinante_encontrado = null;
-$id_receber_ciclo_atual = null;
-$id_plano_servico_encontrado = null;
-$mensagem_saida = '';
 
- // a. Cliente tem assinatura ativa?
- $query_find_ass = $pdo->prepare("SELECT id, id_plano FROM assinantes WHERE id_cliente = :id_cliente AND id_conta = :id_conta AND ativo = 1 AND data_vencimento >= CURDATE()");
- $query_find_ass->execute([':id_cliente' => $cliente, ':id_conta' => $id_conta]);
- $assinante_info = $query_find_ass->fetch(PDO::FETCH_ASSOC);
-
- if ($assinante_info) { // É assinante ativo
-	 $id_assinante_encontrado = $assinante_info['id'];
-	 $id_plano_assinante = $assinante_info['id_plano'];
-
-	 // b. Serviço está no plano? Qual limite base (mensal)?
-	 $query_limite = $pdo->prepare("SELECT id, quantidade FROM planos_servicos WHERE id_plano = :id_plano AND id_servico = :id_servico AND id_conta = :id_conta");
-	 $query_limite->execute([':id_plano' => $id_plano_assinante, ':id_servico' => $servico, ':id_conta' => $id_conta]);
-	 $limite_info = $query_limite->fetch();
-
-	 if ($limite_info) { // Serviço incluído
-		 $limite_base = (int)$limite_info['quantidade'];
-		 $id_plano_servico_encontrado = $limite_info['id'];
-
-		 // c. Encontra ciclo atual (cobrança pendente da ASSINATURA)
-		 // *** VERIFIQUE A FK: 'cliente' ou 'pessoa'? Assumindo 'cliente' = assinantes.id ***
-		 $query_rec = $pdo->prepare("SELECT id, frequencia FROM receber WHERE cliente = :id_ass AND id_conta = :id_conta AND pago = 'Não' AND tipo = 'Assinatura' ORDER BY data_venc ASC, id ASC LIMIT 1");
-		 $query_rec->execute([':id_ass' => $id_assinante_encontrado, ':id_conta' => $id_conta]);
-		 $rec_atual = $query_rec->fetch();
-
-		 if ($rec_atual) { // Ciclo encontrado
-			 $id_receber_ciclo_atual = $rec_atual['id'];
-			 $frequencia_ciclo = (int)$rec_atual['frequencia'];
-
-			 // d. Calcula limite real do ciclo (anual * 12)
-			 $limite_ciclo = $limite_base;
-			 if ($frequencia_ciclo == 365 && $limite_base > 0) { $limite_ciclo = $limite_base * 12; }
-			 elseif ($limite_base == 0) { $limite_ciclo = 0; }
-
-			 // e. Conta uso atual neste ciclo
-			 $usados_atualmente = 0;
-			 if ($limite_ciclo !== 0) {
-				 $query_uso = $pdo->prepare("SELECT SUM(quantidade_usada) as total_usado FROM assinantes_servicos_usados WHERE id_assinante = :id_ass AND id_servico = :id_serv AND id_receber_associado = :id_rec AND id_conta = :id_conta");
-				 $query_uso->execute([':id_ass' => $id_assinante_encontrado, ':id_serv' => $servico, ':id_rec' => $id_receber_ciclo_atual, ':id_conta' => $id_conta]);
-				 $uso_info = $query_uso->fetch();
-				 $usados_atualmente = $uso_info ? (int)$uso_info['total_usado'] : 0;
-			 }
-
-			 // f. Verifica se há saldo
-			 if ($limite_ciclo === 0 || ($usados_atualmente + $quantidade_a_usar) <= $limite_ciclo) {
-				 $coberto_pela_assinatura = true; // Define que está coberto!
-				 $novo_uso_num = $usados_atualmente + $quantidade_a_usar;
-				 $limite_texto = ($limite_ciclo === 0) ? "Ilimitado" : $limite_ciclo;
-				 $mensagem_assinatura = " Cliente Assinante (Uso Serviço: {$novo_uso_num} / {$limite_texto})"; // Mensagem específica
-			 } else { $mensagem_assinatura = " (Assinante: Limite Atingido {$usados_atualmente} / {$limite_ciclo})"; }
-		 } else { $mensagem_assinatura = " (Assinante: Ciclo não localizado)"; }
-	 } // else: serviço não incluído no plano
- } // else: não é assinante ativo
-
- 
 $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
 
 //pegar nome do cliente
@@ -258,7 +194,5 @@ while (strtotime($hora) < strtotime($hora_final_servico)) {
 	}
 }
 
-$response['success'] = true;
 
-
-//echo 'Salvo com Sucesso';
+echo 'Salvo com Sucesso';

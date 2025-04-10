@@ -1343,7 +1343,3 @@ $('#btnVerHistoricoUso').on('click', function() {
 
 </script>
 
-</script>
-
-
-</script>

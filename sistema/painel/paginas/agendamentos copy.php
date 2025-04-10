@@ -465,83 +465,39 @@ if(@$agendamentos == 'ocultar'){
 
 <script>
 
-$("#form-text").submit(function (event) {
-    // 1. Previne o envio padrão do formulário HTML
-    event.preventDefault();
+	$("#form-text").submit(function () {
+		$('#mensagem').text('Carregando...');
+		event.preventDefault();
+		
+		var formData = new FormData(this);
 
-    // 2. Referências e Feedback Inicial
-    const form = this;
-    const $mensagemDiv = $('#mensagem'); // Onde as mensagens são exibidas
-    const $submitButton = $(form).find('button[type="submit"]'); // Botão de submit do form
+		$.ajax({
+			url: 'paginas/' + pag +  "/inserir.php",
+			type: 'POST',
+			data: formData,
 
-    $mensagemDiv.text('Carregando...').removeClass('text-danger text-success'); // Mostra carregando
-    if($submitButton.length) $submitButton.prop('disabled', true).append(' <i class="fas fa-spinner fa-spin"></i>'); // Desabilita botão (opcional)
+			success: function (mensagem) {
+				
+				$('#mensagem').text('');
+				$('#mensagem').removeClass()
+				if (mensagem.trim() == "Salvo com Sucesso") {                    
+					$('#btn-fechar').click();
+					listar();
+					listarHorarios();
+				} else {
+					$('#mensagem').addClass('text-danger')
+					$('#mensagem').text(mensagem)
+				}
 
-    // 3. Pega os dados do formulário
-    var formData = new FormData(form);
+			},
 
-    // 4. Executa a chamada AJAX esperando JSON
-    $.ajax({
-        url: 'paginas/' + pag +  "/inserir.php", // VERIFIQUE SE ESTE É O SCRIPT PHP CORRETO
-        type: 'POST',
-        data: formData,
-        dataType: "html", // <<<--- DEFINIDO COMO JSON ---<<<
-        cache: false,
-        contentType: false,
-        processData: false,
+			cache: false,
+			contentType: false,
+			processData: false,
 
-        success: function (response) { // 'response' agora é um objeto JSON
-            $mensagemDiv.text(''); // Limpa 'Carregando...'
+		});
 
-            // 5. Verifica a resposta do PHP
-            
-                // SUCESSO
-                $mensagemDiv.addClass('text-success').text(response.message || "Salvo com Sucesso!");
-
-                // Usa SweetAlert para um feedback melhor (opcional, mas recomendado)
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Sucesso!',
-                    text: response.message || "Salvo com Sucesso!",
-                    timer: 1500, // Fecha automaticamente após 1.5 segundos
-                    showConfirmButton: false
-                }).then(() => { // Executa DEPOIS que o Swal fechar
-                    // Fecha o modal associado (se o botão existir)
-                     if ($('#btn-fechar').length) {
-                          $('#btn-fechar').click();
-                     } else if ($(form).closest('.modal').length) {
-                         // Tenta fechar o modal pai do formulário (alternativa)
-                         $(form).closest('.modal').modal('hide');
-                     }
-
-                    // Chama funções para atualizar listas/dados na página principal
-                    if (typeof listar === 'function') {
-                        listar(); // Sua função global de listagem principal?
-                    } else { console.warn("Função listar() não definida."); }
-
-                    if (typeof listarHorarios === 'function') {
-                        listarHorarios(); // Sua função que lista horários?
-                    } else { console.warn("Função listarHorarios() não definida."); }
-
-                    // Adicione outras funções de atualização se necessário
-                });
-
-           
-        },
-
-        error: function (xhr, status, error) {
-            // ERRO DE COMUNICAÇÃO ou PHP não retornou JSON válido
-            $mensagemDiv.text('Erro de comunicação. Verifique o console.').addClass('text-danger');
-            Swal.fire('Erro Crítico!', 'Falha na comunicação com o servidor. Verifique o console (F12).', 'error');
-            console.error("Erro AJAX form-text:", status, error, xhr.responseText);
-        },
-
-        complete: function() {
-            // Reabilita botão de submit SEMPRE ao final
-            if($submitButton.length) $submitButton.prop('disabled', false).find('i.fa-spinner').remove();
-        }
-    }); // Fim $.ajax
-}); 
+	});
 
 </script>
 
@@ -658,47 +614,33 @@ $("#form-text").submit(function (event) {
 	$("#form-servico").submit(function () {
 		event.preventDefault();
 		
-		var formData = new FormData(this);		
+		var formData = new FormData(this);
 
-			// Exemplo de como processar a resposta no seu JS (dentro do success do AJAX/Fetch)
-		fetch('paginas/agendamentos/inserir-servico.php', {
-			method: 'POST',
-			body: formData // Seus dados do formulário
-		})
-		.then(response => response.json())
-		.then(data => {
-			if (data.status === 'success') {
-				Swal.fire({
-					title: 'Sucesso!',
-					text: data.message + (data.detail ? '\n\nDetalhe: ' + data.detail : ''), // Mostra detalhe se houver
-					icon: 'success',
-					confirmButtonText: 'Ok'
-				}).then(() => {
-					// Ação pós-sucesso, ex: recarregar tabela, fechar modal
-					window.location.reload(); // Exemplo simples
-				});
-			} else {
-				Swal.fire({
-					title: 'Erro!',
-					text: data.message + (data.detail ? '\n\nErro Técnico: ' + data.detail : ''), // Mostra detalhe técnico se houver
-					icon: 'error',
-					confirmButtonText: 'Ok'
-				});
-			}
-		})
-		.catch(error => {
-			console.error('Erro na requisição:', error);
-			Swal.fire({
-				title: 'Erro de Conexão!',
-				text: 'Não foi possível concluir a operação. Verifique sua conexão ou contate o suporte.',
-				icon: 'error',
-				confirmButtonText: 'Ok'
-			});
+		$.ajax({
+			url: 'paginas/' + pag +  "/inserir-servico.php",
+			type: 'POST',
+			data: formData,
+
+			success: function (mensagem) {
+				$('#mensagem-servico').text('');
+				$('#mensagem-servico').removeClass()
+				if (mensagem.trim() == "Salvo com Sucesso") {                    
+					$('#btn-fechar-servico').click();
+					listar();
+				} else {
+					$('#mensagem-servico').addClass('text-danger')
+					$('#mensagem-servico').text(mensagem)
+				}
+
+			},
+
+			cache: false,
+			contentType: false,
+			processData: false,
+
 		});
 
-				});
-
-			
+	});
 
 </script>
 

@@ -1,222 +1,213 @@
 <?php
-require_once("../../../conexao.php");
-$tabela = 'receber';
-$data_hoje = date('Y-m-d');
+// Arquivo: paginas/SUA_PAGINA/listar_produtos.php (Exemplo de Caminho)
+// (Este script é chamado pela função JS listarProdutos(id))
 
-$id = @$_POST['id'];
-
-if ($id == "") {
-	$id = 0;
-}
+require_once("../../../conexao.php"); // Ajuste o caminho se necessário
+$data_hoje = date('Y-m-d'); // Não é usado aqui, mas mantido por enquanto
 
 @session_start();
+// Validação de sessão
+if (!isset($_SESSION['id_conta']) || !isset($_SESSION['id_usuario'])) {
+    echo '<small class="text-danger">Sessão inválida ou expirada.</small>';
+    exit;
+}
 $id_conta = $_SESSION['id_conta'];
-$usuario_logado = @$_SESSION['id_usuario'];
+// $usuario_logado = $_SESSION['id_usuario']; // Não parece ser usado na listagem
 
+// Pega ID da comanda via POST e valida
+$comanda_id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
 
-$total_servicos = 0;
+// --- DEBUG ---
+// error_log("listar_produtos.php chamado para comanda ID: " . $comanda_id . " / Conta ID: " . $id_conta);
+// --- FIM DEBUG ---
 
-$query = $pdo->query("SELECT * FROM $tabela where tipo = 'Venda' and comanda = '$id' and func_comanda = '$usuario_logado' and id_conta = '$id_conta' order by id asc");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$total_reg = @count($res);
-if ($total_reg > 0) {
-
-	echo <<<HTML
-	<small>
-	<table class="table table-hover" id="">
-	<thead> 
-	<tr> 
-	
-	<th>Produto</th>	
-	<th class="esc">Valor</th> 
-	<th class="esc">Estoque</th>
-	<th>Vendedor</th>		
-	<th>Ações</th>
-	</tr> 
-	</thead> 
-	<tbody>	
-HTML;
-
-	for ($i = 0; $i < $total_reg; $i++) {
-		foreach ($res[$i] as $key => $value) {
-		}
-		$id = $res[$i]['id'];
-		$descricao = $res[$i]['descricao'];
-		$tipo = $res[$i]['tipo'];
-		$valor = $res[$i]['valor'];
-		$data_lanc = $res[$i]['data_lanc'];
-		$data_pgto = $res[$i]['data_pgto'];
-		$data_venc = $res[$i]['data_venc'];
-		$usuario_lanc = $res[$i]['usuario_lanc'];
-		$usuario_baixa = $res[$i]['usuario_baixa'];
-		$foto = $res[$i]['foto'];
-		$pessoa = $res[$i]['pessoa'];
-		$funcionario = $res[$i]['funcionario'];
-		$obs = $res[$i]['obs'];
-		$comanda = $res[$i]['comanda'];
-		$produto = $res[$i]['produto'];
-		$quantidade = $res[$i]['quantidade'];
-
-		$pago = $res[$i]['pago'];
-		$servico = $res[$i]['servico'];
-
-		$valorF = number_format($valor, 2, ',', '.');
-		$data_lancF = implode('/', array_reverse(explode('-', $data_lanc)));
-		$data_pgtoF = implode('/', array_reverse(explode('-', $data_pgto)));
-		$data_vencF = implode('/', array_reverse(explode('-', $data_venc)));
-
-
-		$query2 = $pdo->query("SELECT * FROM clientes where id = '$pessoa' and id_conta = '$id_conta'");
-		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-		$total_reg2 = @count($res2);
-		if ($total_reg2 > 0) {
-			$nome_pessoa = $res2[0]['nome'];
-			$telefone_pessoa = $res2[0]['telefone'];
-		} else {
-			$nome_pessoa = 'Nenhum!';
-			$telefone_pessoa = 'Nenhum';
-		}
-
-
-		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_baixa' and id_conta = '$id_conta'");
-		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-		$total_reg2 = @count($res2);
-		if ($total_reg2 > 0) {
-			$nome_usuario_pgto = $res2[0]['nome'];
-		} else {
-			$nome_usuario_pgto = 'Nenhum!';
-		}
-
-
-
-		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_lanc' and id_conta = '$id_conta'");
-		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-		$total_reg2 = @count($res2);
-		if ($total_reg2 > 0) {
-			$nome_usuario_lanc = $res2[0]['nome'];
-		} else {
-			$nome_usuario_lanc = 'Sem Referência!';
-		}
-
-
-
-		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_conta = '$id_conta'");
-		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-		$total_reg2 = @count($res2);
-		if ($total_reg2 > 0) {
-			$nome_func = $res2[0]['nome'];
-		} else {
-			$nome_func = '';
-		}
-
-
-
-
-		if ($data_pgto == '0000-00-00' || $data_pgto == null) {
-			$classe_alerta = 'text-danger';
-			$data_pgtoF = 'Pendente';
-			$visivel = '';
-
-			$japago = 'ocultar';
-		} else {
-			$classe_alerta = 'verde';
-			$visivel = 'ocultar';
-
-			$japago = '';
-		}
-
-		$total_servicos += $valor;
-
-
-		//extensão do arquivo
-		$ext = pathinfo($foto, PATHINFO_EXTENSION);
-		if ($ext == 'pdf') {
-			$tumb_arquivo = 'pdf.png';
-		} else if ($ext == 'rar' || $ext == 'zip') {
-			$tumb_arquivo = 'rar.png';
-		} else {
-			$tumb_arquivo = $foto;
-		}
-
-
-		if ($data_venc < $data_hoje and $pago != 'Sim') {
-			$classe_debito = 'vermelho-escuro';
-		} else {
-			$classe_debito = '';
-		}
-
-
-		$query2 = $pdo->query("SELECT * FROM produtos where id = '$produto' and id_conta = '$id_conta'");
-		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-		$nome_produto = $res2[0]['nome'];
-		$estoque_produto = $res2[0]['estoque'];
-
-		echo <<<HTML
-<tr class="{$classe_debito}">
-<td>{$quantidade} {$nome_produto}</td>
-<td class="esc">R$ {$valorF}</td>
-<td class="esc">{$estoque_produto}</td>
-<td>{$nome_func}</td>
-
-<td>
-		
-
-
-		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
-
-		<ul class="dropdown-menu" style="margin-left:-230px;">
-		<li>
-		<div class="notification_desc2">
-		<p>Confirmar Exclusão? <a href="#" onclick="excluirProduto('{$id}', '{$comanda}')"><span class="text-danger">Sim</span></a></p>
-		</div>
-		</li>										
-		</ul>
-		</li>
-		
-	
-		</td>
-</tr>
-HTML;
-	}
-
-	$total_servicosF = number_format($total_servicos, 2, ',', '.');
-
-	echo <<<HTML
-</tbody>
-<small><div align="center" id="mensagem-excluir-servicos"></div></small>
-</table>
-	
-<div align="right">Total Produtos: <span class="verde">R$ {$total_servicosF}</span> </div>
-
-</small>
-HTML;
-} else {
-	echo '<small>Nenhum Produto ainda Lançado!</small>';
+if ($comanda_id <= 0) {
+    echo '<small class="text-warning">ID da Comanda inválido para listar produtos.</small>';
+    exit();
 }
 
+$total_produtos = 0; // Nome de variável mais adequado
+$html_output = ''; // Inicializa a string de saída HTML
+
+try {
+    // --- Query Principal Otimizada com JOINs e Prepared Statements ---
+    // Busca itens do tipo 'Venda' da tabela 'receber' para esta comanda,
+    // juntando com produtos e usuários (vendedor)
+    $query = $pdo->prepare("
+        SELECT
+            r.id, r.quantidade, r.valor, r.funcionario as id_funcionario, r.produto as id_produto, r.pago, r.data_venc,
+            p.nome as nome_produto, p.estoque as estoque_atual,
+            u.nome as nome_vendedor
+        FROM receber r
+        LEFT JOIN produtos p ON r.produto = p.id AND p.id_conta = r.id_conta -- JOIN para nome/estoque do produto
+        LEFT JOIN usuarios u ON r.funcionario = u.id AND u.id_conta = r.id_conta -- JOIN para nome do vendedor
+        WHERE r.tipo = 'Venda'          -- Filtra apenas por tipo Venda
+          AND r.comanda = :comanda_id   -- Filtra pela comanda específica
+          AND r.id_conta = :id_conta    -- Filtra pela conta da sessão
+        ORDER BY r.id ASC               -- Ordena pela ordem de inserção
+    ");
+
+    $query->execute([
+        ':comanda_id' => $comanda_id,
+        ':id_conta' => $id_conta
+    ]);
+
+    $res = $query->fetchAll(PDO::FETCH_ASSOC);
+    $total_reg = count($res);
+
+    if ($total_reg > 0) {
+        // Cabeçalho da Tabela
+        $html_output = <<<HTML
+        <small>
+        <table class="table table-hover table-sm" id="tabela_produtos"> 
+        <thead >
+        <tr>
+        <th>Produto (Qtd)</th>
+        <th class="esc text-right">Valor Total</th>
+        <th class="esc text-center">Estoque Atual</th>
+        <th>Vendedor</th>
+        <th class="text-center">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+HTML;
+
+        // Loop pelos Itens/Produtos da Comanda
+        foreach ($res as $item) {
+            $id_item_receber = $item['id']; // ID do registro em 'receber' (para exclusão)
+            $quantidade_item = (int)$item['quantidade'];
+            $valor_item = floatval($item['valor']); // Valor total (Qtd * Preço Unitário já calculado e salvo em receber)
+            $nome_produto_item = htmlspecialchars($item['nome_produto'] ?: 'Produto Desconhecido');
+            $estoque_atual_item = ($item['estoque_atual'] !== null) ? (int)$item['estoque_atual'] : 'N/D';
+            $nome_vendedor_item = htmlspecialchars($item['nome_vendedor'] ?: 'N/D'); // Vendedor (funcionário no registro receber)
+            $id_produto_item = $item['id_produto']; // ID do produto (para exclusão/reversão estoque)
+
+            $valor_item_formatado = number_format($valor_item, 2, ',', '.');
+
+            // Soma ao total geral de produtos
+            $total_produtos += $valor_item;
+
+            // Define classe para destacar linha se vencido/não pago (opcional)
+            $classe_debito = '';
+            if ($item['pago'] != 'Sim' && !empty($item['data_venc']) && strtotime($item['data_venc']) < strtotime($data_hoje)) {
+                $classe_debito = 'text-danger'; // Aplica cor vermelha à linha inteira
+            }
+
+            // Prepara parâmetros para a função excluirProduto JS de forma segura
+            // Passar: ID do item em receber, ID da comanda, ID do produto, Quantidade vendida (para reverter estoque)
+            // $onclick_excluir = sprintf(
+            //     "event.preventDefault(); excluirProduto('%s', '%s')",
+            //     htmlspecialchars($id_item_receber, ENT_QUOTES, 'UTF-8'),
+            //     htmlspecialchars($comanda_id, ENT_QUOTES, 'UTF-8'),
+            //     htmlspecialchars($id_produto_item, ENT_QUOTES, 'UTF-8'),
+            //     htmlspecialchars($quantidade_item, ENT_QUOTES, 'UTF-8')
+            // );
+
+            // Monta a linha da tabela
+            $html_output .= <<<HTML
+            <tr class="{$classe_debito}">
+                <td>{$quantidade_item}x {$nome_produto_item}</td>
+                <td class="esc text-right">R$ {$valor_item_formatado}</td>
+                <td class="esc text-center">{$estoque_atual_item}</td>
+                <td>{$nome_vendedor_item}</td>
+                <td class="text-center">
+				<a href="#" onclick="event.preventDefault(); excluirProduto('{$id_item_receber}', '{$comanda_id}')" title="Excluir Venda deste Produto">
+                       <i class="fa fa-trash-o text-danger"></i>
+                    </a>
+                    
+                </td>
+            </tr>
+HTML;
+        } // Fim foreach
+
+        // Formata o total de produtos
+        $total_produtosF = number_format($total_produtos, 2, ',', '.');
+
+        // Fecha a tabela e adiciona o total
+        $html_output .= <<<HTML
+        </tbody>
+        </table>
+        <div class="text-right mt-2" style="margin-right: 5px;"><strong>Total Produtos:</strong> <span class="text-primary" id="total-produtos-display">R$ {$total_produtosF}</span></div>
+        </small>
+HTML;
+
+        // Script para atualizar o input hidden #valor_produtos na página principal
+        // Idealmente, o JS que chama calcular() pegaria esse valor da tabela, mas mantendo o padrão:
+        $html_output .= "<script> $('#valor_produtos').val('{$total_produtos}'); console.log('Total Produtos Atualizado via listarProdutos:', {$total_produtos}); </script>";
+
+
+    } else { // Fim if ($total_reg > 0)
+        $html_output = '<small>Nenhum produto lançado nesta comanda!</small>';
+        // Garante que o total seja zerado se não houver produtos
+        $html_output .= "<script> $('#valor_produtos').val('0'); </script>";
+    }
+
+} catch (PDOException $e) {
+    error_log("Erro ao listar produtos da comanda {$comanda_id}: " . $e->getMessage());
+    $html_output = '<small class="text-danger">Erro ao carregar produtos da comanda.</small>';
+    $html_output .= "<script> $('#valor_produtos').val('0'); </script>";
+}
+
+echo $html_output; // Envia o HTML gerado
 ?>
 
 <script type="text/javascript">
-	$(document).ready(function() {
-		$('#valor_produtos').val("<?= $total_servicos ?>");
+		// --- INÍCIO: Função para Excluir Produto da Comanda ---
+function excluirProduto(idItemReceber, idComanda) { 
 
-	});
+    Swal.fire({
+        title: 'Tem Certeza?',
+        text: `Deseja realmente excluir este produto da comanda? O estoque será revertido.`, // Mensagem de confirmação
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Mostra loading (opcional, mas bom para feedback)
+            Swal.fire({ title: 'Excluindo...', text: 'Aguarde...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
 
-	function excluirProduto(id, comanda) {
-		$.ajax({
-			url: 'paginas/' + pag + "/excluir_produto.php",
-			method: 'POST',
-			data: {
-				id
-			},
-			dataType: "text",
+            $.ajax({
+                url: 'paginas/' + pag + '/excluir_produto.php', 
+                method: 'POST',
+                data: {
+                    id_receber: idItemReceber,         
+                    id_comanda: idComanda,        
+                    },
+                dataType: 'json', 
 
-			success: function(result) {
-				listarProdutos(comanda);
-				calcular();
-			}
-		});
-
-	}
-</script>
+                success: function(response) {
+                    if (response && response.success) {
+                        Swal.fire(
+                            'Excluído!',
+                            response.message || 'Produto removido da comanda.',
+                            'success'
+                        );
+                        // Atualiza lista de produtos e totais APÓS excluir
+                        if(typeof listarProdutos === 'function') {
+                            listarProdutos(idComanda); // Chama a função de listar PRODUTOS
+                        } 
+                        
+                        if(typeof calcular === 'function') {
+                            calcular();
+                        }
+                    } else {
+                        // Se success for false ou resposta inválida
+                        Swal.fire(
+                            'Erro!',
+                            response.message || 'Não foi possível excluir o produto.',
+                            'error'
+                        );
+                    }
+                },
+                error: function(xhr) {
+                    // Erro de comunicação ou PHP não retornou JSON válido
+                    Swal.fire('Erro Crítico!', 'Falha na comunicação ao excluir produto. Verifique o console (F12).', 'error');
+                    console.error("Erro AJAX excluirProduto:", xhr.responseText);
+                }
+            });
+        }
+    });
+}

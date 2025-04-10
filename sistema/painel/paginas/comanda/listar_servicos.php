@@ -1,211 +1,167 @@
 <?php
 require_once("../../../conexao.php");
-$tabela = 'receber';
 $data_hoje = date('Y-m-d');
 
-$id = @$_POST['id'];
-
-if ($id == "") {
-	$id = 0;
-}
-
 @session_start();
+if (!isset($_SESSION['id_conta']) || !isset($_SESSION['id_usuario'])) {
+    echo '<small>Sessão inválida ou expirada.</small>';
+    exit;
+}
 $id_conta = $_SESSION['id_conta'];
-$usuario_logado = @$_SESSION['id_usuario'];
+$usuario_logado = $_SESSION['id_usuario'];
 
-
+$comanda_id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
 $total_servicos = 0;
+$html_output = '';
 
-$query = $pdo->query("SELECT * FROM $tabela where tipo = 'Serviço' and comanda = '$id' and func_comanda = '$usuario_logado' and id_conta = '$id_conta' order by id asc");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$total_reg = @count($res);
-if ($total_reg > 0) {
+try {
+    $query = $pdo->prepare("
+        SELECT
+            r.id, r.descricao, r.valor, r.funcionario as id_funcionario, r.pago, r.data_venc, r.servico as id_servico,
+            s.nome as nome_servico,
+            u.nome as nome_funcionario
+        FROM receber r
+        LEFT JOIN servicos s ON r.servico = s.id AND s.id_conta = r.id_conta
+        LEFT JOIN usuarios u ON r.funcionario = u.id AND u.id_conta = r.id_conta
+        WHERE r.tipo = 'Serviço'
+          AND r.comanda = :comanda_id
+          AND r.id_conta = :id_conta
+        ORDER BY r.id ASC
+    ");
+    $query->execute([':comanda_id' => $comanda_id, ':id_conta' => $id_conta]);
+    $res = $query->fetchAll(PDO::FETCH_ASSOC);
+    $total_reg = count($res);
 
-	echo <<<HTML
-	<small>
-	<table class="table table-hover" id="tabela_servicos">
-	<thead > 
-	<tr > 
-	<th>Serviço</th>	
-	<th class="esc">Valor</th> 
-	<th class="esc">Profissional</th>	
-	<th>Ações</th>
-	</tr> 
-	</thead> 
-	<tbody>	
+    if ($total_reg > 0) {
+        $html_output = <<<HTML
+        <small>
+        <table class="table table-hover table-sm" id="tabela_servicos">
+        <thead>
+        <tr>
+        <th>Serviço</th>
+        <th class="esc text-right">Valor</th> 
+        <th class="esc">Profissional</th>
+        <th class="text-center">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
 HTML;
 
-	for ($i = 0; $i < $total_reg; $i++) {
-		foreach ($res[$i] as $key => $value) {
-		}
-		$id = $res[$i]['id'];
-		$descricao = $res[$i]['descricao'];
-		$tipo = $res[$i]['tipo'];
-		$valor = $res[$i]['valor'];
-		$data_lanc = $res[$i]['data_lanc'];
-		$data_pgto = $res[$i]['data_pgto'];
-		$data_venc = $res[$i]['data_venc'];
-		$usuario_lanc = $res[$i]['usuario_lanc'];
-		$usuario_baixa = $res[$i]['usuario_baixa'];
-		$foto = $res[$i]['foto'];
-		$pessoa = $res[$i]['pessoa'];
-		$funcionario = $res[$i]['funcionario'];
-		$obs = $res[$i]['obs'];
-		$comanda = $res[$i]['comanda'];
+        foreach ($res as $item) {
+            $id_item_receber = $item['id'];
+            $descricao_item = htmlspecialchars($item['descricao'] ?: $item['nome_servico'] ?: 'Serviço Desconhecido');
+            $valor_item = floatval($item['valor']);
+            $nome_func_item = htmlspecialchars($item['nome_funcionario'] ?: 'N/D');
+            $valor_item_formatado = number_format($valor_item, 2, ',', '.');
+            $classe_valor = ($valor_item == 0) ? 'text-success font-weight-bold' : '';
+            $total_servicos += $valor_item;
 
-		$pago = $res[$i]['pago'];
-		$servico = $res[$i]['servico'];
+            $classe_debito = ($item['pago'] != 'Sim' && !empty($item['data_venc']) && strtotime($item['data_venc']) < strtotime($data_hoje)) ? 'text-danger' : '';
 
-		$valorF = number_format($valor, 2, ',', '.');
-		$data_lancF = implode('/', array_reverse(explode('-', $data_lanc)));
-		$data_pgtoF = implode('/', array_reverse(explode('-', $data_pgto)));
-		$data_vencF = implode('/', array_reverse(explode('-', $data_venc)));
-
-
-		$query2 = $pdo->query("SELECT * FROM clientes where id = '$pessoa' and id_conta = '$id_conta'");
-		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-		$total_reg2 = @count($res2);
-		if ($total_reg2 > 0) {
-			$nome_pessoa = $res2[0]['nome'];
-			$telefone_pessoa = $res2[0]['telefone'];
-		} else {
-			$nome_pessoa = 'Nenhum!';
-			$telefone_pessoa = 'Nenhum';
-		}
-
-
-		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_baixa' and id_conta = '$id_conta'");
-		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-		$total_reg2 = @count($res2);
-		if ($total_reg2 > 0) {
-			$nome_usuario_pgto = $res2[0]['nome'];
-		} else {
-			$nome_usuario_pgto = 'Nenhum!';
-		}
-
-
-
-		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_lanc' and id_conta = '$id_conta'");
-		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-		$total_reg2 = @count($res2);
-		if ($total_reg2 > 0) {
-			$nome_usuario_lanc = $res2[0]['nome'];
-		} else {
-			$nome_usuario_lanc = 'Sem Referência!';
-		}
-
-
-
-		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_conta = '$id_conta'");
-		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-		$total_reg2 = @count($res2);
-		if ($total_reg2 > 0) {
-			$nome_func = $res2[0]['nome'];
-		} else {
-			$nome_func = 'Sem Referência!';
-		}
-
-
-		if ($data_pgto == null) {
-			$classe_alerta = 'text-danger';
-			$data_pgtoF = 'Pendente';
-			$visivel = '';
-
-			$japago = 'ocultar';
-		} else {
-			$classe_alerta = 'verde';
-			$visivel = 'ocultar';
-
-			$japago = '';
-		}
-
-		$total_servicos += $valor;
-
-
-		//extensão do arquivo
-		$ext = pathinfo($foto, PATHINFO_EXTENSION);
-		if ($ext == 'pdf') {
-			$tumb_arquivo = 'pdf.png';
-		} else if ($ext == 'rar' || $ext == 'zip') {
-			$tumb_arquivo = 'rar.png';
-		} else {
-			$tumb_arquivo = $foto;
-		}
-
-
-		if ($data_venc < $data_hoje and $pago != 'Sim') {
-			$classe_debito = 'vermelho-escuro';
-		} else {
-			$classe_debito = '';
-		}
-
-
-
-		echo <<<HTML
-<tr class="{$classe_debito}">
-<td> {$descricao}</td>
-<td class="esc">R$ {$valorF}</td>
-<td class="esc">{$nome_func}</td>
-
-<td>
-		
-
-
-		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
-
-		<ul class="dropdown-menu" style="margin-left:-230px;">
-		<li>
-		<div class="notification_desc2">
-		<p>Confirmar Exclusão? <a href="#" onclick="excluirServico('{$id}', '{$comanda}')"><span class="text-danger">Sim</span></a></p>
-		</div>
-		</li>										
-		</ul>
-		</li>
-		
-	
-		</td>
-</tr>
+            $html_output .= <<<HTML
+            <tr class="{$classe_debito}"> 
+                <td>{$descricao_item}</td>
+                <td class="esc text-right {$classe_valor}">R$ {$valor_item_formatado}</td> 
+                <td class="esc">{$nome_func_item}</td>
+                <td class="text-center">                    
+                    <a href="#" class="excluir-servico" data-id="{$id_item_receber}" data-comanda="{$comanda_id}" title="Excluir Lançamento">
+                        <i class="fa fa-trash-o text-danger"></i>
+                    </a>                   
+                </td>
+            </tr>
 HTML;
-	}
+        }
 
-	$total_servicosF = number_format($total_servicos, 2, ',', '.');
+        $total_servicosF = number_format($total_servicos, 2, ',', '.');        
+        $html_output .= <<<HTML
+        </tbody>
+        </table>
+        <div class="text-right mt-2" style="margin-right: 5px;">
+            <strong>Total Serviços:</strong> <span class="text-success" id="total-servicos-display">R$ {$total_servicosF} </span>
+        </div>
+        </small>
+        <script type="text/javascript">
+            var pag = 'comanda'; // Ajuste conforme necessário
+            var valor = {$total_servicos};            
 
-	echo <<<HTML
-</tbody>
-<small><div align="center" id="mensagem-excluir-servicos"></div></small>
-</table>
-	
-<div align="right">Total Serviços: <span class="verde">R$ {$total_servicosF}</span> </div>
+            $(document).ready(function() {
+                $('#valor_servicos').val(valor);
+            });
+            $(document).ready(function() {
+                $('.excluir-servico').on('click', function(e) {
+                    e.preventDefault();
+                    var idItemReceber = $(this).data('id');
+                    var idComanda = $(this).data('comanda');
+                    excluirServico(idItemReceber, idComanda);
+                });
+            });
 
-</small>
+            function excluirServico(idItemReceber, idComanda) { 
+                console.log("Tentando excluir serviço (item receber):", idItemReceber, "Comanda:", idComanda);
+                if (!idItemReceber || idItemReceber <= 0 || !idComanda || idComanda <= 0) {
+                    Swal.fire('Erro Interno', 'Não foi possível identificar o serviço a ser excluído corretamente.', 'error');
+                    return;
+                }
+
+                Swal.fire({
+                    title: 'Tem Certeza?',
+                    text: "Deseja realmente excluir este serviço da comanda? A comissão associada também será removida.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sim, excluir!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Excluindo...',
+                            text: 'Aguarde...',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        $.ajax({
+                            url: 'paginas/' + pag + "/excluir_servico.php",
+                            method: 'POST',
+                            data: {
+                                id_receber: idItemReceber,
+                                id_comanda: idComanda,
+                                id_conta: '{$id_conta}'
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                Swal.close();
+                                if (response && response.success) {
+                                    Swal.fire('Excluído!', response.message || 'Serviço removido da comanda.', 'success');
+                                    if (typeof listarServicos === 'function') listarServicos(idComanda);
+                                    if (typeof calcular === 'function') calcular();
+                                } else {
+                                    Swal.fire('Erro!', response.message || 'Não foi possível excluir o serviço.', 'error');
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.close();
+                                Swal.fire('Erro Crítico!', 'Falha na comunicação com o servidor.', 'error');
+                                console.error("Erro AJAX:", status, error, xhr.responseText);
+                            }
+                        });
+                    }
+                });
+            }
+        </script>
 HTML;
-} else {
-	echo '<small>Nenhum serviço ainda Lançado!</small>';
+    } else {
+        $html_output = '<small>Nenhum serviço lançado nesta comanda!</small>';
+        $html_output .= "<script>$('#valor_servicos').val('0');</script>";
+    }
+} catch (PDOException $e) {
+    error_log("Erro ao listar serviços da comanda {$comanda_id}: " . $e->getMessage());
+    $html_output = '<small class="text-danger">Erro ao carregar serviços da comanda.</small>';
+    $html_output .= "<script>$('#valor_servicos').val('0');</script>";
 }
 
+echo $html_output;
 ?>
-
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('#valor_servicos').val("<?= $total_servicos ?>");
-
-	});
-
-	function excluirServico(id, comanda) {
-		$.ajax({
-			url: 'paginas/' + pag + "/excluir_servico.php",
-			method: 'POST',
-			data: {
-				id
-			},
-			dataType: "text",
-
-			success: function(result) {
-				listarServicos(comanda);
-				calcular();
-			}
-		});
-
-	}
-</script>

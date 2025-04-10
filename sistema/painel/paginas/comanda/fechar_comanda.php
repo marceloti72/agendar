@@ -119,4 +119,4 @@ $pdo->query("UPDATE clientes SET cartoes = '$cartoes' where id = '$cliente' and 
 
 
 
-echo 'Salvo com Sucesso';
+echo 'Fechado com Sucesso';

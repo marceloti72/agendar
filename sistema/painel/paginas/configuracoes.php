@@ -195,6 +195,14 @@ if (@$configuracoes == 'ocultar') {
 					</div>
 				</div>	
 
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>Pix ou dados bancários <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Caso não queria utilizar o Mercado Pago, preencha aqui o seu Pix ou dados bancários. Irá aparecer no lugar do link do Mercado Pago." style="color: blue;"></i></label>
+						<input type="text" class="form-control" id="dados_pagamento" name="dados_pagamento"
+						value="<?php echo @$dados_pagamento ?>">
+					</div>
+				</div>
+
 				
 
 			</div>
@@ -219,7 +227,7 @@ if (@$configuracoes == 'ocultar') {
 
 				<div class="col-md-4">
 					<div class="form-group">
-						<label>Token</label>
+						<label>Token <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Já incluso no sistema! Basta abrir uma conta no MERCADO PAGO e informar nos campos seguintes o TOKEN e o PUBLIC KEY. Essas informações vc consegue em www.mercadopago.com.br/developers, após abrir a conta. Com ele vc terá diversas formas de pagamentos e com baixas automáticas! 👍" style="color: blue;"></i></label>
 						<input type="text" class="form-control" id="token_mp" name="token_mp"
 							placeholder="Token do Mercado Pago" value="<?php echo $token_mp ?>">
 					</div>
@@ -231,6 +239,8 @@ if (@$configuracoes == 'ocultar') {
 							placeholder="Public Key do Mercado Pago" value="<?php echo $key_mp ?>">
 					</div>
 				</div>
+
+				
 			</div>
 			<div class="row">
 				<div class="col-md-3">

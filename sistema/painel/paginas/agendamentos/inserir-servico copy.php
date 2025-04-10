@@ -1,17 +1,11 @@
 <?php
-@session_start();
-$id_conta = $_SESSION['id_conta'];
 $tabela = 'receber';
 require_once("../../../conexao.php");
 $data_atual = date('Y-m-d');
 
-if (@$_POST['id_usuario'] != "") {
-	$usuario_logado = $_POST['id_usuario'];
-} else {
-	@session_start();
-	$usuario_logado = @$_SESSION['id_usuario'];
-}
-
+@session_start();
+$id_conta = $_SESSION['id_conta'];
+$usuario_logado = @$_SESSION['id_usuario'];
 
 $cliente = $_POST['cliente_agd'];
 $data_pgto = $_POST['data_pgto'];
@@ -23,11 +17,11 @@ $servico = $_POST['servico_agd'];
 $obs = $_POST['obs'];
 $pgto = $_POST['pgto'];
 
+$valor_serv_original = $_POST['valor_serv_agd'];
+
 $valor_serv_restante = $_POST['valor_serv_agd_restante'];
 $pgto_restante = $_POST['pgto_restante'];
 $data_pgto_restante = $_POST['data_pgto_restante'];
-
-$valor_serv_original = $_POST['valor_serv_agd'];
 
 
 $query = $pdo->query("SELECT * FROM receber where referencia = '$id_agd' and id_conta = '$id_conta'");
@@ -42,7 +36,6 @@ if ($valor_serv_restante == "") {
 }
 
 $valor_total_servico = $valor_serv + $valor_serv_restante + $valor_recebido;
-
 
 $query = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -66,6 +59,7 @@ if ($tipo_comissao == 'Porcentagem') {
 	$valor_comissao = $comissao;
 }
 
+
 $query = $pdo->query("SELECT * FROM formas_pgto where nome = '$pgto' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $valor_taxa = $res[0]['taxa'];
@@ -80,7 +74,6 @@ if ($valor_taxa > 0 and strtotime($data_pgto) <=  strtotime($data_atual)) {
 
 
 
-
 $query = $pdo->query("SELECT * FROM formas_pgto where nome = '$pgto_restante' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $valor_taxa = @$res[0]['taxa'];
@@ -92,7 +85,6 @@ if ($valor_taxa > 0 and strtotime($data_pgto_restante) <=  strtotime($data_atual
 		$valor_serv_restante = $valor_serv_restante - $valor_serv_restante * ($valor_taxa / 100);
 	}
 }
-
 
 
 if (strtotime($data_pgto) <=  strtotime($data_atual)) {
@@ -125,9 +117,8 @@ if ($valor_serv_restante > 0) {
 	}
 
 	//lançar o restante
-	$pdo->query("INSERT INTO $tabela SET descricao = '$descricao', tipo = 'Serviço', valor = '$valor_serv_restante', data_lanc = curDate(), data_venc = '$data_pgto_restante', data_pgto = '$data_pgto2_restante', usuario_lanc = '$usuario_logado', usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = '$pago_restante', servico = '$servico', funcionario = '$funcionario', obs = '$obs', pgto = '$pgto_restante', id_conta = '$id_conta'");
+	$pdo->query("INSERT INTO $tabela SET descricao = '$descricao', tipo = 'Serviço', valor = '$valor_serv_restante', data_lanc = curDate(), data_venc = '$data_pgto_restante', data_pgto = '$data_pgto2_restante', usuario_lanc = '$usuario_logado', usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = '$pago_restante', servico = '$servico', funcionario = '$funcionario', obs = '$obs', pgto = '$pgto_restante', id_agenda = '$id_agd', id_conta = '$id_conta'");
 }
-
 
 $query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
@@ -139,19 +130,28 @@ $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $total_cartoes = $res2[0]['cartoes'];
 $telefone = $res2[0]['telefone'];
 $nome_cliente = $res2[0]['nome'];
+$telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
+
+$nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
 
 if ($total_cartoes >= $quantidade_cartoes) {
 	$cartoes = 0;
 } else {
 	$cartoes = $total_cartoes + 1;
+	if ($cartoes == $quantidade_cartoes) {
+		//agendar avisando do cartão filidelidade preenchido
+		$mensagem = '*' . $nome_sistema_maiusculo . '*  %0A %0A';
+		$mensagem .= $texto_fidelidade . '🎁';
+
+		require('../../../../ajax/api-texto.php');
+	}
 }
 
 $data_retorno = date('Y-m-d', strtotime("+$dias_retorno days", strtotime($data_atual)));
 
-
 if ($valor_serv_original != 0) {
 	if ($agendamento_conta == 0) {
-		$pdo->query("INSERT INTO $tabela SET descricao = '$descricao', tipo = 'Serviço', valor = '$valor_serv', data_lanc = curDate(), data_venc = '$data_pgto', data_pgto = '$data_pgto2', usuario_lanc = '$usuario_logado', usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = '$pago', servico = '$servico', funcionario = '$funcionario', obs = '$obs', pgto = '$pgto', id_conta = '$id_conta'");
+		$pdo->query("INSERT INTO $tabela SET descricao = '$descricao', tipo = 'Serviço', valor = '$valor_serv', data_lanc = curDate(), data_venc = '$data_pgto', data_pgto = '$data_pgto2', usuario_lanc = '$usuario_logado', usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = '$pago', servico = '$servico', funcionario = '$funcionario', obs = '$obs', pgto = '$pgto', id_agenda = '$id_agd', id_conta = '$id_conta'");
 	} else {
 		$pdo->query("UPDATE $tabela SET valor = '$novo_valor_servico', data_pgto = curDate(), usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pgto = '$pgto' where referencia = '$id_agd' and id_conta = '$id_conta'");
 	}
@@ -166,7 +166,6 @@ echo 'Salvo com Sucesso';
 
 
 
-$telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
 if ($satisfacao == 'Sim') {
 	//agendar mensagem de retorno
 	$nome_cliente = trim($nome_cliente);
@@ -178,14 +177,11 @@ if ($satisfacao == 'Sim') {
 	$mensagem = '*'.$nome_sistema_maiusculo.'*%0A%0A';
 	$mensagem .= 'Olá *'.$nome_cliente.'*, tudo bem! 😃%0A%0A';	
 	$mensagem .= 'Queremos ouvir você!%0A';
-	$mensagem .= '✅ Como foi seu último serviço de *'.$nome_servico.'* conosco?%0A';
-	$mensagem .= '✅ Você teria alguma sugestão de melhoria?%0A%0A';
+	$mensagem .= '✅Como foi seu último serviço de *'.$nome_servico.'* conosco?%0A';
+	$mensagem .= '✅Você teria alguma sugestão de melhoria?%0A%0A';
 	$mensagem .= 'Você é muito importante pra gente!%0A';
-	$mensagem .= 'Faz um tempo que não vemos você aqui. Conheça nossos pacotes de descontos.%0A%0A';
+	$mensagem .= 'Faz um tempo que não vemos você aqui. Conheça nossos pacotes de desconto.%0A%0A';
 	$mensagem .= '*Promoção Especial apenas hoje!*%0A';
-	$mensagem .= '📆 Acesse e agende: '.$link_agenda.'%0A';
-	
-	
+	$mensagem .= '📆Acesse e agende: '.$link_agenda.'%0A';
 	require('../../../../ajax/api-agendar.php');
-	
 }

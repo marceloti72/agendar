@@ -36,7 +36,6 @@ try {
         ':id_rec' => $id_receber
     ]);
     $historico_uso = $query_hist_uso->fetchAll(PDO::FETCH_ASSOC);
-
     if (count($historico_uso) > 0) {
         $output = '<table class="table table-sm table-striped small mt-2">'; // Tabela para detalhes
         $output .= '<thead><tr><th>Data/Hora</th><th>Serviço</th><th class="text-center">Qtd</th><th>Obs</th></tr></thead>';
