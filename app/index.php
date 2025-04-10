@@ -674,9 +674,10 @@ try {
             <div class="modal-body">
 
                 <div class="text-center btn-inserir-depoimento mb-4">
-                    <a href="/caminho/para/minha_assinatura.php" class="btn btn-outline-secondary btn-minha-assinatura">
-                       <i class="fas fa-user-check"></i> Minha Assinatura Atual
-                    </a>
+
+            <button type="button" id="btnIniciarBuscaAssinatura" class="btn btn-info btn-sm">
+                Ver Assinatura
+            </button>
                     <hr>
                 </div>
 
@@ -890,12 +891,86 @@ try {
                 </div>
                 <div class="modal-footer text-white" style="background-color: #4682B4;">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>                    
-                    <button type="button" class="btn btn-success" id="btnSalvarAssinante2">Assinar</button>
+                    <button type="button" class="btn btn-warning" id="btnSalvarAssinante2">Assinar</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modalPedirTelefone" tabindex="-1" aria-labelledby="modalPedirTelefoneLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm"> 
+        <div class="modal-content">
+            <div class="modal-header text-white" style="background-color: #4682B4;">
+                <h5 class="modal-title" id="modalPedirTelefoneLabel">Buscar Assinatura</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <label for="inputTelefoneBusca" class="form-label">Digite o Telefone:</label>
+                <input type="tel" class="form-control" id="inputTelefoneBusca" placeholder="(XX) XXXXX-XXXX" required>                 
+                 <div class="invalid-feedback">Por favor, informe um telefone válido.</div>
+            </div>
+            <div class="modal-footer text-white" style="background-color: #4682B4;">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-warning" id="btnBuscarPorTelefone">Buscar Detalhes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAssinaturaDetalhes" tabindex="-1" aria-labelledby="modalAssinaturaDetalhesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg"> 
+        <div class="modal-content">
+            <div class="modal-header text-white" style="background-color: #4682B4;">
+                <h5 class="modal-title" id="modalAssinaturaDetalhesLabel">Detalhes da Assinatura</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">               
+                <div id="modalAssinaturaLoading" style="display: none;" class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                    <p>Buscando detalhes...</p>
+                </div>
+                
+                <div id="modalAssinaturaErro" class="alert alert-danger" style="display: none;">
+                    Não foi possível carregar os detalhes da assinatura.
+                </div>
+                
+                <div id="modalAssinaturaConteudo">
+                    <p><strong>Cliente:</strong> <span id="modalAssinaturaClienteNome" class="text-primary"></span></p>
+                    <p><strong>Plano Atual:</strong> <span id="modalAssinaturaPlanoNome" class="fw-bold"></span></p>
+                    <p><strong>Próximo Vencimento:</strong> <span id="modalAssinaturaProximoVenc" class="text-danger"></span></p>
+
+                    <hr>
+                    <h6>Serviços Incluídos e Uso no Ciclo Atual:</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Serviço</th>
+                                    <th class="text-center">Uso Atual</th>
+                                    <th class="text-center">Limite no Ciclo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalAssinaturaServicosBody">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-white" style="background-color: #4682B4;">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>                
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 
 
 
@@ -917,6 +992,7 @@ try {
 
 $('#telefone_rodape').mask('(00) 00000-0000');
 $('#ass_telefone').mask('(00) 00000-0000');
+$('#inputTelefoneBusca').mask('(00) 00000-0000');
 $('#ass_cpf').mask('000.000.000-00', {reverse: true});
 //$('#telefone_compra').mask('(00) 00000-0000');
     // Pega os elementos
