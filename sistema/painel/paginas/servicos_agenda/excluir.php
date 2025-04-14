@@ -26,6 +26,9 @@ $total_estoque = $estoque + $quantidade;
 $pdo->query("UPDATE produtos SET estoque = '$total_estoque' WHERE id = '$produto' and id_conta = '$id_conta'");
 
 
+
 $pdo->query("DELETE from $tabela where id = '$id' and id_conta = '$id_conta'");
+$pdo->query("DELETE from pagar where id_ref = '$id' and pago = 'Não' and id_conta = '$id_conta'");
+
 echo 'Excluído com Sucesso';
  ?>

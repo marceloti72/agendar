@@ -734,6 +734,307 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 
+<div class="modal fade" id="modalAssinaturas">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content text-white" style="background-color: #4682B4;">
+            <div class="modal-header">Planos de Assinaturas</div>
+            <div class="modal-body">
+
+                <div class="text-center btn-inserir-depoimento mb-4">
+
+            <button type="button" id="btnIniciarBuscaAssinatura" class="btn btn-info btn-sm">
+                Ver Assinatura
+            </button>
+                    <hr>
+                </div>
+
+                <div class="row justify-content-center">
+                    <?php
+                    try {
+                        // Busca os planos ativos para a conta atual, ordenados
+                        $query_planos = $pdo->prepare("SELECT * FROM planos WHERE id_conta = :id_conta ORDER BY ordem ASC, id ASC");
+                        $query_planos->execute([':id_conta' => $id_conta]);
+                        $planos = $query_planos->fetchAll(PDO::FETCH_ASSOC);
+
+                        if (count($planos) > 0) {
+                            foreach ($planos as $plano) {
+                                $id_plano_atual = $plano['id'];
+                                $nome_plano = htmlspecialchars($plano['nome']);
+                                $preco_mensal_plano = number_format($plano['preco_mensal'], 2, ',', '.');
+                                $imagem_plano = htmlspecialchars($plano['imagem'] ?: 'default-plano.jpg'); // Imagem padrão
+                                $caminho_imagem_plano = '../images/' . $imagem_plano; // AJUSTE O CAMINHO
+
+                                // Busca os serviços associados a este plano
+                                $query_servicos_plano = $pdo->prepare("
+                                    SELECT ps.quantidade, s.nome
+                                    FROM planos_servicos ps
+                                    JOIN servicos s ON ps.id_servico = s.id
+                                    WHERE ps.id_plano = :id_plano AND ps.id_conta = :id_conta
+                                    ORDER BY s.nome ASC
+                                ");
+                                $query_servicos_plano->execute([':id_plano' => $id_plano_atual, ':id_conta' => $id_conta]);
+                                $servicos_incluidos = $query_servicos_plano->fetchAll(PDO::FETCH_ASSOC);
+
+                                // Determina a classe do botão (exemplo)
+                                $btn_class = 'btn-primary';
+                                if (strtolower($plano['nome']) == 'ouro') $btn_class = 'btn-warning';
+                                if (strtolower($plano['nome']) == 'diamante') $btn_class = 'btn-dark';
+                                if (strtolower($plano['nome']) == 'bronze') $btn_class = 'btn-outline-primary';
+
+
+                    ?>
+                                <div class="col-md-6 col-lg-5 mb-4">
+                            <div class="plano-item card h-100 shadow-sm text-center"> 
+                                <img src="<?php echo $caminho_imagem_plano; ?>"
+                                     class="card-img-top plano-img mt-3 mx-auto d-block" 
+                                     alt="Plano <?php echo $nome_plano; ?>"
+                                     onerror="this.onerror=null; this.src='images/planos/default-plano.jpg';">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title plano-titulo"><?php echo $nome_plano; ?></h5>
+                                    
+                                    <p class="plano-preco">
+                                        <strong>R$ <?php echo $preco_mensal_plano; ?></strong> / mês
+                                    </p>
+
+                                    <?php // Exibe Preço Anual SE existir e for maior que zero
+                                    if (!empty($plano['preco_anual']) && $plano['preco_anual'] > 0):
+                                        $preco_anual_plano = number_format($plano['preco_anual'], 2, ',', '.');
+                                    ?>
+                                        <p class="plano-preco-anual small text-muted mb-3"> 
+                                            ou R$ <?php echo $preco_anual_plano; ?> / ano
+                                            <?php
+                                                // Opcional: Calcular e mostrar economia anual
+                                                $economia = ($plano['preco_mensal'] * 12) - $plano['preco_anual'];
+                                                if ($economia > 0) {
+                                                     echo '<br><span class="text-success font-weight-bold">(Economize R$ ' . number_format($economia, 2, ',', '.') . '!)</span>';
+                                                }
+                                            ?>
+                                        </p>
+                                    <?php else: ?>
+                                        
+                                         <div style="height: 3.5em;" class="mb-3"></div>
+                                    <?php endif; ?>
+                                    
+                                    <ul class="list-unstyled mt-3 mb-4 plano-beneficios text-left"> 
+                                        <?php if (count($servicos_incluidos) > 0): ?>
+                                            <?php foreach ($servicos_incluidos as $servico):
+                                                $qtd_texto = '';
+                                                if ($servico['quantidade'] == 0) { $qtd_texto = 'Ilimitado - '; }
+                                                elseif ($servico['quantidade'] > 1) { $qtd_texto = $servico['quantidade'] . 'x '; }
+                                            ?>
+                                                <li><i class="fas fa-check text-success mr-2"></i><?php echo $qtd_texto . htmlspecialchars($servico['nome']); ?></li>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <li><small>Consulte os benefícios incluídos.</small></li>
+                                        <?php endif; ?>                                     
+                                    </ul>
+                                    
+                                    <button type="button" class="btn btn-lg btn-block <?php echo $btn_class; ?> btn-assinar mt-auto" data-toggle="modal" data-target="#modalAssinante3" data-plano="<?php echo $id_plano_atual; ?>">Assinar <?php echo $nome_plano; ?></button>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                            } // Fim foreach $planos
+                        } else {
+                            echo '<div class="col-12"><p class="text-center text-muted">Nenhum plano de assinatura disponível no momento.</p></div>';
+                        }
+                    } catch (PDOException $e) {
+                         error_log("Erro ao buscar planos/serviços: " . $e->getMessage());
+                         echo '<div class="col-12"><p class="text-center text-danger">Erro ao carregar os planos. Tente novamente mais tarde.</p></div>';
+                    }
+                    ?>
+                </div> </div> 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAssinante3" tabindex="-1" role="dialog" aria-labelledby="modalAssinante3Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+             <form id="form-assinante3" method="post">
+                <div class="modal-header text-white" style="background-color: #4682B4;">
+                    <h5 class="modal-title" id="modalAssinante3Label">Adicionar Assinatura</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="id_assinante" name="id_assinante"> 
+                    <input type="hidden" id="id_cliente_encontrado" name="id_cliente_encontrado"> 
+                    <input type="hidden" name="id_conta" value="<?= $id_conta ?>">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ass_telefone">Telefone / WhatsApp <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                     <input type="text" class="form-control" id="ass_telefone" name="telefone" placeholder="(DDD) Número" required onblur="buscarClientePorTelefone(this.value)">
+                                     <div class="input-group-append">
+                                         <span class="input-group-text" id="telefone-loading" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
+                                         <span class="input-group-text" id="telefone-status"></span>
+                                     </div>
+                                 </div>
+                                 <small id="mensagem-busca-cliente" class="form-text"></small>
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                             <div class="form-group">
+                                 <label for="ass_nome">Nome Completo <span class="text-danger">*</span></label>
+                                 <input type="text" class="form-control" id="ass_nome" name="nome" required>
+                             </div>
+                        </div>
+                    </div>
+
+                     <div class="row">
+                         <div class="col-md-6">
+                             <div class="form-group">
+                                 <label for="ass_cpf">CPF</label>
+                                 <input type="text" class="form-control" id="ass_cpf" name="cpf">
+                             </div>
+                        </div>
+                         <div class="col-md-6">
+                             <div class="form-group">
+                                 <label for="ass_email">Email</label>
+                                 <input type="email" class="form-control" id="ass_email" name="email">
+                             </div>
+                        </div>
+                    </div>
+
+                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ass_plano_freq">Plano e Frequência <span class="text-danger">*</span></label>
+                                <select class="form-control" id="ass_plano_freq" name="plano_freq_selecionado" required>
+                                     <option value="">-- Selecione o Plano e a Frequência --</option>
+                                     <?php
+                                     // Busca os planos disponíveis para o select do modal
+                                    $planos_disponiveis = [];
+                                    try {
+                                        $query_p = $pdo->prepare("SELECT id, nome FROM planos WHERE id_conta = :id_conta ORDER BY nome ASC");
+                                        $query_p->execute([':id_conta' => $id_conta]);
+                                        $planos_disponiveis = $query_p->fetchAll(PDO::FETCH_ASSOC);
+                                    } catch (PDOException $e) {
+                                        error_log("Erro ao buscar planos para modal: " . $e->getMessage());
+                                    }
+                                     if(isset($planos_disponiveis) && count($planos_disponiveis) > 0){
+                                        foreach ($planos_disponiveis as $plano_opt):
+                                            $id_plano_opt = $plano_opt['id'];
+                                            $nome_plano_opt = htmlspecialchars($plano_opt['nome']);
+
+                                            // Busca os preços novamente para garantir que temos ambos aqui
+                                            $query_precos = $pdo->prepare("SELECT preco_mensal, preco_anual FROM planos WHERE id = :id AND id_conta = :id_conta ORDER BY id ASC");
+                                            $query_precos->execute([':id' => $id_plano_opt, ':id_conta' => $id_conta]);
+                                            $precos = $query_precos->fetch(PDO::FETCH_ASSOC);
+
+                                            if ($precos) {
+                                                $preco_m_fmt = number_format($precos['preco_mensal'], 2, ',', '.');
+                                                echo "<option value='{$id_plano_opt}-30'>{$nome_plano_opt} - Mensal (R$ {$preco_m_fmt})</option>";
+
+                                                if (!empty($precos['preco_anual']) && $precos['preco_anual'] > 0) {
+                                                    $preco_a_fmt = number_format($precos['preco_anual'], 2, ',', '.');
+                                                    echo "<option value='{$id_plano_opt}-365'>{$nome_plano_opt} - Anual (R$ {$preco_a_fmt})</option>";
+                                                }
+                                            }
+                                        endforeach;
+                                    } else {
+                                        echo '<option value="">Nenhum plano cadastrado</option>';
+                                    }
+                                     ?>
+                                </select>
+                            </div>
+                        </div>
+                         <!-- <div class="col-md-6">
+                             <div class="form-group">
+                                 <label for="ass_vencimento">Data de Vencimento <span class="text-danger">*</span></label>
+                                 <input type="date" class="form-control" id="ass_vencimento" name="data_vencimento" required>
+                             </div>
+                        </div> -->
+                    </div>
+
+                    <small><div id="mensagem-assinante3" class="mt-2"></div></small>
+                </div>
+                <div class="modal-footer text-white" style="background-color: #4682B4;">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>                    
+                    <button type="button" class="btn btn-warning" id="btnSalvarAssinante3">Assinar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalPedirTelefone" tabindex="-1" aria-labelledby="modalPedirTelefoneLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm"> 
+        <div class="modal-content">
+            <div class="modal-header text-white" style="background-color: #4682B4;">
+                <h5 class="modal-title" id="modalPedirTelefoneLabel">Buscar Assinatura</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <label for="inputTelefoneBusca" class="form-label">Digite o Telefone:</label>
+                <input type="tel" class="form-control" id="inputTelefoneBusca" placeholder="(XX) XXXXX-XXXX" required>                 
+                 <div class="invalid-feedback">Por favor, informe um telefone válido.</div>
+            </div>
+            <div class="modal-footer text-white" style="background-color: #4682B4;">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-warning" id="btnBuscarPorTelefone">Buscar Detalhes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAssinaturaDetalhes" tabindex="-1" aria-labelledby="modalAssinaturaDetalhesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg"> 
+        <div class="modal-content">
+            <div class="modal-header text-white" style="background-color: #4682B4;">
+                <h5 class="modal-title" id="modalAssinaturaDetalhesLabel">Detalhes da Assinatura</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">               
+                <div id="modalAssinaturaLoading" style="display: none;" class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                    <p>Buscando detalhes...</p>
+                </div>
+                
+                <div id="modalAssinaturaErro" class="alert alert-danger" style="display: none;">
+                    Não foi possível carregar os detalhes da assinatura.
+                </div>
+                
+                <div id="modalAssinaturaConteudo">
+                    <p><strong>Cliente:</strong> <span id="modalAssinaturaClienteNome" class="text-primary"></span></p>
+                    <p><strong>Plano Atual:</strong> <span id="modalAssinaturaPlanoNome" class="fw-bold"></span></p>
+                    <p><strong>Próximo Vencimento:</strong> <span id="modalAssinaturaProximoVenc" class="text-danger"></span></p>
+
+                    <hr>
+                    <h6>Serviços Incluídos e Uso no Ciclo Atual:</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Serviço</th>
+                                    <th class="text-center">Uso Atual</th>
+                                    <th class="text-center">Limite no Ciclo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalAssinaturaServicosBody">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-white" style="background-color: #4682B4;">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>                
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 
@@ -741,6 +1042,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 <script type="text/javascript">
+
+$('#btnSalvarAssinante3').on('click', function() {
+    $('#form-assinante3').submit(); // Dispara o evento submit do formulário
+});
   
 $("#form-email").submit(function () {
 

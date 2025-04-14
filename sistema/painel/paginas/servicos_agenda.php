@@ -164,7 +164,7 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 					<span aria-hidden="true" >&times;</span>
 				</button>
 			</div>
-			<form id="form">
+			<form id="form-servico2">
 				<div class="modal-body">
 
 					<div class="row">
@@ -637,4 +637,49 @@ $data_final_mes = $ano_atual."-".$mes_atual."-".$dia_final_mes;
 			}
 		});
 	}
+</script>
+
+
+<script>
+$("#form-servico2").submit(function () {
+		event.preventDefault();
+		
+		
+		var formData = new FormData(this);	
+
+fetch('paginas/servicos_agenda/salvar.php', {
+			method: 'POST',
+			body: formData // Seus dados do formulário
+		})
+		.then(response => response.json())
+		.then(data => {
+			if (data.status === 'success') {
+				Swal.fire({
+					title: 'Sucesso!',
+					text: data.message + (data.detail ? '\n\nDetalhe: ' + data.detail : ''), // Mostra detalhe se houver
+					icon: 'success',
+					confirmButtonText: 'Ok'
+				}).then(() => {
+					// Ação pós-sucesso, ex: recarregar tabela, fechar modal
+					window.location.reload(); // Exemplo simples
+				});
+			} else {
+				Swal.fire({
+					title: 'Erro!',
+					text: data.message + (data.detail ? '\n\nErro Técnico: ' + data.detail : ''), // Mostra detalhe técnico se houver
+					icon: 'error',
+					confirmButtonText: 'Ok'
+				});
+			}
+		})
+		.catch(error => {
+			console.error('Erro na requisição:', error);
+			Swal.fire({
+				title: 'Erro de Conexão!',
+				text: 'Não foi possível concluir a operação. Verifique sua conexão ou contate o suporte.',
+				icon: 'error',
+				confirmButtonText: 'Ok'
+			});
+		});
+	})
 </script>

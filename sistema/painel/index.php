@@ -468,9 +468,9 @@ $plano = $res3['plano'];
 								<?php 
 								if($plano == '2'){
 								?>
-								<li class="<?php echo @$usuarios ?>"><a href="usuarios"><i class="fa fa-angle-right"></i>Usuários</a></li>
-								<li class="<?php echo @$funcionarios ?>"><a href="funcionarios"><i class="fa fa-angle-right"></i>Funcionários</a></li>
 								<li class="<?php echo @$cargos ?>"><a href="cargos"><i class="fa fa-angle-right"></i>Cargos</a></li>
+								<li class="<?php echo @$usuarios ?>"><a href="usuarios"><i class="fa fa-angle-right"></i>Usuários</a></li>
+								<li class="<?php echo @$funcionarios ?>"><a href="funcionarios"><i class="fa fa-angle-right"></i>Funcionários</a></li>								
 								<?php 
 								}
 								
@@ -482,7 +482,7 @@ $plano = $res3['plano'];
 									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"><i class="fa fa-angle-right"></i>Fornecedores</a></li>	
 									
 									<?php 
-									if($id_conta == '0'){?>
+									if($id_conta == '1'){?>
 										<li class="<?php echo @$grupos ?>"><a href="grupos"><i class="fa fa-angle-right"></i>Grupo Acessos</a></li>
 
 										<li class="<?php echo @$acessos ?>"><a href="acessos"><i class="fa fa-angle-right"></i>Acessos</a></li>
@@ -1053,6 +1053,7 @@ $plano = $res3['plano'];
 
 								<li> <a href="" data-toggle="modal" data-target="#modalPerfil"><i class="fa fa-suitcase"></i> Editar Perfil</a> </li> 
 								<li> <a href="" data-toggle="modal" data-target="#assinaturaModal"><i class="fa fa-dollar"></i> Minha Assinatura</a> </li> 
+								<li> <a href="" data-toggle="modal" data-target="#tutoriaisModal"><i class="fa fa-question" style="color: #15b283;"></i> Vídeos Tutoriais</a> </li> 
 								<li> <a href="logout.php"><i class="fa fa-sign-out"></i> Sair</a> </li>
 							</ul>
 						</li>
@@ -2253,6 +2254,57 @@ $plano = $res3['plano'];
 		</div>
 	</div>
 
+	<!-- Modal -->
+    <div class="modal fade" id="tutoriaisModal" tabindex="-1" aria-labelledby="tutoriaisModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-white">
+                    <h5 class="modal-title" id="tutoriaisModalLabel">Vídeos Tutoriais</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Lista de vídeos -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-group">
+                                <li class="list-group-item video-item" data-video-id="ynGq7XzOBrA">Tutorial 1: Configurando o Sistema</li>
+                                <li class="list-group-item video-item" data-video-id="Tiur6MDk0RU">Tutorial 2: Configurando o Site</li>
+
+                                <li class="list-group-item video-item" data-video-id="ejVM_av7KsQ">Tutorial 3: Utilizando a Comanda</li>
+
+								<li class="list-group-item video-item" data-video-id="uJd1G-cFAZc">Tutorial 6: Cadastros</li>
+
+                                <li class="list-group-item video-item" data-video-id="P7s_7ARQpVY">Tutorial 4: Agendamentos e Serviços</li>
+
+                                <li class="list-group-item video-item" data-video-id="3bGNuRtlmAQ">Tutorial 5: Produtos e controle de estoque</li>
+                                
+                                <li class="list-group-item video-item" data-video-id="ynGq7XzOBrA">Tutorial 7: Clube do Assinante</li>
+
+                                <li class="list-group-item video-item" data-video-id="3bGNuRtlmAQ">Tutorial 8: Financeiro</li>
+
+                                <li class="list-group-item video-item" data-video-id="k3-zaTr6OUQ">Tutorial 9: WhatsApp e Campanha de Marketing</li> 
+
+                                <li class="list-group-item video-item" data-video-id="k3-zaTr6OUQ">Tutorial 10: Menu do Profissional</li>
+
+                                <li class="list-group-item video-item" data-video-id="k3-zaTr6OUQ">Tutorial 11: APP</li>
+                                
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Container do vídeo -->
+                            <div id="videoPlayer" class="ratio ratio-16x9">
+                                <iframe src="" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 	<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> -->
 
@@ -2703,5 +2755,47 @@ $plano = $res3['plano'];
 
 	});
 	</script>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const videoItems = document.querySelectorAll('.video-item');
+            const iframe = document.querySelector('#videoPlayer iframe');
+
+            videoItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    // Remove a classe ativa de todos os itens
+                    videoItems.forEach(i => i.classList.remove('active'));
+                    // Adiciona a classe ativa ao item clicado
+                    this.classList.add('active');
+
+                    // Obtém o ID do vídeo
+                    const videoId = this.getAttribute('data-video-id');
+                    // Define a URL do vídeo com autoplay
+                    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                });
+            });
+
+            // Limpa o iframe ao fechar o modal
+            const modal = document.getElementById('tutoriaisModal');
+            modal.addEventListener('hidden.bs.modal', function () {
+                iframe.src = '';
+                videoItems.forEach(i => i.classList.remove('active'));
+            });
+        });
+    </script>
+
+    <!-- Estilos opcionais -->
+    <style>
+        .video-item {
+            cursor: pointer;
+        }
+        .video-item:hover {
+            background-color: #f8f9fa;
+        }
+        .video-item.active {
+            background-color: #e9ecef;
+            font-weight: bold;
+        }
+    </style>
 
 

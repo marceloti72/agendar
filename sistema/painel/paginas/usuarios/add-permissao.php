@@ -6,6 +6,7 @@ require_once("../../../conexao.php");
 $id_usuario = $_POST['idusuario'];
 $id_permissao = $_POST['idpermissao'];
 
+
 $query = $pdo->query("SELECT * FROM usuarios_permissoes where permissao = '$id_permissao' and usuario = '$id_usuario' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);

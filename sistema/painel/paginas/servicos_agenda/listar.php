@@ -191,10 +191,13 @@ for($i=0; $i < $total_reg; $i++){
 		$res2 = $query2->fetch(PDO::FETCH_ASSOC);
 		$data_agenda = @$res2['data'];
 
+		if(empty($data_agenda)){
+			$data_agenda = $data_lanc;
+		}
+
 		$data_agendaF = implode('/', array_reverse(explode('-', $data_agenda)));
+
 		
-
-
 
 		$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario_lanc' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);

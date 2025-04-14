@@ -206,44 +206,47 @@ try {
 
 echo json_encode($response);
 
-if ($api == 'Sim') {
-    $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);   
-    $dataF = implode('/', array_reverse(explode('-', $data_vencimento)));
-    // Link de pagamento
-    $link_pgto = 'https://www.agendar.skysee.com.br/pagar_ass/' . $ult_id_receber;
- 
-    $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
- 
-    $mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
-    $mensagem .= '*Assinatura realizada com sucesso!* 😀%0A%0A';
-    $mensagem .= 'Olá '.$nome.', seja bem-vindo ao nosso *CLUBE DO ASSINANTE* 👑.%0A%0A';    
-    $mensagem .= '*Segue os dados da assinatura:* 📝%0A';
-    $mensagem .= '*Assinante:* ' . $nome . '%0A';
-    $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
-    $mensagem .= '*Valor:* R$ '.$valorF.'%0A';
-    $mensagem .= '*Data de Vencimento:* ' . $dataF . '%0A%0A'; 
-    if($pgto_api == 'Sim'){
-        $mensagem .= '*Link para pagamento:* 🔗%0A'; 
-        $mensagem .= $link_pgto; 
-    }else{
-        $mensagem .= '*Dados para pagamento:*%0A'; 
-        $mensagem .= $dados_pagamento; 
-    } 
-      
- 
-    require('../../../../ajax/api-texto.php');
+if(isset($ult_id_receber)){
 
-      
-    $telefone = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema); 
- 
-    $mensagem = '*Assinatura realizada pelo site!* 👑%0A%0A';       
-    $mensagem .= '*Segue os dados da assinatura:* 📝%0A';
-    $mensagem .= '*Assinante:* ' . $nome . '%0A';
-    $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
-    $mensagem .= '*Valor:* R$ '.$valorF.'%0A';
-    $mensagem .= '*Data de Vencimento:* ' . $dataF . '%0A';   
- 
-    require('../../../../ajax/api-texto.php');
- }
+    if ($api == 'Sim') {
+        $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);   
+        $dataF = implode('/', array_reverse(explode('-', $data_vencimento)));
+        // Link de pagamento
+        $link_pgto = 'https://www.agendar.skysee.com.br/pagar_ass/' . $ult_id_receber;
+    
+        $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
+    
+        $mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
+        $mensagem .= '*Assinatura realizada com sucesso!* 😀%0A%0A';
+        $mensagem .= 'Olá '.$nome.', seja bem-vindo ao nosso *CLUBE DO ASSINANTE* 👑.%0A%0A';    
+        $mensagem .= '*Segue os dados da assinatura:* 📝%0A';
+        $mensagem .= '*Assinante:* ' . $nome . '%0A';
+        $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
+        $mensagem .= '*Valor:* R$ '.$valorF.'%0A';
+        $mensagem .= '*Data de Vencimento:* ' . $dataF . '%0A%0A'; 
+        if($pgto_api == 'Sim'){
+            $mensagem .= '*Link para pagamento:* 🔗%0A'; 
+            $mensagem .= $link_pgto; 
+        }else{
+            $mensagem .= '*Dados para pagamento:*%0A'; 
+            $mensagem .= $dados_pagamento; 
+        } 
+        
+    
+        require('../../../../ajax/api-texto.php');
+
+        
+        $telefone = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema); 
+    
+        $mensagem = '*Assinatura realizada pelo site!* 👑%0A%0A';       
+        $mensagem .= '*Segue os dados da assinatura:* 📝%0A';
+        $mensagem .= '*Assinante:* ' . $nome . '%0A';
+        $mensagem .= '*Plano:* '.$nome_plano.' - '.$nome_freq.'%0A';
+        $mensagem .= '*Valor:* R$ '.$valorF.'%0A';
+        $mensagem .= '*Data de Vencimento:* ' . $dataF . '%0A';   
+    
+        require('../../../../ajax/api-texto.php');
+    }
+}
 
 ?>

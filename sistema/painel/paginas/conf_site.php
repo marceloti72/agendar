@@ -38,20 +38,12 @@ if(@$configuracoes == 'ocultar'){
 					</div>					
 					<div class="row">					
 						
-						<div class="col-md-6">
+						<!-- <div class="col-md-6">
 							<div class="form-group">
 								<label for="exampleInputEmail1">Instagram</label>
 								<input type="text" class="form-control" id="instagram_sistema" name="instagram_sistema" placeholder="Link do Perfil no Instagram" value="<?php echo $instagram_sistema ?>">   
 							</div> 	
-						</div>
-
-					<div class="col-md-6">
-						<div class="form-group">
-								<label for="exampleInputEmail1">Mapa no Site <small>(Url incorporada)</small> <i class="bi bi-map"></i> <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Vá no Google Maps digite seu endereço e coloque aqui o codigo de incorporação, assim o mapa do seu endereço aparecerá no seu site." style="color: blue;"></i></label>
-								<input type="text" class="form-control" id="mapa" name="mapa" placeholder="" value='<?php echo $mapa ?>'>  
-							</div> 	
-						</div>		
-
+						</div> -->					
 
 						
 					</div>
@@ -183,10 +175,20 @@ if(@$configuracoes == 'ocultar'){
 								<label for="exampleInputEmail1">Ou url de Vídeo Sobre (Site)</label>
 								 	<input type="text" class="form-control" id="url_video" name="url_video" value="<?php echo $url_video ?>" placeholder="Url do Youtube Incorporada">    
 							</div> 
-							</div>	
+						</div>	
+
+						<div class="col-md-6">
+						<div class="form-group">
+								<label for="exampleInputEmail1">Mapa no Site <small>(Url incorporada)</small> <i class="bi bi-map"></i> <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Vá no Google Maps digite seu endereço e coloque aqui o codigo de incorporação, assim o mapa do seu endereço aparecerá no seu site." style="color: blue;"></i></label>
+								<input type="text" class="form-control" id="mapa" name="mapa" placeholder="" value='<?php echo $mapa ?>'>  
+							</div> 	
+						</div>		
+
 
 							
 						</div>
+
+						
 
 						<div class="row">
 							<label>Habilitar no Site:</label>

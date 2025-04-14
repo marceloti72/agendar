@@ -24,6 +24,12 @@ if($cargo == "0"){
 	exit();
 }
 
+// if($atendimento == "Não"){
+// 	$ativo = 'Não';
+// }else{
+// 	$ativo = 'Sim';
+// }
+
 //validar email
 $query = $pdo->query("SELECT * from $tabela where email = '$email' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -85,7 +91,7 @@ if(@$_FILES['foto']['name'] != ""){
 
 
 if($id == ""){
-	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, email = :email, cpf = :cpf, senha = '$hash', nivel = '$cargo', data = curDate(), ativo = 'Sim', telefone = :telefone, endereco = :endereco, foto = '$foto', atendimento = '$atendimento', tipo_chave = '$tipo_chave', chave_pix = :chave_pix, intervalo = '$intervalo', comissao = '$comissao', id_conta = '$id_conta'");
+	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, email = :email, cpf = :cpf, senha = '$hash', nivel = '$cargo', data = curDate(), ativo = :ativo, telefone = :telefone, endereco = :endereco, foto = '$foto', atendimento = '$atendimento', tipo_chave = '$tipo_chave', chave_pix = :chave_pix, intervalo = '$intervalo', comissao = '$comissao', id_conta = '$id_conta'");
 
 	$query->bindValue(":nome", "$nome");
 	$query->bindValue(":email", "$email");
@@ -93,6 +99,7 @@ if($id == ""){
 	$query->bindValue(":telefone", "$telefone");
 	$query->bindValue(":endereco", "$endereco");
 	$query->bindValue(":chave_pix", "$chave_pix");
+	$query->bindValue(":ativo", "$ativo");
 	$query->execute();
 
 	$ult_id = $pdo->lastInsertId();

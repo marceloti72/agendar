@@ -228,6 +228,11 @@ try {
         PDO::ATTR_EMULATE_PREPARES => false // Desliga emulação de prepared statements
     ]);
 
+    $query8 = $pdo2->query("SELECT * from config");
+    $res8 = $query8->fetchAll(PDO::FETCH_ASSOC);
+    $token = $res8[0]['token'];
+	$instancia = $res8[0]['instancia'];
+
     // Insere o cliente no segundo banco
     $res3 = $pdo2->prepare("INSERT INTO clientes SET nome = :nome_adm, instituicao = :instituicao, telefone = :telefone, email = :email_adm, valor = :valor, data_pgto = :data_pgto, pago = :pago, ativo = :ativo, servidor = :servidor, banco = :banco, usuario = :usuario, senha = :senha, id_conta = :id_cliente, data_cad = NOW(), plano = :plano, frequencia = :frequencia");
     $res3->bindValue(":id_cliente", $id_conta);

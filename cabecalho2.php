@@ -152,6 +152,75 @@
             
         }
 
+
+        /* Estilos para os Planos DENTRO do Modal de Assinaturas */
+#modalAssinaturas .modal-body {
+  background-color: #f8f9fa;
+}
+
+#modalAssinaturas .plano-item {
+  border: 1px solid #dee2e6;
+  transition: box-shadow .3s ease-in-out;
+}
+#modalAssinaturas .plano-item:hover {
+   box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+/* Estilo para a Imagem do Plano Centralizada */
+#modalAssinaturas .plano-img {
+  width: 80px !important; /* Largura da imagem */
+  height: 80px !important; /* Altura igual à largura */
+  object-fit: contain; /* 'contain' geralmente é melhor para logos, mostra a imagem inteira dentro da área */
+  /* 'cover' preenche a área, mas pode cortar; escolha o melhor para suas imagens */
+  /* As classes 'mx-auto d-block' no HTML cuidam da centralização */
+  border-radius: 5px; /* Opcional: Leve arredondamento */
+}
+
+#modalAssinaturas .plano-titulo {
+  color: #343a40;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Estilo Preço Mensal */
+#modalAssinaturas .plano-preco {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.25rem; /* Menos espaço abaixo */
+}
+
+/* Estilo Preço Anual */
+#modalAssinaturas .plano-preco-anual {
+  /* font-size: 0.9em; */ /* Já usa a classe 'small' do Bootstrap */
+  line-height: 1.3;
+  min-height: 3.5em; /* Altura mínima para alinhar com planos sem preço anual */
+  display: flex; /* Permite alinhar verticalmente */
+  flex-direction: column;
+  justify-content: center;
+}
+
+#modalAssinaturas .plano-beneficios {
+  text-align: left; /* Alinha benefícios à esquerda */
+  padding-left: 15px; /* Pequeno recuo */
+  font-size: 0.9em; /* Fonte um pouco menor para benefícios */
+}
+#modalAssinaturas .plano-beneficios li {
+  margin-bottom: 6px;
+  color: #495057;
+  display: flex;
+  align-items: center;
+}
+#modalAssinaturas .plano-beneficios i {
+   width: 20px;
+   text-align: center;
+}
+
+/* Ajusta botão 'Assinar' */
+#modalAssinaturas .btn-assinar {
+  font-weight: bold;
+}
+
     @media (max-width: 991px) {
         .navbar-collapse {
             background-color: rgb(255, 255, 255);
@@ -313,6 +382,7 @@ try {
           $servicos2 = $config['servicos'];
           $depoimentos2 = $config['depoimentos'];
           $carrossel = $config['carrossel'];
+          $assinaturas2 = $config['assinaturas'];
 
           $horas_confirmacaoF = $minutos_aviso . ':00:00';
           $tel_whatsapp = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
@@ -356,6 +426,12 @@ try {
                 <?php if ($servicos2 == 'Sim') { ?>
                     <li class="nav-item active">
                         <a class="nav-link" href="servicos.php?u=<?php echo $username?>">Serviços</a>
+                    </li>
+                <?php } ?>
+
+                <?php if ($assinaturas2 == 'Sim') { ?>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#modalAssinaturas">Clube do Assinante</a>
                     </li>
                 <?php } ?>
                 <li class="nav-item social-icons active">
