@@ -1,5 +1,5 @@
 <?php
-require_once("../sistema/conexao.php");
+require_once("sistema/conexao2.php");
 @session_start();
 $id_conta = $_SESSION['id_conta'];
 
@@ -16,6 +16,7 @@ $nome = isset($_POST['nome']) ? trim($_POST['nome']) : '';
 $cpf = isset($_POST['cpf']) ? trim($_POST['cpf']) : '';
 $telefone = isset($_POST['telefone']) ? trim($_POST['telefone']) : '';
 $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+$senha = isset($_POST['senha']) ? trim($_POST['senha']) : '';
 $plano_freq_selecionado = isset($_POST['plano_freq_selecionado']) ? trim($_POST['plano_freq_selecionado']) : '';
 $data_vencimento_str = date('Y-m-d');
 
@@ -47,17 +48,34 @@ try {
         $query_upd_cli->bindValue(':nome', $nome); // Permite editar nome/cpf/email do cliente existente
         $query_upd_cli->bindValue(':cpf', $cpf ?: null);
         $query_upd_cli->bindValue(':email', $email ?: null);
-        $query_upd_cli->bindValue(':telefone', $telefone); // Atualiza telefone se mudou
+        $query_upd_cli->bindValue(':telefone', $telefone);         
         $query_upd_cli->bindValue(':id_cliente', $idClienteFinal, PDO::PARAM_INT);
         $query_upd_cli->bindValue(':id_conta', $id_conta_corrente, PDO::PARAM_INT);
         $query_upd_cli->execute();
 
     } else {
         // Cliente não existe, INSERE novo cliente
+        $query = $pdo->prepare("SELECT * FROM clientes WHERE id_conta = :id_conta AND cpf = :cpf");
+        $query->execute([':cpf' => $cpf, ':id_conta' => $id_conta]);
+        $res_cpf = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($res_cpf) > 0) {        
+            $response['message'] = 'Esse CPF já está registrado no sistema.';
+            echo json_encode($response); exit;
+        }
+
+        $query2 = $pdo->prepare("SELECT * FROM clientes WHERE id_conta = :id_conta AND email = :email");
+        $query2->execute([':email' => $email, ':id_conta' => $id_conta]);
+        $res_email = $query2->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($res_email) > 0) {        
+            $response['message'] = 'Esse e-mail já está registrado no sistema.';
+            echo json_encode($response); exit;
+        }
         $query_ins_cli = $pdo->prepare("INSERT INTO clientes (nome, cpf, telefone, email, assinante, id_conta, data_cad) VALUES (:nome, :cpf, :telefone, :email, 'Sim', :id_conta, NOW())");
         $query_ins_cli->bindValue(':nome', $nome);
         $query_ins_cli->bindValue(':cpf', $cpf ?: null);
-        $query_ins_cli->bindValue(':telefone', $telefone); // Salva telefone
+        $query_ins_cli->bindValue(':telefone', $telefone);         
         $query_ins_cli->bindValue(':email', $email ?: null);
         $query_ins_cli->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
         $query_ins_cli->execute();
@@ -78,10 +96,11 @@ try {
     }
 
 
-    $query_ins_ass = $pdo->prepare("INSERT INTO assinantes (id_cliente, id_plano, data_vencimento, id_conta, ativo)
-                                    VALUES (:id_cliente, :id_plano, :data_vencimento, :id_conta, 1)");
+    $query_ins_ass = $pdo->prepare("INSERT INTO assinantes (id_cliente, id_plano, senha, data_vencimento, id_conta, ativo)
+                                    VALUES (:id_cliente, :id_plano, :senha, :data_vencimento, :id_conta, 1)");
     $query_ins_ass->bindValue(':id_cliente', $idClienteFinal, PDO::PARAM_INT); // Link com o cliente criado/encontrado
-    $query_ins_ass->bindValue(':id_plano', $id_plano, PDO::PARAM_INT);
+    $query_ins_ass->bindValue(':id_plano', $id_plano, PDO::PARAM_INT);    
+    $query_ins_ass->bindValue(':senha', $senha);    
     $query_ins_ass->bindValue(':data_vencimento', $data_vencimento);
     $query_ins_ass->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
     $query_ins_ass->execute();
@@ -167,7 +186,7 @@ if ($api == 'Sim') {
    $mensagem .= '*Valor:* R$ '.$valorF.'%0A';
    $mensagem .= '*Data de Vencimento:* ' . $dataF . '%0A';   
 
-   require('../ajax/api-texto.php');
+   require('ajax/api-texto.php');
 
 
    $telefone = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema); 
@@ -180,7 +199,7 @@ if ($api == 'Sim') {
    $mensagem .= '*Valor:* R$ '.$valorF.'%0A';
    $mensagem .= '*Data de Vencimento:* ' . $dataF . '%0A';   
 
-   require('../ajax/api-texto.php');
+   require('ajax/api-texto.php');
 }
 
 

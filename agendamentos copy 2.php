@@ -366,13 +366,11 @@ $dataSelecionadaInicial = $data_atual_iso; // Data de hoje no formato correto
                 <div class="row">
                     <div class="col-md-6 col-lg-3 mb-3">
                        <label for="telefone" class="text-white">WhatsApp:</label>
-                       <input onblur="buscarDadosCliente()" class="form-control form-control-sm" type="text" name="telefone" id="telefone" placeholder="(DDD) Número" required />
-                       
+                       <input onkeyup="buscarNome()" class="form-control form-control-sm" type="text" name="telefone" id="telefone" placeholder="(DDD) Número" required />
                     </div>
                      <div class="col-md-6 col-lg-3 mb-3">
-                        <label for="nome_cliente" class="text-white" id="label_nome_cliente">Nome:</label>
+                        <label for="nome_cliente" class="text-white">Nome:</label>
                         <input class="form-control form-control-sm" type="text" name="nome" id="nome_cliente" placeholder="Seu Nome" required />
-                        
                     </div>
                      <div class="col-md-6 col-lg-3 mb-3">
                         <label for="servico" class="text-white">Serviço:</label>
@@ -656,126 +654,62 @@ function selecionarDataItemPelaData(dataYmd) {
     mudarFuncionario();
 } */
 
-
-function buscarDadosCliente(){ // Renomeada de buscarNome
+// Função para buscar nome e outras ações
+function buscarNome(){
     var tel = $('#telefone').val();
-    var $inputNome = $('#nome_cliente');
-    var $labelNome = $('label[for="nome_cliente"]'); // Pega o label
-    var $spanStatus = $('#status-assinante'); // *** CRIE ESTE SPAN NO HTML ***
-
-    // Limpa status anterior
-     $inputNome.val('');
-     $labelNome.find('#status-assinante').remove(); // Remove span antigo se existir
-     clienteAtualId = 0;
-     clienteEhAssinante = false;
-     // Dispara atualização dos serviços para mostrar preços normais
-     recarregarServicosComStatus(0, false);
-
-    // Não busca nome/cartão/status se telefone for curto
-    if (!tel || tel.replace(/\D/g, '').length < 10) {
-        $("#listar-cartoes").html('');
-        return;
-    }
-
-    // Mostra loading (opcional)
-    // ...
-
-    // Busca Status e Nome do Cliente
-    $.ajax({
-        url: "ajax/buscar_status_assinante.php", // <<< NOVO SCRIPT PHP
-        method: 'POST',
-        data: {telefone: tel},
-        dataType: "json", // Espera JSON
-        success:function(response){
-            if(response && response.success){
-                // Preenche nome e guarda ID
-                 $inputNome.val(response.nome_cliente || '');
-                 clienteAtualId = response.cliente_id || 0;
-                 clienteEhAssinante = response.is_assinante || false;
-
-                 // Mostra status "(Assinante)"
-                 if (clienteEhAssinante) {
-                     $labelNome.append(' <span id="status-assinante" class="text-success small">(Assinante)</span>');
-                 }
-
-                 // Atualiza a lista de serviços com base no status
-                 recarregarServicosComStatus(clienteAtualId, clienteEhAssinante);
-
-                 // Mantém a busca de cartões
-                 listarCartoes(tel);
-
-                  // Lógica de botão editar/novo agendamento (se aplicável aqui)
-                 // ... (seu código split[5] etc., adaptado para 'response' se necessário) ...
-
-            } else {
-                 // Cliente não encontrado ou erro na busca
-                 console.warn("Buscar Status Cliente:", response.message);
-                 clienteAtualId = 0;
-                 clienteEhAssinante = false;
-                 // Limpa status e recarrega serviços com preço normal
-                  $labelNome.find('#status-assinante').remove();
-                  recarregarServicosComStatus(0, false);
-                  $("#listar-cartoes").html(''); // Limpa cartões
-            }
-        },
-        error: function(xhr){
-            console.error("Erro ao buscar status do cliente:", xhr.responseText);
-             clienteAtualId = 0;
-             clienteEhAssinante = false;
-              $labelNome.find('#status-assinante').remove();
-              recarregarServicosComStatus(0, false); // Recarrega serviços normais
-        },
-        complete: function() {
-            // Esconder loading
-        }
-    });
-}
-
-
-
-// *** NOVA FUNÇÃO *** para recarregar o select de serviços
-function recarregarServicosComStatus(clienteId, isAssinante) {
-    var $selectServico = $('#servico');
-    var valorAtual = $selectServico.val(); // Guarda valor selecionado antes de recarregar
-
-     $selectServico.html('<option value="">Carregando Serviços...</option>').prop('disabled', true).trigger('change.select2');
-     // Limpa funcionários e horários pois o serviço/preço pode mudar
-     $('#funcionario').html('<option value="">Selecione um Serviço</option>').val('').trigger('change.select2');
-     $('#listar-horarios').html('<small class="text-white-50">Selecione Serviço e Profissional</small>');
-     $("#nome_func").val('');
-     $("#nome_serv").val('');
-
+    listarCartoes(tel);
 
     $.ajax({
-        url: "ajax/listar_servicos_para_agenda.php", // <<< NOVO SCRIPT PHP
+        url: "ajax/listar-nome.php", // Verifique o caminho
         method: 'POST',
-        data: {
-            cliente_id: clienteId,
-            is_assinante: isAssinante ? 'true' : 'false' // Envia status como string
-        },
-        dataType: "html", // Espera as tags <option>
-        success: function(result) {
-            $selectServico.html(result).prop('disabled', false);
-            // Tenta restaurar a seleção anterior, se ainda válida
-             if (valorAtual && $selectServico.find('option[value="' + valorAtual + '"]').length > 0) {
-                 $selectServico.val(valorAtual);
+        data: {tel: tel},
+        dataType: "text",
+        success:function(result){
+            var split = result.split("*");
+             if(split[0] && split[0] !== ""){
+                 $("#nome_cliente").val(split[0]);
              } else {
-                  $selectServico.val(''); // Seleciona o placeholder
+                 // Opcional: Limpar o nome se não encontrar?
+                 // $("#nome_cliente").val('');
              }
-             $selectServico.trigger('change.select2'); // Atualiza Select2
-             // Chama mudarServico para carregar funcionários se um serviço estiver selecionado
-              if($selectServico.val()){
-                  mudarServico();
-              }
+
+            // Lógica para pré-selecionar Serviço e mostrar botão Editar
+            if(split[5] && split[5] !== ""){
+                 $("#servico").val(parseInt(split[5])).trigger('change'); // Usa trigger('change')
+                 if(document.getElementById("botao_editar")) {
+                     document.getElementById("botao_editar").style.display = "block";
+                 }
+                 if(document.getElementById("botao_salvar")){
+                     $("#botao_salvar").html('<i class="fas fa-calendar-check"></i> Novo Agendamento');
+                 }
+             } else {
+                 if(document.getElementById("botao_editar")) {
+                    document.getElementById("botao_editar").style.display = "none";
+                 }
+                  if(document.getElementById("botao_salvar")){
+                     // Resetar botão apenas se não houver serviço pré-definido?
+                     // $("#botao_salvar").html('<i class="fas fa-calendar-check"></i> Confirmar Agendamento');
+                  }
+             }
+
+            // Pré-selecionar Funcionário (split[2]) - Requer lógica mais cuidadosa
+            // É melhor deixar o usuário selecionar após carregar a lista
+
+             // Atualizar mensagem de exclusão (se o modal for usado a partir daqui)
+             if(split[7] && split[4]){
+                $("#msg-excluir").text('Deseja Realmente excluir esse agendamento feito para o dia ' + split[7] + ' às ' + split[4]);
+             }
+
+             // NÃO chame mudarFuncionario() aqui diretamente, pois listarFuncionarios será chamado
+             // pelo trigger('change') do #servico, e então mudarFuncionario será chamado
+             // quando o usuário selecionar um funcionário.
+
         },
-        error: function(xhr){
-            console.error("Erro ao recarregar serviços:", xhr.responseText);
-             $selectServico.html('<option value="">Erro ao carregar</option>').prop('disabled', false).trigger('change.select2');
-        }
+         error: function(xhr, status, error){
+             console.error("Erro ao buscar nome:", error);
+         }
     });
 }
-
-
 
 // Função para carregar horários E nome do funcionário selecionado
 function mudarFuncionario(){
@@ -844,10 +778,7 @@ function listarFuncionario(){
 // Função chamada ao mudar o serviço
 function mudarServico(){
     listarFuncionarios(); // Carrega os funcionários
-    var serv_id = $("#servico").val();   
-    var nomeServico = $("#servico option:selected").text().split(" - R$")[0]; // Pega só o nome
-    
-    $("#nome_serv").val(nomeServico.trim());
+    var serv_id = $("#servico").val();
      if (!serv_id) {
          $("#nome_serv").val('');
         return;
@@ -1018,12 +949,7 @@ $("#form-agenda").submit(function (event) {
                       showConfirmButton: false,
                       allowOutsideClick: false
                   }).then(() => {
-                        if(clienteEhAssinante == true){
-                            window.location="meus-agendamentos.php?u=<?php echo $username?>";
-                        }else{
-                            window.location="pagamento/"+id_agd+"/100"; // Ajuste o '100' se necessário
-                        }
-                      
+                       window.location="pagamento/"+id_agd+"/100"; // Ajuste o '100' se necessário
                   });
 
             } else {

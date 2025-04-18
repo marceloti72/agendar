@@ -268,7 +268,10 @@
 $(document).ready(function(){
   $('#telefone_rodape').mask('(00) 00000-0000');
   $('#telefone_compra').mask('(00) 00000-0000');
+  $('#inputTelefoneBusca').mask('(00) 00000-0000');
   $('#ass_telefone').mask('(00) 00000-0000');
+  $('#ass_cpf').mask('000.000.000-00');
+
     // Inicializa o Slick Slider
     // $('.slick-services').slick({
     //     dots: true,           // Exibe pontos de navegação
@@ -366,7 +369,7 @@ $(document).ready(function(){
 
 $(document).ready(function() {
     // Listener para os botões "Assinar" dentro do modal
-    $('#modalAssinaturas').on('click', '.btn-assinar', function() {
+    $('#modalAssinaturas2').on('click', '.btn-assinar', function() {
         const planoSelecionado = $(this).data('plano'); // Pega o valor de data-plano (bronze, prata, etc.)
 
         console.log("Plano selecionado:", planoSelecionado);
@@ -380,50 +383,12 @@ $(document).ready(function() {
         alert("Você selecionou o Plano " + planoSelecionado.charAt(0).toUpperCase() + planoSelecionado.slice(1) + "!");
 
         // Fecha o modal após a ação (opcional)
-        $('#modalAssinaturas').modal('hide');
+        $('#modalAssinaturas2').modal('hide');
     });
 });
 
 
-$('#form-assinante3').on('submit', function(e) {    
-  alert('lkjlkjk')
-     e.preventDefault(); // Impede envio normal
-     const form = this;
-     const formData = new FormData(form); // Pega todos os dados, incluindo id_cliente_encontrado
-     const $btnSubmit = $('#btnSalvarAssinante3');
-     const $msgDiv = $('#mensagem-assinante3');
-     
 
-     $btnSubmit.prop('disabled', true).text('Salvando...');
-     $msgDiv.text('').removeClass('text-danger text-success');
-
-     $.ajax({
-        url: 'salvar_assinante.php',
-        type: 'POST',
-        data: formData,
-        dataType: 'json',
-        contentType: false,
-        cache: false,
-        processData: false,
-        success: function(response) {
-             if (response.success) {                
-                 $msgDiv.addClass('text-success').text(response.message);
-                  setTimeout(function() {                    
-                     //$('#modalAssinante2').modal('hide');
-                     window.location="pagamento/pagar_ass/"+response.id_receber;
-                  }, 1500);
-             } else {
-                 $msgDiv.addClass('text-danger').text(response.message);
-                 $btnSubmit.prop('disabled', false).text('Salvar Assinante');
-             }
-         },
-         error: function(xhr) {
-             $msgDiv.addClass('text-danger').text('Erro de comunicação. Verifique o console.');
-             console.error("Erro ao salvar assinante:", xhr.responseText);
-             $btnSubmit.prop('disabled', false).text('Salvar Assinante');
-         }
-     });
-});
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -452,6 +417,7 @@ const servicosTableBody = document.getElementById('modalAssinaturaServicosBody')
 
 // Elementos do Modal de Pedir Telefone
 const inputTelefoneBusca = document.getElementById('inputTelefoneBusca');
+const senha = document.getElementById('senha2');
 const btnBuscarPorTelefone = document.getElementById('btnBuscarPorTelefone');
 
 // Função para formatar data (DD/MM/YYYY)
@@ -485,6 +451,7 @@ if (btnIniciarBusca) {
 if (btnBuscarPorTelefone) {
     btnBuscarPorTelefone.addEventListener('click', function() {
         const telefoneInput = inputTelefoneBusca.value;
+        const senha2 = senha.value;
         const telefoneLimpo = limparTelefone(telefoneInput);
 
         if (telefoneLimpo.length < 10) { // Validação mínima (DDD + 8 ou 9 dígitos)
@@ -511,7 +478,7 @@ if (btnBuscarPorTelefone) {
         // --- Chamada AJAX para buscar os dados USANDO TELEFONE ---
         // Substitua 'caminho/para/buscar_detalhes_assinatura.php' pelo caminho real
         // Enviando telefone como parâmetro GET
-        fetch(`buscar_detalhes_assinatura.php?telefone=${encodeURIComponent(telefoneInput)}`)
+        fetch(`buscar_detalhes_assinatura.php?telefone=${encodeURIComponent(telefoneInput)}&s=${encodeURIComponent(senha2)}`)
             .then(response => {
                 if (!response.ok) {
                     // Tenta ler a resposta de erro mesmo se não for 2xx

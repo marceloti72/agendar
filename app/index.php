@@ -539,7 +539,7 @@ try {
 
             <div class="modal-header text-white" style="background-color: #4682B4;">
                 <h5 class="modal-title" id="modalDepoimentosLabel">Depoimentos dos Clientes</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true" style="padding: 5px;">&times;</span>
                 </button>
             </div>
@@ -591,8 +591,7 @@ try {
         <div class="modal-header text-white" style="background-color: #4682B4;">
           <h5 class="modal-title" id="exampleModalLabel">Inserir Depoimento
                    </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
-            <span aria-hidden="true" style="padding: 5px;">&times;</span>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar">
           </button>
         </div>
         
@@ -635,8 +634,8 @@ try {
           <small><div id="mensagem-comentario2" align="center"></div></small>
         </div>
 
-        <div class="modal-footer">      
-          <button type="submit" class="btn btn-primary">Inserir</button>
+        <div class="modal-footer text-white" style="background-color: #4682B4;">      
+          <button type="submit" class="btn btn-warning">Inserir</button>
         </div>
       </form>
 
@@ -787,11 +786,10 @@ try {
 <div class="modal fade" id="modalAssinante2" tabindex="-1" role="dialog" aria-labelledby="modalAssinante2Label" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-             <form id="form-assinante2" method="post">
-                <div class="modal-header text-white" style="background-color: #4682B4;">
+            <form id="form-assinante2" method="post">
+                <div class="modal-header text-white" style="background-color: #295f41;">
                     <h5 class="modal-title" id="modalAssinante2Label">Adicionar Assinatura</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px;">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar">
                     </button>
                 </div>
                 <div class="modal-body">
@@ -804,46 +802,60 @@ try {
                             <div class="form-group">
                                 <label for="ass_telefone">Telefone / WhatsApp <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                     <input type="text" class="form-control" id="ass_telefone" name="telefone" placeholder="(DDD) Número" required onblur="buscarClientePorTelefone(this.value)">
-                                     <div class="input-group-append">
-                                         <span class="input-group-text" id="telefone-loading" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
-                                         <span class="input-group-text" id="telefone-status"></span>
-                                     </div>
-                                 </div>
-                                 <small id="mensagem-busca-cliente" class="form-text"></small>
+                                    <input type="text" class="form-control" id="ass_telefone" name="telefone" placeholder="(DDD) Número" required onblur="buscarClientePorTelefone(this.value)">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="telefone-loading" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
+                                        <span class="input-group-text" id="telefone-status"></span>
+                                    </div>
+                                </div>
+                                <small id="mensagem-busca-cliente" class="form-text"></small>
                             </div>
                         </div>
-                         <div class="col-md-6">
-                             <div class="form-group">
-                                 <label for="ass_nome">Nome Completo <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" id="ass_nome" name="nome" required>
-                             </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ass_nome">Nome Completo <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="ass_nome" name="nome" required>
+                            </div>
                         </div>
                     </div>
 
-                     <div class="row">
-                         <div class="col-md-6">
-                             <div class="form-group">
-                                 <label for="ass_cpf">CPF</label>
-                                 <input type="text" class="form-control" id="ass_cpf" name="cpf">
-                             </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ass_cpf">CPF</label>
+                                <input type="text" class="form-control" id="ass_cpf" name="cpf">
+                            </div>
                         </div>
-                         <div class="col-md-6">
-                             <div class="form-group">
-                                 <label for="ass_email">Email</label>
-                                 <input type="email" class="form-control" id="ass_email" name="email">
-                             </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ass_email">Email</label>
+                                <input type="email" class="form-control" id="ass_email" name="email">
+                            </div>
                         </div>
                     </div>
 
-                     <div class="row">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ass_senha">Senha</label>
+                                <input type="password" class="form-control" id="ass_senha" name="senha" placeholder="Digite a senha">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ass_confirma_senha">Confirmar Senha</label>
+                                <input type="password" class="form-control" id="ass_confirma_senha" name="confirma_senha" placeholder="Confirme a senha">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="ass_plano_freq">Plano e Frequência <span class="text-danger">*</span></label>
                                 <select class="form-control" id="ass_plano_freq" name="plano_freq_selecionado" required>
-                                     <option value="">-- Selecione o Plano e a Frequência --</option>
-                                     <?php
-                                     // Busca os planos disponíveis para o select do modal
+                                    <option value="">-- Selecione o Plano e a Frequência --</option>
+                                    <?php
                                     $planos_disponiveis = [];
                                     try {
                                         $query_p = $pdo->prepare("SELECT id, nome FROM planos WHERE id_conta = :id_conta ORDER BY nome ASC");
@@ -852,20 +864,16 @@ try {
                                     } catch (PDOException $e) {
                                         error_log("Erro ao buscar planos para modal: " . $e->getMessage());
                                     }
-                                     if(isset($planos_disponiveis) && count($planos_disponiveis) > 0){
+                                    if(isset($planos_disponiveis) && count($planos_disponiveis) > 0){
                                         foreach ($planos_disponiveis as $plano_opt):
                                             $id_plano_opt = $plano_opt['id'];
                                             $nome_plano_opt = htmlspecialchars($plano_opt['nome']);
-
-                                            // Busca os preços novamente para garantir que temos ambos aqui
                                             $query_precos = $pdo->prepare("SELECT preco_mensal, preco_anual FROM planos WHERE id = :id AND id_conta = :id_conta ORDER BY id ASC");
                                             $query_precos->execute([':id' => $id_plano_opt, ':id_conta' => $id_conta]);
                                             $precos = $query_precos->fetch(PDO::FETCH_ASSOC);
-
                                             if ($precos) {
                                                 $preco_m_fmt = number_format($precos['preco_mensal'], 2, ',', '.');
                                                 echo "<option value='{$id_plano_opt}-30'>{$nome_plano_opt} - Mensal (R$ {$preco_m_fmt})</option>";
-
                                                 if (!empty($precos['preco_anual']) && $precos['preco_anual'] > 0) {
                                                     $preco_a_fmt = number_format($precos['preco_anual'], 2, ',', '.');
                                                     echo "<option value='{$id_plano_opt}-365'>{$nome_plano_opt} - Anual (R$ {$preco_a_fmt})</option>";
@@ -875,33 +883,29 @@ try {
                                     } else {
                                         echo '<option value="">Nenhum plano cadastrado</option>';
                                     }
-                                     ?>
+                                    ?>
                                 </select>
                             </div>
                         </div>
-                         <!-- <div class="col-md-6">
-                             <div class="form-group">
-                                 <label for="ass_vencimento">Data de Vencimento <span class="text-danger">*</span></label>
-                                 <input type="date" class="form-control" id="ass_vencimento" name="data_vencimento" required>
-                             </div>
-                        </div> -->
                     </div>
 
                     <small><div id="mensagem-assinante2" class="mt-2"></div></small>
                 </div>
-                <div class="modal-footer text-white" style="background-color: #4682B4;">
+                <div class="modal-footer text-white" style="background-color: #295f41;">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>                    
-                    <button type="button" class="btn btn-warning" id="btnSalvarAssinante2">Assinar</button>
+                    <button type="button" class="btn btn-warning" id="btnSalvarAssinante2" onclick="validarSenhas()">Assinar</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+
+
 <div class="modal fade" id="modalPedirTelefone" tabindex="-1" aria-labelledby="modalPedirTelefoneLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm"> 
         <div class="modal-content">
-            <div class="modal-header text-white" style="background-color: #4682B4;">
+            <div class="modal-header text-white" style="background-color: #295f41;">
                 <h5 class="modal-title" id="modalPedirTelefoneLabel">Buscar Assinatura</h5>
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
             </div>
@@ -909,8 +913,10 @@ try {
                 <label for="inputTelefoneBusca" class="form-label">Digite o Telefone:</label>
                 <input type="tel" class="form-control" id="inputTelefoneBusca" placeholder="(XX) XXXXX-XXXX" required>                 
                  <div class="invalid-feedback">Por favor, informe um telefone válido.</div>
+                 <label for="senha2" class="form-label">Senhe:</label>
+                 <input type="text" class="form-control" id="senha2" required>
             </div>
-            <div class="modal-footer text-white" style="background-color: #4682B4;">
+            <div class="modal-footer text-white" style="background-color: #295f41;">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-warning" id="btnBuscarPorTelefone">Buscar Detalhes</button>
             </div>
@@ -921,7 +927,7 @@ try {
 <div class="modal fade" id="modalAssinaturaDetalhes" tabindex="-1" aria-labelledby="modalAssinaturaDetalhesLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg"> 
         <div class="modal-content">
-            <div class="modal-header text-white" style="background-color: #4682B4;">
+            <div class="modal-header text-white" style="background-color: #295f41;">
                 <h5 class="modal-title" id="modalAssinaturaDetalhesLabel">Detalhes da Assinatura</h5>
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
             </div>
@@ -959,7 +965,7 @@ try {
                     </div>
                 </div>
             </div>
-            <div class="modal-footer text-white" style="background-color: #4682B4;">
+            <div class="modal-footer text-white" style="background-color: #295f41;">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>                
                 
             </div>
@@ -1017,9 +1023,7 @@ window.onclick = function(event) {
   }
 }
 
-$('#btnSalvarAssinante2').on('click', function() {
-    $('#form-assinante2').submit(); // Dispara o evento submit do formulário
-});
+
 
 // Lógica AJAX para o formulário (adaptada do seu exemplo anterior, usando jQuery ainda)
 // Se você NÃO estiver usando jQuery, precisará reescrever esta parte com XMLHttpRequest ou fetch API.
@@ -1227,6 +1231,21 @@ $(document).ready(function() { // Se você já tiver jQuery na página
 });
 
 
+function validarSenhas() {    
+    const senha = document.getElementById('ass_senha').value;
+    const confirmaSenha = document.getElementById('ass_confirma_senha').value;
+    const mensagem = document.getElementById('mensagem-assinante2');
+
+    if (senha && confirmaSenha && senha !== confirmaSenha) {
+        mensagem.innerHTML = '<span class="text-danger">As senhas não coincidem.</span>';
+        return;
+    }
+
+    // If passwords match or are empty, proceed with form submission    
+    $('#form-assinante2').submit();
+}
+
+
 $('#form-assinante2').on('submit', function(e) {    
      e.preventDefault(); // Impede envio normal
      const form = this;
@@ -1264,6 +1283,101 @@ $('#form-assinante2').on('submit', function(e) {
          }
      });
 });
+
+
+// Função para verificar se o telefone existe no banco de clientes e se está associado a um assinante ativo
+function buscarClientePorTelefone(telefone) {
+    // Se o telefone estiver vazio, limpa os campos e habilita o botão
+    if (!telefone) {
+        document.getElementById('mensagem-busca-cliente').innerHTML = '';
+        document.getElementById('id_cliente_encontrado').value = '';
+        document.getElementById('ass_nome').value = '';
+        document.getElementById('ass_cpf').value = '';
+        document.getElementById('ass_email').value = '';
+        document.getElementById('telefone-loading').style.display = 'none';
+        document.getElementById('telefone-status').innerHTML = '';
+        document.getElementById('btnSalvarAssinante2').disabled = false;
+        return;
+    }
+
+    // Exibe o ícone de carregamento
+    document.getElementById('telefone-loading').style.display = 'inline-block';
+    document.getElementById('mensagem-busca-cliente').innerHTML = '';
+    document.getElementById('telefone-status').innerHTML = '';
+
+    // Faz a requisição AJAX para verificar o cliente e o status de assinante
+    fetch('verificar_telefone.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'telefone=' + encodeURIComponent(telefone) + '&id_conta=<?= $id_conta ?>'
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Oculta o ícone de carregamento
+        document.getElementById('telefone-loading').style.display = 'none';
+
+        // Se houver erro na requisição
+        if (data.error) {
+            document.getElementById('mensagem-busca-cliente').innerHTML = '<span class="text-danger">' + data.error + '</span>';
+            document.getElementById('id_cliente_encontrado').value = '';
+            document.getElementById('ass_nome').value = '';
+            document.getElementById('ass_cpf').value = '';
+            document.getElementById('ass_email').value = '';
+            document.getElementById('telefone-status').innerHTML = '<i class="fas fa-times text-danger"></i>';
+            document.getElementById('btnSalvarAssinante2').disabled = false;
+            document.getElementById('ass_telefone').focus();
+            return;
+        }
+
+        // Se o cliente for encontrado
+        if (data.cliente) {
+            // Se o cliente já for um assinante ativo, bloqueia o formulário
+            if (data.is_assinante) {
+                document.getElementById('mensagem-busca-cliente').innerHTML = '<span class="text-danger">Erro: Este telefone já está associado a um assinante ativo. Insira outro número.</span>';
+                document.getElementById('id_cliente_encontrado').value = '';
+                document.getElementById('ass_nome').value = '';
+                document.getElementById('ass_cpf').value = '';
+                document.getElementById('ass_email').value = '';
+                document.getElementById('telefone-status').innerHTML = '<i class="fas fa-times text-danger"></i>';
+                document.getElementById('btnSalvarAssinante2').disabled = true;
+                document.getElementById('ass_telefone').focus();
+            } else {
+                // Cliente encontrado, mas não é assinante: permite prosseguir
+                document.getElementById('id_cliente_encontrado').value = data.cliente.id;
+                document.getElementById('ass_nome').value = data.cliente.nome || '';
+                document.getElementById('ass_cpf').value = data.cliente.cpf || '';
+                document.getElementById('ass_email').value = data.cliente.email || '';
+                document.getElementById('mensagem-busca-cliente').innerHTML = '<span class="text-success">Cliente encontrado.</span>';
+                document.getElementById('telefone-status').innerHTML = '<i class="fas fa-check text-success"></i>';
+                document.getElementById('btnSalvarAssinante2').disabled = false;
+            }
+        } else {
+            // Nenhum cliente encontrado: permite prosseguir
+            document.getElementById('id_cliente_encontrado').value = '';
+            document.getElementById('ass_nome').value = '';
+            document.getElementById('ass_cpf').value = '';
+            document.getElementById('ass_email').value = '';
+            document.getElementById('mensagem-busca-cliente').innerHTML = '<span class="text-info">Nenhum cliente encontrado com este telefone.</span>';
+            document.getElementById('telefone-status').innerHTML = '<i class="fas fa-check text-success"></i>';
+            document.getElementById('btnSalvarAssinante2').disabled = false;
+        }
+    })
+    .catch(error => {
+        // Em caso de erro na requisição
+        document.getElementById('telefone-loading').style.display = 'none';
+        document.getElementById('mensagem-busca-cliente').innerHTML = '<span class="text-danger">Erro ao verificar telefone.</span>';
+        document.getElementById('id_cliente_encontrado').value = '';
+        document.getElementById('ass_nome').value = '';
+        document.getElementById('ass_cpf').value = '';
+        document.getElementById('ass_email').value = '';
+        document.getElementById('telefone-status').innerHTML = '<i class="fas fa-times text-danger"></i>';
+        document.getElementById('btnSalvarAssinante2').disabled = false;
+        document.getElementById('ass_telefone').focus();
+        console.error('Erro:', error);
+    });
+}
 </script>
 </body>
 </html>

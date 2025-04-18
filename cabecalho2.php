@@ -167,7 +167,7 @@
 }
 
 /* Estilo para a Imagem do Plano Centralizada */
-#modalAssinaturas .plano-img {
+#modalAssinaturas2 .plano-img {
   width: 80px !important; /* Largura da imagem */
   height: 80px !important; /* Altura igual à largura */
   object-fit: contain; /* 'contain' geralmente é melhor para logos, mostra a imagem inteira dentro da área */
@@ -431,7 +431,7 @@ try {
 
                 <?php if ($assinaturas2 == 'Sim') { ?>
                     <li class="nav-item active">
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#modalAssinaturas">Clube do Assinante</a>
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#modalAssinaturas2">Clube do Assinante</a>
                     </li>
                 <?php } ?>
                 <li class="nav-item social-icons active">

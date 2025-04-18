@@ -402,40 +402,40 @@ try {
                  // Lógica para ENVIAR MENSAGEM de cartão fidelidade preenchido
                  global $nome_sistema, $texto_fidelidade; // Assumindo que existem
                  if(isset($nome_sistema, $texto_fidelidade)){
-                    //  try {
-                    //      $telefone_api = '55' . preg_replace('/[ ()-]+/', '', $telefone_cliente);
-                    //      $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
-                    //      $mensagem_fidelidade = '*' . $nome_sistema_maiusculo . '* %0A %0A';
-                    //      $mensagem_fidelidade .= $texto_fidelidade . '🎁';
+                     try {
+                         $telefone_api = '55' . preg_replace('/[ ()-]+/', '', $telefone_cliente);
+                         $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
+                         $mensagem_fidelidade = '*' . $nome_sistema_maiusculo . '* %0A %0A';
+                         $mensagem_fidelidade .= $texto_fidelidade . '🎁';
 
-					// 	 $mensagem = str_replace("%0A", "\n", $mensagem); 
+						 $mensagem = str_replace("%0A", "\n", $mensagem_fidelidade); 
 
-					// 	$curl = curl_init();
-					// 	curl_setopt_array($curl, array(
-					// 	CURLOPT_URL => 'https://chatbot.menuia.com/api/create-message',
-					// 	CURLOPT_RETURNTRANSFER => true,
-					// 	CURLOPT_ENCODING => '',
-					// 	CURLOPT_MAXREDIRS => 10,
-					// 	CURLOPT_TIMEOUT => 0,
-					// 	CURLOPT_FOLLOWLOCATION => true,
-					// 	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-					// 	CURLOPT_CUSTOMREQUEST => 'POST',
-					// 	CURLOPT_POSTFIELDS => array(
-					// 	'appkey' => $instancia,
-					// 	'authkey' => $token,
-					// 	'to' => $telefone_api,      
-					// 	'message' => $mensagem_fidelidade,
-					// 	),
-					// 	));
+						$curl = curl_init();
+						curl_setopt_array($curl, array(
+						CURLOPT_URL => 'https://chatbot.menuia.com/api/create-message',
+						CURLOPT_RETURNTRANSFER => true,
+						CURLOPT_ENCODING => '',
+						CURLOPT_MAXREDIRS => 10,
+						CURLOPT_TIMEOUT => 0,
+						CURLOPT_FOLLOWLOCATION => true,
+						CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+						CURLOPT_CUSTOMREQUEST => 'POST',
+						CURLOPT_POSTFIELDS => array(
+						'appkey' => $instancia,
+						'authkey' => $token,
+						'to' => $telefone_api,      
+						'message' => $mensagem,
+						),
+						));
 						
-					// 	$response = curl_exec($curl);
-					// 	curl_close($curl);
-					// 	$response = json_decode($response, true);
+						$response = curl_exec($curl);
+						curl_close($curl);
+						$response = json_decode($response, true);
                          
-                    //      error_log("[CONCLUIR AGD {$id_agd}] Tentaria enviar msg fidelidade para {$telefone_api}");
-                    //  } catch(Exception $apiErr){
-                    //       error_log("[CONCLUIR AGD {$id_agd}] Erro ao tentar enviar msg fidelidade: ".$apiErr->getMessage());
-                    //  }
+                         error_log("[CONCLUIR AGD {$id_agd}] Tentaria enviar msg fidelidade para {$telefone_api}");
+                     } catch(Exception $apiErr){
+                          error_log("[CONCLUIR AGD {$id_agd}] Erro ao tentar enviar msg fidelidade: ".$apiErr->getMessage());
+                     }
                  }
              }
          }
@@ -455,60 +455,61 @@ try {
 
 
     // --- 7. Lógica de Mensagem de Satisfação (Opcional) ---
-    // global $satisfacao, $url, $username, $nome_sistema; // Assumindo que existem
-    // if (isset($satisfacao) && $satisfacao == 'Sim' && !empty($telefone_cliente) && isset($url, $username, $nome_sistema)) {
-    //     try {
-    //         $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone_cliente);
-    //         $nome_cliente_trim = trim($nome_cliente_final);
-    //         $link_agenda = $url . 'agendar/agendamentos?u=' . $username;
-    //         $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
-    //         $data_mensagem_agendada = $data_retorno_calculada . ' 08:00:00'; // Agenda para 8h da data de retorno
+    global $satisfacao, $url, $username, $nome_sistema; // Assumindo que existem
+    if (isset($satisfacao) && $satisfacao == 'Sim' && !empty($telefone_cliente) && isset($url, $username, $nome_sistema)) {
+        try {
+            $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone_cliente);
+            $nome_cliente_trim = trim($nome_cliente_final);
+            $link_agenda = $url . 'agendar/agendamentos?u=' . $username;
+            $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
+            $data_mensagem_agendada = $data_retorno_calculada . ' 08:00:00'; // Agenda para 8h da data de retorno
 
-    //         $mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
-    //         $mensagem .= 'Olá *' . $nome_cliente_trim . '*, tudo bem! 😃%0A%0A';
-    //         $mensagem .= 'Queremos ouvir você!%0A';
-    //         $mensagem .= '✅Como foi seu último serviço de *' . $nome_servico . '* conosco?%0A';
-    //         $mensagem .= '✅Você teria alguma sugestão de melhoria?%0A%0A';
-    //         $mensagem .= 'Você é muito importante pra gente!%0A';   
-    //         $mensagem .= '📆Acesse e agende: ' . $link_agenda . '%0A';
+            $mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
+            $mensagem .= 'Olá *' . $nome_cliente_trim . '*, tudo bem! 😃%0A%0A';
+            $mensagem .= 'Queremos ouvir você!%0A';
+            $mensagem .= '✅Como foi seu último serviço de *' . $nome_servico . '* conosco?%0A';
+            $mensagem .= '✅Você teria alguma sugestão de melhoria?%0A%0A';
+            $mensagem .= 'Você é muito importante pra gente!%0A';   
+            $mensagem .= '📆Acesse e agende: ' . $link_agenda . '%0A';
 
-	// 		require('../../../../ajax/api-texto.php');
+			
+            $data_mensagem_obj = new DateTime($data_mensagem_agendada);
+			$data_mensagem_obj->modify("-$antAgendamento hours");
+			$data_mensagem = $data_mensagem_obj->format('Y-m-d H:i:s');
 
-    //         // $data_mensagem_obj = new DateTime($data_mensagem);
-	// 		// $data_mensagem_obj->modify("-$antAgendamento hours");
-	// 		// $data_mensagem = $data_mensagem_obj->format('Y-m-d H:i:s');
+            $mensagem = str_replace("%0A", "\n", $mensagem);
 		
-	// 	    // $curl = curl_init();
-	// 		// curl_setopt_array($curl, array(
-	// 		// 	CURLOPT_URL => 'https://chatbot.menuia.com/api/create-message',
-	// 		// 	CURLOPT_RETURNTRANSFER => true,
-	// 		// 	CURLOPT_ENCODING => '',
-	// 		// 	CURLOPT_MAXREDIRS => 10,
-	// 		// 	CURLOPT_TIMEOUT => 0,
-	// 		// 	CURLOPT_FOLLOWLOCATION => true,
-	// 		// 	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-	// 		// 	CURLOPT_CUSTOMREQUEST => 'POST',
-	// 		// 	CURLOPT_POSTFIELDS => array(
-	// 		// 	'appkey' => $instancia,
-	// 		// 	'authkey' => $token,
-	// 		// 	'to' => $telefone,
-	// 		// 	'message' => $mensagem,        
-	// 		// 	'agendamento' => $data_mensagem
-	// 		// 	),
-	// 		// ));
+		    $curl = curl_init();
+			curl_setopt_array($curl, array(
+				CURLOPT_URL => 'https://chatbot.menuia.com/api/create-message',
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => '',
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 0,
+				CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => 'POST',
+				CURLOPT_POSTFIELDS => array(
+				'appkey' => $instancia,
+				'authkey' => $token,
+				'to' => $telefone,
+				'message' => $mensagem,        
+				'agendamento' => $data_mensagem
+				),
+			));
 			
-	// 		// $response = curl_exec($curl);  
+			$response = curl_exec($curl);  
 			
-	// 		// curl_close($curl);
-	// 		// $response = json_decode($response, true);		
-	// 		// $hash = $response['id'];
+			curl_close($curl);
+			$response = json_decode($response, true);		
+			//$hash = $response['id'];
 
-    //         error_log("[CONCLUIR AGD {$id_agd}] Tentaria agendar msg satisfação para {$telefone_api_sat} em {$data_mensagem_agendada}");
+            error_log("[CONCLUIR AGD {$id_agd}] Tentaria agendar msg satisfação para {$telefone} em {$data_mensagem_agendada}");
 
-    //     } catch(Exception $apiErrSat){
-    //         error_log("[CONCLUIR AGD {$id_agd}] Erro ao tentar agendar msg satisfação: ".$apiErrSat->getMessage());
-    //     }
-    // }
+        } catch(Exception $apiErrSat){
+            error_log("[CONCLUIR AGD {$id_agd}] Erro ao tentar agendar msg satisfação: ".$apiErrSat->getMessage());
+        }
+    }
 
     // --- Commit Transaction ---
     $pdo->commit();

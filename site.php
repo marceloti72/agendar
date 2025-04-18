@@ -672,10 +672,10 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="modal fade" id="modalComentario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header text-white" style="background-color: #2d7c45;">
           <h5 class="modal-title" id="exampleModalLabel">Inserir Depoimento
                    </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -723,7 +723,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <small><div id="mensagem-comentario" align="center"></div></small>
         </div>
 
-        <div class="modal-footer">      
+        <div class="modal-footer text-white" style="background-color: #2d7c45;">      
           <button type="submit" class="btn btn-primary">Inserir</button>
         </div>
       </form>
@@ -734,7 +734,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 
-<div class="modal fade" id="modalAssinaturas">
+<div class="modal fade" id="modalAssinaturas2">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content text-white" style="background-color: #4682B4;">
             <div class="modal-header">Planos de Assinaturas</div>
@@ -762,7 +762,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 $nome_plano = htmlspecialchars($plano['nome']);
                                 $preco_mensal_plano = number_format($plano['preco_mensal'], 2, ',', '.');
                                 $imagem_plano = htmlspecialchars($plano['imagem'] ?: 'default-plano.jpg'); // Imagem padrão
-                                $caminho_imagem_plano = '../images/' . $imagem_plano; // AJUSTE O CAMINHO
+                                $caminho_imagem_plano = 'images/' . $imagem_plano; // AJUSTE O CAMINHO
 
                                 // Busca os serviços associados a este plano
                                 $query_servicos_plano = $pdo->prepare("
@@ -854,11 +854,11 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="modal fade" id="modalAssinante3" tabindex="-1" role="dialog" aria-labelledby="modalAssinante3Label" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-             <form id="form-assinante3" method="post">
-                <div class="modal-header text-white" style="background-color: #4682B4;">
+            <form id="form-assinante3" method="post">
+                <div class="modal-header text-white" style="background-color: #2d7c45;">
                     <h5 class="modal-title" id="modalAssinante3Label">Adicionar Assinatura</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px;">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -871,46 +871,60 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="form-group">
                                 <label for="ass_telefone">Telefone / WhatsApp <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                     <input type="text" class="form-control" id="ass_telefone" name="telefone" placeholder="(DDD) Número" required onblur="buscarClientePorTelefone(this.value)">
-                                     <div class="input-group-append">
-                                         <span class="input-group-text" id="telefone-loading" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
-                                         <span class="input-group-text" id="telefone-status"></span>
-                                     </div>
-                                 </div>
-                                 <small id="mensagem-busca-cliente" class="form-text"></small>
+                                    <input type="text" class="form-control" id="ass_telefone" name="telefone" placeholder="(DDD) Número" required onblur="buscarClientePorTelefone2(this.value)">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="telefone-loading" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
+                                        <span class="input-group-text" id="telefone-status"></span>
+                                    </div>
+                                </div>
+                                <small id="mensagem-busca-cliente" class="form-text"></small>
                             </div>
                         </div>
-                         <div class="col-md-6">
-                             <div class="form-group">
-                                 <label for="ass_nome">Nome Completo <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" id="ass_nome" name="nome" required>
-                             </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ass_nome">Nome Completo <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="ass_nome" name="nome" required>
+                            </div>
                         </div>
                     </div>
 
-                     <div class="row">
-                         <div class="col-md-6">
-                             <div class="form-group">
-                                 <label for="ass_cpf">CPF</label>
-                                 <input type="text" class="form-control" id="ass_cpf" name="cpf">
-                             </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ass_cpf">CPF</label>
+                                <input type="text" class="form-control" id="ass_cpf" name="cpf">
+                            </div>
                         </div>
-                         <div class="col-md-6">
-                             <div class="form-group">
-                                 <label for="ass_email">Email</label>
-                                 <input type="email" class="form-control" id="ass_email" name="email">
-                             </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ass_email">Email</label>
+                                <input type="email" class="form-control" id="ass_email" name="email">
+                            </div>
                         </div>
                     </div>
 
-                     <div class="row">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ass_senha">Senha</label>
+                                <input type="password" class="form-control" id="ass_senha" name="senha" placeholder="Digite a senha">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ass_confirma_senha">Confirmar Senha</label>
+                                <input type="password" class="form-control" id="ass_confirma_senha" name="confirma_senha" placeholder="Confirme a senha">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="ass_plano_freq">Plano e Frequência <span class="text-danger">*</span></label>
                                 <select class="form-control" id="ass_plano_freq" name="plano_freq_selecionado" required>
-                                     <option value="">-- Selecione o Plano e a Frequência --</option>
-                                     <?php
-                                     // Busca os planos disponíveis para o select do modal
+                                    <option value="">-- Selecione o Plano e a Frequência --</option>
+                                    <?php
                                     $planos_disponiveis = [];
                                     try {
                                         $query_p = $pdo->prepare("SELECT id, nome FROM planos WHERE id_conta = :id_conta ORDER BY nome ASC");
@@ -919,20 +933,16 @@ document.addEventListener('DOMContentLoaded', function() {
                                     } catch (PDOException $e) {
                                         error_log("Erro ao buscar planos para modal: " . $e->getMessage());
                                     }
-                                     if(isset($planos_disponiveis) && count($planos_disponiveis) > 0){
+                                    if(isset($planos_disponiveis) && count($planos_disponiveis) > 0){
                                         foreach ($planos_disponiveis as $plano_opt):
                                             $id_plano_opt = $plano_opt['id'];
                                             $nome_plano_opt = htmlspecialchars($plano_opt['nome']);
-
-                                            // Busca os preços novamente para garantir que temos ambos aqui
                                             $query_precos = $pdo->prepare("SELECT preco_mensal, preco_anual FROM planos WHERE id = :id AND id_conta = :id_conta ORDER BY id ASC");
                                             $query_precos->execute([':id' => $id_plano_opt, ':id_conta' => $id_conta]);
                                             $precos = $query_precos->fetch(PDO::FETCH_ASSOC);
-
                                             if ($precos) {
                                                 $preco_m_fmt = number_format($precos['preco_mensal'], 2, ',', '.');
                                                 echo "<option value='{$id_plano_opt}-30'>{$nome_plano_opt} - Mensal (R$ {$preco_m_fmt})</option>";
-
                                                 if (!empty($precos['preco_anual']) && $precos['preco_anual'] > 0) {
                                                     $preco_a_fmt = number_format($precos['preco_anual'], 2, ',', '.');
                                                     echo "<option value='{$id_plano_opt}-365'>{$nome_plano_opt} - Anual (R$ {$preco_a_fmt})</option>";
@@ -942,33 +952,28 @@ document.addEventListener('DOMContentLoaded', function() {
                                     } else {
                                         echo '<option value="">Nenhum plano cadastrado</option>';
                                     }
-                                     ?>
+                                    ?>
                                 </select>
                             </div>
                         </div>
-                         <!-- <div class="col-md-6">
-                             <div class="form-group">
-                                 <label for="ass_vencimento">Data de Vencimento <span class="text-danger">*</span></label>
-                                 <input type="date" class="form-control" id="ass_vencimento" name="data_vencimento" required>
-                             </div>
-                        </div> -->
                     </div>
 
                     <small><div id="mensagem-assinante3" class="mt-2"></div></small>
                 </div>
-                <div class="modal-footer text-white" style="background-color: #4682B4;">
+                <div class="modal-footer text-white" style="background-color: #2d7c45;">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>                    
-                    <button type="button" class="btn btn-warning" id="btnSalvarAssinante3">Assinar</button>
+                    <button type="button" class="btn btn-warning" id="btnSalvarAssinante3" onclick="validarSenhas2()">Assinar</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+
 <div class="modal fade" id="modalPedirTelefone" tabindex="-1" aria-labelledby="modalPedirTelefoneLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm"> 
         <div class="modal-content">
-            <div class="modal-header text-white" style="background-color: #4682B4;">
+            <div class="modal-header text-white" style="background-color: #2d7c45;">
                 <h5 class="modal-title" id="modalPedirTelefoneLabel">Buscar Assinatura</h5>
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
             </div>
@@ -976,8 +981,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 <label for="inputTelefoneBusca" class="form-label">Digite o Telefone:</label>
                 <input type="tel" class="form-control" id="inputTelefoneBusca" placeholder="(XX) XXXXX-XXXX" required>                 
                  <div class="invalid-feedback">Por favor, informe um telefone válido.</div>
+                 <label for="senha2" class="form-label">Senha:</label>
+                 <input type="text" class="form-control" id="senha2" required>
             </div>
-            <div class="modal-footer text-white" style="background-color: #4682B4;">
+            <div class="modal-footer text-white" style="background-color: #2d7c45;">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-warning" id="btnBuscarPorTelefone">Buscar Detalhes</button>
             </div>
@@ -988,7 +995,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="modal fade" id="modalAssinaturaDetalhes" tabindex="-1" aria-labelledby="modalAssinaturaDetalhesLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg"> 
         <div class="modal-content">
-            <div class="modal-header text-white" style="background-color: #4682B4;">
+            <div class="modal-header text-white" style="background-color: #2d7c45;">
                 <h5 class="modal-title" id="modalAssinaturaDetalhesLabel">Detalhes da Assinatura</h5>
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
             </div>
@@ -1026,7 +1033,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             </div>
-            <div class="modal-footer text-white" style="background-color: #4682B4;">
+            <div class="modal-footer text-white" style="background-color: #2d7c45;">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>                
                 
             </div>
@@ -1043,9 +1050,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script type="text/javascript">
 
-$('#btnSalvarAssinante3').on('click', function() {
-    $('#form-assinante3').submit(); // Dispara o evento submit do formulário
-});
+// $('#btnSalvarAssinante3').on('click', function() {
+//     $('#form-assinante3').submit(); // Dispara o evento submit do formulário
+// });
   
 $("#form-email").submit(function () {
 
@@ -1153,6 +1160,161 @@ $("#form").submit(function () {
 
     });
 
+});
+
+
+
+
+
+// Função para verificar se o telefone existe no banco de clientes e se está associado a um assinante ativo
+function buscarClientePorTelefone2(telefone) {
+  
+    // Se o telefone estiver vazio, limpa os campos e habilita o botão
+    if (!telefone) {
+        document.getElementById('mensagem-busca-cliente').innerHTML = '';
+        document.getElementById('id_cliente_encontrado').value = '';
+        document.getElementById('ass_nome').value = '';
+        document.getElementById('ass_cpf').value = '';
+        document.getElementById('ass_email').value = '';
+        document.getElementById('telefone-loading').style.display = 'none';
+        document.getElementById('telefone-status').innerHTML = '';
+        document.getElementById('btnSalvarAssinante3').disabled = false;
+        return;
+    }
+
+    // Exibe o ícone de carregamento
+    document.getElementById('telefone-loading').style.display = 'inline-block';
+    document.getElementById('mensagem-busca-cliente').innerHTML = '';
+    document.getElementById('telefone-status').innerHTML = '';
+
+    // Faz a requisição AJAX para verificar o cliente e o status de assinante
+    fetch('verificar_telefone.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'telefone=' + encodeURIComponent(telefone) + '&id_conta=<?= $id_conta ?>'
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Oculta o ícone de carregamento
+        document.getElementById('telefone-loading').style.display = 'none';
+
+        // Se houver erro na requisição
+        if (data.error) {
+            document.getElementById('mensagem-busca-cliente').innerHTML = '<span class="text-danger">' + data.error + '</span>';
+            document.getElementById('id_cliente_encontrado').value = '';
+            document.getElementById('ass_nome').value = '';
+            document.getElementById('ass_cpf').value = '';
+            document.getElementById('ass_email').value = '';
+            document.getElementById('telefone-status').innerHTML = '<i class="fas fa-times text-danger"></i>';
+            document.getElementById('btnSalvarAssinante3').disabled = false;
+            document.getElementById('ass_telefone').focus();
+            return;
+        }
+
+        // Se o cliente for encontrado
+        if (data.cliente) {
+            // Se o cliente já for um assinante ativo, bloqueia o formulário
+            if (data.is_assinante) {
+                document.getElementById('mensagem-busca-cliente').innerHTML = '<span class="text-danger">Erro: Este telefone já está associado a um assinante ativo. Insira outro número.</span>';
+                document.getElementById('id_cliente_encontrado').value = '';
+                document.getElementById('ass_nome').value = '';
+                document.getElementById('ass_cpf').value = '';
+                document.getElementById('ass_email').value = '';
+                document.getElementById('telefone-status').innerHTML = '<i class="fas fa-times text-danger"></i>';
+                document.getElementById('btnSalvarAssinante3').disabled = true;
+                document.getElementById('ass_telefone').focus();
+            } else {
+                // Cliente encontrado, mas não é assinante: permite prosseguir
+                document.getElementById('id_cliente_encontrado').value = data.cliente.id;
+                document.getElementById('ass_nome').value = data.cliente.nome || '';
+                document.getElementById('ass_cpf').value = data.cliente.cpf || '';
+                document.getElementById('ass_email').value = data.cliente.email || '';
+                document.getElementById('mensagem-busca-cliente').innerHTML = '<span class="text-success">Cliente encontrado.</span>';
+                document.getElementById('telefone-status').innerHTML = '<i class="fas fa-check text-success"></i>';
+                document.getElementById('btnSalvarAssinante3').disabled = false;
+            }
+        } else {
+            // Nenhum cliente encontrado: permite prosseguir
+            document.getElementById('id_cliente_encontrado').value = '';
+            document.getElementById('ass_nome').value = '';
+            document.getElementById('ass_cpf').value = '';
+            document.getElementById('ass_email').value = '';
+            document.getElementById('mensagem-busca-cliente').innerHTML = '<span class="text-info">Nenhum cliente encontrado com este telefone.</span>';
+            document.getElementById('telefone-status').innerHTML = '<i class="fas fa-check text-success"></i>';
+            document.getElementById('btnSalvarAssinante3').disabled = false;
+        }
+    })
+    .catch(error => {
+        // Em caso de erro na requisição
+        document.getElementById('telefone-loading').style.display = 'none';
+        document.getElementById('mensagem-busca-cliente').innerHTML = '<span class="text-danger">Erro ao verificar telefone.</span>';
+        document.getElementById('id_cliente_encontrado').value = '';
+        document.getElementById('ass_nome').value = '';
+        document.getElementById('ass_cpf').value = '';
+        document.getElementById('ass_email').value = '';
+        document.getElementById('telefone-status').innerHTML = '<i class="fas fa-times text-danger"></i>';
+        document.getElementById('btnSalvarAssinante3').disabled = false;
+        document.getElementById('ass_telefone').focus();
+        console.error('Erro:', error);
+    });
+}
+
+
+function validarSenhas2() {    
+    const senha = document.getElementById('ass_senha').value;
+    const confirmaSenha = document.getElementById('ass_confirma_senha').value;
+    const mensagem = document.getElementById('mensagem-assinante3');
+
+    if (senha && confirmaSenha && senha !== confirmaSenha) {
+        mensagem.innerHTML = '<span class="text-danger">As senhas não coincidem.</span>';
+        return;
+    }
+
+    // If passwords match or are empty, proceed with form submission    
+    $('#form-assinante3').submit();
+}
+
+
+$('#form-assinante3').on('submit', function(e) {    
+  
+     e.preventDefault(); // Impede envio normal
+     const form = this;
+     const formData = new FormData(form); // Pega todos os dados, incluindo id_cliente_encontrado
+     const $btnSubmit = $('#btnSalvarAssinante3');
+     const $msgDiv = $('#mensagem-assinante3');
+     
+
+     $btnSubmit.prop('disabled', true).text('Salvando...');
+     $msgDiv.text('').removeClass('text-danger text-success');
+
+     $.ajax({
+        url: 'salvar_assinante.php',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(response) {
+             if (response.success) {                
+                 $msgDiv.addClass('text-success').text(response.message);
+                  setTimeout(function() {                    
+                     //$('#modalAssinante2').modal('hide');
+                     window.location="pagamento/pagar_ass/"+response.id_receber;
+                  }, 1500);
+             } else {
+                 $msgDiv.addClass('text-danger').text(response.message);
+                 $btnSubmit.prop('disabled', false).text('Salvar Assinante');
+             }
+         },
+         error: function(xhr) {
+             $msgDiv.addClass('text-danger').text('Erro de comunicação. Verifique o console.');
+             console.error("Erro ao salvar assinante:", xhr.responseText);
+             $btnSubmit.prop('disabled', false).text('Salvar Assinante');
+         }
+     });
 });
 
 

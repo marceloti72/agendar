@@ -76,7 +76,7 @@ if(isset($_GET['id'])){
     }       
 }
 
-?>🚀
+?>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-R39PP1R46W"></script>
 <script>
@@ -87,7 +87,7 @@ if(isset($_GET['id'])){
   gtag('config', 'G-R39PP1R46W');
 </script>
 
-<body class="sub_page">
+<body class="sub_page" style="background-color:rgb(224, 224, 224);">
   <div class="hero_area">         
       <nav class="navbar navbar-expand-lg navbar-dark" id="cabecalho" style="background-color: #483D8B;">
         <a class="navbar-brand" href="#">AGENDAR - Gestão de Serviços</a>

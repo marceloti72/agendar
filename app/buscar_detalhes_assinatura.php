@@ -27,6 +27,11 @@ if (empty($telefone_input)) {
     $response['message'] = 'Número de telefone não fornecido.';
     echo json_encode($response); exit;
 }
+$senha_input = isset($_GET['s']) ? trim($_GET['s']) : '';
+if (empty($senha_input)) {
+    $response['message'] = 'Senha não informada!';
+    echo json_encode($response); exit;
+}
 
 // ** CRUCIAL: Limpa o telefone para bater com o formato do seu BD **
 // Este exemplo remove tudo exceto dígitos. Adapte se seu BD armazena com máscara!
@@ -62,7 +67,7 @@ try {
     // --- O restante do script continua como antes, usando o $cliente_id encontrado ---
 
     // 2. Buscar assinatura ATIVA do cliente
-    $query_ass = $pdo->prepare("SELECT a.id, a.id_plano, p.nome as nome_plano
+    $query_ass = $pdo->prepare("SELECT a.id, a.id_plano, a.senha, p.nome as nome_plano
                                 FROM assinantes a
                                 JOIN planos p ON a.id_plano = p.id
                                 WHERE a.id_cliente = :id_cliente
@@ -76,6 +81,11 @@ try {
         $response['success'] = true;
         $response['message'] = 'Cliente localizado, mas não possui assinatura ativa.';
         $response['plano_nome'] = 'Nenhum';
+        echo json_encode($response); exit;
+    }
+    
+    if ($assinante_info['senha'] != $senha_input) {        
+        $response['message'] = 'Cliente localizado, mas a senha esta incorreta.';
         echo json_encode($response); exit;
     }
 

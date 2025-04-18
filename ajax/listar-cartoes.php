@@ -27,13 +27,13 @@ for($i=1; $i<=$quantidade_cartoes; $i++){
 
 <div class="col-md-1 col-2" align="center">
 
-<i class="fas fa-gem fa-2x" width="100%" style="filter: grayscale(<?php echo $valor ?>); filter: opacity(<?php echo $opacity ?>)"></i>
+<img src="images/favicon.png" width="100%" style="filter: grayscale(<?php echo $valor ?>); filter: opacity(<?php echo $opacity ?>)"></i>
 </div>
 <?php } ?>
 </div>
 
 <br>
-<div align="center"><span>&#x1F48E;</span><small><small> Você possui <?php echo $cartoes ?> de <?php echo $quantidade_cartoes ?> cartões Fidelidade</small></small></div>
+<div align="center"><small><small> Você possui <?php echo $cartoes ?> de <?php echo $quantidade_cartoes ?> cartões Fidelidade</small></small></div>
 
 
 <?php } ?>

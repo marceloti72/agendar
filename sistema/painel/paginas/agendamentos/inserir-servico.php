@@ -416,8 +416,8 @@ try {
 
 
     // --- 6. Atualiza Status do Agendamento e Dados do Cliente ---
-    $query_upd_agd = $pdo->prepare("UPDATE agendamentos SET status = 'Concluído' where id = :id_agd and id_conta = :id_conta");
-    $query_upd_agd->execute([':id_agd' => $id_agd, ':id_conta' => $id_conta_corrente]);
+    $query_upd_agd = $pdo->prepare("UPDATE agendamentos SET status = 'Concluído', valor_pago = :valor_pago where id = :id_agd and id_conta = :id_conta");
+    $query_upd_agd->execute(['valor_pago' => $valor_serv_postado, ':id_agd' => $id_agd, ':id_conta' => $id_conta_corrente]);
     error_log("[CONCLUIR AGD {$id_agd}] Status do agendamento atualizado para 'Concluído'.");
 
     // Atualização Cliente (Cartões, Data Retorno)
@@ -448,10 +448,10 @@ try {
                      try {
                          $telefone_api = '55' . preg_replace('/[ ()-]+/', '', $telefone_cliente);
                          $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
-                         $mensagem_fidelidade = '*' . $nome_sistema_maiusculo . '* %0A %0A';
+                         $mensagem_fidelidade = '*' . $nome_sistema_maiusculo . '*%0A%0A';
                          $mensagem_fidelidade .= $texto_fidelidade . '🎁';
 
-						 $mensagem = str_replace("%0A", "\n", $mensagem); 
+						 $mensagem = str_replace("%0A", "\n", $mensagem_fidelidade); 
 
 						$curl = curl_init();
 						curl_setopt_array($curl, array(
@@ -467,7 +467,7 @@ try {
 						'appkey' => $instancia,
 						'authkey' => $token,
 						'to' => $telefone_api,      
-						'message' => $mensagem_fidelidade,
+						'message' => $mensagem,
 						),
 						));
 						
@@ -515,38 +515,39 @@ try {
             $mensagem .= 'Você é muito importante pra gente!%0A';   
             $mensagem .= '📆Acesse e agende: ' . $link_agenda . '%0A';
 
-			require('../../../../ajax/api-texto.php');
+			//require('../../../../ajax/api-texto.php');
 
-            // $data_mensagem_obj = new DateTime($data_mensagem);
-			// $data_mensagem_obj->modify("-$antAgendamento hours");
-			// $data_mensagem = $data_mensagem_obj->format('Y-m-d H:i:s');
+            $data_mensagem_obj = new DateTime($data_mensagem_agendada);
+			$data_mensagem_obj->modify("-$antAgendamento hours");
+			$data_mensagem = $data_mensagem_obj->format('Y-m-d H:i:s');
+            $mensagem = str_replace("%0A", "\n", $mensagem);
 		
-		    // $curl = curl_init();
-			// curl_setopt_array($curl, array(
-			// 	CURLOPT_URL => 'https://chatbot.menuia.com/api/create-message',
-			// 	CURLOPT_RETURNTRANSFER => true,
-			// 	CURLOPT_ENCODING => '',
-			// 	CURLOPT_MAXREDIRS => 10,
-			// 	CURLOPT_TIMEOUT => 0,
-			// 	CURLOPT_FOLLOWLOCATION => true,
-			// 	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			// 	CURLOPT_CUSTOMREQUEST => 'POST',
-			// 	CURLOPT_POSTFIELDS => array(
-			// 	'appkey' => $instancia,
-			// 	'authkey' => $token,
-			// 	'to' => $telefone,
-			// 	'message' => $mensagem,        
-			// 	'agendamento' => $data_mensagem
-			// 	),
-			// ));
+		    $curl = curl_init();
+			curl_setopt_array($curl, array(
+				CURLOPT_URL => 'https://chatbot.menuia.com/api/create-message',
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => '',
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 0,
+				CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => 'POST',
+				CURLOPT_POSTFIELDS => array(
+				'appkey' => $instancia,
+				'authkey' => $token,
+				'to' => $telefone,
+				'message' => $mensagem,        
+				'agendamento' => $data_mensagem
+				),
+			));
 			
-			// $response = curl_exec($curl);  
+			$response = curl_exec($curl);  
 			
-			// curl_close($curl);
-			// $response = json_decode($response, true);		
-			// $hash = $response['id'];
+			curl_close($curl);
+			$response = json_decode($response, true);		
+			$hash = $response['id'];
 
-            error_log("[CONCLUIR AGD {$id_agd}] Tentaria agendar msg satisfação para {$telefone_api_sat} em {$data_mensagem_agendada}");
+            error_log("[CONCLUIR AGD {$id_agd}] Tentaria agendar msg satisfação para {$telefone} em {$data_mensagem_agendada}");
 
         } catch(Exception $apiErrSat){
             error_log("[CONCLUIR AGD {$id_agd}] Erro ao tentar agendar msg satisfação: ".$apiErrSat->getMessage());

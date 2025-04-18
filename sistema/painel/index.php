@@ -2276,9 +2276,9 @@ $plano = $res3['plano'];
 
                                 <li class="list-group-item video-item" data-video-id="P7s_7ARQpVY">Tutorial 4: Agendamentos e Serviços</li>
 
-                                <li class="list-group-item video-item" data-video-id="3bGNuRtlmAQ">Tutorial 5: Produtos e controle de estoque</li>
+                                <li class="list-group-item video-item" data-video-id="UApt6WNUvVs">Tutorial 5: Produtos e controle de estoque</li>
                                 
-                                <li class="list-group-item video-item" data-video-id="ynGq7XzOBrA">Tutorial 7: Clube do Assinante</li>
+                                <li class="list-group-item video-item" data-video-id="Yth8P51HsEE">Tutorial 7: Clube do Assinante</li>
 
                                 <li class="list-group-item video-item" data-video-id="3bGNuRtlmAQ">Tutorial 8: Financeiro</li>
 

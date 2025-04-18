@@ -219,6 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Elementos do Modal de Pedir Telefone
     const inputTelefoneBusca = document.getElementById('inputTelefoneBusca');
+    const senha = document.getElementById('senha2');
     const btnBuscarPorTelefone = document.getElementById('btnBuscarPorTelefone');
 
     // Função para formatar data (DD/MM/YYYY)
@@ -252,6 +253,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (btnBuscarPorTelefone) {
         btnBuscarPorTelefone.addEventListener('click', function() {
             const telefoneInput = inputTelefoneBusca.value;
+            const senha2 = senha.value;
             const telefoneLimpo = limparTelefone(telefoneInput);
 
             if (telefoneLimpo.length < 10) { // Validação mínima (DDD + 8 ou 9 dígitos)
@@ -278,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // --- Chamada AJAX para buscar os dados USANDO TELEFONE ---
             // Substitua 'caminho/para/buscar_detalhes_assinatura.php' pelo caminho real
             // Enviando telefone como parâmetro GET
-            fetch(`buscar_detalhes_assinatura.php?telefone=${encodeURIComponent(telefoneInput)}`)
+            fetch(`buscar_detalhes_assinatura.php?telefone=${encodeURIComponent(telefoneInput)}&s=${encodeURIComponent(senha2)}`)
                 .then(response => {
                     if (!response.ok) {
                         // Tenta ler a resposta de erro mesmo se não for 2xx
@@ -344,6 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
+    
     // Adiciona listener para o botão "Trocar Plano" (dentro do modal de detalhes)
     // if (btnTrocarPlano) {
     //     btnTrocarPlano.addEventListener('click', function() {
