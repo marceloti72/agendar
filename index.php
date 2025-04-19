@@ -27,8 +27,63 @@ require_once("cabecalho.php");?>
 </section>
 </div>
 
+<section id="sessao-1">
+    <main class="container">
+        <h2>Alguns vídeos das funcionalidades do nosso APP</h2>
+        <br><br>
+        <div class="row" style="gap: 40px; justify-content: center;">
+            <div class="col-md-2 col-sm-4 col-6 px-0">
+                <div class="img-box">
+                    <p class="video-title">Agendamentos</p>
+                    <video class="box_img" controls autoplay muted preload="metadata" loop>
+                        <source src="images/app_agendar.mp4" type="video/mp4">
+                        Seu navegador não suporta o elemento de vídeo.
+                    </video>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4 col-6 px-0">
+                <div class="img-box">
+                    <p class="video-title">Agendamentos</p>
+                    <video class="box_img" controls autoplay muted preload="metadata" loop>
+                        <source src="images/app_agendar.mp4" type="video/mp4">
+                        Seu navegador não suporta o elemento de vídeo.
+                    </video>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4 col-6 px-0">
+                <div class="img-box">
+                    <p class="video-title">Agendamentos</p>
+                    <video class="box_img" controls autoplay muted preload="metadata" loop>
+                        <source src="images/app_agendar.mp4" type="video/mp4">
+                        Seu navegador não suporta o elemento de vídeo.
+                    </video>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4 col-6 px-0">
+                <div class="img-box">
+                    <p class="video-title">Agendamentos</p>
+                    <video class="box_img" controls autoplay muted preload="metadata" loop>
+                        <source src="images/app_agendar.mp4" type="video/mp4">
+                        Seu navegador não suporta o elemento de vídeo.
+                    </video>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4 col-6 px-0">
+                <div class="img-box">
+                    <p class="video-title">Agendamentos</p>
+                    <video class="box_img" controls autoplay muted preload="metadata" loop>
+                        <source src="images/app_agendar.mp4" type="video/mp4">
+                        Seu navegador não suporta o elemento de vídeo.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </main>
+</section><br><br><br>   
 
-<section id="sessao-1">      
+
+
+<section id="sessao-2">      
 
     
     <main class="container">

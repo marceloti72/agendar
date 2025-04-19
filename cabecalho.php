@@ -268,6 +268,66 @@ if(isset($_GET['id'])){
           box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
         }
 
+
+        /* Centraliza o conteúdo da seção */
+        #sessao-1 {
+            text-align: center;
+        }
+
+        #sessao-1 h2 {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        /* Estiliza o contêiner de cada vídeo */
+        .img-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Estiliza o título acima do vídeo */
+        .video-title {
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Estiliza o vídeo */
+        .box_img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Opcional: sombra suave */
+        }
+
+        /* Remove margens padrão da row */
+        .row {
+            margin: 0;
+        }
+
+        /* Ajuste para telas menores */
+        @media (max-width: 768px) {
+            .img-box {
+                margin-bottom: 20px; /* Espaçamento vertical entre vídeos empilhados */
+            }
+
+            .col-6 {
+                display: flex;
+                justify-content: center; /* Centraliza as colunas em celulares */
+            }
+
+            .video-title {
+                font-size: 0.9rem; /* Ajusta o tamanho do texto em celulares */
+            }
+        }
+
+              
+
         
         @media (max-width: 767px) {
           /* Estilos para telas com largura máxima de 767px (comum em celulares) */
@@ -437,6 +497,7 @@ if(isset($_GET['id'])){
     .scroll-down {
         bottom: 20px;
     }
+    
 }
 
 /* Ajustes para telas muito pequenas (ex.: smartphones em modo retrato) */
