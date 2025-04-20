@@ -15,12 +15,18 @@ $response = [
 ];
 
 // Verifica sessão
-$id_conta_corrente = isset($_SESSION['id_conta']) ? filter_var($_SESSION['id_conta'], FILTER_VALIDATE_INT) : null;
-if ($id_conta_corrente === null) {
-    $response['message'] = 'Sessão inválida.';
+// $id_conta_corrente = isset($_SESSION['id_conta']) ? filter_var($_SESSION['id_conta'], FILTER_VALIDATE_INT) : null;
+// if ($id_conta_corrente === null) {
+//     $response['message'] = 'Sessão inválida.';
+//     echo json_encode($response); exit;
+// }
+
+// Pega e valida TELEFONE da URL (?telefone=...)
+$id_conta_corrente = isset($_GET['id_conta']) ? trim($_GET['id_conta']) : '';
+if (empty($id_conta_corrente)) {
+    $response['message'] = 'Id_conta não fornecido.';
     echo json_encode($response); exit;
 }
-
 // Pega e valida TELEFONE da URL (?telefone=...)
 $telefone_input = isset($_GET['telefone']) ? trim($_GET['telefone']) : '';
 if (empty($telefone_input)) {
