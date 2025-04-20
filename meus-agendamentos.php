@@ -1,6 +1,11 @@
 <?php 
 session_start();
-$telefone = $_SESSION['telefone_user'];
+if(!empty($_SESSION['telefone_user'])){
+	$telefone = $_SESSION['telefone_user'];
+}else{
+	$telefone = @$_POST['telefone_user'];
+}
+
 $id_conta = @$_SESSION['id_conta'];
 require_once("cabecalho2.php");
 $data_atual = date('Y-m-d');
@@ -11,7 +16,7 @@ if ($telefone == '') {
     echo '
     <form method="POST" action="">
         <label for="telefone">Por favor, insira seu telefone:</label>
-        <input type="text" id="telefone" name="telefone" required>
+        <input type="text" id="telefone" name="telefone_user" required>
         <button type="submit">Enviar</button>
     </form>';
 }else {
@@ -232,7 +237,7 @@ $obs = str_replace('"', "**", $obs);
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#telefone').mask('(00) 00000-0000');
-		
+
 		var tel = "<?=$telefone?>";
 		listarCartoes(tel)
 	});
