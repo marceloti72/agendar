@@ -4,6 +4,7 @@ if(!empty($_SESSION['telefone_user'])){
 	$telefone = $_SESSION['telefone_user'];
 }else{
 	$telefone = @$_POST['telefone_user'];
+	$_SESSION['telefone_user'] = $telefone;
 }
 
 $id_conta = @$_SESSION['id_conta'];
