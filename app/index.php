@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <?php 
+@session_start();
     // Validação do username
     if (isset($_GET['u'])) {
         $username = filter_var($_GET['u'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
