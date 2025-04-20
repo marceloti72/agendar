@@ -1,21 +1,34 @@
 <?php 
 session_start();
-$telefone = $_SESSION['telefone'];
+$telefone = $_SESSION['telefone_user'];
 $id_conta = @$_SESSION['id_conta'];
 require_once("cabecalho2.php");
 $data_atual = date('Y-m-d');
 
 
-//echo $_SESSION['telefone'].'tel';
-if($telefone == ''){
-	echo "<script>window.alert('Você precisa inserir seu Telefone')</script>";
-	echo "<script>window.location='agendamentos.php'</script>";
-
+if ($telefone == '') {
+    // Exibe um formulário para o usuário inserir o telefone
+    echo '
+    <form method="POST" action="">
+        <label for="telefone">Por favor, insira seu telefone:</label>
+        <input type="text" id="telefone" name="telefone" required>
+        <button type="submit">Enviar</button>
+    </form>';
+}else {
+	$query = $pdo->prepare("SELECT * FROM clientes WHERE telefone = :telefone AND id_conta = :id_conta");
+	$query->execute(['telefone' => $telefone, 'id_conta' => $id_conta]);
+	$res = $query->fetchAll(PDO::FETCH_ASSOC);
+	
+	if (count($res) > 0) {
+		$id_cliente = $res[0]['id'];
+		// Continue com sua lógica
+	} else {
+		echo "<script>window.alert('Nenhum cliente encontrado com este telefone.')</script>";
+		echo "<script>window.location='agendamentos.php'</script>";
+	}
 }
 
-$query = $pdo->query("SELECT * FROM clientes where telefone = '$telefone' and id_conta = '$id_conta' ");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$id_cliente = $res[0]['id'];
+
 
 ?>
 <style type="text/css">
@@ -211,10 +224,15 @@ $obs = str_replace('"', "**", $obs);
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+  
+
 
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		$('#telefone').mask('(00) 00000-0000');
+		
 		var tel = "<?=$telefone?>";
 		listarCartoes(tel)
 	});

@@ -15,6 +15,8 @@ $telefone_busca = isset($_POST['telefone']) ? $_POST['telefone'] : '';
 
 if (empty($telefone_busca)) {
      $response['message'] = 'Telefone não fornecido.'; echo json_encode($response); exit;
+}else{
+    $_SESSION['telefone_user'] = $telefone_busca;
 }
 
 try {
