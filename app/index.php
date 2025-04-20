@@ -257,7 +257,7 @@ try {
           $porc_servico = htmlspecialchars($config['porc_servico']);
           $pgto_api = htmlspecialchars($config['pgto_api']);
           $api = htmlspecialchars($config['api']);
-          $id_conta = htmlspecialchars($config['id']);
+          $id_conta = $config['id'];
           $agendamentos2 = $config['agendamentos'];
           $produtos2 = $config['produtos'];
           $servicos2 = $config['servicos'];
