@@ -1,5 +1,5 @@
 <?php
-//require_once("../sistema/conexao.php"); // Ajuste o caminho
+require_once("../sistema/conexao.php"); // Ajuste o caminho
 @session_start();
 
 header('Content-Type: application/json');
