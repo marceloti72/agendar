@@ -146,8 +146,12 @@ $obs = str_replace('"', "**", $obs);
 
       <small><a href="#" onclick="excluir('<?php echo $id ?>', '<?php echo $nome_cliente ?>', '<?php echo $dataF ?>', '<?php echo $horaF ?>', '<?php echo $nome_serv ?>', '<?php echo $nome_func ?>')"><i class="fa fa-trash text-danger" aria-hidden="true"></i> </a></small>     
     </div>
-    <p class="mb-1"><small><b>Profissional:</b> <?php echo $nome_func ?></small></p>
-    <small><b>Serviço:</b> <?php echo $nome_serv ?> <b>Valor:</b> R$ <?php echo $valor_serv ?></small>
+	<div class="d-flex w-100 justify-content-between">
+        <p class="mb-1"><small><b>Profissional:</b> <?php echo $nome_func ?></small></p>
+	</div>
+	<div class="d-flex w-100 justify-content-between">
+        <small><b>Serviço:</b> <?php echo $nome_serv ?> <b>Valor:</b> R$ <?php echo $valor_serv ?></small>
+	</div>
   </div>
  
 </div>

@@ -43,18 +43,18 @@ require_once("cabecalho.php");?>
             </div>
             <div class="col-md-2 col-sm-4 col-6 px-0">
                 <div class="img-box">
-                    <p class="video-title">Agendamentos</p>
+                    <p class="video-title">Encaixe</p>
                     <video class="box_img" controls autoplay muted preload="metadata" loop>
-                        <source src="images/app_agendar.mp4" type="video/mp4">
+                        <source src="images/encaixe.mp4" type="video/mp4">
                         Seu navegador não suporta o elemento de vídeo.
                     </video>
                 </div>
             </div>
             <div class="col-md-2 col-sm-4 col-6 px-0">
                 <div class="img-box">
-                    <p class="video-title">Agendamentos</p>
+                    <p class="video-title">Venda de Produtos</p>
                     <video class="box_img" controls autoplay muted preload="metadata" loop>
-                        <source src="images/app_agendar.mp4" type="video/mp4">
+                        <source src="images/produtos.mp4" type="video/mp4">
                         Seu navegador não suporta o elemento de vídeo.
                     </video>
                 </div>
