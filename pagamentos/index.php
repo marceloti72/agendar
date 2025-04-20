@@ -120,7 +120,7 @@ $sobrenome = $_REQUEST["sobrenome"];
             <h1 class="h3 mb-3 font-weight-normal">Obrigado!</h1>
             <img class="mb-4" src="<?= $url; ?>pagamentos/assets/check_ok.png" alt="" width="120" height="120">
             <br>
-            <h5><?= $MSG_APOS_PAGAMENTO; ?></h5>
+            <h5>Recebemos seu pagamento!<br>Seu agendamento foi realizado com sucesso.</h5>
             <br>
             Código do pagamento: <?php echo $_GET["id"]; ?>
         </div>
@@ -285,10 +285,10 @@ $sobrenome = $_REQUEST["sobrenome"];
                         $("#form-pago").slideDown("fast");
                         if (redi.trim() == "Sim") {
                             setTimeout(() => {
-                                //window.location = "../meus-agendamentos.php";
-                                //$("#btn_form").click();
+                                window.location = "../meus-agendamentos.php?&u="+'<?= $username ?>';
+                                $("#btn_form").click();
 
-                                window.location = "pagamento_aprovado.php?id_agd="+<?= $_GET["id_agd"]; ?>+"&id_conta="+<?= $id_conta;?>+"&u="+'<?= $username ?>';
+                                // window.location = "pagamento_aprovado.php?id_agd="+<?= $_GET["id_agd"]; ?>+"&id_conta="+<?= $id_conta;?>+"&u="+'<?= $username ?>';
                             }, 6000);
                         }
                     } else {
