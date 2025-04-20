@@ -286,7 +286,7 @@ $sobrenome = $_REQUEST["sobrenome"];
                         if (redi.trim() == "Sim") {
                             setTimeout(() => {
                                 window.location = "../meus-agendamentos.php?u="+'<?= $username ?>';
-                                $("#btn_form").click();
+                                //$("#btn_form").click();
 
                                 // window.location = "pagamento_aprovado.php?id_agd="+<?= $_GET["id_agd"]; ?>+"&id_conta="+<?= $id_conta;?>+"&u="+'<?= $username ?>';
                             }, 6000);
