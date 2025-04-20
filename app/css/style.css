@@ -235,90 +235,48 @@
 
 
 /* Estilos para os Planos DENTRO do Modal de Assinaturas */
-#modalAssinaturas .modal-body {
-  background-color: #f8f9fa;
-}
 
-#modalAssinaturas .plano-item {
-  border: 1px solid #dee2e6;
-  transition: box-shadow .3s ease-in-out;
-}
-#modalAssinaturas .plano-item:hover {
-   box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
-}
 
-/* Estilo para a Imagem do Plano Centralizada */
-#modalAssinaturas .plano-img {
-  width: 80px !important; /* Largura da imagem */
-  height: 80px !important; /* Altura igual à largura */
-  object-fit: contain; /* 'contain' geralmente é melhor para logos, mostra a imagem inteira dentro da área */
-  /* 'cover' preenche a área, mas pode cortar; escolha o melhor para suas imagens */
-  /* As classes 'mx-auto d-block' no HTML cuidam da centralização */
-  border-radius: 5px; /* Opcional: Leve arredondamento */
-}
-
-#modalAssinaturas .plano-titulo {
-  color: #343a40;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-/* Estilo Preço Mensal */
-#modalAssinaturas .plano-preco {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 0.25rem; /* Menos espaço abaixo */
-}
-
-/* Estilo Preço Anual */
-#modalAssinaturas .plano-preco-anual {
-  /* font-size: 0.9em; */ /* Já usa a classe 'small' do Bootstrap */
-  line-height: 1.3;
-  min-height: 3.5em; /* Altura mínima para alinhar com planos sem preço anual */
-  display: flex; /* Permite alinhar verticalmente */
-  flex-direction: column;
-  justify-content: center;
-}
-
-#modalAssinaturas .plano-beneficios {
-  text-align: left; /* Alinha benefícios à esquerda */
-  padding-left: 15px; /* Pequeno recuo */
-  font-size: 0.9em; /* Fonte um pouco menor para benefícios */
-}
-#modalAssinaturas .plano-beneficios li {
-  margin-bottom: 6px;
-  color: #495057;
+.tela-cheia-assinaturas {
+  min-height: 100vh;
+  background-color: #4682B4;
+  color: #fff;
+  padding: 20px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
-#modalAssinaturas .plano-beneficios i {
-   width: 20px;
-   text-align: center;
-}
-
-/* Ajusta botão 'Assinar' */
-#modalAssinaturas .btn-assinar {
+.tela-cheia-assinaturas .header {
+  text-align: center;
+  font-size: 1.75rem;
   font-weight: bold;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
-
-/* Media query para mobile (se precisar de ajustes extras) */
-@media (max-width: 767px) {
-  #modalAssinaturas .plano-img {
-      width: 90px !important; /* Imagem um pouco menor */
-      height: 90px !important;
-  }
-   #modalAssinaturas .plano-preco {
-      font-size: 1.1em;
-  }
-  #modalAssinaturas .plano-preco-anual {
-      min-height: 3em; /* Ajusta altura mínima */
-  }
-   #modalAssinaturas .plano-beneficios {
-      font-size: 0.85em;
-   }
-    #modalAssinaturas .btn-assinar {
-       font-size: 0.9em; /* Botão um pouco menor */
-       padding: .5rem .75rem;
-   }
+.tela-cheia-assinaturas .body {
+  flex: 1;
+  padding: 20px 0;
+}
+.tela-cheia-assinaturas .footer {
+  text-align: center;
+  padding: 15px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+.plano-img {
+  max-width: 200px;
+  height: auto;
+}
+.plano-item {
+  background-color: #fff;
+  color: #333;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.plano-beneficios {
+  font-size: 0.9rem;
+}
+.btn-inserir-depoimento hr {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.btn-assinar {
+  font-weight: bold;
 }
