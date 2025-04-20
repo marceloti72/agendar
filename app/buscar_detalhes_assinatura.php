@@ -15,11 +15,7 @@ $response = [
 ];
 
 // Verifica sessão
-$id_conta_corrente = isset($_SESSION['id_conta']) ? filter_var($_SESSION['id_conta'], FILTER_VALIDATE_INT) : null;
-if ($id_conta_corrente === null) {
-    $response['message'] = 'Sessão inválida.';
-    echo json_encode($response); exit;
-}
+$id_conta_corrente = $_SESSION['id_conta'];
 
 // Pega e valida TELEFONE da URL (?telefone=...)
 $telefone_input = isset($_GET['telefone']) ? trim($_GET['telefone']) : '';
