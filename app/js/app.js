@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // --- Chamada AJAX para buscar os dados USANDO TELEFONE ---
             // Substitua 'caminho/para/buscar_detalhes_assinatura.php' pelo caminho real
             // Enviando telefone como parâmetro GET
-            fetch(`buscar_detalhes_assinatura.php?telefone=${encodeURIComponent(telefoneInput)}&s=${encodeURIComponent(senha2)}`)
+            fetch(`buscar_detalhes_assinatura.php?telefone=${encodeURIComponent(telefoneInput)}&s=${encodeURIComponent(senha2)}&id_conta=<?php echo htmlspecialchars($id_conta); ?>`)
                 .then(response => {
                     if (!response.ok) {
                         // Tenta ler a resposta de erro mesmo se não for 2xx
