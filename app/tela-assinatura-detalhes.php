@@ -138,6 +138,8 @@ if (empty($telefone) || empty($senha)) {
                             $('#modalAssinaturaPlanoNome').text(response.assinatura.plano_nome || 'N/A');
                             $('#modalAssinaturaProximoVenc').text(response.assinatura.proximo_vencimento || 'N/A');
 
+                            $('#modalAssinaturaProximoVenc').text(formatarData(response.assinatura.proximo_vencimento) || 'N/A');
+
                             const tbody = $('#modalAssinaturaServicosBody');
                             tbody.empty();
                             if (response.assinatura.servicos && response.assinatura.servicos.length > 0) {
@@ -170,6 +172,15 @@ if (empty($telefone) || empty($senha)) {
 
             buscarDetalhesAssinatura();
         });
+
+
+        function formatarData(data) {
+            if (!data) return '';
+            const [ano, mes, dia] = data.split('-');
+            return `${dia}/${mes}/${ano}`;
+        }
+
+        
     </script>
 </body>
 </html>

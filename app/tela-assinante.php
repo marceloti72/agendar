@@ -142,7 +142,7 @@ if ($id_plano <= 0) {
                         <div class="form-group">
                             <label for="ass_plano_freq">Plano e Frequência <span class="text-danger">*</span></label>
                             <select class="form-control" id="ass_plano_freq" name="plano_freq_selecionado" required>
-                                <option value="">-- Selecione o Plano e a Frequência --</option>
+                                <option value=""><b>*Selecione o Plano e a Frequência*<b></option>
                                 <?php
                                 $planos_disponiveis = [];
                                 try {
@@ -374,7 +374,7 @@ function buscarClientePorTelefone(telefone) {
         if (data.cliente) {
             // Se o cliente já for um assinante ativo, bloqueia o formulário
             if (data.is_assinante) {
-                document.getElementById('mensagem-busca-cliente').innerHTML = '<span class="text-danger">Erro: Este telefone já está associado a um assinante ativo. Insira outro número.</span>';
+                document.getElementById('mensagem-busca-cliente').innerHTML = '<span  style="color:rgb(243, 247, 7);"><i class="fas fa-times text-danger"></i> Este telefone já está associado a um assinante ativo. Insira outro número.</span>';
                 document.getElementById('id_cliente_encontrado').value = '';
                 document.getElementById('ass_nome').value = '';
                 document.getElementById('ass_cpf').value = '';
@@ -398,7 +398,7 @@ function buscarClientePorTelefone(telefone) {
             document.getElementById('ass_nome').value = '';
             document.getElementById('ass_cpf').value = '';
             document.getElementById('ass_email').value = '';
-            document.getElementById('mensagem-busca-cliente').innerHTML = '<span class="text-info">Nenhum cliente encontrado com este telefone.</span>';
+            document.getElementById('mensagem-busca-cliente').innerHTML = '<span class="text-info">Novo cliente para cadastro.</span>';
             document.getElementById('telefone-status').innerHTML = '<i class="fas fa-check text-success"></i>';
             document.getElementById('btnSalvarAssinante2').disabled = false;
         }

@@ -59,7 +59,7 @@ require_once("cabecalho.php");?>
                     </video>
                 </div>
             </div>
-            <div class="col-md-2 col-sm-4 col-6 px-0">
+            <!-- <div class="col-md-2 col-sm-4 col-6 px-0">
                 <div class="img-box">
                     <p class="video-title">Agendamentos</p>
                     <video class="box_img" controls autoplay muted preload="metadata" loop>
@@ -76,7 +76,7 @@ require_once("cabecalho.php");?>
                         Seu navegador não suporta o elemento de vídeo.
                     </video>
                 </div>
-            </div>
+            </div> -->
         </div>
     </main>
 </section><br><br><br>   

@@ -31,7 +31,7 @@ $id_conta = $_SESSION['id_conta'];
         }
         .tela-cheia-assinaturas {
             min-height: 100vh;
-            background-color: #4682B4;
+            background-color: #295f41;
             color: #fff;
             padding: 20px;
             display: flex;

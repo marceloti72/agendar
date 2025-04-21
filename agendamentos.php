@@ -365,7 +365,7 @@ $dataSelecionadaInicial = $data_atual_iso; // Data de hoje no formato correto
             <form id="form-agenda" method="post">
                 <div class="row">
                     <div class="col-md-6 col-lg-3 mb-3">
-                       <label for="telefone" class="text-white">WhatsApp:</label>
+                       <label for="telefone" class="text-white">Telefone:</label>
                        <input onblur="buscarDadosCliente()" class="form-control form-control-sm" type="text" name="telefone" id="telefone" placeholder="(DDD) Número" required />
                        
                     </div>
@@ -467,7 +467,7 @@ $dataSelecionadaInicial = $data_atual_iso; // Data de hoje no formato correto
             <div id="listar-cartoes" class="mt-4">
                 </div>
 
-        </div></div></div><?php require_once("rodape2.php") ?>
+        </div></div></div><?php require_once("rodape3.php") ?>
 
 <div class="modal fade" id="modalExcluir" tabindex="-1" role="dialog" aria-labelledby="modalExcluirLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document"> 

@@ -154,9 +154,14 @@
     .fa-map-marker{
       font-size: 20px;
     }
+    
 }
+
+
 </style>
 <?php require_once("sistema/conexao.php") ?>
+
+
 <!-- footer section -->
   <footer class="footer_section" style="background-color:rgb(0, 0, 0);">
     <div class="container">
@@ -272,41 +277,7 @@ $(document).ready(function(){
   $('#ass_telefone').mask('(00) 00000-0000');
   $('#ass_cpf').mask('000.000.000-00');
 
-    // Inicializa o Slick Slider
-    // $('.slick-services').slick({
-    //     dots: true,           // Exibe pontos de navegação
-    //     infinite: true,       // Loop infinito
-    //     speed: 500,           // Velocidade da transição
-    //     slidesToShow: 4,      // Mostra 4 itens por vez
-    //     slidesToScroll: 1,    // Rola 1 item por vez
-    //     autoplay: true,       // Ativa o autoplay
-    //     autoplaySpeed: 3000,  // Tempo entre os slides (3 segundos)
-    //     arrows: true,         // Exibe setas de navegação
-    //     responsive: [         // Configuração responsiva
-    //         {
-    //             breakpoint: 1024,
-    //             settings: {
-    //                 slidesToShow: 3
-    //             }
-    //         },
-    //         {
-    //             breakpoint: 768,
-    //             settings: {
-    //                 slidesToShow: 2
-    //             }
-    //         },
-    //         {
-    //             breakpoint: 480,
-    //             settings: {
-    //                 slidesToShow: 1
-    //             }
-    //         }
-    //     ]
-    // });
-
-
-   
-        
+            
 
 
         
