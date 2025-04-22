@@ -168,8 +168,8 @@
 
 /* Estilo para a Imagem do Plano Centralizada */
 #modalAssinaturas2 .plano-img {
-  width: 80px !important; /* Largura da imagem */
-  height: 80px !important; /* Altura igual à largura */
+  width: 200px !important; /* Largura da imagem */
+  height: 200px !important; /* Altura igual à largura */
   object-fit: contain; /* 'contain' geralmente é melhor para logos, mostra a imagem inteira dentro da área */
   /* 'cover' preenche a área, mas pode cortar; escolha o melhor para suas imagens */
   /* As classes 'mx-auto d-block' no HTML cuidam da centralização */

@@ -30,6 +30,16 @@ try {
         $response['nome_cliente'] = $cliente['nome'];
         $response['success'] = true; // Encontrou o cliente
 
+        $query_agd = $pdo->prepare("SELECT * FROM agendamentos WHERE cliente = :cliente and status = 'Agendado' AND id_conta = :id_conta LIMIT 1");
+        $query_agd->execute([':cliente' => $cliente['id'], ':id_conta' => $id_conta]);
+        $agendado = $query_agd->fetch(PDO::FETCH_ASSOC);
+        if ($agendado) {
+            $response['agendado'] = true;
+        }else{
+            $response['agendado'] = false;
+        }
+        
+
         // 2. Verifica se ele é assinante ativo
         $query_ass = $pdo->prepare("SELECT id FROM assinantes WHERE id_cliente = :id_cliente AND id_conta = :id_conta AND ativo = 1 AND data_vencimento >= CURDATE()");
         $query_ass->execute([':id_cliente' => $cliente['id'], ':id_conta' => $id_conta]);

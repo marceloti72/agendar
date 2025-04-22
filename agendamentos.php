@@ -687,6 +687,7 @@ function buscarDadosCliente(){ // Renomeada de buscarNome
         data: {telefone: tel},
         dataType: "json", // Espera JSON
         success:function(response){
+            console.log(response)
             if(response && response.success){
                 // Preenche nome e guarda ID
                  $inputNome.val(response.nome_cliente || '');
@@ -706,6 +707,13 @@ function buscarDadosCliente(){ // Renomeada de buscarNome
 
                   // Lógica de botão editar/novo agendamento (se aplicável aqui)
                  // ... (seu código split[5] etc., adaptado para 'response' se necessário) ...
+                 if(response.agendado == false){
+					document.getElementById("botao_editar").style.display = "none";					
+				}else{
+					$("#servico").val(parseInt(response.agendado)).change();
+					document.getElementById("botao_editar").style.display = "block";					
+					$("#botao_salvar").html('<i class="fas fa-calendar-check"></i> Novo Agendamento');
+				}
 
             } else {
                  // Cliente não encontrado ou erro na busca

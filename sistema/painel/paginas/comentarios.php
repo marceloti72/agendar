@@ -29,7 +29,7 @@ if(@$comentarios == 'ocultar'){
 </style>
 
 <div class="">      
-	<a class="btn btn-dark novo" onclick="inserir()" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Novo Comentário</a>
+	<a class="btn btn-primary novo" onclick="inserir()" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Novo Comentário</a>
 </div>
 
 <div class="bs-example widget-shadow" style="padding:15px" id="listar">

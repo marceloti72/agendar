@@ -86,7 +86,7 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
 </style>
 
 <div class="mb-3">
-    <a class="btn btn-dark btn-custom" onclick="inserir()"><i class="fa fa-plus"></i> Nova Comanda</a>
+    <a class="btn btn-primary btn-custom" onclick="inserir()"><i class="fa fa-plus"></i> Nova Comanda</a>
 </div>
 
 <div class="bs-example" style="padding:15px">

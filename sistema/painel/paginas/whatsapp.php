@@ -50,7 +50,7 @@ if(@$whatsapp == 'ocultar'){
 
 <?php else: ?>
 <div>      
-	<a class="btn btn-dark novo" onclick="inserirW()" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Novo Dispositivo</a>
+	<a class="btn btn-primary novo" onclick="inserirW()" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Novo Dispositivo</a>
 	<!-- <a class="btn btn-danger novo" onclick="desconectar()" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-sign-out"  aria-hidden="true"></i> Desconectar Conta</a>
 	<input type="hidden" id="filtro" value="<?= $filtro;?>"> -->
 </div>

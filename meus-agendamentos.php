@@ -14,11 +14,14 @@ $data_atual = date('Y-m-d');
 
 if ($telefone == '') {
     // Exibe um formulário para o usuário inserir o telefone
+	$id_cliente = '';
     echo '
     <form method="POST" action="">
+	<div style="margin-left: 20px;margin-bottom: 10px;">
         <label for="telefone">Por favor, insira seu telefone:</label>
         <input type="text" id="telefone" name="telefone_user" required>
         <button type="submit">Enviar</button>
+		</div>
     </form>';
 }else {
 	$query = $pdo->prepare("SELECT * FROM clientes WHERE telefone = :telefone AND id_conta = :id_conta");
@@ -30,7 +33,7 @@ if ($telefone == '') {
 		// Continue com sua lógica
 	} else {
 		echo "<script>window.alert('Nenhum cliente encontrado com este telefone.')</script>";
-		echo "<script>window.location='agendamentos.php'</script>";
+		// echo "<script>window.location='agendamentos.php'</script>";
 	}
 }
 
@@ -188,7 +191,7 @@ $obs = str_replace('"', "**", $obs);
 
 
 
-<?php require_once("rodape2.php") ?>
+<?php require_once("rodape3.php") ?>
 
 
   <!-- Modal Excluir -->
@@ -196,8 +199,8 @@ $obs = str_replace('"', "**", $obs);
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header text-white" style="background-color: #4682B4;">
-          <h5 class="modal-title" id="exampleModalLabel"><small>Excluir Agendamento</small></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px" id="btn-fechar-excluir">
+          <h5 class="modal-title" id="exampleModalLabel"><small>Cancelar Agendamento</small></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar" id="btn-fechar-excluir">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -205,7 +208,7 @@ $obs = str_replace('"', "**", $obs);
         <form id="form-excluir">
       <div class="modal-body">
 
-      	Deseja Excluir o Agendamento?
+      	Deseja cancelar o Agendamento?
 
       	<span id="msg-excluir"></span>
                    
@@ -224,7 +227,7 @@ $obs = str_replace('"', "**", $obs);
 				
 			</div>
 
-           <div align="right"><button type="submit" class="btn btn-danger">Excluir</button></div>
+           <div align="right"><button type="submit" class="btn btn-danger">Confirmar</button></div>
         </div>
 
       
