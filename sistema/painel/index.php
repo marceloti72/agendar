@@ -2312,7 +2312,6 @@ $plano = $res3['plano'];
 	
 
 
-
 <script type="text/javascript">
 	$(document).ready(function() {		
 		$('.sel15').select2({	

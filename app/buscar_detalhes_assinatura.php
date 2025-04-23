@@ -16,12 +16,15 @@ $response = [
 ];
 
 // Verifica sessão
+// $id_conta_corrente = isset($_POST['id_conta']) ? filter_var($_POST['id_conta'], FILTER_VALIDATE_INT) : null;
+// if ($id_conta_corrente === null || $id_conta_corrente !== $_SESSION['id_conta']) {
+//     $response['message'] = 'Sessão inválida.';
+//     echo json_encode($response);
+//     exit;
+// }
+
 $id_conta_corrente = isset($_POST['id_conta']) ? filter_var($_POST['id_conta'], FILTER_VALIDATE_INT) : null;
-if ($id_conta_corrente === null || $id_conta_corrente !== $_SESSION['id_conta']) {
-    $response['message'] = 'Sessão inválida.';
-    echo json_encode($response);
-    exit;
-}
+
 
 // Pega e valida TELEFONE e SENHA via POST
 $telefone_input = isset($_POST['telefone']) ? trim($_POST['telefone']) : '';
