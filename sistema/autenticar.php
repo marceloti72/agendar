@@ -27,9 +27,9 @@ if ($res) {
 		}
 	}
 
-	$hash_armazenado = $res['senha'];
+	//$hash_armazenado = $res['senha'];
 
-	if (password_verify($senha, $hash_armazenado)) {
+	if ($senha == $res['senha']) {
 		$ativo = @$res['ativo'];
 		$id_conta = @$res['id_conta'];
 		$id_usuario = @$res['id'];

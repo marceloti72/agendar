@@ -48,7 +48,7 @@ $logo = 'logo-teste.png';
 
 //$valor = '39.90';
 $senha = '123';
-$hash = password_hash($senha, PASSWORD_DEFAULT);
+//$hash = password_hash($senha, PASSWORD_DEFAULT);
 
 $data_pgto = date('Y-m-d');
 $pago = 'Não';
@@ -126,7 +126,7 @@ try {
     $res2->bindValue(":cpf", $cpf);
     $res2->bindValue(":email", $email_adm);
     $res2->bindValue(":telefone", $telefone);
-    $res2->bindValue(":senha", $hash);
+    $res2->bindValue(":senha", $senha);
     $res2->bindValue(":nivel", $nivel);
     $res2->bindValue(":ativo", $ativo);
     $res2->bindValue(":id_conta", $id_conta);
