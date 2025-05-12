@@ -10,7 +10,7 @@ $telefone = $_POST['telefone'];
 $cpf = $_POST['cpf'];
 if(!empty($_POST['senha'])){
 	$senha = $_POST['senha'];
-	$hash = password_hash($senha, PASSWORD_DEFAULT);
+	//$hash = password_hash($senha, PASSWORD_DEFAULT);
 	$senha_pdo = 'senha = :senha,';
 }else{
 	$senha = '';
@@ -96,7 +96,7 @@ $query->bindValue(":email", "$email");
 $query->bindValue(":telefone", "$telefone");
 $query->bindValue(":cpf", "$cpf");
 if($senha != ''){
-    $query->bindValue(":senha", "$hash");
+    $query->bindValue(":senha", "$senha");
 }
 $query->bindValue(":endereco", "$endereco");
 $query->execute();
