@@ -7,7 +7,7 @@ header('Content-Type: text/html; charset=utf-8');
 session_start();
 
 // Inclui a biblioteca do Stripe
-require 'vendor/autoload.php';
+require './vendor/autoload.php';
 
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
