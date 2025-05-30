@@ -48,31 +48,43 @@ if ($session_id) {
         $username = $nomeConfig;
 
         // Conexão com o banco de dados (ajuste conforme sua configuração)
-        $db = new mysqli('seu_host', 'seu_usuario', 'sua_senha', 'seu_banco');
-        if ($db->connect_error) {
-            die("Erro de conexão: " . $db->connect_error);
+        $db_servidor = 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
+        $db_usuario = 'skysee';
+        $db_senha = '9vtYvJly8PK6zHahjPUg';
+        $db_nome = 'barbearia';
+        $db_nome2 = 'sistema_gestao';
+
+        try {
+            $pdo = new PDO("mysql:host=$db_servidor;dbname=$db_nome;charset=utf8", $db_usuario, $db_senha);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Habilita tratamento de erros
+        } catch (PDOException $e) {
+            die("Erro ao conectar com o banco de dados 'barbearia': " . $e->getMessage());
+        }
+
+        try {
+            $pdo2 = new PDO("mysql:host=$db_servidor;dbname=$db_nome2;charset=utf8", $db_usuario, $db_senha);
+            $pdo2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Habilita tratamento de erros
+        } catch (PDOException $e) {
+            die("Erro ao conectar com o banco de dados 'sistema_gestao': " . $e->getMessage());
         }
 
         // Inserir na tabela config
-        $stmt = $db->prepare("INSERT INTO config (nome, email, username, telefone_whatsapp, token, ativo, email_manuia, data_cadastro, plano) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssssi", $nomeConfig, $email, $username, $telefone, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'teste', 'rtcorretora@gmail.com', $dataAtual, $plano);
-        $stmt->execute();
-        $idConta = $db->insert_id;
-        $stmt->close();
+        $stmt = $pdo->prepare("INSERT INTO config (nome, email, username, telefone_whatsapp, token, ativo, email_manuia, data_cadastro, plano) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nomeConfig, $email, $username, $telefone, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'teste', 'rtcorretora@gmail.com', $dataAtual, $plano]);
+        $idConta = $pdo->lastInsertId();
 
         // Inserir na tabela usuarios
-        $stmt = $db->prepare("INSERT INTO usuarios (nome, username, email, cpf, senha, nivel, data, ativo, telefone, atendimento, id_conta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssssssi", $nomeCliente, $username, $email, $cpf, $defaultPassword, 'administrador', $dataAtual, 'teste', $telefone, 'Sim', $idConta);
-        $stmt->execute();
-        $stmt->close();
+        $stmt = $pdo->prepare("INSERT INTO usuarios (nome, username, email, cpf, senha, nivel, data, ativo, telefone, atendimento, id_conta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nomeCliente, $username, $email, $cpf, $defaultPassword, 'administrador', $dataAtual, 'teste', $telefone, 'Sim', $idConta]);
 
         // Inserir na tabela clientes
-        $stmt = $db->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssdsssdsi", $nomeCliente, $cpf, $telefone, $email, $dataAtual, 'teste', $dataAtual, $valor, $frequencia, $plano, $formaPgto, 'Sim', $idConta);
-        $stmt->execute();
-        $stmt->close();
+        $stmt = $pdo2->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nomeCliente, $cpf, $telefone, $email, $dataAtual, 'teste', $dataAtual, $valor, $frequencia, $plano, $formaPgto, 'Sim', $idConta]);
 
-        $db->close();
+        // Fechar conexões
+        $stmt = null;
+        $pdo = null;
+        $pdo2 = null;
 
         echo "<!-- Dados registrados com sucesso para ID Conta: $idConta -->"; // Log invisível para depuração
     } catch (Exception $e) {
