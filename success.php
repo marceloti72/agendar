@@ -72,7 +72,7 @@ if ($session_id) {
         }
 
         // Inserir na tabela config
-        $stmt = $pdo->prepare("INSERT INTO config (nome, email, username, telefone_whatsapp, token, ativo, email_manuia, data_cadastro, plano) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO config (nome, email, username, telefone_whatsapp, token, ativo, email_menuia, data_cadastro, plano) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$nomeConfig, $email, $username, $telefone, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'teste', 'rtcorretora@gmail.com', $dataAtual, $plano]);
         $idConta = $pdo->lastInsertId();
 
