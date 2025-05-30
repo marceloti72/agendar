@@ -18,7 +18,7 @@ $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
 $defaultPassword = '123';
 
 // Configurações do Stripe
-Stripe::setApiKey('sk_test_51RTXIZQwVYKsR3u1YtG7aK6S7d4sOg3Pnw8nKlXQNRBEFRGOncTdr0850Ddp1px4FRC0XuL29MaKyoy3JFiZh0Wa00reKEwQHt'); // Substitua pela sua chave secreta
+Stripe::setApiKey('sk_test_51RTXIZQwVYKsR3u1YtG7aK6S7d4sOg3Pnw8nKlXQNRBEFRGOncTdr0850Ddp1px4FRC0XuL29MaKyoy3JFiZh0Wa00reKEwQHt'); 
 
 if ($session_id) {
     try {
