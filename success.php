@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 // Configurações iniciais
 header('Content-Type: text/html; charset=utf-8');
 session_start();
@@ -55,7 +55,7 @@ if ($session_id) {
         $db_usuario = 'skysee';
         $db_senha = '9vtYvJly8PK6zHahjPUg';
         $db_nome = 'barbearia';
-        $db_nome2 = 'sistema_gestao';
+        $db_nome2 = 'gestao_sistemas';
 
         try {
             $pdo = new PDO("mysql:host=$db_servidor;dbname=$db_nome;charset=utf8", $db_usuario, $db_senha);
