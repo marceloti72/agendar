@@ -3,6 +3,12 @@
 header('Content-Type: text/html; charset=utf-8');
 session_start();
 
+// Inclui a biblioteca do Stripe
+require 'vendor/autoload.php';
+
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
+
 // Obtém o session_id da URL
 $session_id = isset($_GET['session_id']) ? $_GET['session_id'] : null;
 
@@ -11,23 +17,67 @@ $trialDays = 15;
 $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
 $defaultPassword = '123';
 
-if ($session_id) {
-    // Faz a chamada à API para buscar os dados da sessão
-    $apiUrl = "https://agendar.skysee.com.br:3001/api/get-session-data?session_id=" . urlencode($session_id);
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $apiUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    $response = curl_exec($ch);
-    curl_close($ch);
+// Configurações do Stripe
+Stripe::setApiKey('sua_chave_secreta_do_stripe'); // Substitua pela sua chave secreta
 
-    if ($response) {
-        $data = json_decode($response, true);
-        if (isset($data['email']) && $data['email']) {
-            $email = htmlspecialchars($data['email']);
-        } else {
-            $email = 'email_nao_disponivel@example.com';
+if ($session_id) {
+    try {
+        // Busca os dados da sessão
+        $session = Session::retrieve($session_id, [
+            'expand' => ['customer', 'subscription', 'payment_intent.payment_method'],
+        ]);
+
+        $customer = $session->customer;
+        $subscription = $session->subscription;
+        $paymentMethod = $session->payment_intent->payment_method;
+
+        $email = htmlspecialchars($customer->email ?: 'email_nao_disponivel@example.com');
+        $telefone = htmlspecialchars($customer->phone ?: '11999999999');
+        $nomeCliente = htmlspecialchars($customer->name ?: 'Cliente_' . rand(100000, 999999));
+        $formaPgto = $paymentMethod->card ? $paymentMethod->card->brand : 'desconhecida';
+        $cpf = htmlspecialchars($customer->metadata->cpf ?: '12345678900');
+
+        $priceId = $subscription->items->data[0]->price->id;
+        $plano = ($priceId === 'price_1RTZKzJEPhV4vIDM8SLdZ1Gx' || $priceId === 'price_1RU5HjJEPhV4vIDMTnrVVyxT') ? 1 : 2;
+        $frequencia = ($priceId === 'price_1RU5HjJEPhV4vIDMTnrVVyxT' || $priceId === 'price_1RUE3OJEPhV4vIDMzNgVl1jY') ? 365 : 30;
+        $valor = $subscription->items->data[0]->price->unit_amount / 100;
+        $dataAtual = date('Y-m-d H:i:s');
+
+        $numeroAleatorio = rand(100000, 999999);
+        $nomeConfig = 'teste' . $numeroAleatorio;
+        $username = $nomeConfig;
+
+        // Conexão com o banco de dados (ajuste conforme sua configuração)
+        $db = new mysqli('seu_host', 'seu_usuario', 'sua_senha', 'seu_banco');
+        if ($db->connect_error) {
+            die("Erro de conexão: " . $db->connect_error);
         }
+
+        // Inserir na tabela config
+        $stmt = $db->prepare("INSERT INTO config (nome, email, username, telefone_whatsapp, token, ativo, email_manuia, data_cadastro, plano) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssssi", $nomeConfig, $email, $username, $telefone, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'teste', 'rtcorretora@gmail.com', $dataAtual, $plano);
+        $stmt->execute();
+        $idConta = $db->insert_id;
+        $stmt->close();
+
+        // Inserir na tabela usuarios
+        $stmt = $db->prepare("INSERT INTO usuarios (nome, username, email, cpf, senha, nivel, data, ativo, telefone, atendimento, id_conta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssssssi", $nomeCliente, $username, $email, $cpf, $defaultPassword, 'administrador', $dataAtual, 'teste', $telefone, 'Sim', $idConta);
+        $stmt->execute();
+        $stmt->close();
+
+        // Inserir na tabela clientes
+        $stmt = $db->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssdsssdsi", $nomeCliente, $cpf, $telefone, $email, $dataAtual, 'teste', $dataAtual, $valor, $frequencia, $plano, $formaPgto, 'Sim', $idConta);
+        $stmt->execute();
+        $stmt->close();
+
+        $db->close();
+
+        echo "<!-- Dados registrados com sucesso para ID Conta: $idConta -->"; // Log invisível para depuração
+    } catch (Exception $e) {
+        $email = 'email_nao_disponivel@example.com'; // Fallback em caso de erro
+        echo "<!-- Erro ao processar sessão: " . $e->getMessage() . " -->"; // Log invisível para depuração
     }
 }
 ?>
