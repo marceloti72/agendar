@@ -93,6 +93,7 @@ if ($session_id) {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
