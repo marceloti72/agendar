@@ -8,17 +8,6 @@ mb_internal_encoding('UTF-8');
 mb_http_output('UTF-8');
 ini_set('default_charset', 'UTF-8');
 
-// Definir caminho absoluto para os logs
-$log_dir = __DIR__;
-$webhook_log = $log_dir . '/webhook_log.txt';
-$error_log = $log_dir . '/error_log.txt';
-$session_log = $log_dir . '/session_log.txt';
-
-// Verificar permissões de escrita no diretório
-if (!is_writable($log_dir)) {
-    die("Erro: O diretório $log_dir não tem permissões de escrita. Ajuste para 755 ou 777 temporariamente.");
-}
-
 // Configurações iniciais
 header('Content-Type: text/html; charset=utf-8'); // Para requisições GET (páginas HTML)
 session_start();
@@ -29,7 +18,6 @@ require './vendor/autoload.php';
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Stripe\Webhook;
-use Stripe\Subscription;
 
 // Configurações do Stripe
 Stripe::setApiKey('sk_test_51RTXIZQwVYKsR3u1YtG7aK6S7d4sOg3Pnw8nKlXQNRBEFRGOncTdr0850Ddp1px4FRC0XuL29MaKyoy3JFiZh0Wa00reKEwQHt');
@@ -37,33 +25,30 @@ $endpoint_secret = 'whsec_aiXk2ZhwnDfOepwrRIoRNFDkC3g5Ok3e'; // Confirme essa ch
 
 // Processamento de webhook (POST do Stripe)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
-    ob_start();
-    header('Content-Type: text/plain; charset=utf-8');
+    header('Content-Type: text/plain; charset=utf-8'); // Para o webhook (POST do Stripe)
     $payload = @file_get_contents('php://input');
     $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
 
     // Log para depuração
-    file_put_contents($webhook_log, date('Y-m-d H:i:s') . " - Payload: " . $payload . "\n", FILE_APPEND);
-    file_put_contents($webhook_log, date('Y-m-d H:i:s') . " - Signature Header: " . $sig_header . "\n", FILE_APPEND);
-    file_put_contents($webhook_log, date('Y-m-d H:i:s') . " - Response Headers: " . print_r(headers_list(), true) . "\n", FILE_APPEND);
+    file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Payload: " . $payload . "\n", FILE_APPEND);
+    file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Signature Header: " . $sig_header . "\n", FILE_APPEND);
+    file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Response Headers: " . print_r(getallheaders(), true) . "\n", FILE_APPEND);
 
     try {
         $event = Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
         if ($event->type === 'checkout.session.completed') {
             $session = $event->data->object;
             $session_id = $session->id;
-            file_put_contents($webhook_log, date('Y-m-d H:i:s') . " - Session ID: " . $session_id . "\n", FILE_APPEND);
+            file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Session ID: " . $session_id . "\n", FILE_APPEND);
             // Prosseguir com o processamento abaixo
         }
         http_response_code(200);
-        ob_end_clean();
         echo "Webhook received successfully";
         exit;
     } catch (\Exception $e) {
         http_response_code(400);
-        ob_end_clean();
         echo "Webhook error: " . $e->getMessage();
-        file_put_contents($error_log, date('Y-m-d H:i:s') . ' - Webhook Error: ' . $e->getMessage() . "\n", FILE_APPEND);
+        file_put_contents('error_log.txt', date('Y-m-d H:i:s') . ' - Webhook Error: ' . $e->getMessage() . "\n", FILE_APPEND);
         exit;
     }
 }
@@ -182,7 +167,7 @@ if ($session_id) {
     try {
         // Busca os dados da sessão
         $session = Session::retrieve($session_id, [
-            'expand' => ['customer', 'subscription', 'payment_intent.payment_method', 'subscription.items'],
+            'expand' => ['customer', 'subscription', 'payment_intent.payment_method'],
         ]);
 
         $customer = $session->customer;
@@ -197,34 +182,21 @@ if ($session_id) {
         $cpf = htmlspecialchars($customer->metadata->cpf ?? '12345678900');
 
         // Log para depuração do valor
-        file_put_contents($session_log, date('Y-m-d H:i:s') . " - Session Data: " . print_r($session, true) . "\n", FILE_APPEND);
+        file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Session Data: " . print_r($session, true) . "\n", FILE_APPEND);
 
         // Verificar se há uma assinatura e extrair o valor corretamente
         $valor = 0; // Valor padrão
-        $priceId = null;
         if ($subscription && isset($subscription->items->data[0]->price->unit_amount)) {
             $priceId = $subscription->items->data[0]->price->id;
             $valor = $subscription->items->data[0]->price->unit_amount / 100;
-            file_put_contents($session_log, date('Y-m-d H:i:s') . " - Price ID: " . $priceId . ", Valor: " . $valor . "\n", FILE_APPEND);
+            file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Price ID: " . $priceId . ", Valor: " . $valor . "\n", FILE_APPEND);
         } else {
-            // Tentar obter o valor diretamente da sessão
+            // Caso não haja assinatura, tentar obter o valor diretamente da sessão
             if (isset($session->amount_total)) {
                 $valor = $session->amount_total / 100;
-                file_put_contents($session_log, date('Y-m-d H:i:s') . " - Amount Total: " . $valor . "\n", FILE_APPEND);
+                file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Amount Total: " . $valor . "\n", FILE_APPEND);
             } else {
-                file_put_contents($session_log, date('Y-m-d H:i:s') . " - No subscription or amount_total found.\n", FILE_APPEND);
-            }
-        }
-
-        // Se o valor ainda for 0, buscar diretamente a assinatura
-        if ($valor == 0 && $subscription) {
-            $sub = Subscription::retrieve($subscription->id, [
-                'expand' => ['items'],
-            ]);
-            if (isset($sub->items->data[0]->price->unit_amount)) {
-                $priceId = $sub->items->data[0]->price->id;
-                $valor = $sub->items->data[0]->price->unit_amount / 100;
-                file_put_contents($session_log, date('Y-m-d H:i:s') . " - Fetched Subscription - Price ID: " . $priceId . ", Valor: " . $valor . "\n", FILE_APPEND);
+                file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - No subscription or amount_total found.\n", FILE_APPEND);
             }
         }
 
