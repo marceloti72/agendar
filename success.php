@@ -1,7 +1,7 @@
 <?php
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // Forçar codificação UTF-8 no PHP
 mb_internal_encoding('UTF-8');
@@ -174,7 +174,7 @@ $email = 'carregando...';
 $trialDays = 15;
 $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
 // Gera senha aleatória de 6 dígitos
-$defaultPassword = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT');
+$defaultPassword = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
 // Controle para evitar duplicação por session_id
 if ($session_id) {
@@ -449,21 +449,26 @@ if ($session_id) {
         $pdo2 = null;
 
         echo "<!-- Dados registrados com sucesso para ID Conta: $idConta -->"; // Log invisível para depuração
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
-            header('Content-Type: text/plain; charset=utf-8');
-            http_response_code(200);
-            echo "Webhook processed successfully";
-            exit;
-        }
     } catch (Exception $e) {
-        $email = 'email_nao_disponivel@example.com'; // Fallback em caso de erro
-        echo "<!-- Erro ao processar sessão: " . $e->getMessage() . " -->"; // Log invisível para depuração
+        // Log do erro para depuração
+        file_put_contents('error_log.txt', date('Y-m-d H:i:s') . " - Erro ao processar sessão: " . $e->getMessage() . "\n", FILE_APPEND);
+        
+        // Define valores padrão para evitar erros no HTML
+        $email = 'email_nao_disponivel@example.com';
+        $defaultPassword = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
+        $trialDays = 15;
+        $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
+
+        // Se for um webhook, retorna erro
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
             header('Content-Type: text/plain; charset=utf-8');
             http_response_code(400);
             echo "Webhook error: " . $e->getMessage();
             exit;
         }
+
+        // Para requisições GET, continua para exibir o HTML abaixo com os valores padrão
+        echo "<!-- Erro ao processar sessão: " . $e->getMessage() . " -->"; // Log invisível para depuração
     }
 }
 ?>
