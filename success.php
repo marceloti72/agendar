@@ -6,6 +6,10 @@
 header('Content-Type: text/html; charset=utf-8');
 session_start();
 
+// Forçar UTF-8 no PHP
+mb_internal_encoding('UTF-8');
+mb_http_output('UTF-8');
+
 // Inclui a biblioteca do Stripe
 require './vendor/autoload.php';
 
@@ -15,7 +19,7 @@ use Stripe\Webhook;
 
 // Configurações do Stripe
 Stripe::setApiKey('sk_test_51RTXIZQwVYKsR3u1YtG7aK6S7d4sOg3Pnw8nKlXQNRBEFRGOncTdr0850Ddp1px4FRC0XuL29MaKyoy3JFiZh0Wa00reKEwQHt');
-$endpoint_secret = 'whsec_aiXk2ZhwnDfOepwrRIoRNFDkC3g5Ok3e'; // Substitua pela chave secreta do webhook no painel do Stripe
+$endpoint_secret = 'whsec_aiXk2ZhwnDfOepwrRIoRNFDkC3g5Ok3e'; // Confirme essa chave no painel do Stripe
 
 // Processamento de webhook (POST do Stripe)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
@@ -29,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATU
             $session_id = $session->id;
             // Prosseguir com o processamento abaixo
         }
+        http_response_code(200); // Confirma sucesso ao Stripe
     } catch (\Exception $e) {
         http_response_code(400); // Erro de validação
         file_put_contents('error_log.txt', date('Y-m-d H:i:s') . ' - Webhook Error: ' . $e->getMessage() . "\n", FILE_APPEND);
