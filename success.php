@@ -17,8 +17,8 @@ use Stripe\Webhook;
 Stripe::setApiKey('sk_test_51RTXIZQwVYKsR3u1YtG7aK6S7d4sOg3Pnw8nKlXQNRBEFRGOncTdr0850Ddp1px4FRC0XuL29MaKyoy3JFiZh0Wa00reKEwQHt');
 $endpoint_secret = 'whsec_aiXk2ZhwnDfOepwrRIoRNFDkC3g5Ok3e'; // Substitua pela chave secreta do webhook no painel do Stripe
 
-// Processamento de webhook (POST)
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Processamento de webhook (POST do Stripe)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
     $payload = @file_get_contents('php://input');
     $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
 
@@ -31,12 +31,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } catch (\Exception $e) {
         http_response_code(400); // Erro de validação
+        file_put_contents('error_log.txt', date('Y-m-d H:i:s') . ' - Webhook Error: ' . $e->getMessage() . "\n", FILE_APPEND);
         exit;
     }
 }
 
 // Obtém o session_id da URL (GET) ou webhook
-$session_id = isset($_GET['session_id']) ? $_GET['session_id'] : (isset($session_id) ? $session_id : null);
+$session_id = isset($_GET['session_id']) ? $_GET['session_id'] : (isset($session_id) ? $session_id : (isset($_POST['session_id']) ? $_POST['session_id'] : null));
 
 $email = 'carregando...';
 $trialDays = 15;
@@ -104,7 +105,7 @@ if ($session_id) {
             $stmt->execute([$email]);
             $emailExists = $stmt->fetchColumn();
 
-            if ($emailExists) {
+            if ($emailExists && !isset($_POST['new_email'])) {
                 // Exibir mensagem de erro e formulário para novo email
                 echo '<!DOCTYPE html>
                 <html lang="pt-BR">
@@ -169,10 +170,10 @@ if ($session_id) {
                     <div class="container">
                         <div class="title">Email Já Cadastrado</div>
                         <div class="message">
-                            O email <strong>' . $email . '</strong> já está cadastrado. Por favor, insira outro email para continuar.
+                            O email <strong>' . htmlspecialchars($email) . '</strong> já está cadastrado. Por favor, insira outro email para continuar.
                         </div>
                         <form method="POST" action="">
-                            <input type="hidden" name="session_id" value="' . $session_id . '">
+                            <input type="hidden" name="session_id" value="' . htmlspecialchars($session_id) . '">
                             <input type="email" name="new_email" class="input-field" placeholder="Novo email" required>
                             <button type="submit" class="submit-button">Continuar</button>
                         </form>
@@ -182,10 +183,9 @@ if ($session_id) {
                 exit;
             }
 
-            // Processar novo email, se fornecido
-            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_email'])) {
+            // Processar novo email do formulário
+            if (isset($_POST['new_email'])) {
                 $email = htmlspecialchars($_POST['new_email']);
-                // Verificar novamente se o novo email existe
                 $stmt = $pdo->prepare("SELECT COUNT(*) FROM config WHERE email = ?");
                 $stmt->execute([$email]);
                 $emailExists = $stmt->fetchColumn();
@@ -254,10 +254,10 @@ if ($session_id) {
                         <div class="container">
                             <div class="title">Email Já Cadastrado</div>
                             <div class="message">
-                                O email <strong>' . $email . '</strong> também já está cadastrado. Por favor, insira outro email.
+                                O email <strong>' . htmlspecialchars($email) . '</strong> também já está cadastrado. Por favor, insira outro email.
                             </div>
                             <form method="POST" action="">
-                                <input type="hidden" name="session_id" value="' . $session_id . '">
+                                <input type="hidden" name="session_id" value="' . htmlspecialchars($session_id) . '">
                                 <input type="email" name="new_email" class="input-field" placeholder="Novo email" required>
                                 <button type="submit" class="submit-button">Continuar</button>
                             </form>
@@ -293,14 +293,14 @@ if ($session_id) {
             $pdo2 = null;
 
             echo "<!-- Dados registrados com sucesso para ID Conta: $idConta -->"; // Log invisível para depuração
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
                 http_response_code(200); // Confirma sucesso ao Stripe
                 exit;
             }
         } catch (Exception $e) {
             $email = 'email_nao_disponivel@example.com'; // Fallback em caso de erro
             echo "<!-- Erro ao processar sessão: " . $e->getMessage() . " -->"; // Log invisível para depuração
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
                 http_response_code(400); // Erro ao Stripe
                 exit;
             }
