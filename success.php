@@ -1,4 +1,5 @@
 <?php
+// Início direto sem espaços ou caracteres invisíveis
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -26,12 +27,12 @@ $endpoint_secret = 'whsec_aiXk2ZhwnDfOepwrRIoRNFDkC3g5Ok3e'; // Confirme essa ch
 
 // Processamento de webhook (POST do Stripe)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Log inicial para confirmar que o POST foi recebido
-    file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - POST request received\n", FILE_APPEND);
+    // Log inicial para depuração
+    file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - POST request received\n", FILE_APPEND);
     
     if (!isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
-        file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Stripe-Signature header missing\n", FILE_APPEND);
-        http_response_code(400);
+        file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Stripe-Signature header missing\n", FILE_APPEND);
+        http_response_code(404); // Ajustado para 404 para refletir o erro reportado
         echo "Stripe-Signature header missing";
         exit;
     }
@@ -42,16 +43,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
 
     // Log para depuração
-    file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Payload: " . $payload . "\n", FILE_APPEND);
-    file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Signature Header: " . $sig_header . "\n", FILE_APPEND);
-    file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Response Headers: " . print_r(headers_list(), true) . "\n", FILE_APPEND);
+    file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Payload: " . $payload . "\n", FILE_APPEND);
+    file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Signature Header: " . $sig_header . "\n", FILE_APPEND);
+    file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Response Headers: " . print_r(headers_list(), true) . "\n", FILE_APPEND);
 
     try {
         $event = Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
         if ($event->type === 'checkout.session.completed') {
             $session = $event->data->object;
             $session_id = $session->id;
-            file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Session ID: " . $session_id . "\n", FILE_APPEND);
+            file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Session ID: " . $session_id . "\n", FILE_APPEND);
             // Aqui você pode adicionar lógica adicional, se necessário
         }
         http_response_code(200);
@@ -59,10 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Webhook received successfully";
         exit;
     } catch (\Exception $e) {
-        http_response_code(400);
+        http_response_code(404); // Ajustado para 404 para refletir o erro reportado
         ob_end_clean();
         echo "Webhook error: " . $e->getMessage();
-        file_put_contents('error_log.txt', date('Y-m-d H:i:s') . ' - Webhook Error: ' . $e->getMessage() . "\n", FILE_APPEND);
+        file_put_contents('/var/www/agendar/error_log.txt', date('Y-m-d H:i:s') . ' - Webhook Error: ' . $e->getMessage() . "\n", FILE_APPEND);
         exit;
     }
 }
@@ -196,7 +197,7 @@ if ($session_id) {
         $cpf = htmlspecialchars($customer->metadata->cpf ?? '12345678900');
 
         // Log para depuração do valor
-        file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Session Data: " . print_r($session, true) . "\n", FILE_APPEND);
+        file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Session Data: " . print_r($session, true) . "\n", FILE_APPEND);
 
         // Verificar se há uma assinatura e extrair o valor corretamente
         $valor = 0; // Valor padrão
@@ -207,26 +208,26 @@ if ($session_id) {
             if (is_string($subscription)) {
                 // Se $subscription for uma string (ID), buscar o objeto completo
                 $subscription = Subscription::retrieve($subscription, ['expand' => ['items']]);
-                file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Subscription fetched from ID: " . $subscription->id . "\n", FILE_APPEND);
+                file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Subscription fetched from ID: " . $subscription->id . "\n", FILE_APPEND);
             }
 
             // Agora $subscription deve ser um objeto, podemos acessar seus dados
             if (isset($subscription->items->data[0]->price->unit_amount)) {
                 $priceId = $subscription->items->data[0]->price->id;
                 $valor = $subscription->items->data[0]->price->unit_amount / 100;
-                file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Price ID: " . $priceId . ", Valor: " . $valor . "\n", FILE_APPEND);
+                file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Price ID: " . $priceId . ", Valor: " . $valor . "\n", FILE_APPEND);
             }
         }
 
         // Se não houver assinatura ou o valor ainda for 0, usar amount_total
         if ($valor == 0 && isset($session->amount_total)) {
             $valor = $session->amount_total / 100;
-            file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Amount Total: " . $valor . "\n", FILE_APPEND);
+            file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Amount Total: " . $valor . "\n", FILE_APPEND);
         }
 
         // Se ainda assim o valor for 0, registrar um erro no log
         if ($valor == 0) {
-            file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - No subscription or amount_total found.\n", FILE_APPEND);
+            file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - No subscription or amount_total found.\n", FILE_APPEND);
         }
 
         $plano = ($priceId === 'price_1RTXujQwVYKsR3u1RPS4YJ2k' || $priceId === 'price_1RUErpQwVYKsR3u108WBjSM6') ? 1 : 2;
@@ -248,7 +249,7 @@ if ($session_id) {
             $pdo = new PDO("mysql:host=$db_servidor;dbname=$db_nome;charset=utf8", $db_usuario, $db_senha);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            file_put_contents('error_log.txt', date('Y-m-d H:i:s') . " - Erro ao conectar com o banco 'barbearia': " . $e->getMessage() . "\n", FILE_APPEND);
+            file_put_contents('/var/www/agendar/error_log.txt', date('Y-m-d H:i:s') . " - Erro ao conectar com o banco 'barbearia': " . $e->getMessage() . "\n", FILE_APPEND);
             throw new Exception("Erro ao conectar com o banco de dados 'barbearia': " . $e->getMessage());
         }
 
@@ -256,7 +257,7 @@ if ($session_id) {
             $pdo2 = new PDO("mysql:host=$db_servidor;dbname=$db_nome2;charset=utf8", $db_usuario, $db_senha);
             $pdo2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            file_put_contents('error_log.txt', date('Y-m-d H:i:s') . " - Erro ao conectar com o banco 'gestao_sistemas': " . $e->getMessage() . "\n", FILE_APPEND);
+            file_put_contents('/var/www/agendar/error_log.txt', date('Y-m-d H:i:s') . " - Erro ao conectar com o banco 'gestao_sistemas': " . $e->getMessage() . "\n", FILE_APPEND);
             throw new Exception("Erro ao conectar com o banco de dados 'gestao_sistemas': " . $e->getMessage());
         }
 
@@ -455,7 +456,7 @@ if ($session_id) {
         echo "<!-- Dados registrados com sucesso para ID Conta: $idConta -->"; // Log invisível para depuração
     } catch (Exception $e) {
         // Log do erro para depuração
-        file_put_contents('error_log.txt', date('Y-m-d H:i:s') . " - Erro ao processar sessão: " . $e->getMessage() . "\n", FILE_APPEND);
+        file_put_contents('/var/www/agendar/error_log.txt', date('Y-m-d H:i:s') . " - Erro ao processar sessão: " . $e->getMessage() . "\n", FILE_APPEND);
         
         // Define valores padrão para evitar erros no HTML
         $email = 'email_nao_disponivel@example.com';
@@ -466,7 +467,7 @@ if ($session_id) {
         // Se for um webhook, retorna erro
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
             header('Content-Type: text/plain; charset=utf-8');
-            http_response_code(400);
+            http_response_code(404); // Ajustado para 404 para refletir o erro reportado
             echo "Webhook error: " . $e->getMessage();
             exit;
         }
