@@ -2,15 +2,13 @@
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
 // error_reporting(E_ALL);
+// Configurações iniciais
+header('Content-Type: text/html; charset=utf-8');
+session_start();
 
-// Forçar codificação UTF-8 no PHP
+// Forçar UTF-8 no PHP
 mb_internal_encoding('UTF-8');
 mb_http_output('UTF-8');
-ini_set('default_charset', 'UTF-8');
-
-// Configurações iniciais
-header('Content-Type: text/plain; charset=utf-8');
-session_start();
 
 // Inclui a biblioteca do Stripe
 require './vendor/autoload.php';
@@ -28,24 +26,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATU
     $payload = @file_get_contents('php://input');
     $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
 
-    // Log para depuração
-    file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Payload: " . $payload . "\n", FILE_APPEND);
-    file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Signature Header: " . $sig_header . "\n", FILE_APPEND);
-
     try {
         $event = Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
         if ($event->type === 'checkout.session.completed') {
             $session = $event->data->object;
             $session_id = $session->id;
-            file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Session ID: " . $session_id . "\n", FILE_APPEND);
             // Prosseguir com o processamento abaixo
         }
-        http_response_code(200);
-        echo "Webhook received successfully";
-        exit;
+        http_response_code(200); // Confirma sucesso ao Stripe
     } catch (\Exception $e) {
-        http_response_code(400);
-        echo "Webhook error: " . $e->getMessage();
+        http_response_code(400); // Erro de validação
         file_put_contents('error_log.txt', date('Y-m-d H:i:s') . ' - Webhook Error: ' . $e->getMessage() . "\n", FILE_APPEND);
         exit;
     }
@@ -62,7 +52,6 @@ if ($session_id && isset($_SESSION['processed_session_ids'][$session_id])) {
     $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
 
     // Exibir mensagem de cadastro já concluído
-    header('Content-Type: text/html; charset=utf-8');
     echo '<!DOCTYPE html>
     <html lang="pt-BR">
     <head>
@@ -181,8 +170,8 @@ if ($session_id) {
         $cpf = htmlspecialchars($customer->metadata->cpf ?? '12345678900');
 
         $priceId = $subscription->items->data[0]->price->id;
-        $plano = ($priceId === 'price_1RTZKzJEPhV4vIDM8SLdZ1Gx' || $priceId === 'price_1RU5HjJEPhV4vIDMTnrVVyxT') ? 1 : 2;
-        $frequencia = ($priceId === 'price_1RU5HjJEPhV4vIDMTnrVVyxT' || $priceId === 'price_1RUE3OJEPhV4vIDMzNgVl1jY') ? 365 : 30;
+        $plano = ($priceId === 'price_1RTXujQwVYKsR3u1RPS4YJ2k' || $priceId === 'price_1RUErpQwVYKsR3u108WBjSM6') ? 1 : 2;
+        $frequencia = ($priceId === 'price_1RUErpQwVYKsR3u108WBjSM6' || $priceId === 'price_1RUEtsQwVYKsR3u1EtM51sF2') ? 365 : 30;
         $valor = $subscription->items->data[0]->price->unit_amount / 100;
         $dataAtual = date('Y-m-d H:i:s');
 
@@ -218,7 +207,6 @@ if ($session_id) {
 
         if ($emailExists && !isset($_POST['new_email'])) {
             // Exibir mensagem de erro e formulário para novo email
-            header('Content-Type: text/html; charset=utf-8');
             echo '<!DOCTYPE html>
             <html lang="pt-BR">
             <head>
@@ -303,7 +291,6 @@ if ($session_id) {
             $emailExists = $stmt->fetchColumn();
 
             if ($emailExists) {
-                header('Content-Type: text/html; charset=utf-8');
                 echo '<!DOCTYPE html>
                 <html lang="pt-BR">
                 <head>
@@ -406,12 +393,15 @@ if ($session_id) {
         $pdo2 = null;
 
         echo "<!-- Dados registrados com sucesso para ID Conta: $idConta -->"; // Log invisível para depuração
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
+            http_response_code(200); // Confirma sucesso ao Stripe
+            exit;
+        }
     } catch (Exception $e) {
         $email = 'email_nao_disponivel@example.com'; // Fallback em caso de erro
         echo "<!-- Erro ao processar sessão: " . $e->getMessage() . " -->"; // Log invisível para depuração
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
-            http_response_code(400);
-            echo "Webhook error: " . $e->getMessage();
+            http_response_code(400); // Erro ao Stripe
             exit;
         }
     }
