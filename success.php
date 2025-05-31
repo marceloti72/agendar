@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (!isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
         file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Stripe-Signature header missing\n", FILE_APPEND);
-        http_response_code(404); // Ajustado para 404 para refletir o erro reportado
+        http_response_code(404);
         echo "Stripe-Signature header missing";
         exit;
     }
@@ -53,14 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $session = $event->data->object;
             $session_id = $session->id;
             file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Session ID: " . $session_id . "\n", FILE_APPEND);
-            // Aqui você pode adicionar lógica adicional, se necessário
         }
         http_response_code(200);
         ob_end_clean();
         echo "Webhook received successfully";
         exit;
     } catch (\Exception $e) {
-        http_response_code(404); // Ajustado para 404 para refletir o erro reportado
+        http_response_code(404);
         ob_end_clean();
         echo "Webhook error: " . $e->getMessage();
         file_put_contents('/var/www/agendar/error_log.txt', date('Y-m-d H:i:s') . ' - Webhook Error: ' . $e->getMessage() . "\n", FILE_APPEND);
@@ -188,6 +187,9 @@ if ($session_id) {
         $customer = $session->customer;
         $subscription = $session->subscription;
         $paymentMethod = $session->payment_intent ? $session->payment_intent->payment_method : null;
+
+        // Obter o customer_id
+        $customer_id = is_string($customer) ? $customer : ($customer->id ?? 'desconhecido');
 
         // Prioriza customer_details para email e nome (fornecidos no Checkout)
         $email = htmlspecialchars($session->customer_details->email ?? $customer->email ?? 'email_nao_disponivel@example.com');
@@ -438,9 +440,9 @@ if ($session_id) {
         $stmt = $pdo->prepare("INSERT INTO usuarios (nome, username, email, cpf, senha, nivel, data, ativo, telefone, atendimento, id_conta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$nomeCliente, $username, $email, $cpf, $defaultPassword, 'administrador', $dataAtual, 'teste', $telefone, 'Sim', $idConta]);
 
-        // Inserir na tabela clientes
-        $stmt = $pdo2->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nomeCliente, $cpf, $telefone, $email, $dataAtual, 'teste', $dataAtual, $valor, $frequencia, $plano, $formaPgto, 'Sim', $idConta]);
+        // Inserir na tabela clientes, incluindo o id_cliente_stripe
+        $stmt = $pdo2->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta, id_cliente_stripe) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nomeCliente, $cpf, $telefone, $email, $dataAtual, 'teste', $dataAtual, $valor, $frequencia, $plano, $formaPgto, 'Sim', $idConta, $customer_id]);
 
         // Armazena o session_id processado na sessão
         $_SESSION['processed_session_ids'][$session_id] = [
@@ -467,7 +469,7 @@ if ($session_id) {
         // Se for um webhook, retorna erro
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
             header('Content-Type: text/plain; charset=utf-8');
-            http_response_code(404); // Ajustado para 404 para refletir o erro reportado
+            http_response_code(404);
             echo "Webhook error: " . $e->getMessage();
             exit;
         }
