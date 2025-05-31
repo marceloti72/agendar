@@ -11,17 +11,37 @@ require './vendor/autoload.php';
 
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
+use Stripe\Webhook;
 
-// Obtém o session_id da URL
-$session_id = isset($_GET['session_id']) ? $_GET['session_id'] : null;
+// Configurações do Stripe
+Stripe::setApiKey('sk_test_51RTXIZQwVYKsR3u1YtG7aK6S7d4sOg3Pnw8nKlXQNRBEFRGOncTdr0850Ddp1px4FRC0XuL29MaKyoy3JFiZh0Wa00reKEwQHt');
+$endpoint_secret = 'whsec_aiXk2ZhwnDfOepwrRIoRNFDkC3g5Ok3e'; // Substitua pela chave secreta do webhook no painel do Stripe
+
+// Processamento de webhook (POST)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $payload = @file_get_contents('php://input');
+    $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+
+    try {
+        $event = Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
+        if ($event->type === 'checkout.session.completed') {
+            $session = $event->data->object;
+            $session_id = $session->id;
+            // Prosseguir com o processamento abaixo
+        }
+    } catch (\Exception $e) {
+        http_response_code(400); // Erro de validação
+        exit;
+    }
+}
+
+// Obtém o session_id da URL (GET) ou webhook
+$session_id = isset($_GET['session_id']) ? $_GET['session_id'] : (isset($session_id) ? $session_id : null);
 
 $email = 'carregando...';
 $trialDays = 15;
 $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
 $defaultPassword = '123';
-
-// Configurações do Stripe
-Stripe::setApiKey('sk_test_51RTXIZQwVYKsR3u1YtG7aK6S7d4sOg3Pnw8nKlXQNRBEFRGOncTdr0850Ddp1px4FRC0XuL29MaKyoy3JFiZh0Wa00reKEwQHt');
 
 if ($session_id) {
     try {
@@ -32,13 +52,14 @@ if ($session_id) {
 
         $customer = $session->customer;
         $subscription = $session->subscription;
-        $paymentMethod = $session->payment_intent->payment_method;
+        $paymentMethod = $session->payment_intent ? $session->payment_intent->payment_method : null;
 
-        $email = htmlspecialchars($customer->email ?: 'email_nao_disponivel@example.com');
-        $telefone = htmlspecialchars($customer->phone ?: '11999999999');
-        $nomeCliente = htmlspecialchars($customer->name ?: 'Cliente_' . rand(100000, 999999));
-        $formaPgto = $paymentMethod->card ? $paymentMethod->card->brand : 'desconhecida';
-        $cpf = htmlspecialchars($customer->metadata->cpf ?: '12345678900');
+        // Prioriza customer_details para email e nome (fornecidos no Checkout)
+        $email = htmlspecialchars($session->customer_details->email ?? $customer->email ?? 'email_nao_disponivel@example.com');
+        $nomeCliente = htmlspecialchars($session->customer_details->name ?? $customer->name ?? 'Cliente_' . rand(100000, 999999));
+        $telefone = htmlspecialchars($customer->phone ?? '11999999999');
+        $formaPgto = $paymentMethod && $paymentMethod->card ? $paymentMethod->card->brand : 'desconhecida';
+        $cpf = htmlspecialchars($customer->metadata->cpf ?? '12345678900');
 
         $priceId = $subscription->items->data[0]->price->id;
         $plano = ($priceId === 'price_1RTZKzJEPhV4vIDM8SLdZ1Gx' || $priceId === 'price_1RU5HjJEPhV4vIDMTnrVVyxT') ? 1 : 2;
@@ -50,7 +71,7 @@ if ($session_id) {
         $nomeConfig = 'teste' . $numeroAleatorio;
         $username = $nomeConfig;
 
-        // Conexão com o banco de dados (ajuste conforme sua configuração)
+        // Conexão com o banco de dados
         $db_servidor = 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
         $db_usuario = 'skysee';
         $db_senha = '9vtYvJly8PK6zHahjPUg';
@@ -59,14 +80,14 @@ if ($session_id) {
 
         try {
             $pdo = new PDO("mysql:host=$db_servidor;dbname=$db_nome;charset=utf8", $db_usuario, $db_senha);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Habilita tratamento de erros
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             die("Erro ao conectar com o banco de dados 'barbearia': " . $e->getMessage());
         }
 
         try {
             $pdo2 = new PDO("mysql:host=$db_servidor;dbname=$db_nome2;charset=utf8", $db_usuario, $db_senha);
-            $pdo2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Habilita tratamento de erros
+            $pdo2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             die("Erro ao conectar com o banco de dados 'sistema_gestao': " . $e->getMessage());
         }
@@ -90,9 +111,17 @@ if ($session_id) {
         $pdo2 = null;
 
         echo "<!-- Dados registrados com sucesso para ID Conta: $idConta -->"; // Log invisível para depuração
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            http_response_code(200); // Confirma sucesso ao Stripe
+            exit;
+        }
     } catch (Exception $e) {
         $email = 'email_nao_disponivel@example.com'; // Fallback em caso de erro
         echo "<!-- Erro ao processar sessão: " . $e->getMessage() . " -->"; // Log invisível para depuração
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            http_response_code(400); // Erro ao Stripe
+            exit;
+        }
     }
 }
 ?>
