@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 // Forçar codificação UTF-8 no PHP
 mb_internal_encoding('UTF-8');
@@ -18,33 +18,21 @@ require './vendor/autoload.php';
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Stripe\Webhook;
-use Stripe\Subscription;
 
 // Configurações do Stripe
 Stripe::setApiKey('sk_test_51RTXIZQwVYKsR3u1YtG7aK6S7d4sOg3Pnw8nKlXQNRBEFRGOncTdr0850Ddp1px4FRC0XuL29MaKyoy3JFiZh0Wa00reKEwQHt');
 $endpoint_secret = 'whsec_aiXk2ZhwnDfOepwrRIoRNFDkC3g5Ok3e'; // Confirme essa chave no painel do Stripe
 
 // Processamento de webhook (POST do Stripe)
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Log inicial para confirmar que o POST foi recebido
-    file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - POST request received\n", FILE_APPEND);
-    
-    if (!isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
-        file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Stripe-Signature header missing\n", FILE_APPEND);
-        http_response_code(400);
-        echo "Stripe-Signature header missing";
-        exit;
-    }
-
-    ob_start(); // Evitar saída acidental
-    header('Content-Type: text/plain; charset=utf-8');
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
+    header('Content-Type: text/plain; charset=utf-8'); // Para o webhook (POST do Stripe)
     $payload = @file_get_contents('php://input');
     $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
 
     // Log para depuração
     file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Payload: " . $payload . "\n", FILE_APPEND);
     file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Signature Header: " . $sig_header . "\n", FILE_APPEND);
-    file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Response Headers: " . print_r(headers_list(), true) . "\n", FILE_APPEND);
+    file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Response Headers: " . print_r(getallheaders(), true) . "\n", FILE_APPEND);
 
     try {
         $event = Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
@@ -52,15 +40,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $session = $event->data->object;
             $session_id = $session->id;
             file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Session ID: " . $session_id . "\n", FILE_APPEND);
-            // Aqui você pode adicionar lógica adicional, se necessário
+            // Prosseguir com o processamento abaixo
         }
         http_response_code(200);
-        ob_end_clean();
         echo "Webhook received successfully";
         exit;
     } catch (\Exception $e) {
         http_response_code(400);
-        ob_end_clean();
         echo "Webhook error: " . $e->getMessage();
         file_put_contents('error_log.txt', date('Y-m-d H:i:s') . ' - Webhook Error: ' . $e->getMessage() . "\n", FILE_APPEND);
         exit;
@@ -179,9 +165,9 @@ $defaultPassword = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
 // Controle para evitar duplicação por session_id
 if ($session_id) {
     try {
-        // Busca os dados da sessão com expansão dos itens da assinatura
+        // Busca os dados da sessão
         $session = Session::retrieve($session_id, [
-            'expand' => ['customer', 'subscription', 'payment_intent.payment_method', 'subscription.items'],
+            'expand' => ['customer', 'subscription', 'payment_intent.payment_method'],
         ]);
 
         $customer = $session->customer;
@@ -200,33 +186,18 @@ if ($session_id) {
 
         // Verificar se há uma assinatura e extrair o valor corretamente
         $valor = 0; // Valor padrão
-        $priceId = null;
-
-        // Verificar se $subscription é uma string (ID) ou um objeto
-        if ($subscription) {
-            if (is_string($subscription)) {
-                // Se $subscription for uma string (ID), buscar o objeto completo
-                $subscription = Subscription::retrieve($subscription, ['expand' => ['items']]);
-                file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Subscription fetched from ID: " . $subscription->id . "\n", FILE_APPEND);
+        if ($subscription && isset($subscription->items->data[0]->price->unit_amount)) {
+            $priceId = $subscription->items->data[0]->price->id;
+            $valor = $subscription->items->data[0]->price->unit_amount / 100;
+            file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Price ID: " . $priceId . ", Valor: " . $valor . "\n", FILE_APPEND);
+        } else {
+            // Caso não haja assinatura, tentar obter o valor diretamente da sessão
+            if (isset($session->amount_total)) {
+                $valor = $session->amount_total / 100;
+                file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Amount Total: " . $valor . "\n", FILE_APPEND);
+            } else {
+                file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - No subscription or amount_total found.\n", FILE_APPEND);
             }
-
-            // Agora $subscription deve ser um objeto, podemos acessar seus dados
-            if (isset($subscription->items->data[0]->price->unit_amount)) {
-                $priceId = $subscription->items->data[0]->price->id;
-                $valor = $subscription->items->data[0]->price->unit_amount / 100;
-                file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Price ID: " . $priceId . ", Valor: " . $valor . "\n", FILE_APPEND);
-            }
-        }
-
-        // Se não houver assinatura ou o valor ainda for 0, usar amount_total
-        if ($valor == 0 && isset($session->amount_total)) {
-            $valor = $session->amount_total / 100;
-            file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Amount Total: " . $valor . "\n", FILE_APPEND);
-        }
-
-        // Se ainda assim o valor for 0, registrar um erro no log
-        if ($valor == 0) {
-            file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - No subscription or amount_total found.\n", FILE_APPEND);
         }
 
         $plano = ($priceId === 'price_1RTXujQwVYKsR3u1RPS4YJ2k' || $priceId === 'price_1RUErpQwVYKsR3u108WBjSM6') ? 1 : 2;
@@ -248,16 +219,14 @@ if ($session_id) {
             $pdo = new PDO("mysql:host=$db_servidor;dbname=$db_nome;charset=utf8", $db_usuario, $db_senha);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            file_put_contents('error_log.txt', date('Y-m-d H:i:s') . " - Erro ao conectar com o banco 'barbearia': " . $e->getMessage() . "\n", FILE_APPEND);
-            throw new Exception("Erro ao conectar com o banco de dados 'barbearia': " . $e->getMessage());
+            die("Erro ao conectar com o banco de dados 'barbearia': " . $e->getMessage());
         }
 
         try {
             $pdo2 = new PDO("mysql:host=$db_servidor;dbname=$db_nome2;charset=utf8", $db_usuario, $db_senha);
             $pdo2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            file_put_contents('error_log.txt', date('Y-m-d H:i:s') . " - Erro ao conectar com o banco 'gestao_sistemas': " . $e->getMessage() . "\n", FILE_APPEND);
-            throw new Exception("Erro ao conectar com o banco de dados 'gestao_sistemas': " . $e->getMessage());
+            die("Erro ao conectar com o banco de dados 'sistema_gestao': " . $e->getMessage());
         }
 
         // Verificar se o email já existe na tabela config
@@ -453,26 +422,21 @@ if ($session_id) {
         $pdo2 = null;
 
         echo "<!-- Dados registrados com sucesso para ID Conta: $idConta -->"; // Log invisível para depuração
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
+            header('Content-Type: text/plain; charset=utf-8');
+            http_response_code(200);
+            echo "Webhook processed successfully";
+            exit;
+        }
     } catch (Exception $e) {
-        // Log do erro para depuração
-        file_put_contents('error_log.txt', date('Y-m-d H:i:s') . " - Erro ao processar sessão: " . $e->getMessage() . "\n", FILE_APPEND);
-        
-        // Define valores padrão para evitar erros no HTML
-        $email = 'email_nao_disponivel@example.com';
-        $defaultPassword = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
-        $trialDays = 15;
-        $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
-
-        // Se for um webhook, retorna erro
+        $email = 'email_nao_disponivel@example.com'; // Fallback em caso de erro
+        echo "<!-- Erro ao processar sessão: " . $e->getMessage() . " -->"; // Log invisível para depuração
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
             header('Content-Type: text/plain; charset=utf-8');
             http_response_code(400);
             echo "Webhook error: " . $e->getMessage();
             exit;
         }
-
-        // Para requisições GET, continua para exibir o HTML abaixo com os valores padrão
-        echo "<!-- Erro ao processar sessão: " . $e->getMessage() . " -->"; // Log invisível para depuração
     }
 }
 ?>
