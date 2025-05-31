@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATU
     // Log para depuração
     file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Payload: " . $payload . "\n", FILE_APPEND);
     file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Signature Header: " . $sig_header . "\n", FILE_APPEND);
+    file_put_contents('webhook_log.txt', date('Y-m-d H:i:s') . " - Response Headers: " . print_r(getallheaders(), true) . "\n", FILE_APPEND);
 
     try {
         $event = Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
@@ -180,10 +181,27 @@ if ($session_id) {
         $formaPgto = $paymentMethod && $paymentMethod->card ? $paymentMethod->card->brand : 'desconhecida';
         $cpf = htmlspecialchars($customer->metadata->cpf ?? '12345678900');
 
-        $priceId = $subscription->items->data[0]->price->id;
+        // Log para depuração do valor
+        file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Session Data: " . print_r($session, true) . "\n", FILE_APPEND);
+
+        // Verificar se há uma assinatura e extrair o valor corretamente
+        $valor = 0; // Valor padrão
+        if ($subscription && isset($subscription->items->data[0]->price->unit_amount)) {
+            $priceId = $subscription->items->data[0]->price->id;
+            $valor = $subscription->items->data[0]->price->unit_amount / 100;
+            file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Price ID: " . $priceId . ", Valor: " . $valor . "\n", FILE_APPEND);
+        } else {
+            // Caso não haja assinatura, tentar obter o valor diretamente da sessão
+            if (isset($session->amount_total)) {
+                $valor = $session->amount_total / 100;
+                file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - Amount Total: " . $valor . "\n", FILE_APPEND);
+            } else {
+                file_put_contents('session_log.txt', date('Y-m-d H:i:s') . " - No subscription or amount_total found.\n", FILE_APPEND);
+            }
+        }
+
         $plano = ($priceId === 'price_1RTXujQwVYKsR3u1RPS4YJ2k' || $priceId === 'price_1RUErpQwVYKsR3u108WBjSM6') ? 1 : 2;
         $frequencia = ($priceId === 'price_1RUErpQwVYKsR3u108WBjSM6' || $priceId === 'price_1RUEtsQwVYKsR3u1EtM51sF2') ? 365 : 30;
-        $valor = $subscription->items->data[0]->price->unit_amount / 100;
         $dataAtual = date('Y-m-d H:i:s');
 
         $numeroAleatorio = rand(100000, 999999);
