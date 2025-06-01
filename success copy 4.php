@@ -191,12 +191,10 @@ if ($session_id) {
         // Obter o customer_id
         $customer_id = is_string($customer) ? $customer : ($customer->id ?? 'desconhecido');
 
-        // Prioriza customer_details para email, nome e telefone (fornecidos no Checkout)
+        // Prioriza customer_details para email e nome (fornecidos no Checkout)
         $email = htmlspecialchars($session->customer_details->email ?? $customer->email ?? 'email_nao_disponivel@example.com');
         $nomeCliente = htmlspecialchars($session->customer_details->name ?? $customer->name ?? 'Cliente_' . rand(100000, 999999));
-        $telefoneRaw = $session->customer_details->phone ?? '11999999999'; // Usa o telefone coletado no checkout
-        // Função para formatar o telefone como (99) 99999-9999
-        $telefone = formatPhoneNumber($telefoneRaw);
+        $telefone = htmlspecialchars($customer->phone ?? '11999999999');
         $formaPgto = $paymentMethod && $paymentMethod->card ? $paymentMethod->card->brand : 'desconhecida';
         $cpf = htmlspecialchars($customer->metadata->cpf ?? '12345678900');
 
@@ -478,25 +476,6 @@ if ($session_id) {
 
         // Para requisições GET, continua para exibir o HTML abaixo com os valores padrão
         echo "<!-- Erro ao processar sessão: " . $e->getMessage() . " -->"; // Log invisível para depuração
-    }
-}
-
-// Função para formatar o telefone no formato (99) 99999-9999
-function formatPhoneNumber($phone) {
-    // Remove caracteres não numéricos e o código do país (+55)
-    $phone = preg_replace('/[^0-9]/', '', $phone);
-    $phone = preg_replace('/^55/', '', $phone); // Remove +55 do início, se presente
-
-    // Verifica se o número tem pelo menos 10 dígitos (DDD + número)
-    if (strlen($phone) == 10) {
-        // Formato: (DD) DDDDD-DDDD
-        return sprintf('(%02d) %05d-%04d', substr($phone, 0, 2), substr($phone, 2, 5), substr($phone, 7, 4));
-    } elseif (strlen($phone) == 11) {
-        // Formato: (DD) DDDDD-DDDD (com 9 dígitos)
-        return sprintf('(%02d) %04d-%04d', substr($phone, 0, 2), substr($phone, 2, 5), substr($phone, 7, 4));
-    } else {
-        // Retorna o valor padrão se o formato não for válido
-        return '11999999999';
     }
 }
 ?>
