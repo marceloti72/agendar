@@ -25,45 +25,54 @@ use Stripe\Subscription;
 Stripe::setApiKey('sk_test_51RTXIZQwVYKsR3u1YtG7aK6S7d4sOg3Pnw8nKlXQNRBEFRGOncTdr0850Ddp1px4FRC0XuL29MaKyoy3JFiZh0Wa00reKEwQHt');
 $endpoint_secret = 'whsec_aiXk2ZhwnDfOepwrRIoRNFDkC3g5Ok3e'; // Confirme essa chave no painel do Stripe
 
-// Processamento de webhook (POST do Stripe)
+// Processamento de requisições POST (webhook ou formulário)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Log inicial para depuração
-    file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - POST request received\n", FILE_APPEND);
-    
-    if (!isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
-        file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Stripe-Signature header missing\n", FILE_APPEND);
-        http_response_code(404);
-        echo "Stripe-Signature header missing";
-        exit;
-    }
-
-    ob_start(); // Evitar saída acidental
-    header('Content-Type: text/plain; charset=utf-8');
-    $payload = @file_get_contents('php://input');
-    $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
-
-    // Log para depuração
-    file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Payload: " . $payload . "\n", FILE_APPEND);
-    file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Signature Header: " . $sig_header . "\n", FILE_APPEND);
-    file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Response Headers: " . print_r(headers_list(), true) . "\n", FILE_APPEND);
-
-    try {
-        $event = Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
-        if ($event->type === 'checkout.session.completed') {
-            $session = $event->data->object;
-            $session_id = $session->id;
-            file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Session ID: " . $session_id . "\n", FILE_APPEND);
+    // Verifica se é uma submissão do formulário de novo email
+    if (isset($_POST['new_email'])) {
+        $session_id = $_POST['session_id'] ?? null;
+        $email = htmlspecialchars($_POST['new_email']);
+        // Aqui você pode adicionar lógica para processar o novo email (se necessário antes de continuar)
+        // Por enquanto, apenas continua o fluxo com o novo email
+    } else {
+        // Processamento de webhook (POST do Stripe)
+        // Log inicial para depuração
+        file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - POST request received\n", FILE_APPEND);
+        
+        if (!isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
+            file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Stripe-Signature header missing\n", FILE_APPEND);
+            http_response_code(404);
+            echo "Stripe-Signature header missing";
+            exit;
         }
-        http_response_code(200);
-        ob_end_clean();
-        echo "Webhook received successfully";
-        exit;
-    } catch (\Exception $e) {
-        http_response_code(404);
-        ob_end_clean();
-        echo "Webhook error: " . $e->getMessage();
-        file_put_contents('/var/www/agendar/error_log.txt', date('Y-m-d H:i:s') . ' - Webhook Error: ' . $e->getMessage() . "\n", FILE_APPEND);
-        exit;
+
+        ob_start(); // Evitar saída acidental
+        header('Content-Type: text/plain; charset=utf-8');
+        $payload = @file_get_contents('php://input');
+        $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+
+        // Log para depuração
+        file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Payload: " . $payload . "\n", FILE_APPEND);
+        file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Signature Header: " . $sig_header . "\n", FILE_APPEND);
+        file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Response Headers: " . print_r(headers_list(), true) . "\n", FILE_APPEND);
+
+        try {
+            $event = Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
+            if ($event->type === 'checkout.session.completed') {
+                $session = $event->data->object;
+                $session_id = $session->id;
+                file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Session ID: " . $session_id . "\n", FILE_APPEND);
+            }
+            http_response_code(200);
+            ob_end_clean();
+            echo "Webhook received successfully";
+            exit;
+        } catch (\Exception $e) {
+            http_response_code(404);
+            ob_end_clean();
+            echo "Webhook error: " . $e->getMessage();
+            file_put_contents('/var/www/agendar/error_log.txt', date('Y-m-d H:i:s') . ' - Webhook Error: ' . $e->getMessage() . "\n", FILE_APPEND);
+            exit;
+        }
     }
 }
 
@@ -170,11 +179,66 @@ if ($session_id && isset($_SESSION['processed_session_ids'][$session_id])) {
     exit;
 }
 
+// Inicializa variáveis com valores padrão para evitar erros de "undefined variable"
 $email = 'carregando...';
 $trialDays = 15;
 $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
 // Gera senha aleatória de 6 dígitos
 $defaultPassword = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
+
+// Verifica se o session_id é válido antes de prosseguir
+if (!$session_id) {
+    // Exibir mensagem de erro para session_id inválido
+    echo '<!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Erro</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #28a745;
+                margin: 0;
+                padding: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }
+            .container {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                text-align: center;
+                max-width: 500px;
+                width: 100%;
+            }
+            .title {
+                font-size: 24px;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 20px;
+            }
+            .message {
+                font-size: 16px;
+                color: #dc3545;
+                margin-bottom: 15px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="title">Erro</div>
+            <div class="message">
+                Session ID não fornecido ou inválido. Por favor, tente novamente.
+            </div>
+        </div>
+    </body>
+    </html>';
+    exit;
+}
 
 // Controle para evitar duplicação por session_id
 if ($session_id) {
@@ -198,7 +262,7 @@ if ($session_id) {
         // Função para formatar o telefone como (99) 99999-9999
         $telefone = formatPhoneNumber($telefoneRaw);
         $formaPgto = $paymentMethod && $paymentMethod->card ? $paymentMethod->card->brand : 'desconhecida';
-        $cpf = htmlspecialchars($customer->metadata->cpf ?? '12345678900');
+        $cpf = rand(1000000000, 99999999999);
 
         // Log para depuração do valor
         file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Session Data: " . print_r($session, true) . "\n", FILE_APPEND);
@@ -348,7 +412,7 @@ if ($session_id) {
             exit;
         }
 
-        // Processar novo email do formulário
+        // Processar novo email do formulário (já capturado no início do POST, se aplicável)
         if (isset($_POST['new_email'])) {
             $email = htmlspecialchars($_POST['new_email']);
             $stmt = $pdo->prepare("SELECT COUNT(*) FROM config WHERE email = ?");
@@ -434,8 +498,8 @@ if ($session_id) {
         }
 
         // Inserir na tabela config
-        $stmt = $pdo->prepare("INSERT INTO config (nome, email, username, telefone_whatsapp, token, ativo, email_menuia, data_cadastro, plano) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nomeConfig, $email, $username, $telefone, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'teste', 'rtcorretora@gmail.com', $dataAtual, $plano]);
+        $stmt = $pdo->prepare("INSERT INTO config (nome, email, username, telefone_whatsapp, token, ativo, email_menuia, data_cadastro, plano, api) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nomeConfig, $email, $username, $telefone, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'teste', 'rtcorretora@gmail.com', $dataAtual, $plano, 'Sim']);
         $idConta = $pdo->lastInsertId();
 
         // Inserir na tabela usuarios
