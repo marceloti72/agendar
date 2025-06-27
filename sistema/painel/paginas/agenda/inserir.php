@@ -151,6 +151,22 @@ $query->execute();
 $ult_id = $pdo->lastInsertId();
 
 
+$query2 = $pdo->prepare("INSERT INTO comandas SET cliente = :cliente, valor = :valor, data = curDate(), hora = :hora, funcionario = :funcionario, status = 'Aberta', obs = :obs, pago = 'Não', id_conta = :id_conta");
+
+$query2->bindValue(":cliente", "$cliente");
+$query2->bindValue(":valor", "$valor");
+$query2->bindValue(":obs", "Comanda criada para agendamento ID "+"$ult_id");
+$query2->bindValue(":hora", "$hora");
+$query2->bindValue(":id_conta", "$id_conta");
+$query2->bindValue(":funcionario", "$usuario_logado");
+$query2->execute();
+
+$id_comanda = $pdo->lastInsertId();
+
+
+$pdo->query("UPDATE agendamentos SET comanda_id = '$id_comanda' WHERE id = '$ult_id' and id_conta = '$id_conta'");
+
+
 if ($msg_agendamento == 'Sim') {
 	if (strtotime($hora_atual) < strtotime($nova_hora) or strtotime($data_atual) != strtotime($data_agd)) {
 		$nome_sistema_maiusculo = mb_strtoupper($nome_sistema);

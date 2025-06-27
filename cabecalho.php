@@ -90,7 +90,7 @@ if(isset($_GET['id'])){
 <body class="sub_page" style="background-color:rgb(224, 224, 224);">
   <div class="hero_area">         
       <nav class="navbar navbar-expand-lg navbar-dark" id="cabecalho" style="background-color: #483D8B;">
-        <a class="navbar-brand" href="#">AGENDAR - Gestão de Serviços</a>
+        <a class="navbar-brand" href="#">MARKAI - Gestão de Serviços</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Alterna navegação">
           <span class="navbar-toggler-icon"></span>
         </button>

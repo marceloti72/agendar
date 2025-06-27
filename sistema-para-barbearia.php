@@ -5,7 +5,7 @@ require_once("cabecalho.php");?>
   
     <div class="text">
         <h1>Sistema completo de Gestão e agendamentos para sua Barbearia</h1>
-        <p>Diga adeus às dores de cabeça na hora de organizar sua agenda. Com o AGENDAR, sua barbearia ganha um sistema fácil, rápido e completo para gerenciar horários e otimizar o dia a dia.</p>
+        <p>Diga adeus às dores de cabeça na hora de organizar sua agenda. Com o MARKAI, sua barbearia ganha um sistema fácil, rápido e completo para gerenciar horários e otimizar o dia a dia.</p>
         <div class="buttons">
             <a href="precos.php" class="trial-large">TESTAR GRÁTIS POR 7 DIAS</a>
             <a href="https://wa.me/5522998838694" target="_blank" class="sales">FALAR COM VENDAS</a>
@@ -85,7 +85,7 @@ require_once("cabecalho.php");?>
 
     
     <main class="container">
-        <h2 class="text-center mb-5">Funcionalidades do Agendar</h2>
+        <h2 class="text-center mb-5">Funcionalidades do MARKAI</h2>
 
         <div class="row">
             <div class="col-md-6 col-lg-4">
@@ -111,7 +111,7 @@ require_once("cabecalho.php");?>
                     <i class="fas fa-bullhorn section-icon"></i>
                     <h3>Envio de Notícias e Promoções</h3>
                     <p>Precisa enviar para todos os seus clientes que irá promover um evento em alguma data, ou lançar alguma promoção ?</p>
-                    <p>O AGENDAR possui um sistema de marketing via WhatsApp configurável com textos, imagens e audio, você consegue enviar para todos ou um grupo de clientes.</p>
+                    <p>O MARKAI possui um sistema de marketing via WhatsApp configurável com textos, imagens e audio, você consegue enviar para todos ou um grupo de clientes.</p>
                 </div>
             </div>
 
@@ -120,7 +120,7 @@ require_once("cabecalho.php");?>
                     <i class="fas fa-chart-line section-icon"></i>
                     <h3>Gestão Financeira</h3>
                     <p>Ter o controle da sua barbearia é primordial para o sucesso do seu negócio.</p>
-                    <p>Com o AGENDAR, é possível te o controle de contas a pagar e a receber, controlar o processo de comissões, etc. E assim, você tem os resultados financeiros sempre atualizados. Controle total de seus numeros!</p>
+                    <p>Com o MARKAI, é possível te o controle de contas a pagar e a receber, controlar o processo de comissões, etc. E assim, você tem os resultados financeiros sempre atualizados. Controle total de seus numeros!</p>
                 </div>
             </div>
 
@@ -137,7 +137,7 @@ require_once("cabecalho.php");?>
                 <div class="section-card">
                     <i class="fas fa-file-alt section-icon"></i>
                     <h3>Relatórios Financeiros</h3>
-                    <p>Transformar dados e informações em CONHECIMENTO é um grande diferencial para tomadas de decisões. No AGENDAR, você tem:</p>
+                    <p>Transformar dados e informações em CONHECIMENTO é um grande diferencial para tomadas de decisões. No MARKAI, você tem:</p>
                     <ul>
                         <li>Relatório de Produtos</li>
                         <li>Relatório de Entradas</li>
@@ -163,7 +163,7 @@ require_once("cabecalho.php");?>
                 <div class="section-card">
                     <i class="fas fa-boxes section-icon"></i>
                     <h3>Gestão de Estoque</h3>
-                    <p>No AGENDAR vc faz o controle de estoque que é primordial para evitar prejuízos com perda ou vencimento de produtos. Com o AGENDAR você consegue:</p>
+                    <p>No MARKAI vc faz o controle de estoque que é primordial para evitar prejuízos com perda ou vencimento de produtos. Com o MARKAI você consegue:</p>
                     <ul>
                         <li>Saber o saldo de cada produto no estoque;</li>
                         <li>Histórico de movimentações de Entrada e Saída;</li>
@@ -198,7 +198,7 @@ require_once("cabecalho.php");?>
                 <div class="section-card">
                     <i class="fas fa-list-ul section-icon"></i>
                     <h3>Lista de Espera</h3>
-                    <p>Não perca oportunidades por falta de tempo! Com a Lista de Espera do AGENDAR, seus clientes se colocam na fila pelo site e são avisados automaticamente assim que um horário aparece. Você mantém o foco no seu talento, e nós garantimos que sua agenda esteja sempre aproveitada ao máximo.</p>
+                    <p>Não perca oportunidades por falta de tempo! Com a Lista de Espera do MARKAI, seus clientes se colocam na fila pelo site e são avisados automaticamente assim que um horário aparece. Você mantém o foco no seu talento, e nós garantimos que sua agenda esteja sempre aproveitada ao máximo.</p>
                 </div>
             </div>
 
@@ -206,7 +206,7 @@ require_once("cabecalho.php");?>
                 <div class="section-card">
                     <i class="fas fa-comment-dots section-icon"></i>
                     <h3>Mensagens de Retorno Automáticas</h3>
-                    <p>Manter seus clientes voltando é chave para o sua barbearia crescer. Estudos apontam que fidelizar pode ser 5 vezes mais econômico do que buscar novos clientes. Com o AGENDAR, mensagens automáticas de retorno são enviadas no dia perfeito, garantindo que eles não se esqueçam de você.</p>
+                    <p>Manter seus clientes voltando é chave para o sua barbearia crescer. Estudos apontam que fidelizar pode ser 5 vezes mais econômico do que buscar novos clientes. Com o MARKAI, mensagens automáticas de retorno são enviadas no dia perfeito, garantindo que eles não se esqueçam de você.</p>
                 </div>
             </div>
 
@@ -214,7 +214,7 @@ require_once("cabecalho.php");?>
                 <div class="section-card">
                     <i class="fas fa-star section-icon"></i>
                     <h3>Pesquisa de Satisfação</h3>
-                    <p>A satisfação do cliente é a chave para a fidelidade e a excelência no serviço. Habilite a pesquisa de satisfação no AGENDAR: depois de cada atendimento, seu cliente dá um feedback sobre o profissional. Você analisa as respostas e toma decisões para manter todos felizes e voltando sempre.</p>
+                    <p>A satisfação do cliente é a chave para a fidelidade e a excelência no serviço. Habilite a pesquisa de satisfação no MARKAI: depois de cada atendimento, seu cliente dá um feedback sobre o profissional. Você analisa as respostas e toma decisões para manter todos felizes e voltando sempre.</p>
                 </div>
             </div>
 
@@ -230,7 +230,7 @@ require_once("cabecalho.php");?>
                 <div class="section-card">
                     <i class="fas fa-globe section-icon"></i>
                     <h3>Site do Estabelecimento</h3>
-                    <p>Leve sua barbearia mais longe com um site próprio! O AGENDAR cria um site pra você customizar com horários, localização, serviços, produtos e fotos. Seus clientes te encontram nas buscas e agendam direto – uma ponte perfeita entre você e quem quer seus serviços!</p>
+                    <p>Leve sua barbearia mais longe com um site próprio! O MARKAI cria um site pra você customizar com horários, localização, serviços, produtos e fotos. Seus clientes te encontram nas buscas e agendam direto – uma ponte perfeita entre você e quem quer seus serviços!</p>
                 </div>
             </div>
 
@@ -238,7 +238,7 @@ require_once("cabecalho.php");?>
                 <div class="section-card">
                     <i class="fab fa-facebook section-icon"></i>
                     <h3>Agendar pelo Site ou Facebook</h3>
-                    <p>Já tem um site ou uma página no Facebook da sua barbearia? Dê um passo além: adicione o link de Agendamento Online do AGENDAR! É mais um canal pra facilitar a vida dos seus clientes e turbinar seus agendamentos.</p>
+                    <p>Já tem um site ou uma página no Facebook da sua barbearia? Dê um passo além: adicione o link de Agendamento Online do MARKAI! É mais um canal pra facilitar a vida dos seus clientes e turbinar seus agendamentos.</p>
                 </div>
             </div>
 
@@ -246,7 +246,7 @@ require_once("cabecalho.php");?>
                 <div class="section-card">
                     <i class="fas fa-birthday-cake section-icon"></i>
                     <h3>Aniversariantes</h3>
-                    <p>Um parabéns no aniversário pode conquistar o coração do cliente! O AGENDAR te avisa quem está comemorando, pra você enviar uma mensagem ou uma promoção única. Ative as mensagens automáticas no WhatsApp e veja o AGENDAR transformar datas especiais em fidelidade sem esforço. </p>
+                    <p>Um parabéns no aniversário pode conquistar o coração do cliente! O MARKAI te avisa quem está comemorando, pra você enviar uma mensagem ou uma promoção única. Ative as mensagens automáticas no WhatsApp e veja o MARKAI transformar datas especiais em fidelidade sem esforço. </p>
                 </div>
             </div>
 
@@ -254,7 +254,7 @@ require_once("cabecalho.php");?>
                 <div class="section-card">
                     <i class="fas fa-credit-card section-icon"></i>
                     <h3>Pagamento On-line</h3>
-                    <p>O consumo online avança 90% por ano, mudando rapidinho como os clientes consomem. Adote o pagamento online com o AGENDAR: você protege seu lucro contra ausências, incentiva o cliente a comparecer (quem paga antes não perde!), oferece praticidade e posiciona sua barbearia numa tendência mundial com tecnologia confiável.</p>
+                    <p>O consumo online avança 90% por ano, mudando rapidinho como os clientes consomem. Adote o pagamento online com o MARKAI: você protege seu lucro contra ausências, incentiva o cliente a comparecer (quem paga antes não perde!), oferece praticidade e posiciona sua barbearia numa tendência mundial com tecnologia confiável.</p>
                 </div>
             </div>
 
@@ -262,7 +262,7 @@ require_once("cabecalho.php");?>
                 <div class="section-card">
                     <i class="fas fa-money-check-alt section-icon"></i>
                     <h3>Comissões de Profissionais</h3>
-                    <p>Transforme a gestão de comissões com o AGENDAR! Configure por serviço, gere relatórios poderosos e tenha as informações certas pra pagar seus profissionais com clareza e confiança, fortalecendo seu time.</p>
+                    <p>Transforme a gestão de comissões com o MARKAI! Configure por serviço, gere relatórios poderosos e tenha as informações certas pra pagar seus profissionais com clareza e confiança, fortalecendo seu time.</p>
                 </div>
             </div>
        

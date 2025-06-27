@@ -7,7 +7,7 @@
                 <div class="col-md-8 col-lg-6 footer-col">
                     <div class="footer_detail">
                         <a href="index.php">
-                            <h4>AGENDAR - Sistema de Gestão de Serviços</h4>
+                            <h4>MARKAI - Sistema de Gestão de Serviços</h4>
                         </a>
                         <small>Desenvolvido por</small><br>
                         <img src="images/logo-ss-branco-lg.png" alt="Logo Skysee">

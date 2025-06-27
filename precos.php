@@ -21,7 +21,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planos AGENDAR</title>
+    <title>Planos MARKAI</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -288,7 +288,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
 <div style="display: flex; align-items: center; justify-content: center; height: 200px; ">
   <div style="text-align: center;">
     <h1>Planos e Preços</h1>
-    <h3>Escolha o plano da AGENDAR que melhor encaixe na sua gestão de negócio.</h3>
+    <h3>Escolha o plano da MARKAI que melhor encaixe na sua gestão de negócio.</h3>
   </div>
 </div>
     <div class="toggle-plano">

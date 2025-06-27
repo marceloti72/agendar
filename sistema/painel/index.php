@@ -380,7 +380,7 @@ $plano = $res3['plano'];
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<h1><a style="color: white;text-shadow: 1px 1px 3px black; " class="navbar-brand" href="index.php"><i class="bi bi-clock-history"></i> Agendar<span class="dashboard_text"><?php echo $nome_sistema ?></span></a></h1>
+						<h1><a style="color: white;text-shadow: 1px 1px 3px black; " class="navbar-brand" href="index.php"><i class="bi bi-clock-history"></i> MarkAI<span class="dashboard_text"><?php echo $nome_sistema ?></span></a></h1>
 					</div>
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="sidebar-menu">
@@ -413,9 +413,15 @@ $plano = $res3['plano'];
 								</ul>
 							</li>
 
+							<li class="treeview <?php echo @$menu_agendamentos ?>">
+								<a href="agendamentos">
+								<i class="fe fe-clock"></i> <span>Agendamentos</span>
+								</a>
+							</li>
+
 							<li class="treeview <?php echo @$comanda ?>">
 								<a href="comanda">
-								<i class="fa fa-clipboard"></i> <span>Nova Comanda</span>
+								<i class="fa fa-clipboard"></i> <span>Comandas</span>
 								</a>
 							</li>
 

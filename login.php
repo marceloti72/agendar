@@ -29,7 +29,7 @@
 </head>
 <style>
 	.container-login100 {
-		background-color: #4682B4 ;
+		background-color:rgb(163, 163, 163) ;
 	}
 
 	
@@ -45,7 +45,7 @@
 		<div class="container-login100">
 			<div class="wrap-login100">		
 			    <div class="panel-heading" align="center" style="width: 100%; margin-top: -78px; margin-left: -57px; margin-bottom: 40px;">
-			    	<img src="sistema/img/logo_login.jpg" width="400px">
+			    	<img src="sistema/img/icon.png" width="400px">
 			 	</div>		
 				<form action="sistema/autenticar.php" method="post">
 					
