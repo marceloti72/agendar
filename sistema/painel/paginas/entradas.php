@@ -7,10 +7,9 @@ require_once("../conexao.php");
 $pag = 'entradas';
 
 //verificar se ele tem a permissão de estar nessa página
-if(@$entradas == 'ocultar'){
-    echo "<script>window.location='../index.php'</script>";
-    exit();
-}
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 ?>
 
 

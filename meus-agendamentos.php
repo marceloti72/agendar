@@ -53,7 +53,7 @@ if ($telefone == '') {
 		<div class="footer_content " >
 			
 <?php
-$query = $pdo->query("SELECT * FROM agendamentos where cliente = '$id_cliente' and status = 'Agendado' and id_conta = '$id_conta' ORDER BY data asc");
+$query = $pdo->query("SELECT * FROM agendamentos where cliente = '$id_cliente' and status = 'Agendado' and id_conta = '$id_conta' ORDER BY data desc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if($total_reg > 0){

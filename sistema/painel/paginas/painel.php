@@ -9,10 +9,9 @@ $usuario_nivel = $_SESSION['nivel_usuario'];
 $hoje = date('Y-m-d');
 
 // Verificar se ele tem a permissão de estar nessa página
-if(@$home == 'ocultar'){
-    echo "<script>window.location='../index.php'</script>";
-    exit();
-}
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 
 $query = $pdo->query("SELECT * FROM receber where data_lanc = '$hoje' and tipo = 'Serviço' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);

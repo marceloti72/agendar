@@ -7,10 +7,9 @@ require_once("../conexao.php");
 $pag = 'funcionarios';
 
 //verificar se ele tem a permissão de estar nessa página
-if(@$funcionarios == 'ocultar'){
-    echo "<script>window.location='../index.php'</script>";
-    exit();
-}
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 ?>
 
 <style>
@@ -29,7 +28,7 @@ if(@$funcionarios == 'ocultar'){
 </style>
 
 <div class="">      
-	<a class="btn btn-primary novo" onclick="inserir()" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Novo Funcionário</a>
+	<a class="btn btn-primary novo" onclick="inserir()" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'><i class="fa fa-plus" aria-hidden="true"></i> Novo Profissional</a>
 </div>
 
 <div class="bs-example widget-shadow" style="padding:15px" id="listar">
@@ -87,29 +86,31 @@ if(@$funcionarios == 'ocultar'){
 						</div>
 
 						<div class="col-md-4">
-							
-							<div class="form-group">
-								<label for="exampleInputEmail1">Cargo</label>
-								<select class="form-control sel2" id="cargo" name="cargo" style="width:100%;" > 
-
-									<?php 
-									$query = $pdo->query("SELECT * FROM cargos where nome != 'Administrador' and id_conta = '$id_conta' ORDER BY nome asc");
-									$res = $query->fetchAll(PDO::FETCH_ASSOC);
-									$total_reg = @count($res);
-									if($total_reg > 0){
-										for($i=0; $i < $total_reg; $i++){
-											foreach ($res[$i] as $key => $value){}
-												echo '<option value="'.$res[$i]['nome'].'">'.$res[$i]['nome'].'</option>';
-										}
-									}else{
-										echo '<option value="0">Cadastre um Cargo</option>';
-									}
-									?>
-									
-
-								</select>   
-							</div> 	
+						<div class="form-group">
+							<label for="cargo">Cargo</label>
+							<input type="text" class="form-control" id="cargo" name="cargo" placeholder="Cargo">
 						</div>
+
+						<div class="form-group form-check">
+							<input type="checkbox" class="form-check-input" id="isAdmin" onchange="toggleCargoField()">
+							<label class="form-check-label" for="isAdmin">É administrador?</label>
+						</div>
+						</div>
+
+						<script>
+						function toggleCargoField() {
+							const cargoField = document.getElementById('cargo');
+							const isAdminCheckbox = document.getElementById('isAdmin');
+
+							if (isAdminCheckbox.checked) {
+							cargoField.value = 'Administrador';
+							cargoField.readOnly = true; // Torna o campo não editável
+							} else {
+							cargoField.value = ''; // Limpa o campo se não for administrador
+							cargoField.readOnly = false; // Torna o campo editável
+							}
+						}
+						</script>
 					</div>
 
 					<div class="row">
@@ -178,7 +179,7 @@ if(@$funcionarios == 'ocultar'){
 
 						<div class="col-md-6">
 							<div class="form-group">
-								<label for="exampleInputEmail1">Comissão <small>(Se for Diferente do Padrão)</small></label>
+								<label for="exampleInputEmail1">Comissão</label>
 								<input type="number" class="form-control" id="comissao" name="comissao" placeholder="Valor R$ ou %" >    
 							</div> 	
 						</div>

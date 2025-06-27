@@ -213,7 +213,7 @@ echo <<<HTML
 
 		<a href="#" class="btn btn-{$cor} btn-xs" onclick="ativar('{$id}', '{$acao}')" title="{$titulo_link}"><i class="fe {$icone}"></i></a>
 
-		<a href="#" class="btn btn-primary btn-xs" onclick="permissoes('{$id}', '{$nome}')" title="Definir Permissões"><i class="fe fe-lock"></i></a>
+		<!-- <a href="#" class="btn btn-primary btn-xs" onclick="permissoes('{$id}', '{$nome}')" title="Definir Permissões"><i class="fe fe-lock"></i></a> -->
 
 
 		</td>
@@ -254,7 +254,7 @@ HTML;
 		$('#email').val(email);
 		$('#telefone').val(telefone);
 		$('#cpf').val(cpf);
-		$('#cargo').val(nivel).change();
+		$('#cargo').val(nivel);
 		$('#endereco').val(endereco);
 		$('#atendimento').val(atendimento).change();
 

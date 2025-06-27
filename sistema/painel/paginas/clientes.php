@@ -7,10 +7,9 @@ $id_conta = $_SESSION['id_conta'];
 $pag = 'clientes';
 
 //verificar se ele tem a permissão de estar nessa página
-if (@$clientes == 'ocultar') {
-	echo "<script>window.location='../index.php'</script>";
-	exit();
-}
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 ?>
 <style>
 	@media (max-width: 768px) {

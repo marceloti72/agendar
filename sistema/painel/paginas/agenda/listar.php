@@ -269,11 +269,7 @@ echo <<<HTML
         		
 
 				<li class="dropdown head-dpdn2" style="list-style-type: none;">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-		<button type="button" class="close" title="Excluir agendamento" style="margin-top: -10px">
-					<span aria-hidden="true"><big>&times;</big></span>
-				</button>
-				</a>
+				
 
 		<ul class="dropdown-menu" style="margin-left:-30px;">
 		<li>
@@ -284,34 +280,18 @@ echo <<<HTML
 		</ul>
 		</li>
 
-
 		<div class="row">
         		<div class="col-md-3 dropdown-column">
 				<li class="dropdown head-dpdn2" style="list-style-type: none;">
-				<a href="#" class="dropdown-toggle" title="Histórico financeiro do cliente" data-toggle="dropdown" aria-expanded="false" >
-		<img class="icon-rounded-vermelho" src="img/{$imagem}" width="75px" height="75px">
-				</a>
-
-		<ul class="dropdown-menu" style="margin-left:-30px;">
-		<li>
-		<div class="notification_desc2">
-		<p>
-		<span style="margin-right: 20px; "><b>Débitos do Cliente</b></span><br>
-		<span style="margin-right: 20px; ">Total Vencido <span style="color:red">R$ {$total_vencidoF}</span></span><br>
-		<span style="margin-right: 20px; ">Total à Vencer <span style="color:blue">R$ {$total_pagarF}</span></span><br>
-		<span >Total Pagar <span style="color:green">R$ {$total_debitosF}</span></span>
-		</p>
-		<p>Observações: {$obs}</p>
-		</div>
-		</li>										
-		</ul>
+				
+		<img class="icon-rounded-vermelho" src="img/{$imagem}" width="75px" height="75px">		
 		</li>
         			 
         		</div>
         		<div class="col-md-9 service-column" >
-				<div class="service-item">
+				
 					<h5 class="service-header" >
-					<a href="#" onclick="verificarStatus('{$id}', '{$cliente}', '{$servico}', '{$valor_serv}', '{$funcionario}', '{$nome_serv}', '{$status}')" title="Finalizar Serviço">
+					
 					<strong class="service-time">
 						<h2>{$horaF}</h2>
 					</strong>
@@ -322,7 +302,7 @@ echo <<<HTML
 												
 					</h5>
 					
-				</div>        			
+				       			
         		</div>
 				<button style='cursor: default; width: 100%; background-color: {$cor};' class="payment-status {$classe_valor_pago}" >{$valor_pagoF}</button>
 				<button style='cursor: default;width: 100%; background-color: {$cor2}; color: {$cor3};' class="payment-status {$classe_finalizado}" >{$finalizado}</button>

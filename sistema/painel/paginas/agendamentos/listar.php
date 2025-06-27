@@ -277,7 +277,7 @@ if ($total_reg > 0) {
 				<li class="dropdown head-dpdn2" style="list-style-type: none;">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 		<button type="button" class="close" title="Excluir agendamento" style="margin-top: -10px">
-					<span aria-hidden="true"><big>&times;</big></span>
+					<span aria-hidden="true"><big>Excluir</big></span>
 				</button>
 				</a>
 
@@ -314,21 +314,13 @@ if ($total_reg > 0) {
 		</li>
         			 
         		</div>
-        		<div class="col-md-9 service-column" >
-				<div class="service-item">
-					<h5 class="service-header" >
-					<a href="#" onclick="verificarStatus('{$id}', '{$cliente}', '{$servico}', '{$valor_serv}', '{$funcionario}', '{$nome_serv}', '{$status}')" title="Finalizar Serviço">
+        		<div class="col-md-9" >				
+					<h5 class="service-header" >					
 					<strong class="service-time">
 						<h2>{$horaF}</h2>
-					</strong>
-					</a>
-						<div class="service-actions">					
-						
-						</div>
-												
-					</h5>
-					
-				</div>        			
+					</strong>																
+					</h5>			
+				       			
         		</div>
 				<button style='cursor: default;width: 100%; background-color: {$cor};' class="payment-status {$classe_valor_pago}" >{$valor_pagoF}</button>
 				<button style='cursor: default;width: 100%; background-color: {$cor2}; color: {$cor3};' class="payment-status {$classe_finalizado}" >{$finalizado}</button>

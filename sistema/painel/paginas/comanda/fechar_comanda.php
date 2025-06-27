@@ -91,6 +91,8 @@ $descricao = 'Comanda ' . $nome_cliente;
 $pdo->query("UPDATE receber SET valor = '0', pago = 'Sim', data_pgto = curDate(), usuario_baixa = '$usuario_logado', pgto = '$pgto' where comanda = '$id' and id_conta = '$id_conta'");
 $pdo->query("UPDATE comandas SET valor = '$valor_total_servico', status = 'Fechada' where id = '$id' and id_conta = '$id_conta'");
 
+$pdo->query("UPDATE agendamentos SET status = 'Concluído' where comanda_id = '$id' and id_conta = '$id_conta'");
+
 
 
 if ($valor_serv_restante > 0) {
@@ -113,6 +115,7 @@ if ($valor_serv_restante > 0) {
 
 
 $pdo->query("INSERT INTO $tabela SET descricao = '$descricao', tipo = 'Comanda', valor = '$valor_serv', data_lanc = curDate(), data_venc = '$data_pgto', data_pgto = '$data_pgto2', usuario_lanc = '$usuario_logado', usuario_baixa = '$usuario_baixa', foto = 'sem-foto.jpg', pessoa = '$cliente', pago = '$pago', pgto = '$pgto', func_comanda = '$usuario_logado', comanda = '$id', id_conta = '$id_conta'");
+
 
 
 $pdo->query("UPDATE clientes SET cartoes = '$cartoes' where id = '$cliente' and id_conta = '$id_conta'");

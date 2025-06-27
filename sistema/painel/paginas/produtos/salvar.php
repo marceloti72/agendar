@@ -13,12 +13,12 @@ $valor_venda = str_replace(',', '.', $valor_venda);
 $descricao = $_POST['descricao'];
 $nivel_estoque = $_POST['nivel_estoque'];
 
-$categoria = $_POST['categoria'];
+//$categoria = $_POST['categoria'];
 
-if($categoria == 0){
-	echo 'Cadastre uma Categoria de Produtos para o Produto';
-	exit();
-}
+// if($categoria == 0){
+// 	echo 'Cadastre uma Categoria de Produtos para o Produto';
+// 	exit();
+// }
 
 //validar nome
 $query = $pdo->query("SELECT * from $tabela where nome = '$nome' and id_conta = '$id_conta'");
@@ -27,10 +27,6 @@ if(@count($res) > 0 and $id != $res[0]['id']){
 	echo 'Nome já Cadastrado, escolha outro!!';
 	exit();
 }
-
-
-
-
 
 //validar troca da foto
 $query = $pdo->query("SELECT * FROM $tabela where id = '$id' and id_conta = '$id_conta'");
@@ -73,9 +69,9 @@ if(@$_FILES['foto']['name'] != ""){
 
 
 if($id == ""){
-	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, categoria = '$categoria', valor_compra = :valor_compra, valor_venda = :valor_venda, descricao = :descricao, foto = '$foto', nivel_estoque = '$nivel_estoque', id_conta = '$id_conta'");
+	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, valor_compra = :valor_compra, valor_venda = :valor_venda, descricao = :descricao, foto = '$foto', nivel_estoque = '$nivel_estoque', id_conta = '$id_conta'");
 }else{
-	$query = $pdo->prepare("UPDATE $tabela SET nome = :nome, categoria = '$categoria', valor_compra = :valor_compra, valor_venda = :valor_venda, descricao = :descricao, foto = '$foto', nivel_estoque = '$nivel_estoque' WHERE id = '$id' and id_conta = '$id_conta'");
+	$query = $pdo->prepare("UPDATE $tabela SET nome = :nome, valor_compra = :valor_compra, valor_venda = :valor_venda, descricao = :descricao, foto = '$foto', nivel_estoque = '$nivel_estoque' WHERE id = '$id' and id_conta = '$id_conta'");
 }
 
 $query->bindValue(":nome", "$nome");

@@ -96,13 +96,13 @@
             </h2>
             <p class="col-lg-8 px-0">
                 <?php
-                $query_cat = $pdo->query("SELECT * FROM cat_servicos where id_conta = '$id_conta' ORDER BY id asc");
-                $res_cat = $query_cat->fetchAll(PDO::FETCH_ASSOC);
-                if(count($res_cat) > 0){
-                    foreach($res_cat as $cat){
-                        echo '<button style="border-radius: 10px; background-color:rgb(141, 157, 248); color: white; padding: 5px; border: 0; margin: 2px;font-size: 10px;">'.htmlspecialchars($cat['nome']).'</button>';
-                    }
-                }
+                // $query_cat = $pdo->query("SELECT * FROM cat_servicos where id_conta = '$id_conta' ORDER BY id asc");
+                // $res_cat = $query_cat->fetchAll(PDO::FETCH_ASSOC);
+                // if(count($res_cat) > 0){
+                //     foreach($res_cat as $cat){
+                //         echo '<button style="border-radius: 10px; background-color:rgb(141, 157, 248); color: white; padding: 5px; border: 0; margin: 2px;font-size: 10px;">'.htmlspecialchars($cat['nome']).'</button>';
+                //     }
+                // }
 
                 $query_serv = $pdo->query("SELECT * FROM servicos where ativo = 'Sim' and id_conta = '$id_conta' ORDER BY id asc");
                 $res_serv = $query_serv->fetchAll(PDO::FETCH_ASSOC);
@@ -135,12 +135,12 @@
 
             <div class="col-4 col-md-3">
                 <div class="box">
-                    <div class="img-box">
+                    <!-- <div class="img-box">
                          <img src="sistema/painel/img/servicos/<?php echo $foto; ?>"
                               alt="<?php echo htmlspecialchars($nome); ?>"
                               onerror="this.onerror=null; this.src='sistema/painel/img/servicos/sem-foto.jpg';"
                               title="<?php echo htmlspecialchars($descricao); ?>">
-                    </div>
+                    </div> -->
                     <div class="detail-box">
                         <h5>
                            <?php echo htmlspecialchars($nomeF); ?>

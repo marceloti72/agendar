@@ -175,10 +175,9 @@ $hoje = date('Y-m-d');
 
 
 //verificar se ele tem a permissão de estar nessa página
-if(@$home == 'ocultar'){
-    echo "<script>window.location='../index.php'</script>";
-    exit();
-}
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 
 
 $data_hoje = date('Y-m-d');

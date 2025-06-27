@@ -7,10 +7,9 @@ require_once("../conexao.php");
 $pag = 'produtos';
 
 //verificar se ele tem a permissão de estar nessa página
-if(@$produtos == 'ocultar'){
-    echo "<script>window.location='../index.php'</script>";
-    exit();
-}
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 ?>
 <style>
 	@media (max-width: 768px) {
@@ -61,7 +60,7 @@ if(@$produtos == 'ocultar'){
 							</div> 	
 						</div>
 
-						<div class="col-md-5">
+						<!-- <div class="col-md-5">
 							
 							<div class="form-group">
 								<label for="exampleInputEmail1">Categoria</label>
@@ -84,7 +83,7 @@ if(@$produtos == 'ocultar'){
 
 								</select>   
 							</div> 	
-						</div>
+						</div> -->
 						
 					</div>
 

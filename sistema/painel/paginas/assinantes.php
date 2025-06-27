@@ -9,6 +9,10 @@ $id_conta_corrente = $id_conta; // Assume que $id_conta vem do verificar.php ou 
 $data_atual = date('Y-m-d'); // Data de hoje para comparação
 $data_atual_timestamp = strtotime($data_atual); // Timestamp de hoje para eficiência
 
+
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 ?>
 <style>
 /* Estilo para linhas de assinantes inativos */

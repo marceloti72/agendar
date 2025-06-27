@@ -7,10 +7,9 @@ require_once("../conexao.php");
 $pag = 'comanda';
 
 //Verificar permissão
-if (@$comanda == 'ocultar') {
-    echo "<script>window.location='../index.php'</script>";
-    exit();
-}
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 
 $data_hoje = date('Y-m-d');
 $data_ontem = date('Y-m-d', strtotime("-1 days", strtotime($data_hoje)));
@@ -85,9 +84,9 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
     }
 </style>
 
-<div class="mb-3">
+<!-- <div class="mb-3">
     <a class="btn btn-primary btn-custom" onclick="inserir()"><i class="fa fa-plus"></i> Nova Comanda</a>
-</div>
+</div> -->
 
 <div class="bs-example" style="padding:15px">
     <div class="row" style="margin-top: -20px">
@@ -285,7 +284,7 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
                                 </select>
                             </div>
 
-                          <div class="row">
+                          <!-- <div class="row">
                                 <div class="col-md-5">
                                   <div class="form-group">
                                     <label for="valor_serv_agd_restante">
@@ -315,7 +314,7 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
                                     }
                                     ?>
                                 </select>
-                          </div> 
+                          </div>  -->
                                                      
 							<a href="#" id="btn_fechar_comanda" style="width: 100%;margin-bottom: 20px;" onclick="fecharComanda()" class="btn btn-success">Fechar Comanda</a>
 

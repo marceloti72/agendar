@@ -7,10 +7,9 @@ require_once("../conexao.php");
 $pag = 'receber';
 
 //verificar se ele tem a permissão de estar nessa página
-if(@$receber == 'ocultar'){
-    echo "<script>window.location='../index.php'</script>";
-    exit();
-}
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 
 $data_hoje = date('Y-m-d');
 $data_ontem = date('Y-m-d', strtotime("-1 days",strtotime($data_hoje)));

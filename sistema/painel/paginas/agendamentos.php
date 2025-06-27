@@ -7,10 +7,13 @@ $pag = 'agendamentos';
 $data_atual = date('Y-m-d');
 
 //verificar se ele tem a permissão de estar nessa página
-if(@$agendamentos == 'ocultar'){
-	echo "<script>window.location='../index.php'</script>";
-	exit();
-}
+// if(@$agendamentos == 'ocultar'){
+// 	echo "<script>window.location='../index.php'</script>";
+// 	exit();
+// }
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 
 ?>
 
@@ -485,7 +488,7 @@ $("#form-text").submit(function (event) {
         url: 'paginas/' + pag +  "/inserir.php", // VERIFIQUE SE ESTE É O SCRIPT PHP CORRETO
         type: 'POST',
         data: formData,
-        dataType: "html", // <<<--- DEFINIDO COMO JSON ---<<<
+        dataType: "json", // <<<--- DEFINIDO COMO JSON ---<<<
         cache: false,
         contentType: false,
         processData: false,

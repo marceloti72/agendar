@@ -25,10 +25,9 @@ if($tipo_comissao == 'Porcentagem'){
 
 
 	//verificar se ele tem a permissão de estar nessa página
-if(@$servicos == 'ocultar'){
-    echo "<script>window.location='../index.php'</script>";
-    exit();
-}
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 ?>
 <style>
 	@media (max-width: 768px) {
@@ -91,7 +90,7 @@ if(@$servicos == 'ocultar'){
 					<div class="row">					
 						
 
-						<div class="col-md-6">
+						<!-- <div class="col-md-6">
 							
 							<div class="form-group">
 								<label for="exampleInputEmail1">Categoria</label>
@@ -114,26 +113,22 @@ if(@$servicos == 'ocultar'){
 
 								</select>   
 							</div> 	
-						</div>
+						</div> -->
 
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="exampleInputEmail1">Dias Retorno <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Informe aqui os dias de retorno para esse serviço. O cliente receberá um WhatsApp com uma pesquisa de satisfação junto com uma mensagem incentivando a agendar um novo serviço, será enviado o link de agendamento. 🚀" ></i></label>
 								<input type="number" class="form-control" id="dias_retorno" name="dias_retorno" placeholder="Dias Retorno" >    
 							</div> 	
-						</div>
+						</div>					
 
 					
-
-					</div>
-
-					<div class="row">
-							<div class="col-md-6">
+							<!-- <div class="col-md-6">
 							<div class="form-group">
 								<label for="exampleInputEmail1">Comissão <?php echo $item_comissao ?></label>
 								<input type="text" class="form-control" id="comissao" name="comissao" placeholder="Valor Comissão" >    
 							</div> 	
-						</div>
+						</div> -->
 
 						<div class="col-md-6">
 							<div class="form-group">
@@ -145,7 +140,7 @@ if(@$servicos == 'ocultar'){
 
 					
 
-						<div class="row">
+						<!-- <div class="row">
 							<div class="col-md-8">						
 								<div class="form-group"> 
 									<label>Foto</label> 
@@ -158,7 +153,7 @@ if(@$servicos == 'ocultar'){
 								</div>
 							</div>
 
-						</div>
+						</div> -->
 
 
 					

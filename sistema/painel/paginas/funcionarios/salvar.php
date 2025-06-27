@@ -15,14 +15,19 @@ $atendimento = $_POST['atendimento'];
 $tipo_chave = $_POST['tipo_chave'];
 $chave_pix = $_POST['chave_pix'];
 $senha = '123';
-$hash = password_hash($senha, PASSWORD_DEFAULT);
 $intervalo = $_POST['intervalo'];
 $comissao = $_POST['comissao'];
 
-if($cargo == "0"){
-	echo 'Cadastre um Cargo para o Usuáriox';
+if($cargo == ""){
+	echo 'Cadastre um Cargo para o Profissional';
 	exit();
 }
+if($cpf == ""){
+	echo 'CPF é obrigatório!';
+	exit();
+}
+
+
 
 // if($atendimento == "Não"){
 // 	$ativo = 'Não';
@@ -91,7 +96,7 @@ if(@$_FILES['foto']['name'] != ""){
 
 
 if($id == ""){
-	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, email = :email, cpf = :cpf, senha = '$hash', nivel = '$cargo', data = curDate(), ativo = :ativo, telefone = :telefone, endereco = :endereco, foto = '$foto', atendimento = '$atendimento', tipo_chave = '$tipo_chave', chave_pix = :chave_pix, intervalo = '$intervalo', comissao = '$comissao', id_conta = '$id_conta'");
+	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, email = :email, cpf = :cpf, senha = '$senha', nivel = '$cargo', data = curDate(), ativo = :ativo, telefone = :telefone, endereco = :endereco, foto = '$foto', atendimento = '$atendimento', tipo_chave = '$tipo_chave', chave_pix = :chave_pix, intervalo = '$intervalo', comissao = '$comissao', id_conta = '$id_conta'");
 
 	$query->bindValue(":nome", "$nome");
 	$query->bindValue(":email", "$email");
@@ -99,19 +104,19 @@ if($id == ""){
 	$query->bindValue(":telefone", "$telefone");
 	$query->bindValue(":endereco", "$endereco");
 	$query->bindValue(":chave_pix", "$chave_pix");
-	$query->bindValue(":ativo", "$ativo");
+	$query->bindValue(":ativo", "Sim");
 	$query->execute();
 
-	$ult_id = $pdo->lastInsertId();
+	// $ult_id = $pdo->lastInsertId();
 
-	if($atendimento == 'Sim'){
+	// if($atendimento == 'Sim'){
 
-		$pdo->query("INSERT INTO usuarios_permissoes SET permissao = '43', usuario = '$ult_id', id_conta = '$id_conta'");
-		$pdo->query("INSERT INTO usuarios_permissoes SET permissao = '44', usuario = '$ult_id', id_conta = '$id_conta'");
-		$pdo->query("INSERT INTO usuarios_permissoes SET permissao = '45', usuario = '$ult_id', id_conta = '$id_conta'");
-		$pdo->query("INSERT INTO usuarios_permissoes SET permissao = '46', usuario = '$ult_id', id_conta = '$id_conta'");
+	// 	$pdo->query("INSERT INTO usuarios_permissoes SET permissao = '43', usuario = '$ult_id', id_conta = '$id_conta'");
+	// 	$pdo->query("INSERT INTO usuarios_permissoes SET permissao = '44', usuario = '$ult_id', id_conta = '$id_conta'");
+	// 	$pdo->query("INSERT INTO usuarios_permissoes SET permissao = '45', usuario = '$ult_id', id_conta = '$id_conta'");
+	// 	$pdo->query("INSERT INTO usuarios_permissoes SET permissao = '46', usuario = '$ult_id', id_conta = '$id_conta'");
 
-    }
+    // }
 
 }else{
 	$query = $pdo->prepare("UPDATE $tabela SET nome = :nome, email = :email, cpf = :cpf, nivel = '$cargo', telefone = :telefone, endereco = :endereco, foto = '$foto', atendimento = '$atendimento', tipo_chave = '$tipo_chave', chave_pix = :chave_pix, intervalo = '$intervalo', comissao = '$comissao' WHERE id = '$id' and id_conta = '$id_conta'");

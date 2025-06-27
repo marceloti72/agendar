@@ -7,10 +7,9 @@ require_once("../conexao.php");
 $pag = 'clientes_retorno';
 
 //verificar se ele tem a permissão de estar nessa página
-if(@$clientes_retorno == 'ocultar'){
-    echo "<script>window.location='../index.php'</script>";
-    exit();
-}
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 ?>
 
 <div class="bs-example widget-shadow" style="padding:15px" id="listar">

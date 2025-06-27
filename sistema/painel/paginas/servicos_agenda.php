@@ -8,10 +8,9 @@ $pag = 'servicos_agenda';
 
 
 //verificar se ele tem a permissão de estar nessa página
-if(@$servicos_agenda == 'ocultar'){
-    echo "<script>window.location='../index.php'</script>";
-    exit();
-}
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 
 
 $data_hoje = date('Y-m-d');

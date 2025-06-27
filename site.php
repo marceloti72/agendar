@@ -259,9 +259,9 @@ if($carrossel == 'Sim'){
                     ?>
                     <div class="slick-slide">
                         <div class="box">
-                            <div class="img-box">
+                            <!-- <div class="img-box">
                                 <img src="sistema/painel/img/servicos/<?php echo $foto ?>" alt="<?php echo $nome ?>">
-                            </div>
+                            </div> -->
                             <div class="detail-box">
                                 <h4><?php echo $nomeF ?></h4>
                                 <h6 class="price">

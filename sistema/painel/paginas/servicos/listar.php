@@ -28,10 +28,10 @@ echo <<<HTML
 	<thead> 
 	<tr> 
 	<th>Nome</th>	
-	<th class="esc">Categoria</th> 	
+	<!-- <th class="esc">Categoria</th> 	 -->
 	<th class="esc">Valor</th> 	
 	<th class="esc">Dias Retorno</th> 
-	<th class="esc">Comissão <small>({$tipo_comissao})</small></th>	
+	<!-- <th class="esc">Comissão <small>({$tipo_comissao})</small></th>	 -->
 	<th class="esc">Tempo</th>	
 	<th>Ações</th>
 	</tr> 
@@ -89,14 +89,12 @@ for($i=0; $i < $total_reg; $i++){
 
 echo <<<HTML
 <tr class="{$classe_linha}">
-<td>
-<img src="img/servicos/{$foto}" onclick="mostrar('{$nome}', '{$valorF}', '{$nome_cat}', '{$dias_retorno}',  '{$ativo}', '{$foto}', '{$comissaoF}')" title="Ver Dados" width="50" height="50" class="hovv">
-{$nome}
+<td>{$nome}
 </td>
-<td class="esc">{$nome_cat}</td>
+<!-- <td class="esc">{$nome_cat}</td> -->
 <td class="esc">R$ {$valorF}</td>
 <td class="esc">{$dias_retorno}</td>
-<td class="esc">{$comissaoF}</td>
+<!-- <td class="esc">{$comissaoF}</td> -->
 <td class="esc">{$tempo} Minutos</td>
 <td>
 		<a href="#" class="btn btn-primary btn-xs" onclick="editar('{$id}','{$nome}', '{$valor}', '{$categoria}', '{$dias_retorno}', '{$foto}', '{$comissao}', '{$tempo}')" title="Editar Dados"><i class="fe fe-edit"></i></a>

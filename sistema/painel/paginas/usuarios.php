@@ -5,10 +5,9 @@ require_once("verificar.php");
 require_once("../conexao.php");
 
 //verificar se ele tem a permissão de estar nessa página
-if(@$usuarios == 'ocultar'){
-    echo "<script>window.location='../index.php'</script>";
-    exit();
-}
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 
 $pag = 'usuarios';
 ?>
@@ -89,24 +88,8 @@ $pag = 'usuarios';
 							
 							<div class="form-group">
 								<label for="exampleInputEmail1">Nível</label>
-								<select class="form-control sel2" id="cargo" name="cargo" style="width:100%;" > 
-
-									<?php 
-									$query = $pdo->query("SELECT * FROM cargos where id_conta = '$id_conta' ORDER BY nome asc");
-									$res = $query->fetchAll(PDO::FETCH_ASSOC);
-									$total_reg = @count($res);
-									if($total_reg > 0){
-										for($i=0; $i < $total_reg; $i++){
-										foreach ($res[$i] as $key => $value){}
-										echo '<option value="'.$res[$i]['nome'].'">'.$res[$i]['nome'].'</option>';
-										}
-									}else{
-											echo '<option value="0">Cadastre um Cargo</option>';
-										}
-									 ?>
-									
-
-								</select>   
+								<input type="text" class="form-control" id="cargo" name="cargo" placeholder="Cargo" >
+								
 							</div> 	
 						</div>
 					</div>

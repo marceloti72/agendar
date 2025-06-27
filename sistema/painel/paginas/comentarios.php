@@ -8,10 +8,9 @@ $pag = 'comentarios';
 
 
 	//verificar se ele tem a permissão de estar nessa página
-if(@$comentarios == 'ocultar'){
-    echo "<script>window.location='../index.php'</script>";
-    exit();
-}
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 ?>
 <style>
 	@media (max-width: 768px) {

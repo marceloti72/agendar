@@ -24,7 +24,7 @@ echo <<<HTML
 	<thead> 
 	<tr> 
 	<th>Nome</th>	
-	<th class="esc">Categoria</th> 	
+	<!-- <th class="esc">Categoria</th> 	 -->
 	<th class="esc">Valor Compra</th> 	
 	<th class="esc">Valor Venda</th> 
 	<th class="esc">Estoque</th>	
@@ -75,7 +75,7 @@ echo <<<HTML
 <img src="img/produtos/{$foto}" onclick="mostrar('{$nome}', '{$nome_cat}', '{$descricao}', '{$valor_compraF}', '{$valor_vendaF}', '{$estoque}', '{$foto}', '{$nivel_estoque}')" title="Ver Dados" width="50" height="50" class="hovv">
 {$nome}
 </td>
-<td class="esc">{$nome_cat}</td>
+<!-- <td class="esc">{$nome_cat}</td> -->
 <td class="esc">R$ {$valor_compraF}</td>
 <td class="esc">R$ {$valor_vendaF}</td>
 <td class="esc">{$estoque}</td>

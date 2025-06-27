@@ -62,9 +62,9 @@
   
 </head>
 
-<div id="global-loader">
+<!-- <div id="global-loader">
     <img src="images/loader.gif" class="loader-img loader loader_mobile" alt="">
-</div>
+</div> -->
   
 
 

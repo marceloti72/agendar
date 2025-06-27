@@ -45,15 +45,22 @@ if($total_reg > 0){
 	$intervalo_horarios = $res[0]['intervalo'];
 }
 
-if(@$_SESSION['nivel_usuario'] != 'Administrador'){
-	require_once("verificar-permissoes.php");
-}
+// if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+// 	require_once("verificar-permissoes.php");
+// }
+
 
 if(@$_GET['pag'] == ""){
 	$pag = $pag_inicial;
+
+	if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    $pag = 'agenda';
+    }
 }else{
 	$pag = $_GET['pag'];
 }
+
+
 
 
 $data_atual = date('Y-m-d');
@@ -382,8 +389,15 @@ $plano = $res3['plano'];
 						</button>
 						<h1><a style="color: white;text-shadow: 1px 1px 3px black; " class="navbar-brand" href="index.php"><i class="bi bi-clock-history"></i> MarkAI<span class="dashboard_text"><?php echo $nome_sistema ?></span></a></h1>
 					</div>
+					
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-						<ul class="sidebar-menu">
+						
+						<ul class="sidebar-menu">	
+
+							<?php 
+                        // DEFINANDO SE É ADMINISTRADOR
+							if(@$_SESSION['nivel_usuario'] == 'Administrador'){
+							?>
 							<li class="header">MENU ADMINISTRATIVO</li>
 
 
@@ -425,7 +439,7 @@ $plano = $res3['plano'];
 								</a>
 							</li>
 
-							<li class="treeview <?php echo @$menu_agendamentos ?>">
+							<!-- <li class="treeview <?php echo @$menu_agendamentos ?>">
 								<a href="#">
 									<i class="fe fe-clock"></i>&nbsp;
 									<span>Agendamento / Serviço</span>
@@ -440,7 +454,7 @@ $plano = $res3['plano'];
 																	
 								
 								</ul>
-							</li>
+							</li> -->
 
 
 							<!-- <li class="treeview <?php echo @$menu_pessoas ?>">
@@ -474,39 +488,38 @@ $plano = $res3['plano'];
 								<?php 
 								if($plano == '2'){
 								?>
-								<li class="<?php echo @$cargos ?>"><a href="cargos"><i class="fa fa-angle-right"></i>Cargos</a></li>
-								<li class="<?php echo @$usuarios ?>"><a href="usuarios"><i class="fa fa-angle-right"></i>Usuários</a></li>
-								<li class="<?php echo @$funcionarios ?>"><a href="funcionarios"><i class="fa fa-angle-right"></i>Funcionários</a></li>								
+								<!-- <li class="<?php echo @$cargos ?>"><a href="cargos"><i class="fa fa-angle-right"></i>Cargos</a></li> -->
+								<!-- <li class="<?php echo @$usuarios ?>"><a href="usuarios"><i class="fa fa-angle-right"></i>Usuários</a></li> -->
+								 <li class="<?php echo @$clientes ?>"><a href="clientes"><i class="fa fa-angle-right"></i>Clientes</a></li>
+
+								<li class="<?php echo @$funcionarios ?>"><a href="funcionarios"><i class="fa fa-angle-right"></i>Profissionais</a></li>								
 								<?php 
-								}
-								
-								?>							
-
-
-								<li class="<?php echo @$clientes ?>"><a href="clientes"><i class="fa fa-angle-right"></i>Clientes</a></li>
+								}?>								
 								
 									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"><i class="fa fa-angle-right"></i>Fornecedores</a></li>	
 									
-									<?php 
+									<!-- <?php 
 									if($id_conta == '1'){?>
 										<li class="<?php echo @$grupos ?>"><a href="grupos"><i class="fa fa-angle-right"></i>Grupo Acessos</a></li>
 
 										<li class="<?php echo @$acessos ?>"><a href="acessos"><i class="fa fa-angle-right"></i>Acessos</a></li>
 
 									<?php }
-									?>									
+									?>									 -->
 
 										<li class="<?php echo @$pgto ?>"><a href="pgto"><i class="fa fa-angle-right"></i>Formas de Pagamento</a></li>
 
-										<li><a href="dias"><i class="fa fa-angle-right"></i>Horários / Dias</a></li>
+										<li class="<?php echo @$servicos ?>"><a href="servicos"><i class="fa fa-angle-right"></i>Serviços</a></li>
 
-										<li class="<?php echo @$dias_bloqueio ?>"><a href="dias_bloqueio"><i class="fa fa-angle-right"></i>Bloqueio de Dias</a></li>
+										<!-- <li><a href="dias"><i class="fa fa-angle-right"></i>Horários / Dias</a></li>
+
+										<li class="<?php echo @$dias_bloqueio ?>"><a href="dias_bloqueio"><i class="fa fa-angle-right"></i>Bloqueio de Dias</a></li> -->
 								
 								</ul>
 							</li>							
 
 							<li class="treeview <?php echo @$menu_servicos ?>">
-								<a href="#">
+								<!-- <a href="#">
 								<i class="fa fa-briefcase"></i>
 									<span>Serviços</span>
 									<i class="fa fa-angle-left pull-right"></i>
@@ -516,7 +529,7 @@ $plano = $res3['plano'];
 								   <li class="<?php echo @$servicos ?>"><a href="servicos"><i class="fa fa-angle-right"></i>Serviços</a></li>
 
 								   <li class="<?php echo @$cat_servicos ?>"><a href="cat_servicos"><i class="fa fa-angle-right"></i>Categoria Serviços</a></li>
-								</ul>
+								</ul> -->
 
 								<li class="treeview <?php echo @$menu_produtos ?>">
 								<a href="#">
@@ -528,7 +541,7 @@ $plano = $res3['plano'];
 
 									<li class="<?php echo @$produtos ?>"><a href="produtos"><i class="fa fa-angle-right"></i>Produtos</a></li>
 
-									<li class="<?php echo @$cat_produtos ?>"><a href="cat_produtos"><i class="fa fa-angle-right"></i>Categorias</a></li>
+									<!-- <li class="<?php echo @$cat_produtos ?>"><a href="cat_produtos"><i class="fa fa-angle-right"></i>Categorias</a></li> -->
 									
 									<li class="<?php echo @$estoque ?>"><a href="estoque"><i class="fa fa-angle-right"></i>Estoque Baixo</a></li>
 
@@ -674,7 +687,9 @@ $plano = $res3['plano'];
 								
 								</ul>
 							</li>                           
-							
+							<?php 
+					        }
+							?>
 
 							<?php if(@$atendimento == 'Sim'){?>
 
@@ -685,7 +700,7 @@ $plano = $res3['plano'];
 								</a>
 							</li>	
 							
-							<li class="treeview  <?php echo @$meus_servicos ?>">
+							<!-- <li class="treeview  <?php echo @$meus_servicos ?>">
 								<a href="#">
 									<i class="fa fa-server"></i>
 									<span>Meus Serviços</span>
@@ -698,6 +713,11 @@ $plano = $res3['plano'];
 
 									<li><a href="servicos_func"><i class="fa fa-angle-right"></i>Ativar Serviços</a></li>
 									</ul>
+							</li>	 -->
+							<li class="treeview  <?php echo @$minhas_comissoes ?>">
+								<a href="servicos_func">
+								<i class="fa fa-server"></i> <span>Meus Serviços</span>
+								</a>
 							</li>	
 
 
@@ -710,9 +730,9 @@ $plano = $res3['plano'];
 
 							<li class="treeview  <?php echo @$meus_dias ?>">
 								<a href="#">
-									<i class="fa fa-server"></i>
+									<i class="fa fa-clock"></i>
 									<span>Meus Horário / Dias</span>
-									<i class="fa fa-clock-o pull-right"></i>
+									
 								</a>
 								<ul class="treeview-menu">
 
@@ -834,8 +854,11 @@ $plano = $res3['plano'];
 
 
 
-
-					<?php if(@$rel_aniv == ''){ 
+                <?php 
+                // DEFINANDO SE É ADMINISTRADOR
+				if(@$_SESSION['nivel_usuario'] == 'Administrador'){
+				?>
+				 	<?php if(@$rel_aniv == ''){ 
 
 						//totalizando aniversariantes do dia
 						$query = $pdo->query("SELECT * FROM clientes where month(data_nasc) = '$dataMesInicial' and day(data_nasc) = '$dataDiaInicial' and id_conta = '$id_conta' order by data_nasc asc, id asc");
@@ -879,9 +902,7 @@ $plano = $res3['plano'];
 								</li>
 								<?php 
 							}
-								 ?>
-								
-								
+								 ?>							
 							
 								<li>
 									<div class="notification_bottom" style="background: #d9ffe1">
@@ -891,11 +912,6 @@ $plano = $res3['plano'];
 							</ul>
 						</li>	
 					<?php } ?>
-
-
-
-
-
 
 					<?php if(@$clientes_retorno == ''){ 
 
@@ -1027,8 +1043,12 @@ $plano = $res3['plano'];
 
 
 					</ul>
+					<?php 
+				}
+				?>
 					<div class="clearfix"> </div>
 				</div>
+				
 				
 			</div>
 			<div class="header-right">
@@ -1051,15 +1071,26 @@ $plano = $res3['plano'];
 									<div class="clearfix"></div>	
 								</div>	
 							</a>
+						
 							<ul class="dropdown-menu drp-mnu">
+						<?php 
+						// DEFINANDO SE É ADMINISTRADOR
+						if(@$_SESSION['nivel_usuario'] == 'Administrador'){
+						?>
 								<?php if(@$configuracoes == ''){ ?>
 								<li> <a href="configuracoes" ><i class="fa fa-cog"></i> Config. Sistema</a> </li> 	
-								<?php } ?>
+								<?php } }?>
 								
 
 								<li> <a href="" data-toggle="modal" data-target="#modalPerfil"><i class="fa fa-suitcase"></i> Editar Perfil</a> </li> 
+						<?php 
+						// DEFINANDO SE É ADMINISTRADOR
+						if(@$_SESSION['nivel_usuario'] == 'Administrador'){
+						?>
 								<li> <a href="" data-toggle="modal" data-target="#assinaturaModal"><i class="fa fa-dollar"></i> Minha Assinatura</a> </li> 
 								<li> <a href="" data-toggle="modal" data-target="#tutoriaisModal"><i class="fa fa-question" style="color: #15b283;"></i> Vídeos Tutoriais</a> </li> 
+						<?php }?>
+						
 								<li> <a href="logout.php"><i class="fa fa-sign-out"></i> Sair</a> </li>
 							</ul>
 						</li>
@@ -1251,17 +1282,16 @@ $plano = $res3['plano'];
 					<div class="row">
 					    <div class="col-md-4">
 							<div class="form-group">
-								<label for="exampleInputEmail1">Senha</label>
+								<label for="senha-perfil">Senha</label>
 								<input type="password" class="form-control" id="senha-perfil" name="senha" placeholder="Senha" autocomplete="new-password" oninput="validarConfirmacaoSenha()">
 							</div>
-						</div>
-						<div class="col-md-4">
-							
+							</div>
+							<div class="col-md-4">
 							<div class="form-group">
-								<label for="exampleInputEmail1">Confirmar Senha</label>
-								<input type="password" class="form-control" id="conf-senha-perfil" name="conf_senha" placeholder="Confirmar Senha">    
-							</div> 	
-						</div>						
+								<label for="conf-senha-perfil">Confirmar Senha</label>
+								<input type="password" class="form-control" id="conf-senha-perfil" name="conf_senha" placeholder="Confirmar Senha" oninput="validarConfirmacaoSenha()">
+							</div>
+							</div>					
 
 						<div class="col-md-4">
 							<div class="form-group">
@@ -1867,7 +1897,7 @@ $plano = $res3['plano'];
 						<div class="row">
 							<div class="col-md-12">						
 								<div class="form-group"> 
-									<label>Funcionário</label> 
+									<label>Profissionais</label> 
 									<select class="form-control sel15" name="funcionario" style="width:100%;">
 										<option value="">Todos</option>
 										<?php 
@@ -2686,22 +2716,28 @@ $plano = $res3['plano'];
 		}
 
 
-		function validarConfirmacaoSenha() {
-			var senha = document.getElementById("senha-perfil").value;
-			var confirmacaoSenha = document.getElementById("conf-senha-perfil");
+		
+	function validarConfirmacaoSenha() {
+		var senha = document.getElementById("senha-perfil").value;
+		var confirmacaoSenhaInput = document.getElementById("conf-senha-perfil");
+		var confirmacaoSenhaValue = confirmacaoSenhaInput.value;
 
-			if (senha) {
-				confirmacaoSenha.setAttribute("required", "required");
-			} else {
-				confirmacaoSenha.removeAttribute("required");
-			}
-
-			if(senha !== confirmacaoSenha.value){
-				confirmacaoSenha.setCustomValidity("As senhas não conferem.");
-			}else{
-				confirmacaoSenha.setCustomValidity("");
-			}
+		// Apenas define 'required' para o campo de confirmação se houver algo no campo de senha
+		if (senha) {
+		confirmacaoSenhaInput.setAttribute("required", "required");
+		} else {
+		confirmacaoSenhaInput.removeAttribute("required");
 		}
+
+		// Valida se as senhas são diferentes
+		if (senha !== confirmacaoSenhaValue) {
+		confirmacaoSenhaInput.setCustomValidity("As senhas não conferem.");
+		} else {
+		// Se as senhas conferem, limpa a mensagem de erro personalizada
+		confirmacaoSenhaInput.setCustomValidity("");
+		}
+	}
+
 	</script>
 
 	<script>

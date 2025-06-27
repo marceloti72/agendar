@@ -7,6 +7,10 @@ require_once("../conexao.php");
 $pagina = 'conf_planos';
 $id_conta_corrente = $id_conta; // Assume que $id_conta vem do verificar.php ou sessão
 
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
+
 // Busca os planos existentes (presumindo que eles já existem no BD)
 try {
     // Ordena pelo nome para garantir Bronze, Prata, etc., se os nomes forem esses

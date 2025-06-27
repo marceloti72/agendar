@@ -1000,50 +1000,45 @@ $("#form-agenda").submit(function (event) {
     $mensagemDiv.text('Carregando...').removeClass('text-danger text-success');
 
     var formData = new FormData(this);
-  	formData.append('data_selecionada', $('#dataSelecionadaInput').val());
-    // Adiciona a hora selecionada explicitamente (do input hidden #hora_rec)
-     formData.append('hora', $('#hora_rec').val()); // Garante que a hora selecionada seja enviada
+    formData.append('data_selecionada', $('#dataSelecionadaInput').val());
+    formData.append('hora', $('#hora_rec').val()); // Garante que a hora selecionada seja enviada
 
     $.ajax({
         url: "ajax/agendar_temp.php", // Verifique o caminho
         type: 'POST',
         data: formData,
-        dataType: 'text', // Espera texto (com split '*')
-        success: function (mensagem) {
-             var msg = mensagem.split('*');
-             var id_agd = msg.length > 1 ? msg[1] : null; // Pega ID se existir
-
+        dataType: 'json', // Alterado para 'json' para corresponder à nova resposta do PHP
+        success: function (response) {
             $mensagemDiv.text('');
-            if (msg[0].trim() == "Pré Agendado" && id_agd) {
-                $mensagemDiv.addClass('text-success').text(msg[0]);
-                 // buscarNome(); // Provavelmente não necessário aqui
+            if (response.success && response.nova_comanda_id) {
+                $mensagemDiv.addClass('text-success').text(response.message);
 
-                  Swal.fire({
-                      title: 'Pré-Agendado!',
-                      text: 'Seu horário foi reservado. Redirecionando para concluir...',
-                      icon: 'info',
-                      timer: 2500,
-                      showConfirmButton: false,
-                      allowOutsideClick: false
-                  }).then(() => {
-                        if(clienteEhAssinante == true){
-                            window.location="meus-agendamentos.php?u=<?php echo $username?>";
-                        }else{
-                            window.location="pagamento/"+id_agd+"/100"; // Ajuste o '100' se necessário
-                        }
-                      
-                  });
-
+                Swal.fire({
+                    title: response.tipo_registro === 'Assinante' ? 'Serviço Coberto!' : 'Pré-Agendado!',
+                    text: response.tipo_registro === 'Assinante' 
+                        ? 'Seu serviço foi coberto pela assinatura. Redirecionando...' 
+                        : 'Seu horário foi reservado. Redirecionando para concluir...',
+                    icon: 'success',
+                    timer: 2500,
+                    showConfirmButton: false,
+                    allowOutsideClick: false
+                }).then(() => {
+                    if (response.tipo_registro === 'Assinante') {
+                        window.location = "meus-agendamentos.php?u=<?php echo $username ?>";
+                    } else {
+                        window.location = "pagamento/" + response.nova_comanda_id + "/100"; // Ajuste o '100' se necessário
+                    }
+                });
             } else {
-                // Exibe outras mensagens de erro/aviso do backend
-                $mensagemDiv.addClass('text-danger').text(msg[0] || "Ocorreu um erro.");
+                // Exibe mensagem de erro do backend
+                $mensagemDiv.addClass('text-danger').text(response.message || 'Ocorreu um erro.');
                 $btnAgendar.prop('disabled', false).find('span').html('<i class="fas fa-calendar-check"></i> Confirmar Agendamento');
             }
         },
-        error: function(xhr, status, error){
-             $mensagemDiv.addClass('text-danger').text('Erro na comunicação com o servidor.');
-             $btnAgendar.prop('disabled', false).find('span').html('<i class="fas fa-calendar-check"></i> Confirmar Agendamento');
-             console.error("Erro AJAX agendar_temp:", xhr.responseText, status, error);
+        error: function (xhr, status, error) {
+            $mensagemDiv.addClass('text-danger').text('Erro na comunicação com o servidor.');
+            $btnAgendar.prop('disabled', false).find('span').html('<i class="fas fa-calendar-check"></i> Confirmar Agendamento');
+            console.error("Erro AJAX agendar_temp:", xhr.responseText, status, error);
         },
         cache: false,
         contentType: false,

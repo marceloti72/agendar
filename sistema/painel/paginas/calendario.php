@@ -7,10 +7,14 @@ $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 
 //verificar se ele tem a permissão de estar nessa página
-if(@$calendario == 'ocultar'){
-	echo "<script>window.location='../index.php'</script>";
-	exit();
-}
+// if(@$calendario == 'ocultar'){
+// 	echo "<script>window.location='../index.php'</script>";
+// 	exit();
+// }
+
+if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
 ?>
 <style>
 	@media (max-width: 768px) {

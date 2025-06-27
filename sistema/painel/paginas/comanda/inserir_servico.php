@@ -85,6 +85,12 @@ try {
     // ***** FIM: LÓGICA PARA CRIAR COMANDA SE NECESSÁRIO *****
 
 
+    // --- 1. Busca comanda ---
+    $query_c = $pdo->prepare("SELECT id FROM agendamentos WHERE comanda_id = :id_comanda AND id_conta = :id_conta");
+    $query_c->execute([':id_comanda' => $comanda_id_recebido, ':id_conta' => $id_conta_corrente]);
+    $agenda_info = $query_c->fetch(PDO::FETCH_ASSOC);    
+    $agenda_id = $agenda_info['id'];
+
     // --- 1. Busca detalhes do Serviço ---
     $query_s = $pdo->prepare("SELECT nome, valor, comissao FROM servicos WHERE id = :id_servico AND id_conta = :id_conta");
     $query_s->execute([':id_servico' => $servico_id, ':id_conta' => $id_conta_corrente]);
@@ -175,18 +181,21 @@ try {
 
     // a. INSERT into 'receber' (Sempre insere, com valor 0 ou normal)
     // *** Verifique os nomes das colunas da sua tabela 'receber' ***
-    $query_receber = $pdo->prepare("INSERT INTO receber SET descricao = :desc, tipo = :tipo, valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), usuario_lanc = :user_lanc, foto = 'sem-foto.jpg', cliente = :cli, pago = :pago, servico = :serv, funcionario = :func, func_comanda = :user_comanda, comanda = :comanda_id, id_conta = :id_conta, valor2 = :val");
+    $query_receber = $pdo->prepare("INSERT INTO receber SET descricao = :desc, tipo = :tipo, valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), usuario_lanc = :user_lanc, foto = 'sem-foto.jpg', pessoa = :pessoa, cliente = :cli, pago = :pago, servico = :serv, funcionario = :func, func_comanda = :user_comanda, comanda = :comanda_id, id_conta = :id_conta, valor2 = :val, referencia = :referencia, id_agenda = :id_agenda");
     // Ajuste 'cliente' para 'pessoa' se necessário. Removi colunas não essenciais.
     $query_receber->bindValue(':desc', $descricao_final_receber);
     $query_receber->bindValue(':tipo', $tipo_receber);
     $query_receber->bindValue(':val', $valor_final_receber); // Pode ser 0.00
     $query_receber->bindValue(':user_lanc', $usuario_logado);
-    $query_receber->bindValue(':cli', $cliente_id); // FK para CLIENTES
+    $query_receber->bindValue(':cli', $id_assinante_encontrado); 
+    $query_receber->bindValue(':pessoa', $cliente_id); // FK para CLIENTES
     $query_receber->bindValue(':pago', $pago_receber);
     $query_receber->bindValue(':serv', $servico_id);
     $query_receber->bindValue(':func', $funcionario_id);
     $query_receber->bindValue(':user_comanda', $usuario_logado); // Usuário que lançou na comanda
-    $query_receber->bindValue(':comanda_id', $comanda_id_final, PDO::PARAM_INT); // USA O ID FINAL DA COMANDA
+    $query_receber->bindValue(':comanda_id', $comanda_id_final, PDO::PARAM_INT); 
+    $query_receber->bindValue(':referencia', $agenda_id, PDO::PARAM_INT); 
+    $query_receber->bindValue(':id_agenda', $agenda_id, PDO::PARAM_INT);
     $query_receber->bindValue(':id_conta', $id_conta_corrente);    
     $query_receber->execute();
     $ult_id_receber = $pdo->lastInsertId(); // ID do registro em RECEBER (para ligar comissão)
@@ -227,7 +236,7 @@ try {
 
 
     // d. INSERE comissão (ligada ao $ult_id_receber, com valor original da comissão)
-    $query_pagar = $pdo->prepare("INSERT INTO pagar SET descricao = :desc, tipo = 'Comissão', valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), usuario_lanc = :user_lanc, foto = 'sem-foto.jpg', pago = 'Não', funcionario = :func, servico = :serv, cliente = :cli, id_ref = :id_ref, id_conta = :id_conta");
+    $query_pagar = $pdo->prepare("INSERT INTO pagar SET descricao = :desc, tipo = 'Comissão', valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), usuario_lanc = :user_lanc, foto = 'sem-foto.jpg', pago = 'Não', funcionario = :func, servico = :serv, cliente = :cli, id_ref = :id_ref, id_conta = :id_conta, comanda = :comanda");
     // Binds...
     $query_pagar->bindValue(':desc', $descricao_pagar);
     $query_pagar->bindValue(':val', $valor_comissao); // Comissão calculada sobre valor original
@@ -237,6 +246,7 @@ try {
     $query_pagar->bindValue(':cli', $cliente_id);
     $query_pagar->bindValue(':id_ref', $ult_id_receber); // Link com o 'receber' criado
     $query_pagar->bindValue(':id_conta', $id_conta_corrente);
+    $query_pagar->bindValue(':comanda', $comanda_id_recebido);
     $query_pagar->execute();
     if ($query_pagar->rowCount() <= 0) { throw new Exception("Falha ao lançar comissão."); }
 

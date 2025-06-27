@@ -310,7 +310,7 @@ try {
     $pago_receber = 'Não';
     $tipo_receber = 'Serviço';
 
-    $query_receber = $pdo->prepare("INSERT INTO receber SET descricao = :desc, tipo = :tipo, valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), usuario_lanc = :user_lanc, foto = 'sem-foto.jpg', cliente = :cli, pessoa = :pessoa, pago = :pago, referencia: referencia, id_agenda = :id_agenda, servico = :serv, funcionario = :func, func_comanda = :user_comanda, comanda = :comanda_id, id_conta = :id_conta, valor2 = :val");
+    $query_receber = $pdo->prepare("INSERT INTO receber SET descricao = :desc, tipo = :tipo, valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), usuario_lanc = :user_lanc, foto = 'sem-foto.jpg', cliente = :cli, pessoa = :pessoa, pago = :pago, referencia = :referencia, id_agenda = :id_agenda, servico = :serv, funcionario = :func, func_comanda = :user_comanda, comanda = :comanda_id, id_conta = :id_conta, valor2 = :val");
     $query_receber->bindValue(':desc', $descricao_final_receber);
     $query_receber->bindValue(':tipo', $tipo_receber);
     $query_receber->bindValue(':val', $valor_final_receber);
