@@ -65,5 +65,16 @@ $query->bindValue(":nome", "$nome");
 $query->bindValue(":texto", "$texto");
 $query->execute();
 
+if ($api == 'Sim') {    
+
+    $telefone = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);    
+    $mensagem = '*Depoimento recebido* ✔%0A%0A';
+    $mensagem .= 'Cliente: ' . $nome . '%0A';
+    $mensagem .= 'Depoimento: ' . $texto . '%0A%0A';
+    $mensagem .= 'Ja esta disponível em seu APP para ativar.%0A';    
+
+     require('../../../../ajax/api-texto.php');    
+}
+
 echo 'Salvo com Sucesso';
  ?>
