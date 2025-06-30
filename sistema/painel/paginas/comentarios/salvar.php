@@ -73,7 +73,7 @@ if ($api == 'Sim') {
     $mensagem .= 'Depoimento: ' . $texto . '%0A%0A';
     $mensagem .= 'Ja esta disponível em seu APP para ativar.%0A';    
 
-     require('../../../../ajax/api-texto.php');    
+     require('../ajax/api-texto.php');    
 }
 
 echo 'Salvo com Sucesso';
