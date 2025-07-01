@@ -264,8 +264,22 @@ if ($session_id) {
         $formaPgto = $paymentMethod && $paymentMethod->card ? $paymentMethod->card->brand : 'desconhecida';
         $cpf = rand(1000000000, 99999999999);
 
-        // Obter o status do cliente
-        $customer_status = is_string($customer) ? 'unknown' : ($customer->delinquent ? 'delinquent' : 'active');
+        // Obter o status da assinatura e mapear para português
+        $subscription_status = is_string($subscription) ? 'desconhecido' : ($subscription->status ?? 'desconhecido');
+        $status_map = [
+            'trialing' => 'período de teste',
+            'active' => 'ativo',
+            'canceled' => 'cancelado',
+            'past_due' => 'atrasado',
+            'unpaid' => 'não pago',
+            'incomplete' => 'incompleto',
+            'incomplete_expired' => 'incompleto expirado',
+            'desconhecido' => 'desconhecido'
+        ];
+        $customer_status = $status_map[$subscription_status] ?? 'desconhecido';
+
+        // Log para depuração do status e ID da assinatura
+        file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Subscription Status: " . $subscription_status . ", Mapped Status: " . $customer_status . ", Subscription ID: " . ($subscription->id ?? 'não disponível') . "\n", FILE_APPEND);
 
         // Log para depuração do valor
         file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Session Data: " . print_r($session, true) . "\n", FILE_APPEND);
@@ -501,17 +515,17 @@ if ($session_id) {
         }
 
         // Inserir na tabela config
-        $stmt = $pdo->prepare("INSERT INTO config (nome, email, username, telefone_whatsapp, token, ativo, email_menuia, data_cadastro, plano, api, id_cliente_stripe, senha_menuia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nomeConfig, $email, $username, $telefone, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'teste', 'rtcorretora@gmail.com', $dataAtual, $plano, 'Sim', $customer_id, 'mof36001']);
+        $stmt = $pdo->prepare("INSERT INTO config (nome, email, username, telefone_whatsapp, token, ativo, email_menuia, data_cadastro, plano, api, id_cliente_stripe, id_assinatura_stripe, senha_menuia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nomeConfig, $email, $username, $telefone, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'teste', 'rtcorretora@gmail.com', $dataAtual, $plano, 'Sim', $customer_id, $subscription->id, 'mof36001']);
         $idConta = $pdo->lastInsertId();
 
         // Inserir na tabela usuarios
         $stmt = $pdo->prepare("INSERT INTO usuarios (nome, username, email, cpf, senha, nivel, data, ativo, telefone, atendimento, id_conta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$nomeCliente, $username, $email, $cpf, $defaultPassword, 'administrador', $dataAtual, 'teste', $telefone, 'Sim', $idConta]);
 
-        // Inserir na tabela clientes, incluindo o id_cliente_stripe e o status
-        $stmt = $pdo2->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta, id_cliente_stripe, usuario, servidor, banco, senha, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nomeCliente, $cpf, $telefone, $email, $dataAtual, 'teste', $dataAtual, $valor, $frequencia, $plano, $formaPgto, 'Sim', $idConta, $customer_id, 'skysee', 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com', 'barbearia', '9vtYvJly8PK6zHahjPUg', $customer_status]);
+        // Inserir na tabela clientes, incluindo o id_cliente_stripe, status e id_assinatura_stripe
+        $stmt = $pdo2->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta, id_cliente_stripe, usuario, servidor, banco, senha, status, id_assinatura_stripe) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nomeCliente, $cpf, $telefone, $email, $dataAtual, 'teste', $dataAtual, $valor, $frequencia, $plano, $formaPgto, 'Sim', $idConta, $customer_id, 'skysee', 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com', 'barbearia', '9vtYvJly8PK6zHahjPUg', $customer_status, $subscription->id]);
 
         // Armazena o session_id processado na sessão
         $_SESSION['processed_session_ids'][$session_id] = [
