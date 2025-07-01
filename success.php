@@ -10,7 +10,7 @@ mb_http_output('UTF-8');
 ini_set('default_charset', 'UTF-8');
 
 // Configurações iniciais
-header('Content-Type: text/html; charset=utf-8'); // Para requisições GET (páginas HTML)
+header('Content-Type: text/html; charset=utf-8');
 session_start();
 
 // Inclui a biblioteca do Stripe
@@ -23,19 +23,14 @@ use Stripe\Subscription;
 
 // Configurações do Stripe
 Stripe::setApiKey('sk_test_51RTXIZQwVYKsR3u1YtG7aK6S7d4sOg3Pnw8nKlXQNRBEFRGOncTdr0850Ddp1px4FRC0XuL29MaKyoy3JFiZh0Wa00reKEwQHt');
-$endpoint_secret = 'whsec_aiXk2ZhwnDfOepwrRIoRNFDkC3g5Ok3e'; // Confirme essa chave no painel do Stripe
+$endpoint_secret = 'whsec_aiXk2ZhwnDfOepwrRIoRNFDkC3g5Ok3e';
 
 // Processamento de requisições POST (webhook ou formulário)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Verifica se é uma submissão do formulário de novo email
     if (isset($_POST['new_email'])) {
         $session_id = $_POST['session_id'] ?? null;
         $email = htmlspecialchars($_POST['new_email']);
-        // Aqui você pode adicionar lógica para processar o novo email (se necessário antes de continuar)
-        // Por enquanto, apenas continua o fluxo com o novo email
     } else {
-        // Processamento de webhook (POST do Stripe)
-        // Log inicial para depuração
         file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - POST request received\n", FILE_APPEND);
         
         if (!isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
@@ -45,12 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        ob_start(); // Evitar saída acidental
+        ob_start();
         header('Content-Type: text/plain; charset=utf-8');
         $payload = @file_get_contents('php://input');
         $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
 
-        // Log para depuração
         file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Payload: " . $payload . "\n", FILE_APPEND);
         file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Signature Header: " . $sig_header . "\n", FILE_APPEND);
         file_put_contents('/var/www/agendar/webhook_log.txt', date('Y-m-d H:i:s') . " - Response Headers: " . print_r(headers_list(), true) . "\n", FILE_APPEND);
@@ -79,14 +73,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Obtém o session_id da URL (GET) ou webhook
 $session_id = isset($_GET['session_id']) ? $_GET['session_id'] : (isset($session_id) ? $session_id : (isset($_POST['session_id']) ? $_POST['session_id'] : null));
 
-// Verifica se o session_id já foi processado (logo no início)
+// Verifica se o session_id já foi processado
 if ($session_id && isset($_SESSION['processed_session_ids'][$session_id])) {
     $email = $_SESSION['processed_session_ids'][$session_id]['email'];
     $defaultPassword = $_SESSION['processed_session_ids'][$session_id]['password'];
     $trialDays = 15;
     $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
 
-    // Exibir mensagem de cadastro já concluído
     echo '<!DOCTYPE html>
     <html lang="pt-BR">
     <head>
@@ -179,16 +172,14 @@ if ($session_id && isset($_SESSION['processed_session_ids'][$session_id])) {
     exit;
 }
 
-// Inicializa variáveis com valores padrão para evitar erros de "undefined variable"
+// Inicializa variáveis
 $email = 'carregando...';
 $trialDays = 15;
 $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
-// Gera senha aleatória de 6 dígitos
 $defaultPassword = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
-// Verifica se o session_id é válido antes de prosseguir
+// Verifica se o session_id é válido
 if (!$session_id) {
-    // Exibir mensagem de erro para session_id inválido
     echo '<!DOCTYPE html>
     <html lang="pt-BR">
     <head>
@@ -243,7 +234,7 @@ if (!$session_id) {
 // Controle para evitar duplicação por session_id
 if ($session_id) {
     try {
-        // Busca os dados da sessão com expansão dos itens da assinatura
+        // Busca os dados da sessão com expansão completa
         $session = Session::retrieve($session_id, [
             'expand' => ['customer', 'subscription', 'payment_intent.payment_method', 'subscription.items'],
         ]);
@@ -255,17 +246,25 @@ if ($session_id) {
         // Obter o customer_id
         $customer_id = is_string($customer) ? $customer : ($customer->id ?? 'desconhecido');
 
-        // Prioriza customer_details para email, nome e telefone (fornecidos no Checkout)
+        // Prioriza customer_details para email, nome e telefone
         $email = htmlspecialchars($session->customer_details->email ?? $customer->email ?? 'email_nao_disponivel@example.com');
         $nomeCliente = htmlspecialchars($session->customer_details->name ?? $customer->name ?? 'Cliente_' . rand(100000, 999999));
-        $telefoneRaw = $session->customer_details->phone ?? '11999999999'; // Usa o telefone coletado no checkout
-        // Função para formatar o telefone como (99) 99999-9999
+        $telefoneRaw = $session->customer_details->phone ?? '11999999999';
         $telefone = formatPhoneNumber($telefoneRaw);
         $formaPgto = $paymentMethod && $paymentMethod->card ? $paymentMethod->card->brand : 'desconhecida';
         $cpf = rand(1000000000, 99999999999);
 
-        // Obter o status da assinatura e mapear para português
-        $subscription_status = is_string($subscription) ? 'desconhecido' : ($subscription->status ?? 'desconhecido');
+        // Forçar obtenção do objeto completo da assinatura
+        if ($subscription && is_string($subscription)) {
+            $subscription = Subscription::retrieve($subscription, ['expand' => ['items']]);
+            file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Subscription fetched from ID: " . $subscription->id . "\n", FILE_APPEND);
+        }
+
+        // Log detalhado do objeto subscription
+        file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Subscription Object: " . print_r($subscription, true) . "\n", FILE_APPEND);
+
+        // Verificar e mapear o status da assinatura
+        $subscription_status = is_object($subscription) && isset($subscription->status) ? $subscription->status : 'desconhecido';
         $status_map = [
             'trialing' => 'período de teste',
             'active' => 'ativo',
@@ -278,40 +277,21 @@ if ($session_id) {
         ];
         $customer_status = $status_map[$subscription_status] ?? 'desconhecido';
 
-        // Log para depuração do status e ID da assinatura
+        // Log detalhado do status
         file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Subscription Status: " . $subscription_status . ", Mapped Status: " . $customer_status . ", Subscription ID: " . ($subscription->id ?? 'não disponível') . "\n", FILE_APPEND);
 
-        // Log para depuração do valor
-        file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Session Data: " . print_r($session, true) . "\n", FILE_APPEND);
-
-        // Verificar se há uma assinatura e extrair o valor corretamente
-        $valor = 0; // Valor padrão
+        // Verificar valor da assinatura
+        $valor = 0;
         $priceId = null;
 
-        // Verificar se $subscription é uma string (ID) ou um objeto
-        if ($subscription) {
-            if (is_string($subscription)) {
-                // Se $subscription for uma string (ID), buscar o objeto completo
-                $subscription = Subscription::retrieve($subscription, ['expand' => ['items']]);
-                file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Subscription fetched from ID: " . $subscription->id . "\n", FILE_APPEND);
-            }
-
-            // Agora $subscription deve ser um objeto, podemos acessar seus dados
-            if (isset($subscription->items->data[0]->price->unit_amount)) {
-                $priceId = $subscription->items->data[0]->price->id;
-                $valor = $subscription->items->data[0]->price->unit_amount / 100;
-                file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Price ID: " . $priceId . ", Valor: " . $valor . "\n", FILE_APPEND);
-            }
-        }
-
-        // Se não houver assinatura ou o valor ainda for 0, usar amount_total
-        if ($valor == 0 && isset($session->amount_total)) {
+        if (is_object($subscription) && isset($subscription->items->data[0]->price->unit_amount)) {
+            $priceId = $subscription->items->data[0]->price->id;
+            $valor = $subscription->items->data[0]->price->unit_amount / 100;
+            file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Price ID: " . $priceId . ", Valor: " . $valor . "\n", FILE_APPEND);
+        } elseif (isset($session->amount_total)) {
             $valor = $session->amount_total / 100;
             file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Amount Total: " . $valor . "\n", FILE_APPEND);
-        }
-
-        // Se ainda assim o valor for 0, registrar um erro no log
-        if ($valor == 0) {
+        } else {
             file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - No subscription or amount_total found.\n", FILE_APPEND);
         }
 
@@ -352,7 +332,6 @@ if ($session_id) {
         $emailExists = $stmt->fetchColumn();
 
         if ($emailExists && !isset($_POST['new_email'])) {
-            // Exibir mensagem de erro e formulário para novo email
             echo '<!DOCTYPE html>
             <html lang="pt-BR">
             <head>
@@ -429,7 +408,7 @@ if ($session_id) {
             exit;
         }
 
-        // Processar novo email do formulário (já capturado no início do POST, se aplicável)
+        // Processar novo email do formulário
         if (isset($_POST['new_email'])) {
             $email = htmlspecialchars($_POST['new_email']);
             $stmt = $pdo->prepare("SELECT COUNT(*) FROM config WHERE email = ?");
@@ -523,7 +502,7 @@ if ($session_id) {
         $stmt = $pdo->prepare("INSERT INTO usuarios (nome, username, email, cpf, senha, nivel, data, ativo, telefone, atendimento, id_conta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$nomeCliente, $username, $email, $cpf, $defaultPassword, 'administrador', $dataAtual, 'teste', $telefone, 'Sim', $idConta]);
 
-        // Inserir na tabela clientes, incluindo o id_cliente_stripe, status e id_assinatura_stripe
+        // Inserir na tabela clientes
         $stmt = $pdo2->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta, id_cliente_stripe, usuario, servidor, banco, senha, status, id_assinatura_stripe) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$nomeCliente, $cpf, $telefone, $email, $dataAtual, 'teste', $dataAtual, $valor, $frequencia, $plano, $formaPgto, 'Sim', $idConta, $customer_id, 'skysee', 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com', 'barbearia', '9vtYvJly8PK6zHahjPUg', $customer_status, $subscription->id]);
 
@@ -538,18 +517,15 @@ if ($session_id) {
         $pdo = null;
         $pdo2 = null;
 
-        echo "<!-- Dados registrados com sucesso para ID Conta: $idConta -->"; // Log invisível para depuração
+        echo "<!-- Dados registrados com sucesso para ID Conta: $idConta -->";
     } catch (Exception $e) {
-        // Log do erro para depuração
         file_put_contents('/var/www/agendar/error_log.txt', date('Y-m-d H:i:s') . " - Erro ao processar sessão: " . $e->getMessage() . "\n", FILE_APPEND);
         
-        // Define valores padrão para evitar erros no HTML
         $email = 'email_nao_disponivel@example.com';
         $defaultPassword = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
         $trialDays = 15;
         $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
 
-        // Se for um webhook, retorna erro
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
             header('Content-Type: text/plain; charset=utf-8');
             http_response_code(404);
@@ -557,26 +533,20 @@ if ($session_id) {
             exit;
         }
 
-        // Para requisições GET, continua para exibir o HTML abaixo com os valores padrão
-        echo "<!-- Erro ao processar sessão: " . $e->getMessage() . " -->"; // Log invisível para depuração
+        echo "<!-- Erro ao processar sessão: " . $e->getMessage() . " -->";
     }
 }
 
-// Função para formatar o telefone no formato (99) 99999-9999
+// Função para formatar o telefone
 function formatPhoneNumber($phone) {
-    // Remove caracteres não numéricos e o código do país (+55)
     $phone = preg_replace('/[^0-9]/', '', $phone);
-    $phone = preg_replace('/^55/', '', $phone); // Remove +55 do início, se presente
+    $phone = preg_replace('/^55/', '', $phone);
 
-    // Verifica se o número tem pelo menos 10 dígitos (DDD + número)
     if (strlen($phone) == 10) {
-        // Formato: (DD) DDDDD-DDDD
         return sprintf('(%02d) %05d-%04d', substr($phone, 0, 2), substr($phone, 2, 5), substr($phone, 7, 4));
     } elseif (strlen($phone) == 11) {
-        // Formato: (DD) DDDDD-DDDD (com 9 dígitos)
         return sprintf('(%02d) %04d-%04d', substr($phone, 0, 2), substr($phone, 2, 5), substr($phone, 7, 4));
     } else {
-        // Retorna o valor padrão se o formato não for válido
         return '11999999999';
     }
 }
@@ -591,7 +561,7 @@ function formatPhoneNumber($phone) {
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #28a745; /* Fundo verde */
+            background-color: #28a745;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -626,7 +596,7 @@ function formatPhoneNumber($phone) {
         }
         .bold {
             font-weight: bold;
-            color: #28a745; /* Cor verde para destaque */
+            color: #28a745;
         }
         .note {
             font-size: 14px;
@@ -635,7 +605,7 @@ function formatPhoneNumber($phone) {
             margin-bottom: 30px;
         }
         .login-button {
-            background-color: #28a745; /* Botão verde */
+            background-color: #28a745;
             color: #fff;
             padding: 12px;
             border-radius: 5px;
