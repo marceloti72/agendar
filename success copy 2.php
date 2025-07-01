@@ -264,9 +264,6 @@ if ($session_id) {
         $formaPgto = $paymentMethod && $paymentMethod->card ? $paymentMethod->card->brand : 'desconhecida';
         $cpf = rand(1000000000, 99999999999);
 
-        // Obter o status do cliente
-        $customer_status = is_string($customer) ? 'unknown' : ($customer->delinquent ? 'delinquent' : 'active');
-
         // Log para depuração do valor
         file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - Session Data: " . print_r($session, true) . "\n", FILE_APPEND);
 
@@ -509,9 +506,9 @@ if ($session_id) {
         $stmt = $pdo->prepare("INSERT INTO usuarios (nome, username, email, cpf, senha, nivel, data, ativo, telefone, atendimento, id_conta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$nomeCliente, $username, $email, $cpf, $defaultPassword, 'administrador', $dataAtual, 'teste', $telefone, 'Sim', $idConta]);
 
-        // Inserir na tabela clientes, incluindo o id_cliente_stripe e o status
-        $stmt = $pdo2->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta, id_cliente_stripe, usuario, servidor, banco, senha, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nomeCliente, $cpf, $telefone, $email, $dataAtual, 'teste', $dataAtual, $valor, $frequencia, $plano, $formaPgto, 'Sim', $idConta, $customer_id, 'skysee', 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com', 'barbearia', '9vtYvJly8PK6zHahjPUg', $customer_status]);
+        // Inserir na tabela clientes, incluindo o id_cliente_stripe
+        $stmt = $pdo2->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta, id_cliente_stripe, usuario, servidor, banco, senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nomeCliente, $cpf, $telefone, $email, $dataAtual, 'teste', $dataAtual, $valor, $frequencia, $plano, $formaPgto, 'Sim', $idConta, $customer_id, 'skysee', 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com', 'barbearia', '9vtYvJly8PK6zHahjPUg']);
 
         // Armazena o session_id processado na sessão
         $_SESSION['processed_session_ids'][$session_id] = [
