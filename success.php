@@ -1,8 +1,8 @@
 <?php
 // Início direto sem espaços ou caracteres invisíveis
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
 // Forçar codificação UTF-8 no PHP
 mb_internal_encoding('UTF-8');
@@ -770,9 +770,51 @@ function formatPhoneNumber($phone) {
             <span class="bold-highlight">Senha:</span> <?php echo $defaultPassword; ?>
         </div>
         <div class="note">
-            *Observação: Acesse o seu perfil e as configurações do sistema assim que entrar no APP para inserir seus dados corretamente.
+            🚨 Acesse o seu perfil e as configurações do sistema assim que entrar no APP para inserir seus dados corretamente.
         </div>
         <a href="intent://agendar.skysee.com.br#Intent;scheme=https;package=com.example.app;end" class="login-button">Ir para o APP</a>
     </div>
+
+    <?php 
+    // Primeiro nome
+    $primeiroNome = explode(" ", $nomeCliente);
+    // Formata o telefone para envio
+    $telefone_envio = '55' . preg_replace('/[ ()-]+/', '', $telefone);
+    // Mensagem para WhatsApp
+    $mensagem = "*MARKAI - Sistema de Gestão de Serviços*%0A%0A";
+    $mensagem .= "Olá *" . $primeiroNome[0] . "*%0A%0A";
+    $mensagem .= "Seja bem-vindo ao nosso sistema! 😃%0A%0A";
+    $mensagem .= "Segue os dados para acesso:%0A";
+    $mensagem .= "*Login:* $email%0A";
+    $mensagem .= "*Senha:* $defaultPassword%0A";
+    $mensagem .= "🚨 Acesse o seu perfil e as configurações do sistema assim que entrar no APP para inserir seus dados corretamente.%0A%0A";
+    $mensagem .= "Você tem 15 dias grátis para conhecer nosso sistema.%0A%0A";
+    
+    $mensagem = str_replace("%0A", "\n", $mensagem); 
+
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => 'https://chatbot.menuia.com/api/create-message',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+      CURLOPT_POSTFIELDS => array(
+      'appkey' => 'GESTÃO',
+      'authkey' => 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9',
+      'to' => $telefone_envio,
+      'licence' => 'skysee',
+      'message' => $mensagem,
+      ),
+    ));
+    
+    $response = curl_exec($curl);
+    curl_close($curl);
+    $response = json_decode($response, true);
+    ?>
+
 </body>
 </html>
