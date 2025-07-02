@@ -193,7 +193,7 @@ if ($session_id && isset($_SESSION['processed_session_ids'][$session_id])) {
                 <span class="bold-highlight">Senha:</span> ' . htmlspecialchars($defaultPassword) . '
             </div>
             <div class="note">
-                *Observação: Acesse o seu perfil e as configurações do sistema assim que entrar no APP para inserir seus dados corretamente.
+                🚨 Acesse o seu perfil e as configurações do sistema assim que entrar no APP para inserir seus dados corretamente.
             </div>
             <a href="intent://agendar.skysee.com.br#Intent;scheme=https;package=com.example.app;end" class="login-button">Ir para o APP</a>
         </div>
