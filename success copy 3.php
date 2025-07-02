@@ -80,122 +80,92 @@ if ($session_id && isset($_SESSION['processed_session_ids'][$session_id])) {
     $trialDays = 15;
     $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
 
-    // HTML para "Cadastro Já Concluído" com estilo elegante
     echo '<!DOCTYPE html>
     <html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Cadastro Já Concluído</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             body {
-                font-family: \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif;
-                background: linear-gradient(135deg, #28a745, #218838); /* Gradiente verde */
+                font-family: Arial, sans-serif;
+                background-color: #28a745;
                 margin: 0;
                 padding: 20px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 min-height: 100vh;
-                color: #333;
             }
             .container {
                 background-color: #fff;
-                padding: 40px 30px;
-                border-radius: 15px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Sombra mais suave e profunda */
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
                 text-align: center;
-                max-width: 550px;
+                max-width: 500px;
                 width: 100%;
-                animation: fadeIn 0.8s ease-out;
-            }
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(-20px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            .icon-success {
-                color: #28a745;
-                font-size: 80px; /* Ícone grande */
-                margin-bottom: 25px;
-                animation: bounceIn 0.6s ease-out;
-            }
-            @keyframes bounceIn {
-                from, 20%, 40%, 60%, 80%, to {
-                    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-                }
-                0% { opacity: 0; transform: scale3d(0.3, 0.3, 0.3); }
-                20% { transform: scale3d(1.1, 1.1, 1.1); }
-                40% { transform: scale3d(0.9, 0.9, 0.9); }
-                60% { opacity: 1; transform: scale3d(1.03, 1.03, 1.03); }
-                80% { transform: scale3d(0.97, 0.97, 0.97); }
-                to { opacity: 1; transform: scale3d(1, 1, 1); }
             }
             .title {
-                font-size: 28px;
+                font-size: 24px;
                 font-weight: bold;
                 color: #333;
                 margin-bottom: 20px;
             }
             .message {
-                font-size: 17px;
-                color: #555;
+                font-size: 16px;
+                color: #6c757d;
                 margin-bottom: 15px;
-                line-height: 1.6;
             }
             .credentials {
-                font-size: 17px;
+                font-size: 16px;
                 color: #333;
-                margin-bottom: 12px;
+                margin-bottom: 10px;
             }
-            .bold-highlight {
+            .bold {
                 font-weight: bold;
-                color: #28a745; /* Cor de destaque verde */
+                color: #28a745;
             }
             .note {
                 font-size: 14px;
-                color: #dc3545; /* Vermelho para observações importantes */
-                margin-top: 25px;
-                margin-bottom: 35px;
-                line-height: 1.5;
+                color: #dc3545;
+                margin-top: 20px;
+                margin-bottom: 30px;
             }
             .login-button {
-                background: linear-gradient(45deg, #28a745, #218838); /* Gradiente no botão */
+                background-color: #28a745;
                 color: #fff;
-                padding: 15px 30px;
-                border-radius: 8px;
+                padding: 12px;
+                border-radius: 5px;
                 text-decoration: none;
-                font-size: 18px;
+                font-size: 16px;
                 font-weight: bold;
                 display: inline-block;
-                transition: all 0.3s ease;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             }
-            .login-button:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            .bottom-spacer {
+                height: 20px;
             }
         </style>
     </head>
     <body>
         <div class="container">
-            <i class="fas fa-check-circle icon-success"></i>
-            <div class="title">Cadastro Já Concluído!</div>
+            <div class="title">Cadastro Já Concluído</div>
             <div class="message">
                 Este cadastro já foi concluído anteriormente. Você possui um período de teste gratuito que termina em 
-                <span class="bold-highlight">' . htmlspecialchars($trialEndDate) . '</span>.
+                <span class="bold">' . htmlspecialchars($trialEndDate) . '</span>.
             </div>
             <div class="message">Utilize as seguintes credenciais para acessar o app:</div>
             <div class="credentials">
-                <span class="bold-highlight">Login:</span> ' . htmlspecialchars($email) . '
+                <span class="bold">Login:</span> ' . htmlspecialchars($email) . '
             </div>
             <div class="credentials">
-                <span class="bold-highlight">Senha:</span> ' . htmlspecialchars($defaultPassword) . '
+                <span class="bold">Senha:</span> ' . htmlspecialchars($defaultPassword) . '
             </div>
             <div class="note">
                 *Observação: Acesse o seu perfil e as configurações do sistema assim que entrar no APP para inserir seus dados corretamente.
             </div>
             <a href="intent://agendar.skysee.com.br#Intent;scheme=https;package=com.example.app;end" class="login-button">Ir para o APP</a>
+            <div class="bottom-spacer"></div>
         </div>
     </body>
     </html>';
@@ -210,71 +180,48 @@ $defaultPassword = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
 // Verifica se o session_id é válido
 if (!$session_id) {
-    // HTML para "Erro" com estilo elegante
     echo '<!DOCTYPE html>
     <html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Erro</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             body {
-                font-family: \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif;
-                background: linear-gradient(135deg, #dc3545, #c82333); /* Gradiente vermelho para erro */
+                font-family: Arial, sans-serif;
+                background-color: #28a745;
                 margin: 0;
                 padding: 20px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 min-height: 100vh;
-                color: #333;
             }
             .container {
                 background-color: #fff;
-                padding: 40px 30px;
-                border-radius: 15px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
                 text-align: center;
-                max-width: 550px;
+                max-width: 500px;
                 width: 100%;
-                animation: fadeIn 0.8s ease-out;
-            }
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(-20px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            .icon-error {
-                color: #dc3545;
-                font-size: 80px;
-                margin-bottom: 25px;
-                animation: shake 0.5s;
-            }
-            @keyframes shake {
-                0% { transform: translateX(0); }
-                25% { transform: translateX(-10px); }
-                50% { transform: translateX(10px); }
-                75% { transform: translateX(-10px); }
-                100% { transform: translateX(0); }
             }
             .title {
-                font-size: 28px;
+                font-size: 24px;
                 font-weight: bold;
                 color: #333;
                 margin-bottom: 20px;
             }
             .message {
-                font-size: 17px;
-                color: #555;
+                font-size: 16px;
+                color: #dc3545;
                 margin-bottom: 15px;
-                line-height: 1.6;
             }
         </style>
     </head>
     <body>
         <div class="container">
-            <i class="fas fa-exclamation-triangle icon-error"></i>
-            <div class="title">Erro!</div>
+            <div class="title">Erro</div>
             <div class="message">
                 Session ID não fornecido ou inválido. Por favor, tente novamente.
             </div>
@@ -385,98 +332,70 @@ if ($session_id) {
         $emailExists = $stmt->fetchColumn();
 
         if ($emailExists && !isset($_POST['new_email'])) {
-            // HTML para "Email Já Cadastrado" com estilo elegante
             echo '<!DOCTYPE html>
             <html lang="pt-BR">
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Email Já Cadastrado</title>
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                 <style>
                     body {
-                        font-family: \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif;
-                        background: linear-gradient(135deg, #ffc107, #e0a800); /* Gradiente amarelo para alerta */
+                        font-family: Arial, sans-serif;
+                        background-color: #28a745;
                         margin: 0;
                         padding: 20px;
                         display: flex;
                         justify-content: center;
                         align-items: center;
                         min-height: 100vh;
-                        color: #333;
                     }
                     .container {
                         background-color: #fff;
-                        padding: 40px 30px;
-                        border-radius: 15px;
-                        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+                        padding: 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 0 10px rgba(0,0,0,0.1);
                         text-align: center;
-                        max-width: 550px;
+                        max-width: 500px;
                         width: 100%;
-                        animation: fadeIn 0.8s ease-out;
-                    }
-                    @keyframes fadeIn {
-                        from { opacity: 0; transform: translateY(-20px); }
-                        to { opacity: 1; transform: translateY(0); }
-                    }
-                    .icon-warning {
-                        color: #ffc107;
-                        font-size: 80px;
-                        margin-bottom: 25px;
-                        animation: pulse 1.5s infinite;
-                    }
-                    @keyframes pulse {
-                        0% { transform: scale(1); }
-                        50% { transform: scale(1.05); }
-                        100% { transform: scale(1); }
                     }
                     .title {
-                        font-size: 28px;
+                        font-size: 24px;
                         font-weight: bold;
                         color: #333;
                         margin-bottom: 20px;
                     }
                     .message {
-                        font-size: 17px;
-                        color: #555;
-                        margin-bottom: 25px;
-                        line-height: 1.6;
+                        font-size: 16px;
+                        color: #dc3545;
+                        margin-bottom: 15px;
                     }
                     .input-field {
-                        width: calc(100% - 20px); /* Ajuste para padding */
-                        padding: 12px;
-                        margin-bottom: 20px;
+                        width: 100%;
+                        padding: 10px;
+                        margin-bottom: 15px;
                         border: 1px solid #ccc;
-                        border-radius: 8px;
+                        border-radius: 5px;
                         font-size: 16px;
-                        box-sizing: border-box; /* Garante que padding não aumente a largura */
                     }
                     .submit-button {
-                        background: linear-gradient(45deg, #007bff, #0056b3); /* Gradiente azul */
+                        background-color: #28a745;
                         color: #fff;
-                        padding: 15px 30px;
-                        border-radius: 8px;
+                        padding: 12px;
+                        border-radius: 5px;
                         text-decoration: none;
-                        font-size: 18px;
+                        font-size: 16px;
                         font-weight: bold;
                         display: inline-block;
                         border: none;
                         cursor: pointer;
-                        transition: all 0.3s ease;
-                        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-                    }
-                    .submit-button:hover {
-                        transform: translateY(-3px);
-                        box-shadow: 0 8px 20px rgba(0,0,0,0.25);
                     }
                 </style>
             </head>
             <body>
                 <div class="container">
-                    <i class="fas fa-exclamation-circle icon-warning"></i>
                     <div class="title">Email Já Cadastrado</div>
                     <div class="message">
-                        O email <strong style="color: #dc3545;">' . htmlspecialchars($email) . '</strong> já está cadastrado. Por favor, insira outro email para continuar.
+                        O email <strong>' . htmlspecialchars($email) . '</strong> já está cadastrado. Por favor, insira outro email para continuar.
                     </div>
                     <form method="POST" action="">
                         <input type="hidden" name="session_id" value="' . htmlspecialchars($session_id) . '">
@@ -497,98 +416,70 @@ if ($session_id) {
             $emailExists = $stmt->fetchColumn();
 
             if ($emailExists) {
-                // HTML para "Email Já Cadastrado" (segunda vez) com estilo elegante
                 echo '<!DOCTYPE html>
                 <html lang="pt-BR">
                 <head>
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>Email Já Cadastrado</title>
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                     <style>
                         body {
-                            font-family: \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif;
-                            background: linear-gradient(135deg, #ffc107, #e0a800);
+                            font-family: Arial, sans-serif;
+                            background-color: #28a745;
                             margin: 0;
                             padding: 20px;
                             display: flex;
                             justify-content: center;
                             align-items: center;
                             min-height: 100vh;
-                            color: #333;
                         }
                         .container {
                             background-color: #fff;
-                            padding: 40px 30px;
-                            border-radius: 15px;
-                            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+                            padding: 20px;
+                            border-radius: 8px;
+                            box-shadow: 0 0 10px rgba(0,0,0,0.1);
                             text-align: center;
-                            max-width: 550px;
+                            max-width: 500px;
                             width: 100%;
-                            animation: fadeIn 0.8s ease-out;
-                        }
-                        @keyframes fadeIn {
-                            from { opacity: 0; transform: translateY(-20px); }
-                            to { opacity: 1; transform: translateY(0); }
-                        }
-                        .icon-warning {
-                            color: #ffc107;
-                            font-size: 80px;
-                            margin-bottom: 25px;
-                            animation: pulse 1.5s infinite;
-                        }
-                        @keyframes pulse {
-                            0% { transform: scale(1); }
-                            50% { transform: scale(1.05); }
-                            100% { transform: scale(1); }
                         }
                         .title {
-                            font-size: 28px;
+                            font-size: 24px;
                             font-weight: bold;
                             color: #333;
                             margin-bottom: 20px;
                         }
                         .message {
-                            font-size: 17px;
-                            color: #555;
-                            margin-bottom: 25px;
-                            line-height: 1.6;
+                            font-size: 16px;
+                            color: #dc3545;
+                            margin-bottom: 15px;
                         }
                         .input-field {
-                            width: calc(100% - 20px);
-                            padding: 12px;
-                            margin-bottom: 20px;
+                            width: 100%;
+                            padding: 10px;
+                            margin-bottom: 15px;
                             border: 1px solid #ccc;
-                            border-radius: 8px;
+                            border-radius: 5px;
                             font-size: 16px;
-                            box-sizing: border-box;
                         }
                         .submit-button {
-                            background: linear-gradient(45deg, #007bff, #0056b3);
+                            background-color: #28a745;
                             color: #fff;
-                            padding: 15px 30px;
-                            border-radius: 8px;
+                            padding: 12px;
+                            border-radius: 5px;
                             text-decoration: none;
-                            font-size: 18px;
+                            font-size: 16px;
                             font-weight: bold;
                             display: inline-block;
                             border: none;
                             cursor: pointer;
-                            transition: all 0.3s ease;
-                            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-                        }
-                        .submit-button:hover {
-                            transform: translateY(-3px);
-                            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
                         }
                     </style>
                 </head>
                 <body>
                     <div class="container">
-                        <i class="fas fa-exclamation-circle icon-warning"></i>
                         <div class="title">Email Já Cadastrado</div>
                         <div class="message">
-                            O email <strong style="color: #dc3545;">' . htmlspecialchars($email) . '</strong> também já está cadastrado. Por favor, insira outro email.
+                            O email <strong>' . htmlspecialchars($email) . '</strong> também já está cadastrado. Por favor, insira outro email.
                         </div>
                         <form method="POST" action="">
                             <input type="hidden" name="session_id" value="' . htmlspecialchars($session_id) . '">
@@ -667,112 +558,86 @@ function formatPhoneNumber($phone) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro Concluído</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #28a745, #218838); /* Gradiente verde */
+            font-family: Arial, sans-serif;
+            background-color: #28a745;
             margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: #333;
         }
         .container {
             background-color: #fff;
-            padding: 40px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Sombra mais suave e profunda */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
             text-align: center;
-            max-width: 550px;
+            max-width: 500px;
             width: 100%;
-            animation: fadeIn 0.8s ease-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .icon-success {
-            color: #28a745;
-            font-size: 80px; /* Ícone grande */
-            margin-bottom: 25px;
-            animation: bounceIn 0.6s ease-out;
-        }
-        @keyframes bounceIn {
-            0% { opacity: 0; transform: scale3d(0.3, 0.3, 0.3); }
-            20% { transform: scale3d(1.1, 1.1, 1.1); }
-            40% { transform: scale3d(0.9, 0.9, 0.9); }
-            60% { opacity: 1; transform: scale3d(1.03, 1.03, 1.03); }
-            80% { transform: scale3d(0.97, 0.97, 0.97); }
-            to { opacity: 1; transform: scale3d(1, 1, 1); }
         }
         .title {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: bold;
             color: #333;
             margin-bottom: 20px;
         }
         .message {
-            font-size: 17px;
-            color: #555;
+            font-size: 16px;
+            color: #6c757d;
             margin-bottom: 15px;
-            line-height: 1.6;
         }
         .credentials {
-            font-size: 17px;
+            font-size: 16px;
             color: #333;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
-        .bold-highlight {
+        .bold {
             font-weight: bold;
-            color: #28a745; /* Cor de destaque verde */
+            color: #28a745;
         }
         .note {
             font-size: 14px;
-            color: #dc3545; /* Vermelho para observações importantes */
-            margin-top: 25px;
-            margin-bottom: 35px;
-            line-height: 1.5;
+            color: #dc3545;
+            margin-top: 20px;
+            margin-bottom: 30px;
         }
         .login-button {
-            background: linear-gradient(45deg, #28a745, #218838); /* Gradiente no botão */
+            background-color: #28a745;
             color: #fff;
-            padding: 15px 30px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 5px;
             text-decoration: none;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             display: inline-block;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        .login-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        .bottom-spacer {
+            height: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <i class="fas fa-check-circle icon-success"></i>
         <div class="title">Cadastro Concluído com Sucesso!</div>
         <div class="message">
             Seu cadastro foi efetuado com sucesso. Você possui um período de teste gratuito que termina em 
-            <span class="bold-highlight"><?php echo $trialEndDate; ?></span>.
+            <span class="bold"><?php echo $trialEndDate; ?></span>.
         </div>
         <div class="message">Para acessar o app, utilize as seguintes credenciais:</div>
         <div class="credentials">
-            <span class="bold-highlight">Login:</span> <?php echo $email; ?>
+            <span class="bold">Login:</span> <?php echo $email; ?>
         </div>
         <div class="credentials">
-            <span class="bold-highlight">Senha:</span> <?php echo $defaultPassword; ?>
+            <span class="bold">Senha:</span> <?php echo $defaultPassword; ?>
         </div>
         <div class="note">
             *Observação: Acesse o seu perfil e as configurações do sistema assim que entrar no APP para inserir seus dados corretamente.
         </div>
         <a href="intent://agendar.skysee.com.br#Intent;scheme=https;package=com.example.app;end" class="login-button">Ir para o APP</a>
+        <div class="bottom-spacer"></div>
     </div>
 </body>
 </html>
