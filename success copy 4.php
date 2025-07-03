@@ -619,7 +619,7 @@ if ($session_id) {
         $stmt->execute([$nomeCliente, $cpf, $telefone, $email, $dataAtual, 'teste', $dataAtual, $valor, $frequencia, $plano, $formaPgto, 'Sim', $idConta, $customer_id, 'skysee', 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com', 'barbearia', '9vtYvJly8PK6zHahjPUg', $customer_status, $subscription->id, $priceId]);
 
         // Cadastra os planos
-       
+        try {
             $planos_para_cadastrar = [
                 ['nome' => 'Bronze',   'imagem' => 'bronze.png',   'ordem' => 10],
                 ['nome' => 'Prata',    'imagem' => 'prata.png',    'ordem' => 20],
@@ -639,7 +639,11 @@ if ($session_id) {
                 $inseridos_count++;
             }
 
-           
+            file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - {$inseridos_count} planos padrão inseridos com sucesso para id_conta {$idConta}.\n", FILE_APPEND);
+        } catch (PDOException $e) {
+            file_put_contents('/var/www/agendar/error_log.txt', date('Y-m-d H:i:s') . " - Erro ao inserir planos padrão para id_conta {$idConta}: " . $e->getMessage() . "\n", FILE_APPEND);
+            throw new Exception("Erro ao inserir planos padrão: " . $e->getMessage());
+        }      
    
 
         // Armazena o session_id processado na sessão
