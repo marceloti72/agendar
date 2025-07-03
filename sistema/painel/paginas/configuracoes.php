@@ -160,18 +160,7 @@ if(@$_SESSION['nivel_usuario'] != 'Administrador'){
 
 
 			<div class="row">
-				<div class="col-md-3">
-					<div class="form-group">
-						<label for="exampleInputEmail1">Taxa de Cartões <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Aqui vc informa quem vai pagar as taxas dos cartões de Debito e Crétido. Lembrando que vc informa os valores das taxas no menu lateral em 'Cadastros -> Formas de Pagamentos'." style="color: blue;"></i></label>
-						<select class="form-control" name="taxa_sistema" id="taxa_sistema">
-							<option value="Cliente" <?php if (@$taxa_sistema == 'Cliente') { ?> selected <?php } ?>>Cliente Paga</option>
-							<option value="Empresa" <?php if (@$taxa_sistema == 'Empresa') { ?> selected <?php } ?>>Estabelecimento Paga</option>
-
-						</select>
-					</div>
-				</div>
-
-
+				
 				<div class="col-md-2">
 					<div class="form-group">
 						<label for="exampleInputEmail1">Tipo Comissão</label>
@@ -180,19 +169,7 @@ if(@$_SESSION['nivel_usuario'] != 'Administrador'){
 							<option value="R$" <?php if ($tipo_comissao == 'R$') { ?> selected <?php } ?>>R$ Reais</option>
 						</select>
 					</div>
-				</div>
-
-
-
-				<div class="col-md-3">
-					<div class="form-group">
-						<label for="exampleInputEmail1">Lançamento Comissão </label>
-						<select class="form-control" name="lanc_comissao" id="lanc_comissao">
-							<option value="Sempre" <?php if ($lanc_comissao == 'Sempre') { ?> selected <?php } ?>>Serviço Pendente e Pago</option>
-							<option value="Pago" <?php if ($lanc_comissao == 'Pago') { ?> selected <?php } ?>>Serviço Pago</option>
-						</select>
-					</div>
-				</div>	
+				</div>				
 
 				<div class="col-md-4">
 					<div class="form-group">

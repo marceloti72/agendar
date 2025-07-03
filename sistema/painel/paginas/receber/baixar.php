@@ -31,10 +31,10 @@ if ($tipo == 'Serviço') {
 		$valor_comissao = $comissao;
 	}
 
-	if ($lanc_comissao != 'Sempre') {
-		//lançar a conta a pagar para a comissão do funcionário
-		$pdo->query("INSERT INTO pagar SET descricao = '$descricao', tipo = 'Comissão', valor = '$valor_comissao', data_lanc = curDate(), data_venc = curDate(), usuario_lanc = '$id_usuario', foto = 'sem-foto.jpg', pago = 'Não', funcionario = '$funcionario', servico = '$servico', cliente = '$cliente', id_conta = '$id_conta'");
-	}
+	// if ($lanc_comissao != 'Sempre') {
+	// 	//lançar a conta a pagar para a comissão do funcionário
+	// 	$pdo->query("INSERT INTO pagar SET descricao = '$descricao', tipo = 'Comissão', valor = '$valor_comissao', data_lanc = curDate(), data_venc = curDate(), usuario_lanc = '$id_usuario', foto = 'sem-foto.jpg', pago = 'Não', funcionario = '$funcionario', servico = '$servico', cliente = '$cliente', id_conta = '$id_conta'");
+	// }
 }
 
 $query = $pdo->query("SELECT * FROM formas_pgto where nome = '$pgto' and id_conta = '$id_conta'");

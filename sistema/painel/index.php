@@ -678,9 +678,7 @@ $plano = $res3['plano'];
 									
 									<li> <a href="conf_site" ><i class="fa fa-angle-right"></i> Configurações</a> </li> 		
 
-									<li class="<?php echo @$textos_index ?>"><a href="textos_index"><i class="fa fa-angle-right"></i>Textos Carrossel</a></li>
-
-
+									
 									<li class="<?php echo @$comentarios ?>"><a href="comentarios"><i class="fa fa-angle-right"></i>Comentários</a></li>
 
 														

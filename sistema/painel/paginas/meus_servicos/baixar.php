@@ -58,10 +58,10 @@ if ($valor_taxa > 0) {
 $pdo->query("UPDATE $tabela SET pago = 'Sim', usuario_baixa = '$id_usuario', data_pgto = curDate() where id = '$id' and id_conta = '$id_conta'");
 
 
-if ($lanc_comissao != 'Sempre') {
-	//lançar a conta a pagar para a comissão do funcionário
-	$pdo->query("INSERT INTO pagar SET descricao = '$descricao', tipo = 'Comissão', valor = '$valor_comissao', data_lanc = curDate(), data_venc = curDate(), usuario_lanc = '$id_usuario', foto = 'sem-foto.jpg', pago = 'Não', funcionario = '$funcionario', servico = '$servico', cliente = '$cliente', id_conta = '$id_conta'");
-}
+// if ($lanc_comissao != 'Sempre') {
+// 	//lançar a conta a pagar para a comissão do funcionário
+// 	$pdo->query("INSERT INTO pagar SET descricao = '$descricao', tipo = 'Comissão', valor = '$valor_comissao', data_lanc = curDate(), data_venc = curDate(), usuario_lanc = '$id_usuario', foto = 'sem-foto.jpg', pago = 'Não', funcionario = '$funcionario', servico = '$servico', cliente = '$cliente', id_conta = '$id_conta'");
+// }
 
 echo 'Baixado com Sucesso';
 

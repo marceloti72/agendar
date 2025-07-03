@@ -378,18 +378,10 @@ try {
          error_log("[CONCLUIR AGD {$id_agd}] Lançamento principal 'receber' (ID: {$id_receber_principal}) INSERIDO. Valor: {$valor_final_receber}, Pago: {$pago_receber}.");
     }
 
-    // d. Lança Conta a Pagar - Comissão
-    $lancar_comissao_agora = false;
-    if ($pago_receber == 'Sim') { // Se a parte principal foi paga (hoje ou via assinatura)
+    // d. Lança Conta a Pagar - Comissão   
         $lancar_comissao_agora = true;
         $data_base_comissao = $data_pgto_efetivo; // Usa data do pagamento efetivo
-    } else {
-        global $lanc_comissao; // Assume definida em conexao.php ('Sempre' ou 'Pago')
-        if (isset($lanc_comissao) && $lanc_comissao == 'Sempre') {
-            $lancar_comissao_agora = true;
-            $data_base_comissao = $data_pgto_prevista; // Usa data prevista se lança sempre
-        }
-    }
+    
 
     if ($lancar_comissao_agora && $valor_comissao_calculado > 0 && $id_receber_principal) {
          // ** CONFIRME SE 'pagar' tem a coluna 'id_ref' **

@@ -53,23 +53,11 @@ if(@$_SESSION['nivel_usuario'] != 'Administrador'){
 								<input maxlength="255" type="text" class="form-control" id="texto_rodape" name="texto_rodape" placeholder="Texto para o Rodapé do site" value="<?php echo $texto_rodape ?>">   
 							</div> 
 						</div>
-					</div>
-
-
-					<div class="row">
-						<div class="col-md-12">
-						<div class="form-group">
-								<label for="exampleInputEmail1">Texto Sobre <small>(600) Caracteres</small> <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Aqui voce vai colocar um texto escrevendo sobre sua empresa." style="color: blue;"></i></label>
-								<input maxlength="255" type="text" class="form-control" id="texto_sobre" name="texto_sobre" placeholder="Texto para a área Sobre a empresa no site" value="<?php echo $texto_sobre ?>">   
-							</div> 
-						</div>
-					</div>
+					</div>	
 						
 					</div>
 
-					<div class="row">
-
-						
+					<div class="row">						
 
 							<div class="col-md-4">						
 								<div class="form-group"> 
@@ -81,20 +69,7 @@ if(@$_SESSION['nivel_usuario'] != 'Administrador'){
 								<div id="divImg">
 									<img src="../img/logo<?php echo $id_conta?>.png"  width="80px" id="target-logo">									
 								</div>
-							</div>
-
-
-							<!-- <div class="col-md-4">						
-								<div class="form-group"> 
-									<label>Ícone (*Png)</label> 
-									<input class="form-control" type="file" name="foto-icone" onChange="carregarImgIcone();" id="foto-icone">
-								</div>						
-							</div>
-							<div class="col-md-2">
-								<div id="divImg">
-									<img src="../img/icon<?php echo $id_conta?>.png"  width="50px" id="target-icone">									
-								</div>
-							</div> -->
+							</div>							
 
 							<div class="col-md-4">						
 								<div class="form-group"> 
@@ -110,13 +85,7 @@ if(@$_SESSION['nivel_usuario'] != 'Administrador'){
 
 						</div>
 
-
-
 						<div class="row">
-
-							
-
-
 
 							<div class="col-md-4">						
 								<div class="form-group"> 
@@ -130,7 +99,7 @@ if(@$_SESSION['nivel_usuario'] != 'Administrador'){
 								</div>
 							</div>
 
-							<div class="col-md-4">						
+							<!-- <div class="col-md-4">						
 								<div class="form-group"> 
 									<label>Imagem principal do site<small>(1500x1000) (*jpg)</small></label> 
 									<input class="form-control" type="file" name="foto-banner-index" onChange="carregarImgBannerIndex();" id="foto-banner-index">
@@ -140,40 +109,9 @@ if(@$_SESSION['nivel_usuario'] != 'Administrador'){
 								<div id="divImg">
 									<img src="../../images/banner<?php echo $id_conta?>.jpg"  width="80px" id="target-banner-index">									
 								</div>
-							</div>
+							</div> -->
 
-
-
-						</div>
-
-
-
-						<div class="row">
-
-							<div class="col-md-4">						
-								<div class="form-group"> 
-									<label>Imagem Sobre (Site) (*jpg)</label> 
-									<input class="form-control" type="file" name="foto-sobre" onChange="carregarImgSobre();" id="foto-sobre">
-								</div>						
-							</div>
-							<div class="col-md-2">
-								<div id="divImg">
-									<img src="../../images/foto-sobre<?php echo $id_conta?>.jpg"  width="80px" id="target-sobre">									
-								</div>
-							</div>						
-
-
-
-						</div>
-
-
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-								<label for="exampleInputEmail1">Ou url de Vídeo Sobre (Site)</label>
-								 	<input type="text" class="form-control" id="url_video" name="url_video" value="<?php echo $url_video ?>" placeholder="Url do Youtube Incorporada">    
-							</div> 
-						</div>	
+						</div>								
 
 						<div class="col-md-6">
 						<div class="form-group">
@@ -210,12 +148,7 @@ if(@$_SESSION['nivel_usuario'] != 'Administrador'){
 							<input class="form-check-input" type="checkbox" role="switch" id="depoimentos2" name="depoimentos2" value="Sim" <?php if($depoimentos2 == 'Sim'){ echo 'checked'; } ?>>
 							<label class="form-check-label" for="depoimentos2">Depoimentos</label>
 						</div>
-							<div class="form-check form-switch">
-							<input class="form-check-input" type="checkbox" role="switch" id="carrossel" name="carrossel" value="Sim" <?php if($carrossel == 'Sim'){ echo 'checked'; } ?>>
-							<label class="form-check-label" for="depoimentos">Textos Carrossel</label>
-						</div>
-
-					
+											
 						
 
 					<br>
