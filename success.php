@@ -603,16 +603,16 @@ if ($session_id) {
         }
 
         // Inserir na tabela config
-        $stmt = $pdo->prepare("INSERT INTO config (nome, email, telefone_whatsapp, token, ativo, email_menuia, senha_menuia, data_cadastro, plano, api, id_cliente_stripe, id_assinatura_stripe, senha_menuia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nomeConfig, $email, $telefone, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'teste', 'rtcorretora@gmail.com', 'mof36001', $dataAtual, $plano, 'Sim', $customer_id, $subscription->id, 'mof36001']);
+        $stmt = $pdo->prepare("INSERT INTO config (nome, email, telefone_whatsapp, token, ativo, email_menuia, senha_menuia, data_cadastro, plano, api, id_cliente_stripe, id_assinatura_stripe) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nomeConfig, $email, $telefone, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'teste', 'rtcorretora@gmail.com', 'mof36001', $dataAtual, $plano, 'Sim', $customer_id, $subscription->id]);
         $idConta = $pdo->lastInsertId();
 
-        $stmt = $pdo->prepare("UPDATE config SET username = ? WHERE ID = ?");
+        $stmt = $pdo->prepare("UPDATE config SET username = ? WHERE id = ?");
         $stmt->execute([$idConta, $idConta]);
 
         // Inserir na tabela usuarios
         $stmt = $pdo->prepare("INSERT INTO usuarios (nome, username, email, cpf, senha, nivel, data, ativo, telefone, atendimento, id_conta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nomeCliente, $idConta, $email, $cpf, $defaultPassword, 'administrador', $dataAtual, 'teste', $telefone, 'Sim', $idConta]);
+        $stmt->execute([$nomeCliente, $idConta, $email, $cpf, $defaultPassword, 'Administrador', $dataAtual, 'teste', $telefone, 'Sim', $idConta]);
 
         // Inserir na tabela clientes
         $stmt = $pdo2->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta, id_cliente_stripe, usuario, servidor, banco, senha, status, id_assinatura_stripe, plan_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -620,24 +620,24 @@ if ($session_id) {
 
         // Cadastra os planos
        
-            // $planos_para_cadastrar = [
-            //     ['nome' => 'Bronze',   'imagem' => 'bronze.png',   'ordem' => 10],
-            //     ['nome' => 'Prata',    'imagem' => 'prata.png',    'ordem' => 20],
-            //     ['nome' => 'Ouro',     'imagem' => 'ouro.png',     'ordem' => 30],
-            //     ['nome' => 'Diamante', 'imagem' => 'diamante.png', 'ordem' => 40]
-            // ];
-            // $stmt = $pdo->prepare("INSERT INTO planos (nome, imagem, ordem, id_conta, data_cadastro) VALUES (:nome, :imagem, :ordem, :id_conta, NOW())");
+            $planos_para_cadastrar = [
+                ['nome' => 'Bronze',   'imagem' => 'bronze.png',   'ordem' => 10],
+                ['nome' => 'Prata',    'imagem' => 'prata.png',    'ordem' => 20],
+                ['nome' => 'Ouro',     'imagem' => 'ouro.png',     'ordem' => 30],
+                ['nome' => 'Diamante', 'imagem' => 'diamante.png', 'ordem' => 40]
+            ];
+            $stmt = $pdo->prepare("INSERT INTO planos (nome, imagem, ordem, id_conta, data_cadastro) VALUES (:nome, :imagem, :ordem, :id_conta, NOW())");
 
-            // $inseridos_count = 0;
-            // foreach ($planos_para_cadastrar as $plano) {
-            //     $stmt->execute([
-            //         ':nome' => $plano['nome'],
-            //         ':imagem' => $plano['imagem'],
-            //         ':ordem' => $plano['ordem'],
-            //         ':id_conta' => $idConta
-            //     ]);
-            //     $inseridos_count++;
-            // }
+            $inseridos_count = 0;
+            foreach ($planos_para_cadastrar as $plano) {
+                $stmt->execute([
+                    ':nome' => $plano['nome'],
+                    ':imagem' => $plano['imagem'],
+                    ':ordem' => $plano['ordem'],
+                    ':id_conta' => $idConta
+                ]);
+                $inseridos_count++;
+            }
 
            
    
