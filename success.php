@@ -603,13 +603,16 @@ if ($session_id) {
         }
 
         // Inserir na tabela config
-        $stmt = $pdo->prepare("INSERT INTO config (nome, email, username, telefone_whatsapp, token, ativo, email_menuia, data_cadastro, plano, api, id_cliente_stripe, id_assinatura_stripe, senha_menuia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nomeConfig, $email, $username, $telefone, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'teste', 'rtcorretora@gmail.com', $dataAtual, $plano, 'Sim', $customer_id, $subscription->id, 'mof36001']);
+        $stmt = $pdo->prepare("INSERT INTO config (nome, email, telefone_whatsapp, token, ativo, email_menuia, senha_menuia, data_cadastro, plano, api, id_cliente_stripe, id_assinatura_stripe, senha_menuia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nomeConfig, $email, $telefone, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'teste', 'rtcorretora@gmail.com', 'mof36001', $dataAtual, $plano, 'Sim', $customer_id, $subscription->id, 'mof36001']);
         $idConta = $pdo->lastInsertId();
+
+        $stmt = $pdo->prepare("UPDATE config SET username = ? WHERE ID = ?");
+        $stmt->execute([$idConta, $idConta]);
 
         // Inserir na tabela usuarios
         $stmt = $pdo->prepare("INSERT INTO usuarios (nome, username, email, cpf, senha, nivel, data, ativo, telefone, atendimento, id_conta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nomeCliente, $username, $email, $cpf, $defaultPassword, 'administrador', $dataAtual, 'teste', $telefone, 'Sim', $idConta]);
+        $stmt->execute([$nomeCliente, $idConta, $email, $cpf, $defaultPassword, 'administrador', $dataAtual, 'teste', $telefone, 'Sim', $idConta]);
 
         // Inserir na tabela clientes
         $stmt = $pdo2->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta, id_cliente_stripe, usuario, servidor, banco, senha, status, id_assinatura_stripe, plan_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -786,7 +789,7 @@ function formatPhoneNumber($phone) {
     $mensagem .= "Seja bem-vindo ao nosso sistema! 😃%0A%0A";
     $mensagem .= "Segue os dados para acesso:%0A";
     $mensagem .= "*Login:* $email%0A";
-    $mensagem .= "*Senha:* $defaultPassword%0A";
+    $mensagem .= "*Senha:* $defaultPassword%0A%0A";
     $mensagem .= "🚨 Acesse o seu perfil e as configurações do sistema assim que entrar no APP para inserir seus dados corretamente.%0A%0A";
     $mensagem .= "Você tem 15 dias grátis para conhecer nosso sistema.%0A%0A";
     
