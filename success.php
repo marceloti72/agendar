@@ -618,6 +618,34 @@ if ($session_id) {
         $stmt = $pdo2->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta, id_cliente_stripe, usuario, servidor, banco, senha, status, id_assinatura_stripe, plan_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$nomeCliente, $cpf, $telefone, $email, $dataAtual, 'teste', $dataAtual, $valor, $frequencia, $plano, $formaPgto, 'Sim', $idConta, $customer_id, 'skysee', 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com', 'barbearia', '9vtYvJly8PK6zHahjPUg', $customer_status, $subscription->id, $priceId]);
 
+        // Cadastra os planos
+        try {
+            $planos_para_cadastrar = [
+                ['nome' => 'Bronze',   'imagem' => 'bronze.png',   'ordem' => 10],
+                ['nome' => 'Prata',    'imagem' => 'prata.png',    'ordem' => 20],
+                ['nome' => 'Ouro',     'imagem' => 'ouro.png',     'ordem' => 30],
+                ['nome' => 'Diamante', 'imagem' => 'diamante.png', 'ordem' => 40]
+            ];
+            $stmt = $pdo->prepare("INSERT INTO planos (nome, imagem, ordem, id_conta, data_cadastro) VALUES (:nome, :imagem, :ordem, :id_conta, NOW())");
+
+            $inseridos_count = 0;
+            foreach ($planos_para_cadastrar as $plano) {
+                $stmt->execute([
+                    ':nome' => $plano['nome'],
+                    ':imagem' => $plano['imagem'],
+                    ':ordem' => $plano['ordem'],
+                    ':id_conta' => $idConta
+                ]);
+                $inseridos_count++;
+            }
+
+            file_put_contents('/var/www/agendar/session_log.txt', date('Y-m-d H:i:s') . " - {$inseridos_count} planos padrão inseridos com sucesso para id_conta {$idConta}.\n", FILE_APPEND);
+        } catch (PDOException $e) {
+            file_put_contents('/var/www/agendar/error_log.txt', date('Y-m-d H:i:s') . " - Erro ao inserir planos padrão para id_conta {$idConta}: " . $e->getMessage() . "\n", FILE_APPEND);
+            throw new Exception("Erro ao inserir planos padrão: " . $e->getMessage());
+        }      
+   
+
         // Armazena o session_id processado na sessão
         $_SESSION['processed_session_ids'][$session_id] = [
             'email' => $email,

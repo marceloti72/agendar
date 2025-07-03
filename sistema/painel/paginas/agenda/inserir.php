@@ -172,11 +172,11 @@ if ($msg_agendamento == 'Sim') {
 		$nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
 
 		$mensagem = '*' . $nome_sistema_maiusculo . '*%0A%0A';
-		$mensagem .= '*Confirmação de Agendamento* 📆%0A';
+		$mensagem .= '*Olá, estamos passando aqui para lembrar de seu Agendamento* 📆%0A';
 		$mensagem .= 'Data: ' . $dataF . '%0A';
 		$mensagem .= 'Hora: ' . $horaF . '%0A';
 		$mensagem .= 'Serviço: ' . $nome_servico . '%0A%0A';
-		$mensagem .= '_(1 para *CONFIRMAR*, 2 para *CANCELAR*)_';
+		$mensagem .= 'Aguardamos você! 😃';
 		$id_envio = $ult_id;
 		$data_envio = $data_agd . ' ' . $nova_hora;
 
