@@ -620,24 +620,24 @@ if ($session_id) {
 
         // Cadastra os planos
        
-            $planos_para_cadastrar = [
-                ['nome' => 'Bronze',   'imagem' => 'bronze.png',   'ordem' => 10],
-                ['nome' => 'Prata',    'imagem' => 'prata.png',    'ordem' => 20],
-                ['nome' => 'Ouro',     'imagem' => 'ouro.png',     'ordem' => 30],
-                ['nome' => 'Diamante', 'imagem' => 'diamante.png', 'ordem' => 40]
-            ];
-            $stmt = $pdo->prepare("INSERT INTO planos (nome, imagem, ordem, id_conta, data_cadastro) VALUES (:nome, :imagem, :ordem, :id_conta, NOW())");
+            // $planos_para_cadastrar = [
+            //     ['nome' => 'Bronze',   'imagem' => 'bronze.png',   'ordem' => 10],
+            //     ['nome' => 'Prata',    'imagem' => 'prata.png',    'ordem' => 20],
+            //     ['nome' => 'Ouro',     'imagem' => 'ouro.png',     'ordem' => 30],
+            //     ['nome' => 'Diamante', 'imagem' => 'diamante.png', 'ordem' => 40]
+            // ];
+            // $stmt = $pdo->prepare("INSERT INTO planos (nome, imagem, ordem, id_conta, data_cadastro) VALUES (:nome, :imagem, :ordem, :id_conta, NOW())");
 
-            $inseridos_count = 0;
-            foreach ($planos_para_cadastrar as $plano) {
-                $stmt->execute([
-                    ':nome' => $plano['nome'],
-                    ':imagem' => $plano['imagem'],
-                    ':ordem' => $plano['ordem'],
-                    ':id_conta' => $idConta
-                ]);
-                $inseridos_count++;
-            }
+            // $inseridos_count = 0;
+            // foreach ($planos_para_cadastrar as $plano) {
+            //     $stmt->execute([
+            //         ':nome' => $plano['nome'],
+            //         ':imagem' => $plano['imagem'],
+            //         ':ordem' => $plano['ordem'],
+            //         ':id_conta' => $idConta
+            //     ]);
+            //     $inseridos_count++;
+            // }
 
            
    
