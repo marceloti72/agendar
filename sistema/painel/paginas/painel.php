@@ -9,7 +9,7 @@ $usuario_nivel = $_SESSION['nivel_usuario'];
 $hoje = date('Y-m-d');
 
 // Verificar se ele tem a permissão de estar nessa página
-if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+if(@$_SESSION['nivel_usuario'] != 'administrador'){
 	    echo "<script>window.location='agenda.php'</script>";
     }
 

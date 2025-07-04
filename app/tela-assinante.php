@@ -35,7 +35,7 @@ if ($id_plano <= 0) {
         }
         .tela-cheia-assinante {
             min-height: 100vh;
-            background-color: #295f41;
+            background-color: #4682B4;
             color: #fff;
             padding: 20px;
             display: flex;

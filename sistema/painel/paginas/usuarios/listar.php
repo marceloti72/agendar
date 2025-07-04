@@ -155,7 +155,7 @@ for($i=0; $i < $total_reg; $i++){
 
 	$dataF = implode('/', array_reverse(explode('-', $data)));
 	
-	if($nivel == 'Administrador'){
+	if($nivel == 'administrador'){
 		$senhaF = '******';
 	}else{
 		$senhaF = $senha;

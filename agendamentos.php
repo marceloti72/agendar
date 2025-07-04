@@ -423,9 +423,9 @@ $dataSelecionadaInicial = $data_atual_iso; // Data de hoje no formato correto
                                             <span>/</span>
                                             <span class="mes"><?= $dataItem['mes'] ?></span>
                                         </span>
-                                        <span class="desconto">
+                                        <!-- <span class="desconto">
                                             <?= ($desconto > 0) ? $desconto . '% OFF' : '&nbsp;' ?>
-                                        </span>
+                                        </span> -->
                                     </div>
                                 <?php endforeach; ?>
                             </div>

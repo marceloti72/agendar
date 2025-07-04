@@ -211,7 +211,7 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
                                             <select class="form-control sel2" id="funcionario2" name="funcionario2" value="" style="width:100%;" required onchange="listarServicos()">
                                                 <option value="0">Nenhum</option>
                                                 <?php
-                                                  $query = $pdo->query("SELECT * FROM usuarios where nivel != 'Administrador' and id_conta = '$id_conta' ORDER BY nome asc");
+                                                  $query = $pdo->query("SELECT * FROM usuarios where nivel != 'administrador' and id_conta = '$id_conta' ORDER BY nome asc");
                                                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
                                                   foreach($res as $item){
                                                     echo '<option value="'.$item['id'].'">'.$item['nome'].'</option>';

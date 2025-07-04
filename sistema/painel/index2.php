@@ -27,7 +27,7 @@ if($total_reg > 0){
 	$intervalo_horarios = $res[0]['intervalo'];
 }
 
-if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+if(@$_SESSION['nivel_usuario'] != 'administrador'){
 	require_once("verificar-permissoes.php");
 }
 
@@ -627,7 +627,7 @@ $plano = $res3['plano'];
 					<ul class="nofitications-dropdown">
 
 
-						<?php if(@$_SESSION['nivel_usuario'] == 'Administrador'){ 
+						<?php if(@$_SESSION['nivel_usuario'] == 'administrador'){ 
 							$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and status = 'Agendado' and id_conta = '$id_conta'");
 							$res = $query->fetchAll(PDO::FETCH_ASSOC);
 							$total_agendamentos_hoje_usuario_pendentes = @count($res);

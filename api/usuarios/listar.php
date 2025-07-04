@@ -17,7 +17,7 @@ if($total_reg > 0){
 		$foto = $res[$i]['foto'];
 		$ativo = $res[$i]['ativo'];
 
-		if($nivel == 'Administrador'){
+		if($nivel == 'administrador'){
 		$senhaF = '******';
 	}else{
 		$senhaF = $senha;

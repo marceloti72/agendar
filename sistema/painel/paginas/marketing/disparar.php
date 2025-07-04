@@ -156,7 +156,7 @@ if ($conclusao != "") {
 
 // Buscar os Contatos que serão enviados
 if ($clientes == "Teste") {
-	$resultado = $pdo->query("SELECT telefone FROM usuarios where nivel = 'Administrador' and telefone != '' and id_conta = '$id_conta'");
+	$resultado = $pdo->query("SELECT telefone FROM usuarios where nivel = 'administrador' and telefone != '' and id_conta = '$id_conta'");
 } else if ($clientes == "Aniversáriantes Mês") {
 	$resultado = $pdo->query("SELECT telefone FROM clientes where month(data_nasc) = '$dataMes'  and telefone != '' and id_conta = '$id_conta'");
 } else if ($clientes == "Aniversáriantes Dia") {

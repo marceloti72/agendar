@@ -5,7 +5,7 @@ require_once("verificar.php");
 require_once("../conexao.php");
 
 //verificar se ele tem a permissão de estar nessa página
-if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+if(@$_SESSION['nivel_usuario'] != 'administrador'){
 	    echo "<script>window.location='agenda.php'</script>";
     }
 

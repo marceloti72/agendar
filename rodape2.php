@@ -163,7 +163,7 @@
 
 
 <!-- footer section -->
-  <footer class="footer_section" style="background-color:rgb(0, 0, 0);">
+  <footer class="footer_section" style="background-color: #191970;";">
     <div class="container">
       <div class="footer_content ">
         <div class="row ">

@@ -78,7 +78,7 @@ if($total_reg > 0){
         <?php 
               if($pgto_api == 'Sim'){
               ?>
-              <img src="images/mp2.png" alt="Banner Mercado Pago" class="img-fluid mb-4 produto-banner" style="max-width: 200px; height: auto;margin: 0;">
+              <img src="images/mp2.png" alt="Banner Mercado Pago" class="img-fluid mb-4 produto-banner" style="max-width: 100px; height: auto;margin: 0;">
               <?php 
               }
               ?>
@@ -103,8 +103,8 @@ for($i=0; $i < $total_reg; $i++){
 
  ?>
 
-      <div class="col-4 col-md-3">
-          <div class="box">
+      <div class="col-4 col-md-2">
+          <div class="box" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4); margin-bottom: 20px'>
             <div class="img-box">
               <img src="sistema/painel/img/produtos/<?php echo $foto ?>" title="<?php echo $descricao ?>">
             </div>

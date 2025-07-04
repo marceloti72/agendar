@@ -45,7 +45,7 @@ if($total_reg > 0){
 	$intervalo_horarios = $res[0]['intervalo'];
 }
 
-// if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+// if(@$_SESSION['nivel_usuario'] != 'administrador'){
 // 	require_once("verificar-permissoes.php");
 // }
 
@@ -53,7 +53,7 @@ if($total_reg > 0){
 if(@$_GET['pag'] == ""){
 	$pag = $pag_inicial;
 
-	if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+	if(@$_SESSION['nivel_usuario'] != 'administrador'){
 	    $pag = 'agenda';
     }
 }else{
@@ -396,7 +396,7 @@ $plano = $res3['plano'];
 
 							<?php 
                         // DEFINANDO SE É ADMINISTRADOR
-							if(@$_SESSION['nivel_usuario'] == 'Administrador'){
+							if(@$_SESSION['nivel_usuario'] == 'administrador'){
 							?>
 							<li class="header">MENU ADMINISTRATIVO</li>
 
@@ -764,7 +764,7 @@ $plano = $res3['plano'];
 
 						<?php
 						$id_conta = $_SESSION['id_conta'];
-						if(@$_SESSION['nivel_usuario'] == 'Administrador'){ 
+						if(@$_SESSION['nivel_usuario'] == 'administrador'){ 
 							$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and status = 'Agendado' and id_conta = '$id_conta'");
 							$res = $query->fetchAll(PDO::FETCH_ASSOC);
 							$total_agendamentos_hoje_usuario_pendentes = @count($res);
@@ -854,7 +854,7 @@ $plano = $res3['plano'];
 
                 <?php 
                 // DEFINANDO SE É ADMINISTRADOR
-				if(@$_SESSION['nivel_usuario'] == 'Administrador'){
+				if(@$_SESSION['nivel_usuario'] == 'administrador'){
 				?>
 				 	<?php if(@$rel_aniv == ''){ 
 
@@ -1073,7 +1073,7 @@ $plano = $res3['plano'];
 							<ul class="dropdown-menu drp-mnu">
 						<?php 
 						// DEFINANDO SE É ADMINISTRADOR
-						if(@$_SESSION['nivel_usuario'] == 'Administrador'){
+						if(@$_SESSION['nivel_usuario'] == 'administrador'){
 						?>
 								<?php if(@$configuracoes == ''){ ?>
 								<li> <a href="configuracoes" ><i class="fa fa-cog"></i> Config. Sistema</a> </li> 	
@@ -1083,7 +1083,7 @@ $plano = $res3['plano'];
 								<li> <a href="" data-toggle="modal" data-target="#modalPerfil"><i class="fa fa-suitcase"></i> Editar Perfil</a> </li> 
 						<?php 
 						// DEFINANDO SE É ADMINISTRADOR
-						if(@$_SESSION['nivel_usuario'] == 'Administrador'){
+						if(@$_SESSION['nivel_usuario'] == 'administrador'){
 						?>
 								<li> <a href="" data-toggle="modal" data-target="#assinaturaModal"><i class="fa fa-dollar"></i> Minha Assinatura</a> </li> 
 								<li> <a href="" data-toggle="modal" data-target="#tutoriaisModal"><i class="fa fa-question" style="color: #15b283;"></i> Vídeos Tutoriais</a> </li> 

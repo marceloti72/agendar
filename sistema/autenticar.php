@@ -19,7 +19,7 @@ $res = $query->fetch(PDO::FETCH_ASSOC);
 
 if ($res) {
 
-	if ($res['nivel'] != 'Administrador') {
+	if ($res['nivel'] != 'administrador') {
 		if ($res['ativo'] != 'Sim') {
 			echo "<script language='javascript'> window.alert('Seu acesso esta bloqueado! Favor entar em contato com a instituição.') </script>";
 

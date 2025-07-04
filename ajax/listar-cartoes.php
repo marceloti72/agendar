@@ -27,7 +27,8 @@ for($i=1; $i<=$quantidade_cartoes; $i++){
 
 <div class="col-md-1 col-2" align="center">
 
-<img src="images/favicon.png" width="100%" style="filter: grayscale(<?php echo $valor ?>); filter: opacity(<?php echo $opacity ?>)"></i>
+<!-- <img src="images/favicon.png" width="100%" style="filter: grayscale(<?php echo $valor ?>); filter: opacity(<?php echo $opacity ?>)"></i> -->
+<i class="fas fa-star" style="filter: grayscale(<?php echo $valor ?>); filter: opacity(<?php echo $opacity ?>); font-size: 150%;"></i>
 </div>
 <?php } ?>
 </div>

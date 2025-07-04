@@ -25,7 +25,7 @@ if($total_reg > 0){
 
 	$dataF = implode('/', array_reverse(explode('-', $data)));
 	
-	if($nivel == 'Administrador'){
+	if($nivel == 'administrador'){
 		$senhaF = '******';
 	}else{
 		$senhaF = $senha;

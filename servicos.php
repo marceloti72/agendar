@@ -93,33 +93,24 @@
         <div class="heading_container heading_center ">
             <h2 class="">
                 Nossos Serviços
-            </h2>
-            <p class="col-lg-8 px-0">
-                <?php
-                // $query_cat = $pdo->query("SELECT * FROM cat_servicos where id_conta = '$id_conta' ORDER BY id asc");
-                // $res_cat = $query_cat->fetchAll(PDO::FETCH_ASSOC);
-                // if(count($res_cat) > 0){
-                //     foreach($res_cat as $cat){
-                //         echo '<button style="border-radius: 10px; background-color:rgb(141, 157, 248); color: white; padding: 5px; border: 0; margin: 2px;font-size: 10px;">'.htmlspecialchars($cat['nome']).'</button>';
-                //     }
-                // }
-
+            </h2><?php 
+            
                 $query_serv = $pdo->query("SELECT * FROM servicos where ativo = 'Sim' and id_conta = '$id_conta' ORDER BY id asc");
                 $res_serv = $query_serv->fetchAll(PDO::FETCH_ASSOC);
                 $total_reg = count($res_serv);
                 if($total_reg > 0){
                 ?>
-            </p>
+           
             <?php 
               if($pgto_api == 'Sim'){
               ?>
-              <img src="images/mp2.png" alt="Banner Mercado Pago" class="img-fluid mb-4 produto-banner" style="max-width: 200px; height: auto;margin: 0;">
+              <img src="images/mp2.png" alt="Banner Mercado Pago" class="img-fluid mb-4 produto-banner" style="max-width: 100px; height: auto;margin: 0;">
               <?php 
               }
               ?>
         </div>
 
-        <div class="row" style="background: #f0f0f2; padding-top: 20px; padding-bottom: 20px;">
+        <div class="row" style="background: #f0f0f2; padding-bottom: 20px;">
 
             <?php
             foreach($res_serv as $item){ // Use foreach diretamente, mais limpo
@@ -133,15 +124,15 @@
 
             ?>
 
-            <div class="col-4 col-md-3">
-                <div class="box">
+            <div class="col-4 col-md-2" style="margin-bottom: 25px">
+                <div class="box" style = 'border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'>
                     <!-- <div class="img-box">
                          <img src="sistema/painel/img/servicos/<?php echo $foto; ?>"
                               alt="<?php echo htmlspecialchars($nome); ?>"
                               onerror="this.onerror=null; this.src='sistema/painel/img/servicos/sem-foto.jpg';"
                               title="<?php echo htmlspecialchars($descricao); ?>">
                     </div> -->
-                    <div class="detail-box">
+                    <div class="detail-box" style="margin-bottom: 20px">
                         <h5>
                            <?php echo htmlspecialchars($nomeF); ?>
                         </h5>

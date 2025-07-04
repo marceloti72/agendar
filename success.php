@@ -611,8 +611,8 @@ if ($session_id) {
         $stmt->execute([$idConta, $idConta]);
 
         // Inserir na tabela usuarios
-        $stmt = $pdo->prepare("INSERT INTO usuarios (nome, username, email, cpf, senha, nivel, data, ativo, telefone, atendimento, id_conta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nomeCliente, $idConta, $email, $cpf, $defaultPassword, 'Administrador', $dataAtual, 'teste', $telefone, 'Sim', $idConta]);
+        $stmt = $pdo->prepare("INSERT INTO usuarios (nome, username, email, cpf, senha, nivel, data, ativo, telefone, atendimento, id_conta, foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nomeCliente, $idConta, $email, $cpf, $defaultPassword, 'administrador', $dataAtual, 'teste', $telefone, 'Sim', $idConta, 'sem-foto.jpg']);
 
         // Inserir na tabela clientes
         $stmt = $pdo2->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta, id_cliente_stripe, usuario, servidor, banco, senha, status, id_assinatura_stripe, plan_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -620,26 +620,24 @@ if ($session_id) {
 
         // Cadastra os planos
        
-            $planos_para_cadastrar = [
-                ['nome' => 'Bronze',   'imagem' => 'bronze.png',   'ordem' => 10],
-                ['nome' => 'Prata',    'imagem' => 'prata.png',    'ordem' => 20],
-                ['nome' => 'Ouro',     'imagem' => 'ouro.png',     'ordem' => 30],
-                ['nome' => 'Diamante', 'imagem' => 'diamante.png', 'ordem' => 40]
-            ];
-            $stmt = $pdo->prepare("INSERT INTO planos (nome, imagem, ordem, id_conta, data_cadastro) VALUES (:nome, :imagem, :ordem, :id_conta, NOW())");
+        $planos_para_cadastrar = [
+            ['nome' => 'Bronze',   'imagem' => 'bronze.png',   'ordem' => 10],
+            ['nome' => 'Prata',    'imagem' => 'prata.png',    'ordem' => 20],
+            ['nome' => 'Ouro',     'imagem' => 'ouro.png',     'ordem' => 30],
+            ['nome' => 'Diamante', 'imagem' => 'diamante.png', 'ordem' => 40]
+        ];
+        $stmt = $pdo->prepare("INSERT INTO planos (nome, imagem, ordem, id_conta, data_cadastro) VALUES (:nome, :imagem, :ordem, :id_conta, NOW())");
 
-            $inseridos_count = 0;
-            foreach ($planos_para_cadastrar as $plano) {
-                $stmt->execute([
-                    ':nome' => $plano['nome'],
-                    ':imagem' => $plano['imagem'],
-                    ':ordem' => $plano['ordem'],
-                    ':id_conta' => $idConta
-                ]);
-                $inseridos_count++;
-            }
-
-           
+        $inseridos_count = 0;
+        foreach ($planos_para_cadastrar as $plano) {
+            $stmt->execute([
+                ':nome' => $plano['nome'],
+                ':imagem' => $plano['imagem'],
+                ':ordem' => $plano['ordem'],
+                ':id_conta' => $idConta
+            ]);
+            $inseridos_count++;
+        }           
    
 
         // Armazena o session_id processado na sessão

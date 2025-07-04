@@ -10,7 +10,7 @@ $data_atual = date('Y-m-d'); // Data de hoje para comparação
 $data_atual_timestamp = strtotime($data_atual); // Timestamp de hoje para eficiência
 
 
-if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+if(@$_SESSION['nivel_usuario'] != 'administrador'){
 	    echo "<script>window.location='agenda.php'</script>";
     }
 ?>

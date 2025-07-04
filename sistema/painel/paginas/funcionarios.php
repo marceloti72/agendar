@@ -7,7 +7,7 @@ require_once("../conexao.php");
 $pag = 'funcionarios';
 
 //verificar se ele tem a permissão de estar nessa página
-if(@$_SESSION['nivel_usuario'] != 'Administrador'){
+if(@$_SESSION['nivel_usuario'] != 'administrador'){
 	    echo "<script>window.location='agenda.php'</script>";
     }
 ?>
@@ -103,7 +103,7 @@ if(@$_SESSION['nivel_usuario'] != 'Administrador'){
 							const isAdminCheckbox = document.getElementById('isAdmin');
 
 							if (isAdminCheckbox.checked) {
-							cargoField.value = 'Administrador';
+							cargoField.value = 'administrador';
 							cargoField.readOnly = true; // Torna o campo não editável
 							} else {
 							cargoField.value = ''; // Limpa o campo se não for administrador

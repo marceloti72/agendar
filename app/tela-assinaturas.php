@@ -31,7 +31,7 @@ $id_conta = $_SESSION['id_conta'];
         }
         .tela-cheia-assinaturas {
             min-height: 100vh;
-            background-color: #295f41;
+            background-color: #4682B4;
             color: #fff;
             padding: 20px;
             display: flex;
@@ -185,7 +185,7 @@ $id_conta = $_SESSION['id_conta'];
     <div class="modal fade" id="modalPedirTelefone" tabindex="-1" aria-labelledby="modalPedirTelefoneLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm"> 
         <div class="modal-content">
-            <div class="modal-header text-white" style="background-color: #295f41;">
+            <div class="modal-header text-white" style="background-color: #4682B4;">
                 <h5 class="modal-title" id="modalPedirTelefoneLabel">Buscar Assinatura</h5>
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
             </div>
@@ -196,7 +196,7 @@ $id_conta = $_SESSION['id_conta'];
                  <label for="senha2" class="form-label">Senhe:</label>
                  <input type="text" class="form-control" id="senha2" required>
             </div>
-            <div class="modal-footer text-white" style="background-color: #295f41;">
+            <div class="modal-footer text-white" >
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-warning" id="btnBuscarPorTelefone">Buscar Detalhes</button>
             </div>

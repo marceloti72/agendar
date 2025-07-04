@@ -108,7 +108,7 @@ $status = '%' . @$_POST['status'] . '%';
 
 $total_pago = 0;
 $total_a_pagar = 0;
-if ($nivel_usu == "Administrador") {
+if ($nivel_usu == "administrador") {
 	$query = $pdo->query("SELECT * FROM $tabela where data_venc >= '$dataInicial' and data_venc <= '$dataFinal' and pago LIKE '$status' and produto != 0 and id_conta = '$id_conta' ORDER BY pago asc, data_venc asc");
 } else {
 	$query = $pdo->query("SELECT * FROM $tabela where data_venc >= '$dataInicial' and data_venc <= '$dataFinal' and pago LIKE '$status' and produto != 0 and usuario_lanc = '$id_usu' and id_conta = '$id_conta' ORDER BY pago asc, data_venc asc");

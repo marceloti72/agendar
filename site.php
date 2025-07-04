@@ -130,118 +130,25 @@ require_once("cabecalho2.php") ?>
     
 
   <div class="hero_area">
-    <div class="hero_bg_box">
-      <img src="images/banner<?php echo $id_conta?>.jpg" alt="">
-      
-    </div>
-
+    
 
 <?php 
 
-if($carrossel == 'Sim'){
-  $query = $pdo->query("SELECT * FROM textos_index where id_conta = '$id_conta' ORDER BY id asc");
-  $res = $query->fetchAll(PDO::FETCH_ASSOC);
-  $total_reg = @count($res);
-  if($total_reg > 0){
-    ?>
-
-    <section class="slider_section ">
-      <div id="customCarousel1" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-
-            <?php 
-            for($i=0; $i < $total_reg; $i++){
-              foreach ($res[$i] as $key => $value){}
-              $id = $res[$i]['id'];
-              $titulo = $res[$i]['titulo'];
-              $descricao = $res[$i]['descricao'];
-
-              $descricaoF = mb_strimwidth($descricao, 0, 50, "...");
-
-              if($i == 0){
-                $ativo = 'active';
-              }else{
-                $ativo = '';
-              }
-            ?>
-
-              <div class="carousel-item <?php echo $ativo ?>">
-                <div class="container ">
-                  <div class="row">
-                    <div class="col-md-6 ">
-                      <div class="detail-box">
-                        <h1>
-                        <?php echo $titulo ?>
-                        </h1>
-                        <p>
-                        <?php echo $descricao ?>
-                        </p>
-                        <div class="btn-box">
-                          <a href="http://api.whatsapp.com/send?1=pt_BR&phone=<?php echo $tel_whatsapp ?>" target="_blank" class="btn1">
-                            Contate-nos <i class="fa fa-whatsapp"></i>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <?php 
-            } ?>
-
-            
-          </div>
-          <div class="container">
-            <div class="carousel_btn-box">
-              <a class="carousel-control-prev" href="#customCarousel1" role="button" data-slide="prev">
-                <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                <span class="sr-only">Previous</span>
-              </a>
-              <a class="carousel-control-next" href="#customCarousel1" role="button" data-slide="next">
-                <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                <span class="sr-only">Next</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-     
-
-  <?php }
-  }else{?>
-     </div>
-      <?php      
-  }
-
   if ($servicos2 == 'Sim') { ?>
-    <section class="product_section layout_padding">
+    <section class="product_section layout_padding" style="background-color: #4682B4;">
         <div class="container-fluid">
             <div class="heading_container heading_center">
-                <h2 id="titulo_servicos">Nossos Serviços</h2>
-                <p class="col-lg-8 px-0">
-                    <?php 
-                    $query = $pdo->query("SELECT * FROM cat_servicos WHERE id_conta = '$id_conta' ORDER BY id ASC");
-                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                    $total_reg = @count($res);
-                    if ($total_reg > 0) { 
-                        for ($i = 0; $i < $total_reg; $i++) {
-                            $nome = $res[$i]['nome'];?>
-                            <button id="botao_servicos" style="border-radius: 10px; background-color:rgb(141, 157, 248); color: white; padding: 2 px;border: 0"><?php echo $nome;?></button><?php              
-                            
-                        }
-                    }
-
+                <h2 id="titulo_servicos">Nossos Serviços</h2>                
+                    <?php          
                     $query = $pdo->query("SELECT * FROM servicos WHERE ativo = 'Sim' AND id_conta = '$id_conta' ORDER BY id ASC");
                     $res = $query->fetchAll(PDO::FETCH_ASSOC);
                     $total_reg = @count($res);
                     if ($total_reg > 0) { 
-                    ?>
-                </p>
+                    ?>               
                 <?php 
               if($pgto_api == 'Sim'){
               ?>
-              <img src="images/mp2.png" alt="Banner Mercado Pago" class="img-fluid mb-4 produto-banner" style="max-width: 200px; height: auto;margin: 0;">
+              <img src="images/mp2.png" alt="Banner Mercado Pago"  style="max-width: 200px; height: auto;margin: 0;">
               <?php 
               }
               ?>
@@ -285,7 +192,7 @@ if($carrossel == 'Sim'){
 <?php } ?>
 
   
-  <section class="about_section ">
+  <!-- <section class="about_section ">
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-6 px-0">
@@ -314,7 +221,7 @@ if($carrossel == 'Sim'){
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
 
   <?php 
@@ -325,7 +232,7 @@ if($produtos2 == 'Sim'){
   $total_reg = @count($res);
   if($total_reg > 0){   ?>   
 
-    <section class="product_section layout_padding">
+    <section class="product_section layout_padding" >
       <div class="container-fluid">
       <div class="heading_container heading_center d-flex align-items-center">
         <h2 id="titulo_produtos">
@@ -396,7 +303,7 @@ if($produtos2 == 'Sim'){
   <?php }
 } ?>
   
-  <section class="contact_section layout_padding-bottom">
+  <section class="contact_section layout_padding-bottom" style="background-color: #4682B4;">
     <div class="container">
       <div class="heading_container">
         <h2 id="contato">

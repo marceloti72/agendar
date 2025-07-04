@@ -7,7 +7,7 @@
 
 .fixed            { display:block; position:fixed; z-index:9;  }
 .main_header_logo { text-align:center; margin:auto; float:none; width:250px; }
-.main_header_logo img { width:250px;  }
+.main_header_logo img { width:150px;  }
 
 /*Seu Código*/
 .section-seu-codigo          { padding:10px 0px; background-color:#b6bfd8; }
@@ -43,7 +43,7 @@
 .cubo-text {
 
   line-height: 40px; height: 40px;
-  background: linear-gradient(90deg, #ad0000 0%, #ff005f 100%); 
+  background: linear-gradient(90deg, #3a62db 0%, #3f80b4 100%); 
  
 }
 .cubo-text a {  
@@ -74,7 +74,7 @@
 
 
 /*FOOTER*/
-.main_footer          { background-color:#007cff; color:#fff; font-size:0.875em; }
+.main_footer          { background-color:#191970; color:#fff; font-size:0.875em; }
 .main_footer .content { padding:3em 0em; }
 
 .main_footer_copy       { background-color:transparent; width:100%; float:left; text-align:center; padding:1.5em 0em; }

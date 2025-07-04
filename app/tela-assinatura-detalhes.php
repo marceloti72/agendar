@@ -32,16 +32,17 @@ if (empty($telefone) || empty($senha)) {
         }
         .tela-cheia-detalhes {
             min-height: 100vh;
-            background-color: #295f41;
+            /* background-color: #C0C0C0; */
             color: #fff;
             padding: 20px;
             display: flex;
             flex-direction: column;
         }
         .tela-cheia-detalhes .header {
+            background-color: #4682B4;
+            border-radius: 10px;
             text-align: center;
-            font-size: 1.75rem;
-            font-weight: bold;
+            font-size: 1.5rem;
             padding: 15px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
