@@ -371,7 +371,7 @@ $dados_meses_vendas =  '';
 
          //VENDAS
         $total_mes_vendas = 0;
-        $query = $pdo->query("SELECT * FROM receber where pago = 'Sim' and tipo = 'Venda' and data_pgto >= '$data_mes_inicio_grafico' and data_pgto <= '$data_mes_final_grafico' and valor > 0 and id_conta = '$id_conta' ORDER BY id asc");
+        $query = $pdo->query("SELECT * FROM receber where pago = 'Sim' and tipo = 'Produto' and data_pgto >= '$data_mes_inicio_grafico' and data_pgto <= '$data_mes_final_grafico' and valor > 0 and id_conta = '$id_conta' ORDER BY id asc");
         $res = $query->fetchAll(PDO::FETCH_ASSOC);
         $total_reg = @count($res);
         if($total_reg > 0){
@@ -420,9 +420,9 @@ $dados_meses_vendas =  '';
     <?php 
         // Configurações Iniciais e Conexões
         $url_sistema = explode("//", $url);
-        $host = ($url_sistema[1] == 'localhost/agendar/') ? 'localhost' : 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
-        $usuario = ($url_sistema[1] == 'localhost/agendar/') ? 'root' : 'skysee';
-        $senha = ($url_sistema[1] == 'localhost/agendar/') ? '' : '9vtYvJly8PK6zHahjPUg';
+        $host = ($url_sistema[1] == 'localhost/markai/') ? 'localhost' : 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
+        $usuario = ($url_sistema[1] == 'localhost/markai/') ? 'root' : 'skysee';
+        $senha = ($url_sistema[1] == 'localhost/markai/') ? '' : '9vtYvJly8PK6zHahjPUg';
         $banco = 'gestao_sistemas';
 
         try {

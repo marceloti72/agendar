@@ -15,11 +15,11 @@ header('Content-Type: application/manifest+json'); // Ou application/json
 
 // --- Estrutura do Manifesto como um array PHP ---
 $manifestData = [
-    "name" => "AGENDAR - Sistema de Gestão de Serviços",
-    "short_name" => "Agendar",
+    "name" => "MARKAI - Sistema de Gestão de Serviços",
+    "short_name" => "Markai",
     "description" => "Uma breve descrição do seu sistema.",
     // --- Monta a start_url dinamicamente ---
-    "start_url" => "https://agendar.skysee.com.br/app/index.php?u=" . urlencode($username), // Caminho relativo é melhor
+    "start_url" => "https://markai.skysee.com.br/app/index.php?u=" . urlencode($username), // Caminho relativo é melhor
     // Ou use o caminho absoluto se precisar:
     // "start_url" => "https://agendar.skysee.com.br/index.php?u=" . urlencode($username),
     "display" => "standalone",

@@ -212,7 +212,7 @@ if(isset($ult_id_receber)){
         $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);   
         $dataF = implode('/', array_reverse(explode('-', $data_vencimento)));
         // Link de pagamento
-        $link_pgto = 'https://www.agendar.skysee.com.br/pagar_ass/' . $ult_id_receber;
+        $link_pgto = 'https://www.markai.skysee.com.br/pagar_ass/' . $ult_id_receber;
     
         $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
     

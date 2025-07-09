@@ -63,7 +63,7 @@ $tel = '(22)99883-8694';
 $telefone_envio = '55'.preg_replace('/[ ()-]+/' , '' , $tel);
 
 $mensagem = $sino.' *Pedido de Contato*%0A%0A';
-$mensagem.= 'Houve um pedido de contato para o sistema AGENDAR:%0A';
+$mensagem.= 'Houve um pedido de contato para o sistema MARKAI:%0A';
 $mensagem.= 'Nome: *'.$nome.'*%0A'; 
 $mensagem.= 'Telefone: *'.$telefone.'*%0A';     
 

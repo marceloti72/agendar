@@ -174,7 +174,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 const btnCopiar = document.getElementById('btnCopiarUrl');
 const mensagemCopia = document.getElementById('mensagemCopia');
-const urlParaCopiar = 'https://agendar.skysee.com.br/site.php?u=<?php echo $username?>';
+const urlParaCopiar = 'https://markai.skysee.com.br/site.php?u=<?php echo $username?>';
 
 if (btnCopiar) { // Verifica se o botão existe
 	btnCopiar.addEventListener('click', () => {

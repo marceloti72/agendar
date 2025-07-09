@@ -16,8 +16,8 @@
 	
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="description" content="AGENDAR - Gestão de Sistema"/>
-    <meta name="keywords" content="AGENDAR - Gestão de Sistema"/>
+    <meta name="description" content="MARKAI - Gestão de Sistema"/>
+    <meta name="keywords" content="MARKAI - Gestão de Sistema"/>
     <meta name="author" content="Skysee Soluções de TI" />    
     <meta http-equiv="content-language" content="pt-br" />
     <meta name="robots" content="index, follow"/>
@@ -68,7 +68,7 @@
    
     
 
-	<title>AGENDAR - Sistema de Gestão de Serviço</title>
+	<title>MARKAI - Sistema de Gestão de Serviço</title>
 
  </head>
 
@@ -195,7 +195,7 @@
 $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
 
 if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
-  $url = "http://" . $_SERVER['HTTP_HOST'] . "/agendar/";
+  $url = "http://" . $_SERVER['HTTP_HOST'] . "/markai/";
 
   // Configurações do Banco de Dados Local
   $db_servidor = 'localhost';

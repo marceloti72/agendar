@@ -17,7 +17,7 @@ $query = $pdo->query("SELECT * FROM receber where data_lanc = '$hoje' and tipo =
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 
-$query = $pdo->query("SELECT * FROM receber where data_lanc = '$hoje' and tipo = 'Venda' and id_conta = '$id_conta'");
+$query = $pdo->query("SELECT * FROM receber where data_lanc = '$hoje' and tipo = 'Produto' and id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_vendas = @count($res);
 

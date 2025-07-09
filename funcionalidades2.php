@@ -6,7 +6,7 @@ require_once("cabecalho.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendar - Funcionalidades</title>
+    <title>Markai - Funcionalidades</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome para ícones -->
@@ -60,21 +60,21 @@ require_once("cabecalho.php");
     <!-- Cabeçalho -->
     <header class="header">
         <div class="container">
-            <h1 class="display-4 fw-bold">Agendar</h1>
+            <h1 class="display-4 fw-bold">Markai</h1>
             <p class="lead">Soluções completas para sua barbearia</p>
         </div>
     </header>
 
     <!-- Conteúdo Principal -->
     <main class="container">
-        <h2 class="text-center mb-5">Funcionalidades do Agendar</h2>
+        <h2 class="text-center mb-5">Funcionalidades do Markai</h2>
 
         <div class="row">
             <div class="col-md-6 col-lg-4">
                 <div class="section-card">
                     <i class="fas fa-bell section-icon"></i>
                     <h3>Lembrete de Horários</h3>
-                    <p>Diminua o risco de esquecimentos/ausências dos seus clientes através dos Lembretes de Horários do AppBarber. Seu cliente, ao agendar horários, receberá automaticamente uma notificação (via WhatsApp) e um e-mail, no horário configurado para lembrá-lo.</p>
+                    <p>Diminua o risco de esquecimentos/ausências dos seus clientes através dos Lembretes de Horários do AppBarber. Seu cliente, ao Markai horários, receberá automaticamente uma notificação (via WhatsApp) e um e-mail, no horário configurado para lembrá-lo.</p>
                 </div>
             </div>
 
@@ -91,7 +91,7 @@ require_once("cabecalho.php");
                 <div class="section-card">
                     <i class="fas fa-bullhorn section-icon"></i>
                     <h3>Envio de Notícias e Promoções</h3>
-                    <p>Precisa enviar para todos os seus clientes que sua Barbearia irá promover um evento em alguma data, ou lançar alguma promoção? Com o Agendar, você consegue enviar para todos ou um grupo de clientes, para eles receberem via WhatsApp e email.</p>
+                    <p>Precisa enviar para todos os seus clientes que sua Barbearia irá promover um evento em alguma data, ou lançar alguma promoção? Com o Markai, você consegue enviar para todos ou um grupo de clientes, para eles receberem via WhatsApp e email.</p>
                 </div>
             </div>
 
@@ -99,7 +99,7 @@ require_once("cabecalho.php");
                 <div class="section-card">
                     <i class="fas fa-chart-line section-icon"></i>
                     <h3>Gestão Financeira</h3>
-                    <p>Ter o controle do seu estabelecimento é primordial para o sucesso do seu negócio. Com o Agendar, é possível ter o controle de contas a pagar e a receber, controlar o processo de fluxo de caixa, taxas de cartões, etc. E assim, você tem os resultados financeiros sempre atualizados. Controle total de seus números!</p>
+                    <p>Ter o controle do seu estabelecimento é primordial para o sucesso do seu negócio. Com o Markai, é possível ter o controle de contas a pagar e a receber, controlar o processo de fluxo de caixa, taxas de cartões, etc. E assim, você tem os resultados financeiros sempre atualizados. Controle total de seus números!</p>
                 </div>
             </div>
 
@@ -107,7 +107,7 @@ require_once("cabecalho.php");
                 <div class="section-card">
                     <i class="fas fa-clock section-icon"></i>
                     <h3>Controle automatizado da Agenda</h3>
-                    <p>Ter a agenda on-line e disponível para seus clientes e/ou profissionais agendarem tem grandes vantagens. A sua agenda vai se moldando conforme os usuários vão cadastrando os agendamentos de acordo com os horários disponíveis.</p>
+                    <p>Ter a agenda on-line e disponível para seus clientes e/ou profissionais Markaiem tem grandes vantagens. A sua agenda vai se moldando conforme os usuários vão cadastrando os agendamentos de acordo com os horários disponíveis.</p>
                 </div>
             </div>
 
@@ -115,7 +115,7 @@ require_once("cabecalho.php");
                 <div class="section-card">
                     <i class="fas fa-file-alt section-icon"></i>
                     <h3>Relatórios Financeiros</h3>
-                    <p>Transformar dados e informações em CONHECIMENTO é um grande diferencial para tomadas de decisões. No Agendar, você tem:</p>
+                    <p>Transformar dados e informações em CONHECIMENTO é um grande diferencial para tomadas de decisões. No Markai, você tem:</p>
                     <ul>
                         <li>Relatório de Produtos</li>
                         <li>Relatório de Entradas</li>
@@ -140,7 +140,7 @@ require_once("cabecalho.php");
                 <div class="section-card">
                     <i class="fas fa-boxes section-icon"></i>
                     <h3>Gestão de Estoque</h3>
-                    <p>No Agendar vc faz o controle de estoque que é primordial para evitar prejuízos com perda ou vencimento de produtos. Com o Agendar você consegue:</p>
+                    <p>No Markai vc faz o controle de estoque que é primordial para evitar prejuízos com perda ou vencimento de produtos. Com o AMarkaivocê consegue:</p>
                     <ul>
                         <li>Saber o saldo de cada produto no estoque;</li>
                         <li>Histórico de movimentações de Entrada e Saída;</li>
@@ -157,7 +157,7 @@ require_once("cabecalho.php");
                 <div class="section-card">
                     <i class="fas fa-ticket-alt section-icon"></i>
                     <h3>Comandas e Controle de Consumo</h3>
-                    <p>Controlar o que seu cliente consome é muito importante para não causar erros que possam prejudicar o próprio cliente ou o estabelecimento. Com o Agendar, todo agendamento já gera uma Comanda, onde pode ser adicionado outros serviços e/ou produtos. Caso o cliente venha a consumir apenas produtos, pode ser aberta uma comanda e adicionado(s) o(s) produto(s) nessa comanda. E o estabelecimento tem total flexibilidade e liberdade para aplicar descontos, parcelar, escolher a forma de pagamento, entre outras funcionalidades.</p>
+                    <p>Controlar o que seu cliente consome é muito importante para não causar erros que possam prejudicar o próprio cliente ou o estabelecimento. Com o Markai, todo agendamento já gera uma Comanda, onde pode ser adicionado outros serviços e/ou produtos. Caso o cliente venha a consumir apenas produtos, pode ser aberta uma comanda e adicionado(s) o(s) produto(s) nessa comanda. E o estabelecimento tem total flexibilidade e liberdade para aplicar descontos, parcelar, escolher a forma de pagamento, entre outras funcionalidades.</p>
                 </div>
             </div>
 
@@ -173,7 +173,7 @@ require_once("cabecalho.php");
                 <div class="section-card">
                     <i class="fas fa-list-ul section-icon"></i>
                     <h3>Lista de Espera</h3>
-                    <p>Sua agenda está lotada em determinado dia e você não tem tempo para ficar retornando aos clientes se vagar horários? Deixa que o Agendar faz isso por você. Com a Lista de Espera, o cliente pode se adicionar na lista do dia e ser avisado, automaticamente, quando vagar algum horário. Assim você não perde horários, seu cliente consegue agendar pelo aplicativo e você muitas das vezes nem fica sabendo que ocorreu esse processo pois estará realizando seus serviços sem ser interrompido.</p>
+                    <p>Sua agenda está lotada em determinado dia e você não tem tempo para ficar retornando aos clientes se vagar horários? Deixa que o Markai faz isso por você. Com a Lista de Espera, o cliente pode se adicionar na lista do dia e ser avisado, automaticamente, quando vagar algum horário. Assim você não perde horários, seu cliente consegue aMarkaipelo aplicativo e você muitas das vezes nem fica sabendo que ocorreu esse processo pois estará realizando seus serviços sem ser interrompido.</p>
                 </div>
             </div>
 
@@ -181,7 +181,7 @@ require_once("cabecalho.php");
                 <div class="section-card">
                     <i class="fas fa-comment-dots section-icon"></i>
                     <h3>Mensagens de Retorno Automáticas</h3>
-                    <p>Aumentar a frequência/fidelização do seu cliente é um fator primordial para o andamento do seu negócio. Estudos mostram que manter o cliente pode ser até 5 vezes mais barato do que conquistar um novo. Com o Agendar, você pode configurar mensagens automáticas de retorno para que seu cliente receba no dia configurado de retorno de determinado serviço.</p>
+                    <p>Aumentar a frequência/fidelização do seu cliente é um fator primordial para o andamento do seu negócio. Estudos mostram que manter o cliente pode ser até 5 vezes mais barato do que conquistar um novo. Com o Markai, você pode configurar mensagens automáticas de retorno para que seu cliente receba no dia configurado de retorno de determinado serviço.</p>
                 </div>
             </div>
 
@@ -205,15 +205,15 @@ require_once("cabecalho.php");
                 <div class="section-card">
                     <i class="fas fa-globe section-icon"></i>
                     <h3>Site do Estabelecimento</h3>
-                    <p>Ter um site é um fator muito importante para divulgação do seu negócio. Com o Agendar, sua Barbearia já ganha um site onde você pode personalizar com informações de horário de funcionamento, formas de pagamento, imagens da Barbearia, localização, serviços e profissionais entre outras informações. Seus clientes (ou novos) podem encontrar seu negócio por sites de busca e inclusive podem agendar horários por lá.</p>
+                    <p>Ter um site é um fator muito importante para divulgação do seu negócio. Com o Markai, sua Barbearia já ganha um site onde você pode personalizar com informações de horário de funcionamento, formas de pagamento, imagens da Barbearia, localização, serviços e profissionais entre outras informações. Seus clientes (ou novos) podem encontrar seu negócio por sites de busca e inclusive podem aMarkaihorários por lá.</p>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-4">
                 <div class="section-card">
                     <i class="fab fa-facebook section-icon"></i>
-                    <h3>Agendar pelo Site ou Facebook</h3>
-                    <p>Já tem um site e/ou uma Página do Facebook do seu negócio? Você pode colocar o link de Agendamento On-line do Agendar em ambas as plataformas. Assim você tem mais essa opção do Agendar.</p>
+                    <h3>Markai pelo Site ou Facebook</h3>
+                    <p>Já tem um site e/ou uma Página do Facebook do seu negócio? Você pode colocar o link de Agendamento On-line do Markai em ambas as plataformas. Assim você tem mais essa opção do AMarkai</p>
                 </div>
             </div>
 
@@ -221,7 +221,7 @@ require_once("cabecalho.php");
                 <div class="section-card">
                     <i class="fas fa-birthday-cake section-icon"></i>
                     <h3>Aniversariantes</h3>
-                    <p>Quem aqui não gosta de ser lembrado em uma data tão especial quanto o seu aniversário? O Agendar avisa os clientes aniversariantes para que você envie uma mensagem para ele, faça uma promoção especial de aniversário, entre outras opções. Vc tem a opção de colocar essas mensagens automáticas por WhatsApp, assim vc não se preocuparia, o Agendar faz tudo para vc!</p>
+                    <p>Quem aqui não gosta de ser lembrado em uma data tão especial quanto o seu aniversário? O Markai avisa os clientes aniversariantes para que você envie uma mensagem para ele, faça uma promoção especial de aniversário, entre outras opções. Vc tem a opção de colocar essas mensagens automáticas por WhatsApp, assim vc não se preocuparia, o AMarkaifaz tudo para vc!</p>
                 </div>
             </div>
 
@@ -237,7 +237,7 @@ require_once("cabecalho.php");
                 <div class="section-card">
                     <i class="fas fa-money-check-alt section-icon"></i>
                     <h3>Comissões</h3>
-                    <p>Com o Agendar é possível configurar comissões por Serviço realizado e/ou produto vendido, e também comandas de consumo dos Profissionais. Sendo assim, você consegue extrair poderosos relatórios de comissões para ter as informações necessárias para pagamento do seus profissionais de uma forma clara e transparente.</p>
+                    <p>Com o Markai é possível configurar comissões por Serviço realizado e/ou produto vendido, e também comandas de consumo dos Profissionais. Sendo assim, você consegue extrair poderosos relatórios de comissões para ter as informações necessárias para pagamento do seus profissionais de uma forma clara e transparente.</p>
                 </div>
             </div>
         </div>

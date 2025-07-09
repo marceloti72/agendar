@@ -2,15 +2,15 @@ const CACHE_NAME = 'versao-1.19'; // Mude a versão quando atualizar os arquivos
 const urlsToCache = [
     '/', // Página inicial
     'index.php', // Ou sua página principal
-    'https://agendar.skysee.com.br/css/style.css', // Seus arquivos CSS
-    'https://agendar.skysee.com.br/css/responsive.css', 
-    'https://agendar.skysee.com.br/sistema/painel/css/custom.css', 
-    'https://agendar.skysee.com.br/sistema/painel/css/style.css', 
-    'https://agendar.skysee.com.br/sistema/painel/js/scripts.js', 
+    'https://markai.skysee.com.br/css/style.css', // Seus arquivos CSS
+    'https://markai.skysee.com.br/css/responsive.css', 
+    'https://markai.skysee.com.br/sistema/painel/css/custom.css', 
+    'https://markai.skysee.com.br/sistema/painel/css/style.css', 
+    'https://markai.skysee.com.br/sistema/painel/js/scripts.js', 
     
-    'https://agendar.skysee.com.br/js/custom.js', // Seus arquivos JS
-    'https://agendar.skysee.com.br/images/icone_192.png', // Ícone principal
-    'https://agendar.skysee.com.br/images/icone_512.png', // Ícone principal
+    'https://markai.skysee.com.br/js/custom.js', // Seus arquivos JS
+    'https://markai.skysee.com.br/images/icone_192.png', // Ícone principal
+    'https://markai.skysee.com.br/images/icone_512.png', // Ícone principal
     // Adicione aqui TODOS os arquivos essenciais para a interface básica offline
     // Ex: outras páginas HTML/PHP, imagens importantes, fontes
 ];

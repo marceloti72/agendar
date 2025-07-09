@@ -63,7 +63,7 @@ $stmt->execute();
 $telefone = '55'.preg_replace('/[ ()-]+/' , '' , $tel);
 
 $mensagem = '🔔 *Nova senha*%0A%0A';
-$mensagem.= '*AGENDAR - Gestão de Serviços*%0A%0A';
+$mensagem.= '*MARKAI - Gestão de Serviços*%0A%0A';
 $mensagem.= 'Houve um pedido de recuperação de senha:%0A';
 $mensagem.= 'Nome: *'.$nome.'*%0A'; 
 $mensagem.= 'Nova senha: *'.$senha.'*%0A%0A';     

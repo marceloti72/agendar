@@ -87,14 +87,14 @@ if ($total_reg > 0) {
 	}
 }
 
-$link_agenda = $url.'agendar/agendamentos?u='.$username;
+$link_agenda = $url.'markai/agendamentos?u='.$username;
 
 $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
 if ($satisfacao == 'Sim') {
 	//agendar mensagem de retorno
 	$nome_cliente = trim($nome_cliente);
 	
-	$link_agenda = $url.'agendar/agendamentos?u='.$username;
+	$link_agenda = $url.'markai/agendamentos?u='.$username;
 	$nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
 	$data_mensagem = $data_retorno . ' 08:00:00';
 

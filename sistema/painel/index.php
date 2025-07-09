@@ -1395,9 +1395,9 @@ $plano = $res3['plano'];
 
             // Configurações Iniciais e Conexões
         $url_sistema = explode("//", $url);
-        $host = ($url_sistema[1] == 'localhost/agendar/') ? 'localhost' : 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
-        $usuario = ($url_sistema[1] == 'localhost/agendar/') ? 'root' : 'skysee';
-        $senha = ($url_sistema[1] == 'localhost/agendar/') ? '' : '9vtYvJly8PK6zHahjPUg';
+        $host = ($url_sistema[1] == 'localhost/markai/') ? 'localhost' : 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
+        $usuario = ($url_sistema[1] == 'localhost/markai/') ? 'root' : 'skysee';
+        $senha = ($url_sistema[1] == 'localhost/markai/') ? '' : '9vtYvJly8PK6zHahjPUg';
         $banco = 'gestao_sistemas';
 
         try {
@@ -1694,7 +1694,7 @@ $plano = $res3['plano'];
 									<label>Entradas / Ganhos</label> 
 									<select class="form-control sel13" name="filtro" style="width:100%;">
 										<option value="">Todas</option>
-										<option value="Venda">Vendas</option>
+										<option value="Produto">Vendas</option>
 										<option value="Serviço">Serviços</option>
 										<option value="Conta">Demais Ganhos</option>
 										

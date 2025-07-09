@@ -453,7 +453,7 @@ try {
         try {
             $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone_cliente);
             $nome_cliente_trim = trim($nome_cliente_final);
-            $link_agenda = $url . 'agendar/agendamentos?u=' . $username;
+            $link_agenda = $url . 'markai/agendamentos?u=' . $username;
             $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
             $data_mensagem_agendada = $data_retorno_calculada . ' 08:00:00'; // Agenda para 8h da data de retorno
 

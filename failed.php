@@ -117,7 +117,7 @@ $suggestedAction = "Clique no botão abaixo para tentar novamente ou entre em co
             <?php echo htmlspecialchars($suggestedAction); ?>
         </div>
         <!-- O link abaixo deve levar o usuário de volta à página de pagamento ou a uma página de suporte -->
-        <a href="intent://agendar.skysee.com.br#Intent;scheme=https;package=com.example.app;end" class="action-button">Voltar ao APP</a>
+        <a href="intent://markai.skysee.com.br#Intent;scheme=https;package=com.example.app;end" class="action-button">Voltar ao APP</a>
     </div>
 </body>
 </html>

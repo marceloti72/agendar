@@ -6,7 +6,7 @@ require_once("cabecalho.php");?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendar - Funcionalidades</title>
+    <title> - Funcionalidades</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,13 +39,13 @@ require_once("cabecalho.php");?>
     </style>
 </head>
 <body>
-    <h1>Agendar</h1>
-    <h2>Funcionalidades do Agendar</h2>
+    <h1></h1>
+    <h2>Funcionalidades do </h2>
 
     <section>
         <h3>Lembrete de Horários</h3>
         <p>Diminua o risco de esquecimentos/ausências dos seus clientes através dos Lembretes de Horários.<br>
-        Seu cliente, ao agendar horários, receberá automaticamente uma notificação (via WhatsApp) e um e-mail, no horário configurado para lembrá-lo.</p>
+        Seu cliente, ao  horários, receberá automaticamente uma notificação (via WhatsApp) e um e-mail, no horário configurado para lembrá-lo.</p>
     </section>
 
     <section>        
@@ -57,25 +57,25 @@ require_once("cabecalho.php");?>
     <section>
         <h3>Envio de Notícias e Promoções</h3>
         <p>Precisa enviar para todos os seus clientes que irá promover um evento em alguma data, ou lançar alguma promoção ?</p>
-        <p>O Agendar possui um sistema de marketing via WhatsApp configurável com textos, imagens e audio, você consegue enviar para todos ou um grupo de clientes.</p>
+        <p>O  possui um sistema de marketing via WhatsApp configurável com textos, imagens e audio, você consegue enviar para todos ou um grupo de clientes.</p>
     </section>
 
     <section>
         <h3>Gestão Financeira</h3>
         <p>Ter o controle do seu estabelecimento é primordial para o sucesso do seu negócio.</p>
-        <p>Com o Agendar, é possível te o controle de contas a pagar e a receber, controlar o processo de comissões, etc. E assim, você tem os resultados financeiros sempre atualizados. Controle total de seus numeros!</p>
+        <p>Com o , é possível te o controle de contas a pagar e a receber, controlar o processo de comissões, etc. E assim, você tem os resultados financeiros sempre atualizados. Controle total de seus numeros!</p>
     </section>
 
     <section>
         <h3>Controle automatizado da Agenda</h3>
-        <p>Ter a agenda on-line e disponível para seus clientes e profissionais agendarem tem grandes vantagens.</p>
+        <p>Ter a agenda on-line e disponível para seus clientes e profissionais em tem grandes vantagens.</p>
         <p>A sua agenda vai se moldando conforme os usuários vão cadastrando os agendamentos de acordo com os horários disponíveis. Você terá a opção de cobrar ou não na hora do agendamento, de 0 a 100% do valor. Habilitando o Mercado Pago o processo de cobrança é automático.</p>
     </section>
 
     <section>
         <h3>Relatórios Financeiros</h3>
         <p>Transformar dados e informações em CONHECIMENTO é um grande diferencial para tomadas de decisões.</p>
-        <p>No Agendar, você tem:</p>
+        <p>No , você tem:</p>
         <ul>
             <li>Relatório de Produtos</li>
             <li>Relatório de Entradas</li>
@@ -95,7 +95,7 @@ require_once("cabecalho.php");?>
 
     <section>
         <h3>Gestão de Estoque</h3>        
-        <p>No Agendar vc faz o controle de estoque que é primordial para evitar prejuízos com perda ou vencimento de produtos. Com o Agendar você consegue:</p>
+        <p>No  vc faz o controle de estoque que é primordial para evitar prejuízos com perda ou vencimento de produtos. Com o Markai vc consegue:</p>
         <ul>
             <li>Saber o saldo de cada produto no estoque;</li>
             <li>Histórico de movimentações de Entrada e Saída;</li>
@@ -116,22 +116,22 @@ require_once("cabecalho.php");?>
     <section>
         <h3>On-line 24 horas por dia, todos os dias</h3>
         <p>Ter seus Serviços on-line traz muitas vantagens.</p>
-        <p>Domingo de manhã, o cliente quer agendar um serviço para a semana, mas o seu estabelecimento está fechado. E se você estiver de férias, como fica o controle do negócio? Com nossa solução em nuvem, os clientes marcam horários a qualquer momento e horário, e você acompanha tudo em tempo real, de qualquer lugar. Sua estabelecimento nunca para!.</p>
+        <p>Domingo de manhã, o cliente quer  um serviço para a semana, mas o seu estabelecimento está fechado. E se você estiver de férias, como fica o controle do negócio? Com nossa solução em nuvem, os clientes marcam horários a qualquer momento e horário, e você acompanha tudo em tempo real, de qualquer lugar. Sua estabelecimento nunca para!.</p>
     </section>
 
     <section>
         <h3>Lista de Espera</h3>
-        <p>Não perca oportunidades por falta de tempo! Com a Lista de Espera do Agendar, seus clientes se colocam na fila pelo site e são avisados automaticamente assim que um horário aparece. Você mantém o foco no seu talento, e nós garantimos que sua agenda esteja sempre aproveitada ao máximo.</p>
+        <p>Não perca oportunidades por falta de tempo! Com a Lista de Espera do , seus clientes se colocam na fila pelo site e são avisados automaticamente assim que um horário aparece. Você mantém o foco no seu talento, e nós garantimos que sua agenda esteja sempre aproveitada ao máximo.</p>
     </section>
 
     <section>
         <h3>Mensagens de Retorno Automáticas</h3>
-        <p>Manter seus clientes voltando é chave para o seu negócio crescer. Estudos apontam que fidelizar pode ser 5 vezes mais econômico do que buscar novos clientes. Com o Agendar, mensagens automáticas de retorno são enviadas no dia perfeito, garantindo que eles não se esqueçam de você.</p>
+        <p>Manter seus clientes voltando é chave para o seu negócio crescer. Estudos apontam que fidelizar pode ser 5 vezes mais econômico do que buscar novos clientes. Com o , mensagens automáticas de retorno são enviadas no dia perfeito, garantindo que eles não se esqueçam de você.</p>
     </section>
 
     <section>
         <h3>Pesquisa de Satisfação</h3>
-        <p>A satisfação do cliente é a chave para a fidelidade e a excelência no serviço. Habilite a pesquisa de satisfação no Agendar: depois de cada atendimento, seu cliente dá um feedback sobre o profissional. Você analisa as respostas e toma decisões para manter todos felizes e voltando sempre.</p>
+        <p>A satisfação do cliente é a chave para a fidelidade e a excelência no serviço. Habilite a pesquisa de satisfação no : depois de cada atendimento, seu cliente dá um feedback sobre o profissional. Você analisa as respostas e toma decisões para manter todos felizes e voltando sempre.</p>
     </section>
 
     <section>
@@ -141,27 +141,27 @@ require_once("cabecalho.php");?>
 
     <section>
         <h3>Site do Estabelecimento</h3>
-        <p>Leve seu negócio mais longe com um site próprio! O Agendar cria um site pra você customizar com horários, localização, serviços, produtos e fotos. Seus clientes te encontram nas buscas e agendam direto – uma ponte perfeita entre você e quem quer seus serviços!</p>
+        <p>Leve seu negócio mais longe com um site próprio! O  cria um site pra você customizar com horários, localização, serviços, produtos e fotos. Seus clientes te encontram nas buscas e agendam direto – uma ponte perfeita entre você e quem quer seus serviços!</p>
     </section>
 
     <section>
-        <h3>Agendar pelo Site ou Facebook</h3>
-        <p>Já tem um site ou uma página no Facebook pro seu negócio? Dê um passo além: adicione o link de Agendamento Online do Agendar! É mais um canal pra facilitar a vida dos seus clientes e turbinar seus agendamentos.</p>
+        <h3> pelo Site ou Facebook</h3>
+        <p>Já tem um site ou uma página no Facebook pro seu negócio? Dê um passo além: adicione o link de Agendamento Online do ! É mais um canal pra facilitar a vida dos seus clientes e turbinar seus agendamentos.</p>
     </section>
 
     <section>
         <h3>Aniversariantes</h3>
-        <p>Um parabéns no aniversário pode conquistar o coração do cliente! O Agendar te avisa quem está comemorando, pra você enviar uma mensagem ou uma promoção única. Ative as mensagens automáticas no WhatsApp e veja o Agendar transformar datas especiais em fidelidade sem esforço. </p>
+        <p>Um parabéns no aniversário pode conquistar o coração do cliente! O  te avisa quem está comemorando, pra você enviar uma mensagem ou uma promoção única. Ative as mensagens automáticas no WhatsApp e veja o Markai transformar datas especiais em fidelidade sem esforço. </p>
     </section>
 
     <section>
         <h3>Pagamento On-line</h3>
-        <p>O consumo online avança 90% por ano, mudando rapidinho como os clientes consomem. Adote o pagamento online com o Agendar: você protege seu lucro contra ausências, incentiva o cliente a comparecer (quem paga antes não perde!), oferece praticidade e posiciona seu negócio numa tendência mundial com tecnologia confiável.</p>
+        <p>O consumo online avança 90% por ano, mudando rapidinho como os clientes consomem. Adote o pagamento online com o : você protege seu lucro contra ausências, incentiva o cliente a comparecer (quem paga antes não perde!), oferece praticidade e posiciona seu negócio numa tendência mundial com tecnologia confiável.</p>
     </section>
 
     <section>        
         <h3>Comissões de Profissionais</h3>
-        <p>Transforme a gestão de comissões com o Agendar! Configure por serviço, gere relatórios poderosos e tenha as informações certas pra pagar seus profissionais com clareza e confiança, fortalecendo seu time.</p>
+        <p>Transforme a gestão de comissões com o ! Configure por serviço, gere relatórios poderosos e tenha as informações certas pra pagar seus profissionais com clareza e confiança, fortalecendo seu time.</p>
     </section>
 
     <section>

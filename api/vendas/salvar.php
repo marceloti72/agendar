@@ -53,7 +53,7 @@ $pdo->query("UPDATE produtos SET estoque = '$total_estoque' WHERE id = '$produto
 
 
 if($id == ""){
-$query = $pdo->prepare("INSERT INTO $tabela SET descricao = :descricao, tipo = 'Venda', valor = :valor, data_lanc = curDate(), data_venc = '$data_venc', data_pgto = '$data_pgto', usuario_lanc = '$id_usuario', usuario_baixa = '$usuario_pgto', foto = '$foto', pessoa = '$pessoa', pago = '$pago', produto = '$produto', quantidade = '$quantidade', pgto = '$pgto', id_conta = '$id_conta'");
+$query = $pdo->prepare("INSERT INTO $tabela SET descricao = :descricao, tipo = 'Produto', valor = :valor, data_lanc = curDate(), data_venc = '$data_venc', data_pgto = '$data_pgto', usuario_lanc = '$id_usuario', usuario_baixa = '$usuario_pgto', foto = '$foto', pessoa = '$pessoa', pago = '$pago', produto = '$produto', quantidade = '$quantidade', pgto = '$pgto', id_conta = '$id_conta'");
 
 }else{
 

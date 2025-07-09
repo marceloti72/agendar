@@ -117,7 +117,7 @@ try {
         $valor = @$res[0]['valor_venda'];
         $foto = @$res[0]['foto'];
 
-        $query = $pdo->query("INSERT INTO receber SET descricao = '$nome_produto', tipo = 'Venda', valor = '$valor', data_lanc = curDate(), data_venc = curDate(), produto = '$id_produto', foto = 'compra_site.jpg', pessoa = '$id_cliente', pago = 'Sim', obs = 'Site', id_conta = '$id_conta'");
+        $query = $pdo->query("INSERT INTO receber SET descricao = '$nome_produto', tipo = 'Produto', valor = '$valor', data_lanc = curDate(), data_venc = curDate(), produto = '$id_produto', foto = 'compra_site.jpg', pessoa = '$id_cliente', pago = 'Sim', obs = 'Site', id_conta = '$id_conta'");
 
 
         $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
@@ -141,7 +141,7 @@ try {
 
         $telefone = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
 
-        $mensagem = '*AGENDAR - Gestão de Serviços*%0A%0A';        
+        $mensagem = '*MARKAI - Gestão de Serviços*%0A%0A';        
         $mensagem .= '✅ *Compra realizada pelo seu site!*%0A%0A';
         $mensagem .= 'Produto: ' . $nome_produto . '%0A';
         $mensagem .= 'Valor: ' . $valor . '%0A';

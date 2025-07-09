@@ -148,7 +148,7 @@ Venda: <b><?php echo $id ?></b> - Data: <?php echo $dataF ?>
 
 <?php 
 
-$res = $pdo->query("SELECT * from receber where data_pgto = '$data' and pessoa = '$cliente' and tipo = 'Venda' and id_conta = '$id_conta' order by id asc");
+$res = $pdo->query("SELECT * from receber where data_pgto = '$data' and pessoa = '$cliente' and tipo = 'Produto' and id_conta = '$id_conta' order by id asc");
 $dados = $res->fetchAll(PDO::FETCH_ASSOC);
 $linhas = count($dados);
 

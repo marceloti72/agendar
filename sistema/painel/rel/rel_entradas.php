@@ -55,9 +55,9 @@ if ($dataInicial == $dataFinal) {
 if ($filtro == '') {
 	$acao_rel = 'Entradas / Ganhos';
 	$tipo_pdo = "";
-} elseif ($filtro == 'Venda') {
+} elseif ($filtro == 'Produto') {
 	$acao_rel = ' Vendas ';
-	$tipo_pdo = ' and tipo = "Venda" ';
+	$tipo_pdo = ' and tipo = "Produto" ';
 } elseif ($filtro == 'Serviço') {
 	$acao_rel = ' Serviços ';
 	$tipo_pdo = ' and tipo = "Serviço" ';

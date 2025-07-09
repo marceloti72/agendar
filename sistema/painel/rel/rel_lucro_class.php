@@ -279,7 +279,7 @@ if ($dataInicial == $dataFinal) {
 
 
 				//totalizar os vendas 
-				$query = $pdo->query("SELECT * FROM receber where data_pgto >= '$dataInicial' and data_pgto <= '$dataFinal' and tipo = 'Venda' and pago = 'Sim' and id_conta = '$id_conta' ORDER BY data_pgto asc");
+				$query = $pdo->query("SELECT * FROM receber where data_pgto >= '$dataInicial' and data_pgto <= '$dataFinal' and tipo = 'Produto' and pago = 'Sim' and id_conta = '$id_conta' ORDER BY data_pgto asc");
 				$res = $query->fetchAll(PDO::FETCH_ASSOC);
 				$total_reg = @count($res);
 				for ($i = 0; $i < $total_reg; $i++) {

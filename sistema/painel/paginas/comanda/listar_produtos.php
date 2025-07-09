@@ -31,7 +31,7 @@ $html_output = ''; // Inicializa a string de saída HTML
 
 try {
     // --- Query Principal Otimizada com JOINs e Prepared Statements ---
-    // Busca itens do tipo 'Venda' da tabela 'receber' para esta comanda,
+    // Busca itens do tipo 'Produto' da tabela 'receber' para esta comanda,
     // juntando com produtos e usuários (vendedor)
     $query = $pdo->prepare("
         SELECT
@@ -41,7 +41,7 @@ try {
         FROM receber r
         LEFT JOIN produtos p ON r.produto = p.id AND p.id_conta = r.id_conta -- JOIN para nome/estoque do produto
         LEFT JOIN usuarios u ON r.funcionario = u.id AND u.id_conta = r.id_conta -- JOIN para nome do vendedor
-        WHERE r.tipo = 'Venda'          -- Filtra apenas por tipo Venda
+        WHERE r.tipo = 'Produto'          -- Filtra apenas por tipo Venda
           AND r.comanda = :comanda_id   -- Filtra pela comanda específica
           AND r.id_conta = :id_conta    -- Filtra pela conta da sessão
         ORDER BY r.id ASC               -- Ordena pela ordem de inserção

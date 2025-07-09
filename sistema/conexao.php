@@ -6,7 +6,7 @@ $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
 $url = explode("//", $url);
 
 if ($url[1] === 'localhost/') {
-	$url = "http://" . $_SERVER['HTTP_HOST'] . "/agendar/";
+	$url = "http://" . $_SERVER['HTTP_HOST'] . "/markai/";
 
 	// Configurações do Banco de Dados Local
 	$db_servidor = 'localhost';

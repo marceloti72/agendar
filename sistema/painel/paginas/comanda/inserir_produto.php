@@ -105,7 +105,7 @@ try {
     // Adicionando quantidade e produto, removendo servico, func_comanda? Adapte!
     $query_receber = $pdo->prepare("INSERT INTO receber SET
         descricao = :desc,
-        tipo = 'Venda',            -- Tipo é Venda
+        tipo = 'Produto',            -- Tipo é Venda
         valor = :val,              -- Valor TOTAL (qtd * valor_unitario)
         data_lanc = CURDATE(),
         data_venc = CURDATE(),

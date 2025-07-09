@@ -317,7 +317,7 @@ if (isset($_GET['u'])) {
 $url = "https://" . $_SERVER['HTTP_HOST'] . "/";
 
 if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
-  $url = "http://" . $_SERVER['HTTP_HOST'] . "/agendar/";
+  $url = "http://" . $_SERVER['HTTP_HOST'] . "/markai/";
 
   // Configurações do Banco de Dados Local
   $db_servidor = 'localhost';

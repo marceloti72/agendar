@@ -202,7 +202,7 @@ $dados_meses_vendas =  '';
 
          //VENDAS
         $total_mes_vendas = 0;
-        $query = $pdo->query("SELECT * FROM receber where pago = 'Sim' and tipo = 'Venda' and data_pgto >= '$data_mes_inicio_grafico' and data_pgto <= '$data_mes_final_grafico' and valor > 0 and id_conta = '$id_conta' ORDER BY id asc");
+        $query = $pdo->query("SELECT * FROM receber where pago = 'Sim' and tipo = 'Produto' and data_pgto >= '$data_mes_inicio_grafico' and data_pgto <= '$data_mes_final_grafico' and valor > 0 and id_conta = '$id_conta' ORDER BY id asc");
         $res = $query->fetchAll(PDO::FETCH_ASSOC);
         $total_reg = @count($res);
         if($total_reg > 0){

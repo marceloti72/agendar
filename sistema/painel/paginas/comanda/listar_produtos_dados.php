@@ -16,7 +16,7 @@ $usuario_logado = @$_SESSION['id_usuario'];
 
 $total_servicos = 0;
 
-$query = $pdo->query("SELECT * FROM $tabela where tipo = 'Venda' and comanda = '$id' and func_comanda = '$usuario_logado' and id_conta = '$id_conta' order by id asc");
+$query = $pdo->query("SELECT * FROM $tabela where tipo = 'Produto' and comanda = '$id' and func_comanda = '$usuario_logado' and id_conta = '$id_conta' order by id asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if ($total_reg > 0) {

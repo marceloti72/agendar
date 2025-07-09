@@ -232,7 +232,7 @@ for ($i=0; $i < count($dados); $i++) {
 
 <?php 
 
-$res = $pdo->query("SELECT * from receber where tipo = 'Venda' and comanda = '$id' and id_conta = '$id_conta' order by id asc");
+$res = $pdo->query("SELECT * from receber where tipo = 'Produto' and comanda = '$id' and id_conta = '$id_conta' order by id asc");
 $dados = $res->fetchAll(PDO::FETCH_ASSOC);
 $linhas = count($dados);
 

@@ -28,7 +28,7 @@ $pdo->beginTransaction();
 try {
     // 1. Busca o valor e confirma que o item pertence à conta e comanda antes de deletar
     //    Isso também recupera o valor para subtrair do total da comanda
-    $query_check = $pdo->prepare("SELECT * FROM receber WHERE id = :id_rec AND id_conta = :id_conta AND comanda = :id_comanda AND tipo = 'Venda'");
+    $query_check = $pdo->prepare("SELECT * FROM receber WHERE id = :id_rec AND id_conta = :id_conta AND comanda = :id_comanda AND tipo = 'Produto'");
     $query_check->execute([
         ':id_rec' => $id_receber,
         ':id_conta' => $id_conta_corrente,

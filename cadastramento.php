@@ -352,7 +352,7 @@ try {
     // }
 
     // Mensagem para WhatsApp
-    $mensagem = "*AGENDAR - Sistema de Gestão de Serviços*%0A%0A";
+    $mensagem = "*MARKAI - Sistema de Gestão de Serviços*%0A%0A";
     $mensagem .= "$saudacao, *" . $primeiroNome[0] . "*%0A%0A";
     $mensagem .= "Seja bem-vindo ao nosso sistema!$grinning%0A%0A";
     $mensagem .= "Segue os dados para acesso:%0A";
@@ -366,13 +366,13 @@ try {
     $mensagem .= "Período: *" . $periodo . "* %0A";
     $mensagem .= "Valor: R$ " . $valor . "%0A";
     $mensagem .= "Vencimento: *" . $data_vencF . "* %0A%0A";
-    $mensagem .= "Link para acesso: https://www.agendar.skysee.com.br/login.php";
+    $mensagem .= "Link para acesso: https://www.markai.skysee.com.br/login.php";
 
     require("./ajax/api-texto-ass.php");
 
     // Mensagem de lembrete para WhatsApp (1 dia antes do vencimento)
     $mensagem = $sino . " _Lembrete Automático de Vencimento!_ %0A%0A";
-    $mensagem .= "*AGENDAR - Sistema de Gestão de Serviços* %0A%0A";
+    $mensagem .= "*MARKAI - Sistema de Gestão de Serviços* %0A%0A";
     $mensagem .= "*" . $saudacao . "* tudo bem? " . $grinning . "%0A%0A";
     $mensagem .= "Queremos lembra que sua mensalidade, referente ao teste grátis, vençerá amanhã %0A";
     $mensagem .= "Efetue o pagamento para continuar usando nosso sistema! %0A%0A";

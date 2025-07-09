@@ -77,7 +77,7 @@ if ($_GET["acc"] == "check") {
         $valor = $res[0]['valor_venda'];
         $foto = $res[0]['foto'];
 
-        $query = $pdo->prepare("INSERT INTO receber SET descricao = '$nome_produto', tipo = 'Venda', valor = '$valor', data_lanc = curDate(), data_venc = curDate(), usuario_lanc = curDate(), foto = '$foto', pago = 'Sim', obs = 'Site', id_conta = '$id_conta'");
+        $query = $pdo->prepare("INSERT INTO receber SET descricao = '$nome_produto', tipo = 'Produto', valor = '$valor', data_lanc = curDate(), data_venc = curDate(), usuario_lanc = curDate(), foto = '$foto', pago = 'Sim', obs = 'Site', id_conta = '$id_conta'");
     }
    
  
