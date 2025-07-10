@@ -572,7 +572,7 @@ $(document).ready(function()
                 appkey: appkey,
                 message: appkey,
                 licence: 'skysee',
-                webhook: baseUrl + '/ajax/retornoMenuia.php',
+                webhook: 'https://www.markai.skysee.com.br/ajax/retornoMenuia.php',
                 conecteQR: 'true'
             },
             success: function (response) 
