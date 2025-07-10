@@ -3,7 +3,27 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once("../sistema/conexao.php");
+//require_once("../sistema/conexao.php");
+
+
+	$db_servidor = 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
+	$db_usuario = 'skysee';
+	$db_senha = '9vtYvJly8PK6zHahjPUg';
+	$db_nome = 'barbearia';
+
+	$url = "https://" . $_SERVER['HTTP_HOST'] . "/";
+
+
+// Configuração do Fuso Horário
+date_default_timezone_set('America/Sao_Paulo');
+
+// Conexão com o Banco de Dados
+try {
+	$pdo = new PDO("mysql:dbname=$db_nome;host=$db_servidor;charset=utf8", $db_usuario, $db_senha);
+	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Habilita tratamento de erros
+} catch (PDOException $e) {
+	die("Erro ao conectar com o banco de dados: " . $e->getMessage());
+}
 
 $dados = json_decode(file_get_contents('php://input'), true);
 
