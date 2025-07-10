@@ -106,7 +106,7 @@ if ($tipo == "Sistema") {
             $mensagem .= " Reagende novo horário pelo site: " . $url;
 
             //Notifica o cliente
-            $telefone = '55' . preg_replace('/[ ()-]+/', '', $numeroCliente);
+            $telefone = $numeroCliente;
             require('api-texto-recup.php');
 
             //Notifica o Dono da plataforma
