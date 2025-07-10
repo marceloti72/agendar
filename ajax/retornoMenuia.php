@@ -47,7 +47,7 @@ if ($tipo == "Sistema") {
     $agendamento = $pdo->query($query);
     $resAgendamento = $agendamento->fetchAll(PDO::FETCH_ASSOC);
     $agendamento = $resAgendamento[0];
-    echo $agendamento;
+    //echo $agendamento;
 
 
     // Dados Agendamento
@@ -85,7 +85,7 @@ if ($tipo == "Sistema") {
 
             //Notifica o cliente
             $telefone = '55' . preg_replace('/[ ()-]+/', '', $numeroCliente);
-            require('api-texto.php');
+            require('api-texto-recup.php');
 
             //Notifica o Dono da plataforma
             // $telefone = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
@@ -107,7 +107,7 @@ if ($tipo == "Sistema") {
 
             //Notifica o cliente
             $telefone = '55' . preg_replace('/[ ()-]+/', '', $numeroCliente);
-            require('api-texto.php');
+            require('api-texto-recup.php');
 
             //Notifica o Dono da plataforma
             // $telefone = '55' . preg_replace('/[ ()-]+/', '', $whatsapp_sistema);
