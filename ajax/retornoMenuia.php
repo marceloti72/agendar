@@ -20,12 +20,14 @@ if ($tipo == "Sistema") {
   
 
     $dataHoraAtual = date('Y-m-d H:i:s');
+    echo $numeroCliente;
 
     // Montando a consulta SQL com a condição desejada
     $query = "SELECT * FROM agendamentos WHERE phone = '$numeroCliente' AND status = 'Agendado' AND CONCAT(data, ' ', hora) > '$dataHoraAtual' ORDER BY CONCAT(data, ' ', hora) ASC LIMIT 1";
     $agendamento = $pdo->query($query);
     $resAgendamento = $agendamento->fetchAll(PDO::FETCH_ASSOC);
     $agendamento = $resAgendamento[0];
+    echo $agendamento;
 
 
     // Dados Agendamento
