@@ -84,7 +84,7 @@ if ($tipo == "Sistema") {
             $mensagem .= "_Obrigado!_";
 
             //Notifica o cliente
-            $telefone = '55' . preg_replace('/[ ()-]+/', '', $numeroCliente);
+            $telefone = $numeroCliente;
             require('api-texto-recup.php');
 
             //Notifica o Dono da plataforma
