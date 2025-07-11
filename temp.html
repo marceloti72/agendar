@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Página com Imagens e Texto</title>
+    <!-- Inclui o Tailwind CSS para estilização rápida e responsiva -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilo personalizado para a fonte Inter e cores de fundo/texto */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Um cinza azulado suave */
+            color: #334155; /* Texto cinza escuro */
+        }
+        /* Estilos para garantir cantos arredondados em todos os elementos */
+        .rounded-element {
+            border-radius: 0.75rem; /* rounded-xl do Tailwind */
+        }
+        /* Estilo para o contêiner principal */
+        .main-container {
+            max-width: 1000px; /* Largura máxima do conteúdo */
+            margin: 2rem auto; /* Centraliza o contêiner */
+            padding: 1.5rem; /* Preenchimento interno */
+            background-color: #ffffff; /* Fundo branco para o conteúdo */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Sombra suave */
+        }
+        /* Estilo para o cabeçalho */
+        .header-text {
+            color: #1e293b; /* Cor mais escura para o título */
+        }
+        /* Estilo para o parágrafo de introdução */
+        .intro-paragraph {
+            color: #475569; /* Cor de texto para parágrafos */
+        }
+        /* Estilo para as legendas das imagens */
+        .image-caption {
+            color: #64748b; /* Cor de texto mais clara para legendas */
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="main-container rounded-element">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-8 header-text">
+            App de gestão de serviços mais completo do mercado
+        </h1>
+        
+        <!-- Seção de Imagens -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <!-- Imagem 1 -->
+            <div class="flex flex-col items-center p-4 bg-gray-50 rounded-element shadow-md">
+                <img src="images/temp1.png" alt="Natureza" class="w-full h-48 object-cover rounded-md mb-4">
+                
+            </div>
+
+            <!-- Imagem 2 -->
+            <div class="flex flex-col items-center p-4 bg-gray-50 rounded-element shadow-md">
+                <img src="images/temp2.png" alt="Natureza" class="w-full h-48 object-cover rounded-md mb-4">
+                
+            </div>
+
+            <!-- Imagem 3 -->
+            <div class="flex flex-col items-center p-4 bg-gray-50 rounded-element shadow-md">
+                <img src="images/temp3.png" alt="Natureza" class="w-full h-48 object-cover rounded-md mb-4">
+                
+            </div>
+        </div>
+
+       
+    </div>
+</body>
+</html>
