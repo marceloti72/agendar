@@ -86,7 +86,7 @@ if ($tipo == "Sistema") {
     $token = $resConfig[0]['token'];
     $encaixe = $resConfig[0]['encaixe'];
 
-    $url2 = 'https://markai.skysee.com.br/agendamentos?u='+$username;
+    $url2 = 'https://markai.skysee.com.br/agendamentos?u='.$username;
 
     if ($agendamento) {
 
