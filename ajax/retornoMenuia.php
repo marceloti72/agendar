@@ -100,7 +100,7 @@ if ($tipo == "Sistema") {
 
             //Notifica o cliente
             $telefone = $numeroCliente;
-            require('api-texto.php');
+            require('api-texto-recup.php');
 
             // Notifica o Dono da plataforma
             // $telefone = '55' . preg_replace('/[ ()-]+/', '', $tel_loja);
