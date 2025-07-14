@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['id_conta'])) {
+if (!isset($_SESSION['id_conta'])) {
     $response['message'] = 'Sessão inválida ou expirada. Faça login novamente.';
     error_log($response['message']);
     echo json_encode($response);
