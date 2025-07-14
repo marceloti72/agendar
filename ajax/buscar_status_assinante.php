@@ -28,7 +28,7 @@ try {
     if ($cliente) {
         $response['cliente_id'] = $cliente['id'];
         $response['nome_cliente'] = $cliente['nome'];
-        $response['success'] = true; // Encontrou o cliente
+        $response['success'] = true; // Encontrou o cliente        
 
         $query_agd = $pdo->prepare("SELECT * FROM agendamentos WHERE cliente = :cliente and status = 'Agendado' AND id_conta = :id_conta LIMIT 1");
         $query_agd->execute([':cliente' => $cliente['id'], ':id_conta' => $id_conta]);
