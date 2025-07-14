@@ -62,9 +62,6 @@ if (!$funcionario_id || !$servico_id) {
     echo json_encode($response);
     exit();
 }
-$response['message'] = 'func:'.$funcionario_id;
-echo json_encode($response);
-exit();
 
 // Cadastrar o cliente caso não tenha cadastro
 $query = $pdo->prepare("SELECT id FROM clientes WHERE telefone = :telefone AND id_conta = :id_conta");
@@ -284,12 +281,11 @@ $pdo->beginTransaction();
 try {
     // Insere agendamento
     $hash = '';
-    $query = $pdo->prepare("INSERT INTO agendamentos SET funcionario = :funcionario, cliente = :cliente, hora = :hora, data = :data_agd, usuario = :usuario, status = 'Agendado', obs = :obs, data_lanc = CURDATE(), servico = :servico, origem = 'Link', hash = :hash, id_conta = :id_conta");
+    $query = $pdo->prepare("INSERT INTO agendamentos SET funcionario = :funcionario, cliente = :cliente, hora = :hora, data = :data_agd, status = 'Agendado', obs = :obs, data_lanc = CURDATE(), servico = :servico, origem = 'Link', hash = :hash, id_conta = :id_conta");
     $query->bindValue(":funcionario", $funcionario_id, PDO::PARAM_INT);
     $query->bindValue(":cliente", $id_cliente, PDO::PARAM_INT);
     $query->bindValue(":hora", $hora);
-    $query->bindValue(":data_agd", $data_agd);
-    $query->bindValue(":usuario", $usuario_logado, PDO::PARAM_INT);
+    $query->bindValue(":data_agd", $data_agd);    
     $query->bindValue(":obs", $obs);
     $query->bindValue(":servico", $servico_id, PDO::PARAM_INT);
     $query->bindValue(":hash", $hash);
@@ -305,7 +301,7 @@ try {
     $query2->bindValue(":obs", "Comanda criada para agendamento ID $ult_id");
     $query2->bindValue(":hora", $hora);
     $query2->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);
-    $query2->bindValue(":funcionario", $usuario_logado, PDO::PARAM_INT);
+    $query2->bindValue(":funcionario", $funcionario_id, PDO::PARAM_INT);
     $query2->bindValue(":data", $data_agd);
     $query2->execute();
     error_log("Inserção em comandas: Linhas afetadas: " . $query2->rowCount());
@@ -337,11 +333,10 @@ try {
     $pago_receber = 'Não';
     $tipo_receber = 'Serviço';
 
-    $query_receber = $pdo->prepare("INSERT INTO receber SET descricao = :desc, tipo = :tipo, valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), usuario_lanc = :user_lanc, foto = 'sem-foto.jpg', cliente = :cli, pessoa = :pessoa, pago = :pago, referencia = :referencia, id_agenda = :id_agenda, servico = :serv, funcionario = :func, func_comanda = :user_comanda, comanda = :comanda_id, id_conta = :id_conta, valor2 = :val");
+    $query_receber = $pdo->prepare("INSERT INTO receber SET descricao = :desc, tipo = :tipo, valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), foto = 'sem-foto.jpg', cliente = :cli, pessoa = :pessoa, pago = :pago, referencia = :referencia, id_agenda = :id_agenda, servico = :serv, funcionario = :func, func_comanda = :user_comanda, comanda = :comanda_id, id_conta = :id_conta, valor2 = :val");
     $query_receber->bindValue(':desc', $descricao_final_receber);
     $query_receber->bindValue(':tipo', $tipo_receber);
-    $query_receber->bindValue(':val', $valor_final_receber);
-    $query_receber->bindValue(':user_lanc', $usuario_logado, PDO::PARAM_INT);
+    $query_receber->bindValue(':val', $valor_final_receber);    
     $query_receber->bindValue(':cli', $id_assinante_encontrado, PDO::PARAM_INT);
     $query_receber->bindValue(':pessoa', $id_cliente, PDO::PARAM_INT);
     $query_receber->bindValue(':pago', $pago_receber);
@@ -349,7 +344,7 @@ try {
     $query_receber->bindValue(':id_agenda', $ult_id);
     $query_receber->bindValue(':serv', $servico_id, PDO::PARAM_INT);
     $query_receber->bindValue(':func', $funcionario_id, PDO::PARAM_INT);
-    $query_receber->bindValue(':user_comanda', $usuario_logado, PDO::PARAM_INT);
+    $query_receber->bindValue(':user_comanda', $funcionario_id, PDO::PARAM_INT);
     $query_receber->bindValue(':comanda_id', $id_comanda, PDO::PARAM_INT);
     $query_receber->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
     $query_receber->execute();
@@ -367,7 +362,7 @@ try {
         $query_insert_uso->bindValue(':id_ps', $id_plano_servico_encontrado, PDO::PARAM_INT);
         $query_insert_uso->bindValue(':id_rec', $id_receber_ciclo_atual, PDO::PARAM_INT);
         $query_insert_uso->bindValue(':qtd', $quantidade_a_usar, PDO::PARAM_INT);
-        $query_insert_uso->bindValue(':id_user', $usuario_logado, PDO::PARAM_INT);
+        $query_insert_uso->bindValue(':id_user', $funcionario_id, PDO::PARAM_INT);
         $query_insert_uso->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
         $query_insert_uso->bindValue(':obs', "Comanda ID:$id_comanda (Coberto)", PDO::PARAM_STR);
         $query_insert_uso->execute();
@@ -375,10 +370,9 @@ try {
     }
 
     // Insere comissão na tabela pagar
-    $query_pagar = $pdo->prepare("INSERT INTO pagar SET descricao = :desc, tipo = 'Comissão', valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), usuario_lanc = :user_lanc, foto = 'sem-foto.jpg', pago = 'Não', funcionario = :func, servico = :serv, cliente = :cli, id_ref = :id_ref, id_conta = :id_conta, comanda = :comanda");
+    $query_pagar = $pdo->prepare("INSERT INTO pagar SET descricao = :desc, tipo = 'Comissão', valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), foto = 'sem-foto.jpg', pago = 'Não', funcionario = :func, servico = :serv, cliente = :cli, id_ref = :id_ref, id_conta = :id_conta, comanda = :comanda");
     $query_pagar->bindValue(':desc', $descricao_pagar);
-    $query_pagar->bindValue(':val', $valor_comissao);
-    $query_pagar->bindValue(':user_lanc', $usuario_logado, PDO::PARAM_INT);
+    $query_pagar->bindValue(':val', $valor_comissao);    
     $query_pagar->bindValue(':func', $funcionario_id, PDO::PARAM_INT);
     $query_pagar->bindValue(':serv', $servico_id, PDO::PARAM_INT);
     $query_pagar->bindValue(':cli', $id_cliente, PDO::PARAM_INT);
