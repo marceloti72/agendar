@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-if (!isset($_SESSION['id_conta'])) {
+if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['id_conta'])) {
     $response['message'] = 'Sessão inválida ou expirada. Faça login novamente.';
     error_log($response['message']);
     echo json_encode($response);
@@ -63,6 +63,8 @@ if (!$funcionario_id || !$servico_id) {
     exit();
 }
 $response['message'] = 'func:'.$funcionario_id;
+echo json_encode($response);
+exit();
 
 // Cadastrar o cliente caso não tenha cadastro
 $query = $pdo->prepare("SELECT id FROM clientes WHERE telefone = :telefone AND id_conta = :id_conta");
