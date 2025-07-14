@@ -205,7 +205,7 @@ if ($tipo == "Sistema") {
             
             return "Cancelado!";
         } else {
-            $mensagem = "Ops! Nenhuma opção valida digite:\n ✅ *1* Para confirmar ou ❌ *2* para cancelar ";
+            $mensagem = "Ops! Nenhuma opção valida digite:\n ✅ *1* para confirmar\n❌ *2* para cancelar ";
 
             //Notifica o cliente
             $telefone = $numeroCliente;
