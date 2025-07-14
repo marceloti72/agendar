@@ -1,7 +1,7 @@
 <?php
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 //require_once("../sistema/conexao.php");
 
 
@@ -100,7 +100,7 @@ if ($tipo == "Sistema") {
 
             //Notifica o cliente
             $telefone = $numeroCliente;
-            require('api-texto-recup.php');
+            require('api-texto.php');
 
             // Notifica o Dono da plataforma
             // $telefone = '55' . preg_replace('/[ ()-]+/', '', $tel_loja);
