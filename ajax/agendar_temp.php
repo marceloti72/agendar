@@ -370,17 +370,19 @@ try {
     }
 
     // Insere comissão na tabela pagar
-    $query_pagar = $pdo->prepare("INSERT INTO pagar SET descricao = :desc, tipo = 'Comissão', valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), foto = 'sem-foto.jpg', pago = 'Não', funcionario = :func, servico = :serv, cliente = :cli, id_ref = :id_ref, id_conta = :id_conta, comanda = :comanda");
-    $query_pagar->bindValue(':desc', $descricao_pagar);
-    $query_pagar->bindValue(':val', $valor_comissao);    
-    $query_pagar->bindValue(':func', $funcionario_id, PDO::PARAM_INT);
-    $query_pagar->bindValue(':serv', $servico_id, PDO::PARAM_INT);
-    $query_pagar->bindValue(':cli', $id_cliente, PDO::PARAM_INT);
-    $query_pagar->bindValue(':id_ref', $ult_id_receber, PDO::PARAM_INT);
-    $query_pagar->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
-    $query_pagar->bindValue(':comanda', $id_comanda, PDO::PARAM_INT);
-    $query_pagar->execute();
-    error_log("Inserção em pagar: Linhas afetadas: " . $query_pagar->rowCount());
+    if ($comissao_servico > 0){
+        $query_pagar = $pdo->prepare("INSERT INTO pagar SET descricao = :desc, tipo = 'Comissão', valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), foto = 'sem-foto.jpg', pago = 'Não', funcionario = :func, servico = :serv, cliente = :cli, id_ref = :id_ref, id_conta = :id_conta, comanda = :comanda");
+        $query_pagar->bindValue(':desc', $descricao_pagar);
+        $query_pagar->bindValue(':val', $valor_comissao);    
+        $query_pagar->bindValue(':func', $funcionario_id, PDO::PARAM_INT);
+        $query_pagar->bindValue(':serv', $servico_id, PDO::PARAM_INT);
+        $query_pagar->bindValue(':cli', $id_cliente, PDO::PARAM_INT);
+        $query_pagar->bindValue(':id_ref', $ult_id_receber, PDO::PARAM_INT);
+        $query_pagar->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
+        $query_pagar->bindValue(':comanda', $id_comanda, PDO::PARAM_INT);
+        $query_pagar->execute();
+        error_log("Inserção em pagar: Linhas afetadas: " . $query_pagar->rowCount());
+    }
 
     // Insere horários adicionais
     $hora = $hora_do_agd;
