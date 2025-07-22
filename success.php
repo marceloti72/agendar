@@ -623,7 +623,7 @@ if ($session_id) {
         $planos_para_cadastrar = [
             ['nome' => 'Bronze',   'imagem' => 'bronze.png',   'ordem' => 10],
             ['nome' => 'Prata',    'imagem' => 'prata.png',    'ordem' => 20],
-            ['nome' => 'Ouro',     'imagem' => 'ouro.png',     'ordem' => 30],
+            ['nome' => 'Ouro',     'imagem' => 'Ouro.png',     'ordem' => 30],
             ['nome' => 'Diamante', 'imagem' => 'diamante.png', 'ordem' => 40]
         ];
         $stmt = $pdo->prepare("INSERT INTO planos (nome, imagem, ordem, id_conta, data_cadastro) VALUES (:nome, :imagem, :ordem, :id_conta, NOW())");

@@ -316,16 +316,16 @@ try {
     error_log("Atualização em agendamentos: Linhas afetadas: " . $query3->rowCount());
 
     // Calcula comissão
-    $comissao_taxa = $comissao_servico;
-    if ($comissao_funcionario > 0) {
-        $comissao_taxa = $comissao_funcionario;
-    }
-    global $tipo_comissao;
-    if (!isset($tipo_comissao)) {
-        $tipo_comissao = $tipo_comissao_global ?? 'Porcentagem';
-    }
-    $valor_comissao = ($tipo_comissao == 'Porcentagem') ? (($comissao_taxa * $valor_servico_original) / 100) : $comissao_taxa;
-    $descricao_pagar = 'Comissão - ' . $nome_servico;
+    // $comissao_taxa = $comissao_servico;
+    // if ($comissao_funcionario > 0) {
+    //     $comissao_taxa = $comissao_funcionario;
+    // }
+    // global $tipo_comissao;
+    // if (!isset($tipo_comissao)) {
+    //     $tipo_comissao = $tipo_comissao_global ?? 'Porcentagem';
+    // }
+    // $valor_comissao = ($tipo_comissao == 'Porcentagem') ? (($comissao_taxa * $valor_servico_original) / 100) : $comissao_taxa;
+    // $descricao_pagar = 'Comissão - ' . $nome_servico;
 
     // Insere na tabela receber
     $valor_final_receber = $coberto_pela_assinatura ? 0.00 : $valor_servico_original;
@@ -368,22 +368,7 @@ try {
         $query_insert_uso->execute();
         error_log("Inserção em assinantes_servicos_usados: Linhas afetadas: " . $query_insert_uso->rowCount());
     }
-
-    // Insere comissão na tabela pagar
-    if ($comissao_servico > 0){
-        $query_pagar = $pdo->prepare("INSERT INTO pagar SET descricao = :desc, tipo = 'Comissão', valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), foto = 'sem-foto.jpg', pago = 'Não', funcionario = :func, servico = :serv, cliente = :cli, id_ref = :id_ref, id_conta = :id_conta, comanda = :comanda");
-        $query_pagar->bindValue(':desc', $descricao_pagar);
-        $query_pagar->bindValue(':val', $valor_comissao);    
-        $query_pagar->bindValue(':func', $funcionario_id, PDO::PARAM_INT);
-        $query_pagar->bindValue(':serv', $servico_id, PDO::PARAM_INT);
-        $query_pagar->bindValue(':cli', $id_cliente, PDO::PARAM_INT);
-        $query_pagar->bindValue(':id_ref', $ult_id_receber, PDO::PARAM_INT);
-        $query_pagar->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
-        $query_pagar->bindValue(':comanda', $id_comanda, PDO::PARAM_INT);
-        $query_pagar->execute();
-        error_log("Inserção em pagar: Linhas afetadas: " . $query_pagar->rowCount());
-    }
-
+    
     // Insere horários adicionais
     $hora = $hora_do_agd;
     while (strtotime($hora) < strtotime($hora_final_servico)) {
@@ -439,6 +424,7 @@ try {
     $response['detalhe_assinatura'] = trim($mensagem_assinatura);
     $response['message'] = $coberto_pela_assinatura ? 'Serviço Coberto pela Assinatura' : 'Serviço Lançado com Sucesso';
     $response['nova_comanda_id'] = $id_comanda;
+    $response['agenda_id'] = $ult_id;
 
     // Confirma transação
     error_log("Antes do commit");

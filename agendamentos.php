@@ -1026,7 +1026,7 @@ $("#form-agenda").submit(function (event) {
                     if (response.tipo_registro === 'Assinante') {
                         window.location = "meus-agendamentos.php?u=<?php echo $username ?>";
                     } else {
-                        window.location = "pagamento/" + response.nova_comanda_id + "/100"; // Ajuste o '100' se necessário
+                        window.location = "pagamento/" + response.agenda_id + "/100"; // Ajuste o '100' se necessário
                     }
                 });
             } else {
