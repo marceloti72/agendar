@@ -18,6 +18,7 @@ $data_agd = $_POST['data_selecionada'] ?? '';
 $hora_do_agd = $_POST['hora'] ?? '';
 $id = $_POST['id'] ?? '';
 $quantidade_a_usar = 1;
+$cupom = $_POST['cupom'] ?? '';
 
 $response = [
     'success' => false,
@@ -281,12 +282,13 @@ $pdo->beginTransaction();
 try {
     // Insere agendamento
     $hash = '';
-    $query = $pdo->prepare("INSERT INTO agendamentos SET funcionario = :funcionario, cliente = :cliente, hora = :hora, data = :data_agd, status = 'Agendado', obs = :obs, data_lanc = CURDATE(), servico = :servico, origem = 'Link', hash = :hash, id_conta = :id_conta");
+    $query = $pdo->prepare("INSERT INTO agendamentos SET funcionario = :funcionario, cliente = :cliente, hora = :hora, data = :data_agd, status = 'Agendado', obs = :obs, data_lanc = CURDATE(), servico = :servico, origem = 'Link', hash = :hash, id_conta = :id_conta, cupom = :cupom");
     $query->bindValue(":funcionario", $funcionario_id, PDO::PARAM_INT);
     $query->bindValue(":cliente", $id_cliente, PDO::PARAM_INT);
     $query->bindValue(":hora", $hora);
     $query->bindValue(":data_agd", $data_agd);    
     $query->bindValue(":obs", $obs);
+    $query->bindValue(":cupom", $cupom);
     $query->bindValue(":servico", $servico_id, PDO::PARAM_INT);
     $query->bindValue(":hash", $hash);
     $query->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);

@@ -394,6 +394,10 @@ $dataSelecionadaInicial = $data_atual_iso; // Data de hoje no formato correto
                             <option value="">Selecione o Serviço</option>
                         </select>
                     </div>
+                     <div class="col-md-6 col-lg-3 mb-3">
+                        <label for="cupon" class="text-white">Cupom:</label>
+                        <input class="form-control form-control-sm" type="text" id="cupom" name="cupom" placeholder="Cupom de desconto">
+                     </div>
                 </div>
 
                 <div class="row mt-2 mb-3">
