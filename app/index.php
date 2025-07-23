@@ -486,15 +486,15 @@ try {
                                 <p class="cubo-text"><a href="<?php echo htmlspecialchars($urlGoogleMaps); ?>" target="_blank" title="Portfólio">Localização</a></p>
                             </div>
                             
-                            <div>
+                            <!-- <div>
                                 <p class="cubo-text-transformed">Localização</p>
-                            </div>
+                            </div> -->
 
                         </article>
                         
                     </div>
 
-                    <div id="cubo">
+                    <!-- <div id="cubo">
                         
                         <article class="box-cubo">
                             
@@ -502,14 +502,14 @@ try {
                                 <p class="cubo-text"><a href="../login.php" title="Portfólio">Acesso Restrito</a></p>
                             </div>
                             
-                            <!-- <div>
+                            <div>
                                 <p class="cubo-text-transformed">Acesso Restrito</p>
                                 
-                            </div> -->
+                            </div>
 
                         </article>
                         
-                    </div>
+                    </div> -->
                     
                     <button id="installButton" class="install-btn">
                         <!-- <span class="icon">⏰</span> Instalar o App -->
