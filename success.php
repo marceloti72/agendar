@@ -602,6 +602,32 @@ if ($session_id) {
             }
         }
 
+        // Inicializar variável
+        $id_repr = '';
+        $dias_gratis = '15 dias';
+
+        // Verificar se o cupom está presente na URL
+        if (isset($_GET['coupon']) && !empty($_GET['coupon'])) {
+            $cupom = trim($_GET['coupon']); // Remove espaços em branco            
+            try {
+                $stmt = $pdo2->prepare("SELECT id FROM usuarios WHERE cupom = ?");
+                $stmt->execute([$cupom]);
+                $id_repr = $stmt->fetchColumn();
+
+                if ($id_repr === false) {
+                    // Cupom não encontrado
+                    error_log("Cupom não encontrado: " . $cupom);
+                    $id_repr = '';
+                }else{
+                    $dias_gratis = '30 dias';
+                }
+            } catch (PDOException $e) {
+                // Logar erro de banco
+                error_log("Erro ao verificar cupom: " . $e->getMessage());
+                $id_repr = '';
+            }            
+        }
+
         // Inserir na tabela config
         $stmt = $pdo->prepare("INSERT INTO config (nome, email, telefone_whatsapp, token, ativo, email_menuia, senha_menuia, data_cadastro, plano, api, id_cliente_stripe, id_assinatura_stripe) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$nomeConfig, $email, $telefone, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'teste', 'rtcorretora@gmail.com', 'mof36001', $dataAtual, $plano, 'Sim', $customer_id, $subscription->id]);
@@ -615,8 +641,8 @@ if ($session_id) {
         $stmt->execute([$nomeCliente, $idConta, $email, $cpf, $defaultPassword, 'administrador', $dataAtual, 'teste', $telefone, 'Sim', $idConta, 'sem-foto.jpg', 15]);
 
         // Inserir na tabela clientes
-        $stmt = $pdo2->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta, id_cliente_stripe, usuario, servidor, banco, senha, status, id_assinatura_stripe, plan_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nomeCliente, $cpf, $telefone, $email, $dataAtual, 'teste', $dataAtual, $valor, $frequencia, $plano, $formaPgto, 'Sim', $idConta, $customer_id, 'skysee', 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com', 'barbearia', '9vtYvJly8PK6zHahjPUg', $customer_status, $subscription->id, $priceId]);
+        $stmt = $pdo2->prepare("INSERT INTO clientes (nome, cpf, telefone, email, data_cad, ativo, data_pgto, valor, frequencia, plano, forma_pgto, pago, id_conta, id_cliente_stripe, usuario, servidor, banco, senha, status, id_assinatura_stripe, plan_id, id_repr) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nomeCliente, $cpf, $telefone, $email, $dataAtual, 'teste', $dataAtual, $valor, $frequencia, $plano, $formaPgto, 'Sim', $idConta, $customer_id, 'skysee', 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com', 'barbearia', '9vtYvJly8PK6zHahjPUg', $customer_status, $subscription->id, $priceId, $id_repr]);
 
         // Cadastra os planos
        
@@ -813,7 +839,7 @@ function formatPhoneNumber($phone) {
     $mensagem .= "*Login:* $email%0A";
     $mensagem .= "*Senha:* $defaultPassword%0A%0A";
     $mensagem .= "🚨 Acesse o seu perfil e as configurações do sistema assim que entrar no APP para inserir seus dados corretamente.%0A%0A";
-    $mensagem .= "Você tem 15 dias grátis para conhecer nosso sistema.%0A%0A";
+    $mensagem .= "Você tem ".$dias_gratis." grátis para conhecer nosso sistema.%0A%0A";
     
     $mensagem = str_replace("%0A", "\n", $mensagem); 
 
