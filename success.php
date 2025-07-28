@@ -77,7 +77,11 @@ $session_id = isset($_GET['session_id']) ? $_GET['session_id'] : (isset($session
 if ($session_id && isset($_SESSION['processed_session_ids'][$session_id])) {
     $email = $_SESSION['processed_session_ids'][$session_id]['email'];
     $defaultPassword = $_SESSION['processed_session_ids'][$session_id]['password'];
-    $trialDays = 15;
+    if (isset($_GET['coupon']) && !empty($_GET['coupon'])) {
+       $trialDays = 30;
+    }else{
+       $trialDays = 15;
+    }    
     $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
 
     // HTML para "Cadastro Já Concluído" com estilo elegante
@@ -204,7 +208,12 @@ if ($session_id && isset($_SESSION['processed_session_ids'][$session_id])) {
 
 // Inicializa variáveis
 $email = 'carregando...';
-$trialDays = 15;
+if (isset($_GET['coupon']) && !empty($_GET['coupon'])) {
+    $trialDays = 30;
+}else{
+    $trialDays = 15;
+}    
+
 $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
 $defaultPassword = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
@@ -683,7 +692,11 @@ if ($session_id) {
         
         $email = 'email_nao_disponivel@example.com';
         $defaultPassword = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
-        $trialDays = 15;
+        if (isset($_GET['coupon']) && !empty($_GET['coupon'])) {
+            $trialDays = 30;
+        }else{
+            $trialDays = 15;
+        }    
         $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_STRIPE_SIGNATURE'])) {
