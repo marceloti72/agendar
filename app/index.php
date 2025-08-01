@@ -513,7 +513,7 @@ try {
                     
                     <button id="installButton" class="install-btn">
                         <!-- <span class="icon">⏰</span> Instalar o App -->
-                        <img src="../images/icone_app.jpg" alt="Ícone do App" class="icon">Instalar o App
+                        <img src="../images/icone_markai.png" alt="Ícone do App" class="icon">Instalar o App
                     </button>
 
                 </div><!--Sidebar-->    
