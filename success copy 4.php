@@ -805,7 +805,7 @@ function formatPhoneNumber($phone) {
         </div>
         <a href="intent://agendar.skysee.com.br#Intent;scheme=https;package=com.example.app;end" class="login-button">Ir para o APP</a>
     </div>
-
+    
     <?php 
     // Primeiro nome
     $primeiroNome = explode(" ", $nomeCliente);

@@ -22,8 +22,8 @@ use Stripe\Webhook;
 use Stripe\Subscription;
 
 // Configurações do Stripe
-Stripe::setApiKey('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');
-$endpoint_secret = 'whsec_TnnfjMnuTcbVLnq1DFDsr98mF7Isk7Cw';
+Stripe::setApiKey(getenv('STRIPE_SECRET_KEY')); // Pega a chave da variável de ambiente
+$endpoint_secret = getenv('STRIPE_WEBHOOK_SECRET'); // Pega o segredo do webhook da variável de ambiente
 
 // Processamento de requisições POST (webhook ou formulário)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
