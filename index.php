@@ -291,9 +291,9 @@ require_once("cabecalho.php");?>
             
         </div>
     </div>
-    <div class="image">
+    <!-- <div class="image">
         <img src="images/testegratis.png" alt="Teste Grátis" style="width: 70%;">
-    </div>
+    </div> -->
   
 
   <button class="scroll-up" data-section="sessao-0">
