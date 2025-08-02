@@ -22,8 +22,8 @@ use Stripe\Webhook;
 use Stripe\Subscription;
 
 // Configurações do Stripe
-Stripe::setApiKey('sk_test_51RTXIZQwVYKsR3u1YtG7aK6S7d4sOg3Pnw8nKlXQNRBEFRGOncTdr0850Ddp1px4FRC0XuL29MaKyoy3JFiZh0Wa00reKEwQHt');
-$endpoint_secret = 'whsec_aiXk2ZhwnDfOepwrRIoRNFDkC3g5Ok3e';
+Stripe::setApiKey('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');
+$endpoint_secret = 'whsec_TnnfjMnuTcbVLnq1DFDsr98mF7Isk7Cw';
 
 // Processamento de requisições POST (webhook ou formulário)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -357,8 +357,8 @@ if ($session_id) {
             file_put_contents('/var/www/markai/session_log.txt', date('Y-m-d H:i:s') . " - No subscription or amount_total found.\n", FILE_APPEND);
         }
 
-        $plano = ($priceId === 'price_1RTXujQwVYKsR3u1RPS4YJ2k' || $priceId === 'price_1RUErpQwVYKsR3u108WBjSM6') ? 1 : 2;
-        $frequencia = ($priceId === 'price_1RUErpQwVYKsR3u108WBjSM6' || $priceId === 'price_1RUEtsQwVYKsR3u1EtM51sF2') ? 365 : 30;
+        $plano = ($priceId === 'price_1RTZKzJEPhV4vIDM8SLdZ1Gx' || $priceId === 'price_1RU5HjJEPhV4vIDMTnrVVyxT') ? 1 : 2;
+        $frequencia = ($priceId === 'price_1RU5HjJEPhV4vIDMTnrVVyxT' || $priceId === 'price_1RUE3OJEPhV4vIDMzNgVl1jY') ? 365 : 30;
         $dataAtual = date('Y-m-d H:i:s');
 
         $numeroAleatorio = rand(100000, 999999);
