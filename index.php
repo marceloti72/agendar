@@ -7,7 +7,7 @@ require_once("cabecalho.php");?>
         <h1>Sistema completo de Gestão e agendamentos para Serviços</h1>
         <p>Diga adeus às dores de cabeça na hora de organizar sua agenda. Com o MARKAI, seu estabelecimento ganha um sistema simples, rápido e completo para gerenciar horários e otimizar o dia a dia.</p>
         <div class="buttons">
-            <a href="precos.php" class="trial-large">TESTAR GRÁTIS POR 7 DIAS</a>
+            <a href="precos.php" class="trial-large">TESTAR GRÁTIS POR 30 DIAS</a>
             <a href="https://wa.me/5522998838694" target="_blank" class="sales">FALAR COM VENDAS</a>
             
         </div>

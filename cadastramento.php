@@ -92,22 +92,12 @@ if (count($res) > 0) {
     exit();
 }
 
-$query2 = $pdo->prepare("SELECT username FROM config WHERE username = :username");
-$query2->bindValue(":username", $username);
-$query2->execute();
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-
-if (count($res2) > 0) {
-    echo 'O username já existente no banco de dados, favor escolher outro.';
-    exit();
-}
-
 // Inicia a transação
 try {
     $pdo->beginTransaction();
 
     // Cadastra a instituição no AGENDAR
-    $res1 = $pdo->prepare("INSERT INTO config SET nome = :nome, telefone_whatsapp = :telefone, email = :email_adm, ativo = :ativo, username = :username, token = :token, email_menuia = :email_menuia, plano = :plano, api = 'Sim', data_cadastro = NOW()");
+    $res1 = $pdo->prepare("INSERT INTO config SET nome = :nome, telefone_whatsapp = :telefone, email = :email_adm, ativo = :ativo, senha_manuia = 'mof36001', token = :token, email_menuia = :email_menuia, plano = :plano, api = 'Sim', data_cadastro = NOW()");
     $res1->bindValue(":nome", $nome);
     $res1->bindValue(":telefone", $telefone);
     $res1->bindValue(":email_adm", $email_adm);
@@ -120,8 +110,14 @@ try {
 
     $id_conta = $pdo->lastInsertId();
 
+    // Inserir username
+    $res9 = $pdo->prepare("UPDATE config SET username = :username WHERE id = :id");
+    $res9->bindValue(":username", $id_conta);
+    $res9->bindValue(":id", $id_conta);
+    $res9->execute();
+
     // Cadastra o perfil ADM-MASTER
-    $res2 = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, cpf = :cpf, email = :email, telefone = :telefone, senha = :senha, nivel = :nivel, id_conta = :id_conta, ativo = :ativo, atendimento = 'Sim', intervalo = '15', username = :username");
+    $res2 = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, cpf = :cpf, email = :email, telefone = :telefone, senha = :senha, nivel = :nivel, id_conta = :id_conta, ativo = :ativo, atendimento = 'Sim', intervalo = '15', username = :username, foto = 'sem-foto.jpg', data = NOW()");
     $res2->bindValue(":nome", $nome_adm);
     $res2->bindValue(":cpf", $cpf);
     $res2->bindValue(":email", $email_adm);
@@ -130,7 +126,7 @@ try {
     $res2->bindValue(":nivel", $nivel);
     $res2->bindValue(":ativo", $ativo);
     $res2->bindValue(":id_conta", $id_conta);
-    $res2->bindValue(":username", $username);
+    $res2->bindValue(":username", $id_conta);
     $res2->execute();
 
     $id_usuario = $pdo->lastInsertId();
@@ -143,7 +139,7 @@ try {
         // Coloquei NULL para preco_anual como exemplo, ajuste se necessário
         ['nome' => 'Bronze',   'imagem' => 'bronze.png',   'ordem' => 10],
         ['nome' => 'Prata',    'imagem' => 'prata.png',    'ordem' => 20],
-        ['nome' => 'Ouro',     'imagem' => 'ouro.png',     'ordem' => 30],
+        ['nome' => 'Ouro',     'imagem' => 'Ouro.png',     'ordem' => 30],
         ['nome' => 'Diamante', 'imagem' => 'diamante.png', 'ordem' => 40] // Usei .png conforme seu pedido
     ];
     try {
@@ -159,12 +155,12 @@ try {
 
             $inseridos_count = 0;
             // PASSO 3: LOOP PELOS PLANOS E EXECUTA A QUERY PARA CADA UM
-            foreach ($planos_para_cadastrar as $plano) {
+            foreach ($planos_para_cadastrar as $plano3) {
                 // Monta o array de parâmetros para este plano específico
                 $params = [
-                    ':nome' => $plano['nome'],
-                    ':imagem' => $plano['imagem'],
-                    ':ordem' => $plano['ordem'],                    
+                    ':nome' => $plano3['nome'],
+                    ':imagem' => $plano3['imagem'],
+                    ':ordem' => $plano3['ordem'],                    
                     ':id_conta' => $id_conta, // A variável da conta atual
                 ];
 
@@ -173,7 +169,7 @@ try {
                     $inseridos_count++;
                 } else {
                     // Loga um erro se um plano específico falhar
-                    error_log("Falha ao inserir plano padrão '{$plano['nome']}' para id_conta {$id_conta}. Erro: " . print_r($query_insert_plano->errorInfo(), true));
+                    error_log("Falha ao inserir plano padrão '{$plano3['nome']}' para id_conta {$id_conta}. Erro: " . print_r($query_insert_plano->errorInfo(), true));
                 }
             } // Fim do foreach
 
@@ -246,7 +242,7 @@ try {
     $res3->bindValue(":servidor", $servidor);
     $res3->bindValue(":banco", $banco);
     $res3->bindValue(":usuario", $usuario);
-    $res3->bindValue(":senha", $senha2);
+    $res3->bindValue(":senha", $senha);
     $res3->bindValue(":ativo", $ativo);
     $res3->bindValue(":plano", $plano);
     $res3->bindValue(":frequencia", $frequencia);
@@ -255,7 +251,7 @@ try {
     $id_cliente = $pdo2->lastInsertId();
 
     // Calcula a data de vencimento (7 dias após a data de pagamento)
-    $nova_data_vencimento = date('Y-m-d', strtotime("+7 days", strtotime($data_pgto)));
+    $nova_data_vencimento = date('Y-m-d', strtotime("+30 days", strtotime($data_pgto)));
 
     // Insere o registro na tabela 'receber'
     $res4 = $pdo2->prepare("INSERT INTO receber SET empresa = :empresa, tipo = :tipo, descricao = :descricao, pessoa = :pessoa, valor = :valor, subtotal = :subtotal, vencimento = :vencimento, data_lanc = :data_lanc, arquivo = :arquivo, pago = :pago, cliente = :cliente, frequencia = :frequencia");
@@ -359,7 +355,7 @@ try {
     $mensagem .= "*Login:* $username%0A";
     $mensagem .= "*Senha:* 123%0A";
     $mensagem .= "Altere sua senha assim que acessar e complete seus dados!%0A%0A";
-    $mensagem .= "Você tem 7 dias grátis para conhecer nosso sistema.%0A%0A";
+    $mensagem .= "Você tem 30 dias grátis para conhecer nosso sistema.%0A%0A";
     $mensagem .= "*Segue os dados para assinatura*" . $point_down . "  %0A%0A";
     $mensagem .= "Cliente: *" . $nome . "* %0A";
     $mensagem .= "Plano: *" . $plano2 . "* %0A";

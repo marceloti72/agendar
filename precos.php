@@ -334,7 +334,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                 <div class="funcionalidade"><i class="fas fa-check"></i> Lista de Espera</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> e muito mais...</div>
             </div>
-            <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalEmpresa<?php echo $tipo_plano; ?>">Testar grátis por 7 dias</button>
+            <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalEmpresa<?php echo $tipo_plano; ?>">Testar grátis por 30 dias</button>
         </div>
 
         <div class="plano-card plano-individual">
@@ -371,7 +371,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                 <div class="funcionalidade"><i class="fas fa-check"></i> Lista de Espera</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> e muito mais...</div>
             </div>
-            <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalIndividual<?php echo $tipo_plano; ?>">Testar grátis por 7 dias</button>
+            <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalIndividual<?php echo $tipo_plano; ?>">Testar grátis por 30 dias</button>
         </div>
     </div><br><br><br><br>
 
