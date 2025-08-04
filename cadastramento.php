@@ -22,7 +22,6 @@ $nome = 'Teste nº' . $numero_aleatorio;
 $telefone = $_POST['telefone'];
 $email_adm = $_POST['email'];
 $nivel = 'administrador';
-$username = $_POST['username'];
 $plano = $_POST['plano'];
 $frequencia = $_POST['frequencia'];
 $valor = $_POST['valor'];
@@ -59,7 +58,7 @@ $senha = '9vtYvJly8PK6zHahjPUg';
 $banco = 'barbearia';
 
 $token_menuia = 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9';
-$email_menuia = 'rtcoretora@gmail.com';
+$email_menuia = 'rtcorretora@gmail.com';
 
 
 $hoje = date('Y-m-d');
@@ -97,7 +96,7 @@ try {
     $pdo->beginTransaction();
 
     // Cadastra a instituição no AGENDAR
-    $res1 = $pdo->prepare("INSERT INTO config SET nome = :nome, telefone_whatsapp = :telefone, email = :email_adm, ativo = :ativo, senha_manuia = 'mof36001', token = :token, email_menuia = :email_menuia, plano = :plano, api = 'Sim', data_cadastro = NOW()");
+    $res1 = $pdo->prepare("INSERT INTO config SET nome = :nome, telefone_whatsapp = :telefone, email = :email_adm, ativo = :ativo, senha_menuia = 'mof36001', token = :token, email_menuia = :email_menuia, plano = :plano, api = 'Sim', data_cadastro = NOW()");
     $res1->bindValue(":nome", $nome);
     $res1->bindValue(":telefone", $telefone);
     $res1->bindValue(":email_adm", $email_adm);

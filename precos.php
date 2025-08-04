@@ -389,11 +389,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                         <div class="form-group">
                             <label for="nomeEmpresaMensal">Nome</label>
                             <input type="text" class="form-control" id="nomeEmpresaMensal" name="nome" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="usernameEmpresaMensal">Username</label>
-                            <input type="text" class="form-control" id="usernameEmpresaMensal" name="username" required>
-                        </div>
+                        </div>                        
                         <div class="form-group">
                             <label for="telefoneEmpresaMensal">Telefone</label>
                             <input type="tel" class="form-control" id="telefoneEmpresaMensal" name="telefone" required>
@@ -426,11 +422,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                         <div class="form-group">
                             <label for="nomeEmpresaAnual">Nome</label>
                             <input type="text" class="form-control" id="nomeEmpresaAnual" name="nome" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="usernameEmpresaAnual">Username</label>
-                            <input type="text" class="form-control" id="usernameEmpresaAnual" name="username" required>
-                        </div>
+                        </div>                        
                         <div class="form-group">
                             <label for="telefoneEmpresaAnual">Telefone</label>
                             <input type="tel" class="form-control" id="telefoneEmpresaAnual" name="telefone" required>
@@ -463,11 +455,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                         <div class="form-group">
                             <label for="nomeIndividualMensal">Nome</label>
                             <input type="text" class="form-control" id="nomeIndividualMensal" name="nome" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="usernameIndividualMensal">Username</label>
-                            <input type="text" class="form-control" id="usernameIndividualMensal" name="username" required>
-                        </div>
+                        </div>                        
                         <div class="form-group">
                             <label for="telefoneIndividualMensal">Telefone</label>
                             <input type="tel" class="form-control" id="telefoneIndividualMensal" name="telefone" required>
@@ -500,11 +488,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                         <div class="form-group">
                             <label for="nomeIndividualAnual">Nome</label>
                             <input type="text" class="form-control" id="nomeIndividualAnual" name="nome" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="usernameIndividualAnual">Username</label>
-                            <input type="text" class="form-control" id="usernameIndividualAnual" name="username" required>
-                        </div>
+                        </div>                        
                         <div class="form-group">
                             <label for="telefoneIndividualAnual">Telefone</label>
                             <input type="tel" class="form-control" id="telefoneIndividualAnual" name="telefone" required>
@@ -537,7 +521,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
 
             const formData = new FormData(form);
 
-            const username = formData.get('username');    
+            const username = formData.get('email');    
             
             if(plano == 2 && frequencia == 30){
                 n='1';
