@@ -100,8 +100,7 @@ try {
     $res1->bindValue(":nome", $nome);
     $res1->bindValue(":telefone", $telefone);
     $res1->bindValue(":email_adm", $email_adm);
-    $res1->bindValue(":ativo", $ativo);
-    $res1->bindValue(":username", $username);
+    $res1->bindValue(":ativo", $ativo);    
     $res1->bindValue(":token", $token_menuia);
     $res1->bindValue(":email_menuia", $email_menuia);
     $res1->bindValue(":plano", $plano);
