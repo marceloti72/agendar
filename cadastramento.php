@@ -360,7 +360,7 @@ try {
     $mensagem .= "Período: *" . $periodo . "* %0A";
     $mensagem .= "Valor: R$ " . $valor . "%0A";
     $mensagem .= "Vencimento: *" . $data_vencF . "* %0A%0A";
-    $mensagem .= "Link para acesso: https://www.markai.skysee.com.br/login.php";
+    $mensagem .= "Link do APP: https://drive.google.com/file/d/1yBNCZo7mqR0V7qbf3cmPUUwR24eHDNzd/view?usp=drive_link";
 
     require("./ajax/api-texto-ass.php");
 
