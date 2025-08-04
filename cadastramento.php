@@ -350,7 +350,7 @@ try {
     $mensagem .= "$saudacao, *" . $primeiroNome[0] . "*%0A%0A";
     $mensagem .= "Seja bem-vindo ao nosso sistema!$grinning%0A%0A";
     $mensagem .= "Segue os dados para acesso:%0A";
-    $mensagem .= "*Login:* $username%0A";
+    $mensagem .= "*Login:* $email_adm%0A";
     $mensagem .= "*Senha:* 123%0A";
     $mensagem .= "Altere sua senha assim que acessar e complete seus dados!%0A%0A";
     $mensagem .= "Você tem 30 dias grátis para conhecer nosso sistema.%0A%0A";
