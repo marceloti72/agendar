@@ -17,6 +17,13 @@ if($status != ''){
 }else{
     $status_pdo = '';
 }
+
+//verificar se ele tem a permissão de estar nessa página
+if(@$_SESSION['nivel_usuario'] != 'administrador'){
+    $func = "funcionario = :usuario_logado AND";	   
+}else{
+    $func = "";
+}
 ?>
 
 <style>
@@ -128,16 +135,7 @@ if($status != ''){
 </style>
 <?php
 // Monta a query SQL
-echo $dataInicial;
-echo'-';
-echo $dataFinal;
-echo'-';
-echo $status;
-echo'-';
-echo $usuario_logado;
-
-
-$sql = "SELECT * FROM $tabela WHERE data >= :dataInicial AND data <= :dataFinal $status_pdo AND funcionario = :usuario_logado AND id_conta = :id_conta ORDER BY id ASC";
+$sql = "SELECT * FROM $tabela WHERE data >= :dataInicial AND data <= :dataFinal $status_pdo AND $func id_conta = :id_conta ORDER BY id ASC";
 $query = $pdo->prepare($sql);
 $query->bindParam(':dataInicial', $dataInicial, PDO::PARAM_STR);
 $query->bindParam(':dataFinal', $dataFinal, PDO::PARAM_STR);
@@ -166,7 +164,7 @@ try {
             $valorF = number_format($valor, 2, ',', '.');
 
             // Define a imagem com base no status
-            $cor_comanda = ($status == 'Aberta') ? '#007bff' : 'red';
+            $cor_comanda = ($status == 'Agendado') ? '#007bff' : 'red';
 
             // Busca o nome do cliente
             $query_cliente = $pdo->prepare("SELECT nome FROM clientes WHERE id = :id AND id_conta = :id_conta");
