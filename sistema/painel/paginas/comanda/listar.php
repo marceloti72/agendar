@@ -138,13 +138,13 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 echo $status2;
 echo $status_pdo;
 echo $func;
-$sql = "SELECT * FROM $tabela WHERE data >= :dataInicial AND data <= :dataFinal $status_pdo AND $func id_conta = :id_conta ORDER BY id ASC";
+$sql = "SELECT * FROM $tabela WHERE data >= :dataInicial AND data <= :dataFinal AND status = :status AND $func id_conta = :id_conta ORDER BY id ASC";
 $query = $pdo->prepare($sql);
 $query->bindParam(':dataInicial', $dataInicial, PDO::PARAM_STR);
 $query->bindParam(':dataFinal', $dataFinal, PDO::PARAM_STR);
-if($status2 != ''){
+
     $query->bindParam(':status', $status2, PDO::PARAM_STR);
-}
+
 if($func != ''){
     $query->bindParam(':usuario_logado', $usuario_logado, PDO::PARAM_INT);
 }
