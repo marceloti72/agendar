@@ -322,7 +322,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     <div class="col-md-5">
                                         <div class="form-group">
                                             <label>Profissional</label>
-                                            <select class="form-control sel2" id="funcionario2" name="funcionario2" style="width:100%;">
+                                            <select class="form-control sel2" id="funcionario" name="funcionario" style="width:100%;">
                                                 <?php
                                                 $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
                                                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
