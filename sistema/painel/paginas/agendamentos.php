@@ -401,7 +401,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                             <input type="text" class="form-control" name="valor_serv" id="valor_serv" onkeyup="calcularTroco()">
                                         </div>
                                     </div> -->
-                                    <div class="col-md-7">
+                                    
                                         <div class="form-control text-right total-display">
                                             <label><small>Forma de Pgto</small></label>
                                             <select class="form-control" id="pgto" name="pgto" style="width:100%;" required>
@@ -414,7 +414,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                                 ?>
                                             </select>
                                         </div>
-                                    </div>
+                                   
                                 </div>
 
                                 <div class="form-group">

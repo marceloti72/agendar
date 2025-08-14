@@ -127,8 +127,8 @@ HTML;
         $html_output .= <<<HTML
         </tbody>
         </table>
-        <div class="text-right mt-2" style="margin-right: 5px;"><strong>Total Produtos:</strong> <span class="text-primary" id="total-produtos-display">R$ {$total_produtosF}</span></div>
-        </small>
+        <!-- <div class="text-right mt-2" style="margin-right: 5px;"><strong>Total Produtos:</strong> <span class="text-primary" id="total-produtos-display">R$ {$total_produtosF}</span></div>
+        </small> -->
 HTML;
 
         // Script para atualizar o input hidden #valor_produtos na página principal

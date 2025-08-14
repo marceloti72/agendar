@@ -76,9 +76,9 @@ HTML;
         $html_output .= <<<HTML
         </tbody>
         </table>
-        <div class="text-right mt-2" style="margin-right: 5px;">
+        <!-- <div class="text-right mt-2" style="margin-right: 5px;">
             <strong>Total Serviços:</strong> <span class="text-success" id="total-servicos-display">R$ {$total_servicosF} </span>
-        </div>
+        </div> -->
         </small>
         <script type="text/javascript">
             var pag = 'comanda'; // Ajuste conforme necessário
