@@ -117,14 +117,17 @@ if ($data == "") {
 }
 
 if ($funcionario == "") {
-	echo '<small>Selecione um Funcionário!</small>';
-	exit();
+	// echo '<small>Selecione um Funcionário!</small>';
+	// exit();
+	$func = '';
+}else{
+	$func = "funcionario = '$funcionario' and";
 }
 
 echo <<<HTML
 <small>
 HTML;
-$query = $pdo->query("SELECT * FROM agendamentos where funcionario = '$funcionario' and data = '$data' and id_conta = '$id_conta' ORDER BY hora asc");
+$query = $pdo->query("SELECT * FROM agendamentos where $func data = '$data' and id_conta = '$id_conta' ORDER BY hora asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 if ($total_reg > 0) {
