@@ -276,18 +276,31 @@ if ($total_reg > 0) {
 
         $horaF = date("H:i", strtotime($hora));
 
-        $query_comanda = $pdo->query("SELECT * FROM comanda WHERE id = '$comanda' AND id_conta = '$id_conta'");
-        $item = $query_comanda->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $pdo->prepare("SELECT * FROM comanda WHERE id = :comanda AND id_conta = :id_conta");
+        $stmt->bindValue(':comanda', $comanda);
+        $stmt->bindValue(':id_conta', $id_conta);
+        $stmt->execute();
 
-            $id2 = $item[0]['id'];
-            $valor2 = $item[0]['valor'];
-            $cliente2 = $item[0]['cliente'];
-            $obs2 = $item[0]['obs'];
-            $status2 = $item[0]['status'];
-            $data2 = $item[0]['data'];
-            $hora2 = $item[0]['hora'];
-            $funcionario_id = $item[0]["funcionario"];
+        $item = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Verifique se a consulta retornou um item antes de tentar acessá-lo
+        if ($item) {
+            $id2 = $item['id'];
+            $valor2 = $item['valor'];
+            $cliente2 = $item['cliente'];
+            $obs2 = $item['obs'];
+            $status2 = $item['status'];
+            $data2 = $item['data'];
+            $hora2 = $item['hora'];
+            $funcionario_id = $item['funcionario'];
+
+            // O código para formatar a data está correto
             $dataF = implode('/', array_reverse(explode('-', $data2)));
+                        
+        } else {
+            // Caso a comanda não seja encontrada
+            echo "Comanda não encontrada.";
+        }
 
         // Obter informações do cliente
         $query_client = $pdo->query("SELECT nome, cartoes FROM clientes WHERE id = '$cliente' AND id_conta = '$id_conta'");
