@@ -143,7 +143,7 @@ try {
     $query->execute();
     $res = $query->fetchAll(PDO::FETCH_ASSOC);
     $total_reg = count($res);
-
+echo 'NÃO ENTROU';
     if ($total_reg > 0) {
         echo 'ENTROU';
         foreach ($res as $item) {
