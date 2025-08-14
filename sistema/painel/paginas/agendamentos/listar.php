@@ -191,6 +191,14 @@ if ($total_reg > 0) {
 			$nome_usu = 'Sem Usuário';
 		}
 
+		$query3 = $pdo->query("SELECT * FROM usuarios where id = '$funcionario' and id_conta = '$id_conta'");
+		$res3 = $query3->fetchAll(PDO::FETCH_ASSOC);
+		if (@count($res3) > 0) {
+			$nome_prof = $res3[0]['nome'];
+		} else {
+			$nome_prof = '';
+		}
+
 
 		$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
 		$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
@@ -333,8 +341,8 @@ if ($total_reg > 0) {
         		<hr style="margin-top:-2px; margin-bottom: 3px">                    
                     <div class="stats" align="center">
                       <span style="">                      
-                        <small> <span class="{$ocultar_cartoes}" style=""><img class="icon-rounded-vermelho" src="img/presente.jpg" width="20px" height="20px"></span> <span style="color:{$classe_deb}; font-size:13px">{$nome_cliente}</span> (<i><span style="color:#061f9c; font-size:12px">{$nome_serv}</span></i>)</small></span>
-                        <small> <span class="{$ocultar_cartoes}" style=""></span> <span style="color:{$classe_deb}; font-size:13px">Prof: {$nome_usu}</span></small></span>
+                        <small> <span class="{$ocultar_cartoes}" style=""><img class="icon-rounded-vermelho" src="img/presente.jpg" width="20px" height="20px"></span> <span style="color:{$classe_deb}; font-size:13px">{$nome_cliente}</span> (<i><span style="color:#061f9c; font-size:12px">{$nome_serv}</span></i>)</small></span><br>
+                        <small> <span class="{$ocultar_cartoes}" style=""></span> <span style="color:{$classe_deb}; font-size:13px">Prof: {$nome_prof}</span></small></span><br>
 						<small><small><button style='cursor: default;border-radius: 10px;border: 0px;background-color: #F0E68C;'>via {$origem}</button></small></small>
                     </div>
                 </div>
