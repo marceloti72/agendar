@@ -276,7 +276,7 @@ if ($total_reg > 0) {
 
         $horaF = date("H:i", strtotime($hora));
 
-        $stmt = $pdo->prepare("SELECT * FROM comanda WHERE id = :comanda AND id_conta = :id_conta");
+        $stmt = $pdo->prepare("SELECT * FROM comandas WHERE id = :comanda AND id_conta = :id_conta");
         $stmt->bindValue(':comanda', $comanda);
         $stmt->bindValue(':id_conta', $id_conta);
         $stmt->execute();
