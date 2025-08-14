@@ -160,7 +160,7 @@ try {
             $valor = $item['valor'];
             $cliente = $item['cliente'];
             $obs = $item['obs'];
-            $status = $item['status'];
+            $status = trim($item['status']);
             $data = $item['data'];
             $hora = $item['hora'];
             $funcionario_id = $item["funcionario"];
