@@ -120,8 +120,8 @@ $data_final_mes = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
                 <div class="col-sm-6 text-center text-sm-end mt-2 mt-sm-0">
                     <small>
                         <a class="text-muted me-1" href="#" onclick="buscarContas('')">Todas</a> /
-                        <a class="text-muted me-1" href="#" onclick="buscarContas('Aberta')">Abertas</a> /
-                        <a class="text-muted" href="#" onclick="buscarContas('Fechada')">Fechadas</a>
+                        <a class="text-muted me-1" href="#" onclick="buscarContas('Agendado')">Abertas</a> /
+                        <a class="text-muted" href="#" onclick="buscarContas('Concluído')">Fechadas</a>
                     </small>
                     <input type="hidden" id="buscar-contas" value="Aberta">
                 </div>
