@@ -126,9 +126,17 @@ if($status != ''){
         }
     }
 </style>
-
 <?php
 // Monta a query SQL
+echo $dataInicial;
+echo'-';
+echo $dataFinal;
+echo'-';
+echo $status;
+echo'-';
+echo $usuario_logado;
+
+
 $sql = "SELECT * FROM $tabela WHERE data >= :dataInicial AND data <= :dataFinal $status_pdo AND funcionario = :usuario_logado AND id_conta = :id_conta ORDER BY id ASC";
 $query = $pdo->prepare($sql);
 $query->bindParam(':dataInicial', $dataInicial, PDO::PARAM_STR);
@@ -143,9 +151,7 @@ try {
     $query->execute();
     $res = $query->fetchAll(PDO::FETCH_ASSOC);
     $total_reg = count($res);
-echo 'NÃO ENTROU';
-    if ($total_reg > 0) {
-        echo 'ENTROU';
+    if ($total_reg > 0) {        
         foreach ($res as $item) {
             $id = $item['id'];
             $valor = $item['valor'];
