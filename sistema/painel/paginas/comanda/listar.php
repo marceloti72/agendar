@@ -9,8 +9,8 @@ $data_hoje = date('Y-m-d');
 
 $dataInicial = @$_POST['dataInicial'] ?: $data_hoje;
 $dataFinal = @$_POST['dataFinal'] ?: $data_hoje;
-$status = @$_POST['status'] ?: '';
-$status2 = @$_POST['status'];
+//$status = @$_POST['status'] ?: '';
+$status2 = @$_POST['status'] ?: '';
 
 if($status2 != ''){
     $status_pdo = 'AND status = :status ';
@@ -142,7 +142,7 @@ $sql = "SELECT * FROM $tabela WHERE data >= :dataInicial AND data <= :dataFinal 
 $query = $pdo->prepare($sql);
 $query->bindParam(':dataInicial', $dataInicial, PDO::PARAM_STR);
 $query->bindParam(':dataFinal', $dataFinal, PDO::PARAM_STR);
-if($status != ''){
+if($status2 != ''){
     $query->bindParam(':status', $status2, PDO::PARAM_STR);
 }
 if($func != ''){
