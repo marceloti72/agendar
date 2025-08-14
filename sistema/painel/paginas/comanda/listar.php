@@ -145,6 +145,7 @@ try {
     $total_reg = count($res);
 
     if ($total_reg > 0) {
+        echo 'ENTROU';
         foreach ($res as $item) {
             $id = $item['id'];
             $valor = $item['valor'];
