@@ -406,7 +406,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 						<div class="col-md-8">						
 							<div class="form-group"> 
 								<label>Serviço</label> 
-								<select class="form-control sel3" id="servico" name="servico" style="width:100%;" required> 									
+								<select class="form-control sel3" id="servico2" name="servico" style="width:100%;" required> 									
 
 								</select>    
 							</div>						
@@ -950,7 +950,7 @@ $("#form-text").submit(function (event) {
 
 <script type="text/javascript">
 	function listarServicos(func){	
-		var serv = $("#servico").val();
+		var serv = $("#servico2").val();
 		
 		$.ajax({
 			url: 'paginas/' + pag +  "/listar-servicos.php",
@@ -959,7 +959,7 @@ $("#form-text").submit(function (event) {
 			dataType: "text",
 
 			success:function(result){
-				$("#servico").html(result);
+				$("#servico2").html(result);
 			}
 		});
 	}
