@@ -173,7 +173,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     <div class="col-md-5">
                                         <div class="form-group">
                                           <label>Produtos</label>
-                                            <select class="form-control sel2" id="produto" name="produto" value="" style="width:100%;" required onchange="listarServicos()">
+                                            <select class="form-control sel2" id="produto" name="produto" value="" style="width:100%;" required onchange="listarServicos2()">
                                               <?php
                                                 $query = $pdo->query("SELECT * FROM produtos where estoque > 0 and id_conta = '$id_conta' ORDER BY nome asc");
                                                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -193,7 +193,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                       <div class="col-md-3">
                                         <div class="form-group">
                                          <label>Profissional</label>
-                                            <select class="form-control sel2" id="funcionario2" name="funcionario2" value="" style="width:100%;" required onchange="listarServicos()">
+                                            <select class="form-control sel2" id="funcionario2" name="funcionario2" value="" style="width:100%;" required onchange="listarServicos2()">
                                                 <option value="0">Nenhum</option>
                                                 <?php
                                                   $query = $pdo->query("SELECT * FROM usuarios where nivel != 'administrador' and id_conta = '$id_conta' ORDER BY nome asc");
@@ -1070,7 +1070,7 @@ function calcular() {
                 // Atualiza a interface usando o ID CORRETO
                 console.log("Chamando listarServicos com ID:", comanda_id_para_listar);
                 if(typeof listarServicos === 'function') {
-                    listarServicos(comanda_id_para_listar); // <<-- USA O ID CORRETO
+                    listarServicos2(comanda_id_para_listar); // <<-- USA O ID CORRETO
                 } else {
                      console.error("FUNÇÃO LISTARSERVICOS NÃO DEFINIDA!");
                      alert("Erro Crítico: Função listarServicos não encontrada.");
@@ -1105,7 +1105,7 @@ function calcular() {
     });
 }
 
-    function listarServicos() {
+    function listarServicos2() {
         var id_atual_comanda = $("#id").val(); // Pega o ID atual da comanda (pode ser 0)
         var cliente = $("#cliente").val();
 
