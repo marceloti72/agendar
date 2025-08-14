@@ -152,7 +152,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     <div class="col-md-5">
                                         <div class="form-group">
                                             <label>Profissional</label>
-                                            <select class="form-control sel2" id="funcionario" name="funcionario" value="" style="width:100%;">
+                                            <select class="form-control sel2" id="funcionario2" name="funcionario" value="" style="width:100%;">
                                                 <?php
                                                 $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
                                                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -988,7 +988,7 @@ function calcular() {
     function inserirServico() {
     $("#mensagem").text(''); // Limpa mensagens anteriores na página principal, se houver
     var servico = $("#servico").val();
-    var funcionario = $("#funcionario").val();
+    var funcionario = $("#funcionario2").val();
     var cliente = $("#cliente").val(); // Este é o ID do CLIENTE
     var id_atual_comanda = $("#id").val(); // Pega o ID atual ANTES do AJAX
 
