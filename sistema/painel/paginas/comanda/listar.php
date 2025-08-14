@@ -169,7 +169,7 @@ try {
             $valorF = number_format($valor, 2, ',', '.');
 
             // Define a imagem com base no status            
-            $cor_comanda = ($status == 'Agendado') ? '#007bff' : 'red';
+            $cor_comanda = ($status == 'Aberta') ? '#007bff' : 'red';
 
             // Busca o nome do cliente
             $query_cliente = $pdo->prepare("SELECT nome FROM clientes WHERE id = :id AND id_conta = :id_conta");
