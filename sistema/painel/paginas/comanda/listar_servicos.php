@@ -136,7 +136,7 @@ HTML;
                                 Swal.close();
                                 if (response && response.success) {
                                     Swal.fire('Excluído!', response.message || 'Serviço removido da comanda.', 'success');
-                                    if (typeof listarServicos === 'function') listarServicos(idComanda);
+                                    if (typeof listarServicos === 'function') listarServicos2(idComanda);
                                     if (typeof calcular === 'function') calcular();
                                 } else {
                                     Swal.fire('Erro!', response.message || 'Não foi possível excluir o serviço.', 'error');
