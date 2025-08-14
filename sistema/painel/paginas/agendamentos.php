@@ -96,6 +96,45 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 </div>
 
 
+<div class="modal fade" id="modalDados" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-custom">
+                <h4 class="modal-title">Informações da Comanda</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px;"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="border-bottom: 1px solid #cac7c7;">
+                    <div class="col-md-8">
+					</div>
+                    <div class="col-md-4">
+                        <span><b>Valor: </b></span>
+                        <span id="valor_dados"></span>
+                    </div>
+                </div>
+
+                <div class="row" style="border-bottom: 1px solid #cac7c7;">
+                    <div class="col-md-8">
+                        <span><b>Aberta Por: </b></span>
+                        <span id="func_dados"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <span><b>Data: </b></span>
+                        <span id="data_dados"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 servico-item" id="listar_servicos_dados"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 produto-item" id="listar_produtos_dados"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -392,45 +431,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 	</div>
 </div>
 
-<div class="modal fade" id="modalDados" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header modal-header-custom">
-                <h4 class="modal-title">Informações da Comanda</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px;"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <div class="row" style="border-bottom: 1px solid #cac7c7;">
-                    <div class="col-md-8">
-					</div>
-                    <div class="col-md-4">
-                        <span><b>Valor: </b></span>
-                        <span id="valor_dados"></span>
-                    </div>
-                </div>
 
-                <div class="row" style="border-bottom: 1px solid #cac7c7;">
-                    <div class="col-md-8">
-                        <span><b>Aberta Por: </b></span>
-                        <span id="func_dados"></span>
-                    </div>
-                    <div class="col-md-4">
-                        <span><b>Data: </b></span>
-                        <span id="data_dados"></span>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12 servico-item" id="listar_servicos_dados"></div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12 produto-item" id="listar_produtos_dados"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
