@@ -40,7 +40,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 <div class="row">
 	<div class="col-md-3">
-		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" onclick="inserir()" type="button" class="btn btn-primary novo" ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
+		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" data-toggle="modal" data-target="#modalForm2" type="button" class="btn btn-primary novo" ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
 	</div>
 
 	<div class="col-md-3">
