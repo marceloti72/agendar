@@ -88,6 +88,12 @@ try {
     }
     // ***** FIM: LÓGICA PARA CRIAR COMANDA SE NECESSÁRIO *****
 
+    // --- 1. Busca comanda ---
+    $query_c = $pdo->prepare("SELECT id FROM agendamentos WHERE comanda_id = :id_comanda AND id_conta = :id_conta");
+    $query_c->execute([':id_comanda' => $comanda_id_recebido, ':id_conta' => $id_conta_corrente]);
+    $agenda_info = $query_c->fetch(PDO::FETCH_ASSOC);    
+    $agenda_id = $agenda_info['id'];
+
 
     // --- 2. Atualiza Estoque do Produto ---
     $query_upd_est = $pdo->prepare("UPDATE produtos SET estoque = estoque - :qtd WHERE id = :id_produto AND id_conta = :id_conta");
@@ -111,12 +117,15 @@ try {
         data_venc = CURDATE(),
         usuario_lanc = :user_lanc,
         foto = 'sem-foto.jpg',     -- Foto do produto? Ou deixar null?
-        cliente = :cli,            -- FK para CLIENTES
+        pessoa = :cli,            -- FK para CLIENTES
         pago = 'Não',
         produto = :prod,           -- FK para PRODUTOS
         quantidade = :qtd,         -- Quantidade vendida
         funcionario = :func,       -- Quem VENDEU (pode ser null se não aplicável)
+        func_comanda = :func_comanda,
         comanda = :comanda_id,     -- FK para COMANDAS
+        referencia = :referencia,
+        id_agenda = :id_agenda,
         id_conta = :id_conta,
         valor2 = :val            -- Subtotal geralmente igual ao valor para venda direta
         -- Removi: servico, func_comanda, pessoa, valor2, frequencia (adicione se necessário)
@@ -128,7 +137,10 @@ try {
     $query_receber->bindValue(':prod', $produto_id);
     $query_receber->bindValue(':qtd', $quantidade);
     $query_receber->bindValue(':func', $funcionario_id ?: null, PDO::PARAM_INT); // Permite funcionário nulo se 0 for enviado
+    $query_receber->bindValue(':func_comanda', $usuario_logado, PDO::PARAM_INT);
     $query_receber->bindValue(':comanda_id', $comanda_id_final, PDO::PARAM_INT);
+    $query_receber->bindValue(':referencia', $agenda_id, PDO::PARAM_INT);
+    $query_receber->bindValue(':id_agenda', $agenda_id, PDO::PARAM_INT);
     $query_receber->bindValue(':id_conta', $id_conta_corrente);
     $query_receber->bindValue(':sub', $valor_total_produto);
     $query_receber->execute();
