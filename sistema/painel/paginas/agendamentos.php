@@ -96,6 +96,209 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 </div>
 
 
+<div class="modal fade" id="modalForm2" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document" style="width:80%;">
+        <div class="modal-content">
+            <div class="modal-header modal-header-custom">
+                <h4 class="modal-title"><span id="titulo_comanda">Nova Comanda</span></h4>
+                <button type="button" id="btn-fechar" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px;"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form id="form_salvar">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="modal-body-scroll">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Cliente</label>
+                                            <select class="form-control sel2" id="cliente" name="cliente" value="" style="width:100%;" required>
+                                                <option value="">Selecionar Cliente</option>
+                                                <?php
+                                                $query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta' ORDER BY nome asc");
+                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                                foreach ($res as $item) {
+                                                    echo '<option value="' . $item['id'] . '">' . $item['nome'] . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Observações</label>
+                                            <input type="text" class="form-control" value="" name="obs" id="obs2" maxlength="1000">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <hr style="border-top: 1px solid #cecece;">
+                               
+                                 <div class="row mb-2">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label>Serviço</label>
+                                            <select class="form-control sel2" id="servico" name="servico" value="" style="width:100%;" >
+                                                <?php
+                                                $query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta' ORDER BY nome asc");
+                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                                foreach ($res as $item) {
+                                                    echo '<option value="' . $item['id'] . '">' . $item['nome'] . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label>Profissional</label>
+                                            <select class="form-control sel2" id="funcionario" name="funcionario" value="" style="width:100%;">
+                                                <?php
+                                                $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
+                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                                foreach ($res as $item) {
+                                                    echo '<option value="' . $item['id'] . '">' . $item['nome'] . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div><br>
+                                    <div class="col-md-2 mt-4">
+                                        <button type="button" class="btn btn-primary novo" onclick="inserirServico()"><i class="fa fa-plus"></i>Inserir</button>
+                                    </div>
+                                </div>
+                                <div class="servico-item" id="listar_servicos"></div>
+
+                                <div class="row mb-2">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                          <label>Produtos</label>
+                                            <select class="form-control sel2" id="produto" name="produto" value="" style="width:100%;" required onchange="listarServicos()">
+                                              <?php
+                                                $query = $pdo->query("SELECT * FROM produtos where estoque > 0 and id_conta = '$id_conta' ORDER BY nome asc");
+                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                                foreach($res as $item){
+                                                  echo '<option value="'.$item['id'].'">'.$item['nome'].'</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                      </div>
+                                    </div>
+                                      <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Quantidade</label>
+                                            <input type="number" class="form-control" name="quantidade" id="quantidade" value="1">
+                                        </div>
+                                      </div>
+                                      <div class="col-md-3">
+                                        <div class="form-group">
+                                         <label>Profissional</label>
+                                            <select class="form-control sel2" id="funcionario2" name="funcionario2" value="" style="width:100%;" required onchange="listarServicos()">
+                                                <option value="0">Nenhum</option>
+                                                <?php
+                                                  $query = $pdo->query("SELECT * FROM usuarios where nivel != 'administrador' and id_conta = '$id_conta' ORDER BY nome asc");
+                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                                  foreach($res as $item){
+                                                    echo '<option value="'.$item['id'].'">'.$item['nome'].'</option>';
+                                                  }
+                                                ?>
+                                            </select>
+                                        </div>
+                                      </div><br>
+                                       <div class="col-md-2 mt-4">
+                                         <button type="button" class="btn btn-primary novo" onclick="inserirProduto()"><i class="fa fa-plus"></i>Inserir</button>
+                                      </div>
+                                </div>
+                                <div class="produto-item" id="listar_produtos"></div>
+                             </div> </div> <div class="col-md-4">
+                           <div class="modal-header2 pagamento-header">
+                                <img src="../../images/registradora.png" alt="Ícone Pagamento" style="height: 50px; margin-right: 10px;">
+                                <h4 style="margin: 0;">PAGAMENTO</h4>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                     <label><small>Valor</small></label>
+                                        <input type="text" class="form-control input-background" name="valor_serv" id="valor_serv">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <label><small>Data PGTO</small></label>
+                                        <input type="date" class="form-control input-background" name="data_pgto" id="data_pgto" value="<?php echo date('Y-m-d') ?>">
+                                    </div>
+                                </div>
+                           </div>
+                            
+                            <div class="form-group">
+                                <label><small>Forma PGTO</small></label>
+                                <select class="form-control input-background" id="pgto" name="pgto" style="width:100%;" required>
+                                    <?php
+                                    $query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
+                                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                    foreach ($res as $item) {
+                                        echo '<option value="' . $item['nome'] . '">' . $item['nome'] . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+
+                          <!-- <div class="row">
+                                <div class="col-md-5">
+                                  <div class="form-group">
+                                    <label for="valor_serv_agd_restante">
+                                      <small>Valor Restante</small>
+                                      <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Caso o cliente efetue o pagamento com duas formas diferentes. Ex: Pix e Cartão."></i>
+                                    </label>
+                                    <input type="text" class="form-control input-background" name="valor_serv_agd_restante" id="valor_serv_agd_restante" onkeyup="abaterValor()">
+                                  </div>
+                                </div>
+                                  <div class="col-md-7">
+                                        <div class="form-group">
+                                          <label><small>Data PGTO Restante</small></label>
+                                            <input type="date" class="form-control input-background" name="data_pgto_restante" id="data_pgto_restante">
+                                        </div>
+                                </div>
+                           </div>
+
+                           <div class="form-group">
+                                <label><small>Forma PGTO Restante</small></label>
+                                <select class="form-control input-background" id="pgto_restante" name="pgto_restante" style="width:100%;">
+                                    <option value="">Selecionar Pgto</option>
+                                    <?php
+                                    $query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
+                                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                    foreach ($res as $item) {
+                                        echo '<option value="' . $item['nome'] . '">' . $item['nome'] . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                          </div>  -->
+                                                     
+							<a href="#" id="btn_fechar_comanda" style="width: 100%;margin-bottom: 20px;" onclick="fecharComanda()" class="btn btn-success">Fechar Comanda</a>
+
+							<button type="button" data-dismiss="modal" class="btn btn-dark" style="width: 100%;margin-bottom: 20px;">Sair</a>
+
+                            <!-- <div class="text-center">                           
+							   <button type="button" class="btn btn-danger" style="width: 150px;" onclick="excluirComanda('0')" >Cancelar</button>
+                               <button type="submit" style="width: 150px;" class="btn btn-primary" >Salvar</button>            
+								
+                            </div> -->
+
+                            <input type="hidden" name="id" id="id">
+                            <input type="hidden" name="valor_servicos" id="valor_servicos">
+                            <input type="hidden" name="valor_produtos" id="valor_produtos">
+                            <small><div id="mensagem" align="center" class="mt-2"></div></small>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <div class="modal fade" id="modalDados" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

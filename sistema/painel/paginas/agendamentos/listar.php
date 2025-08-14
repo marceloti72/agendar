@@ -455,7 +455,7 @@ HTML;
 
             $('#titulo_comanda').text('Editar Comanda Aberta');
             $('#btn_fechar_comanda').show();
-            $('#modalForm').modal('show');
+            $('#modalForm2').modal('show');
 
             listarServicos(id);
             listarProdutos(id);
