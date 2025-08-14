@@ -160,7 +160,7 @@ try {
             $valor = $item['valor'];
             $cliente = $item['cliente'];
             $obs = $item['obs'];
-            $status = trim($item['status']);
+            $status = $item['status'];
             $data = $item['data'];
             $hora = $item['hora'];
             $funcionario_id = $item["funcionario"];
@@ -168,7 +168,7 @@ try {
             $dataF = implode('/', array_reverse(explode('-', $data)));
             $valorF = number_format($valor, 2, ',', '.');
 
-            // Define a imagem com base no status
+            // Define a imagem com base no status            
             $cor_comanda = ($status == 'Agendado') ? '#007bff' : 'red';
 
             // Busca o nome do cliente
@@ -191,7 +191,7 @@ try {
                     <div class="comanda-info">
                         <div>
                             <p class="valor">R$ {$valorF}</p>
-                            <p>Comanda: {$id}</p>
+                            <p>Comanda: {$id}{$status}</p>
                             <p>Cliente: {$nome_pessoa}</p>
                         </div>
                         <div>
