@@ -142,7 +142,9 @@ $query->bindParam(':dataFinal', $dataFinal, PDO::PARAM_STR);
 if($status != ''){
     $query->bindParam(':status', $status, PDO::PARAM_STR);
 }
-$query->bindParam(':usuario_logado', $usuario_logado, PDO::PARAM_INT);
+if($func != ''){
+    $query->bindParam(':usuario_logado', $usuario_logado, PDO::PARAM_INT);
+}
 $query->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
 
 try {
