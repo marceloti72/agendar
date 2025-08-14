@@ -255,33 +255,36 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 </div>
 
 
-<div class="modal fade" id="modalForm2" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-lg" role="document" style="width:80%;">
+<div class="modal fade" id="modalForm2" tabindex="-1" role="dialog" aria-labelledby="modalForm2Label" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header modal-header-custom">
-                <h4 class="modal-title"><span id="titulo_comanda">Nova Comanda</span></h4>
-                <button type="button" id="btn-fechar" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px;"><span aria-hidden="true">&times;</span></button>
+
+            <div class="modal-header modal-header-custom d-flex justify-content-between align-items-center">
+                <h4 class="modal-title" id="titulo_comanda">
+                    <i class="fas fa-cash-register modal-icon"></i>
+                    Nova Comanda
+                </h4>
+                <button type="button" id="btn-fechar" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+
             <form id="form_salvar">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-8">
-                            <div class="modal-body-scroll">
+                        <div class="col-md-8 modal-left-panel">
+                            <div class="modal-body-scroll p-3">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Cliente</label>
-                                            <select class="form-control sel2" id="cliente" name="cliente" value="" style="width:100%;" required>
+                                            <select class="form-control sel2" id="cliente" name="cliente" style="width:100%;" required>
                                                 <option value="">Selecionar Cliente</option>
                                                 <?php
                                                 require_once("../../../conexao.php");
                                                 @session_start();
                                                 $id_conta = $_SESSION['id_conta'];
-                                                $query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta' ORDER BY nome asc");
-                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                                                foreach ($res as $item) {
-                                                    echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
-                                                }
+                                                
                                                 ?>
                                             </select>
                                         </div>
@@ -293,18 +296,19 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                         </div>
                                     </div>
                                 </div>
-                                <hr style="border-top: 1px solid #cecece;">
+
+                                <hr class="divider">
+
+                                <div class="section-header">
+                                    <h5 class="section-title">Serviços</h5>
+                                </div>
                                 <div class="row mb-2">
                                     <div class="col-md-5">
                                         <div class="form-group">
                                             <label>Serviço</label>
-                                            <select class="form-control sel2" id="servico" name="servico" value="" style="width:100%;">
+                                            <select class="form-control sel2" id="servico" name="servico" style="width:100%;">
                                                 <?php
-                                                $query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta' ORDER BY nome asc");
-                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                                                foreach ($res as $item) {
-                                                    echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
-                                                }
+                                                
                                                 ?>
                                             </select>
                                         </div>
@@ -312,109 +316,278 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     <div class="col-md-5">
                                         <div class="form-group">
                                             <label>Profissional</label>
-                                            <select class="form-control sel2" id="funcionario_servico" name="funcionario" value="" style="width:100%;">
+                                            <select class="form-control sel2" id="funcionario" name="funcionario" style="width:100%;">
                                                 <?php
-                                                $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
-                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                                                foreach ($res as $item) {
-                                                    echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
-                                                }
+                                                
                                                 ?>
                                             </select>
                                         </div>
-                                    </div><br>
-                                    <div class="col-md-2 mt-4">
-                                        <button type="button" class="btn btn-primary novo" onclick="inserirServico()"><i class="fa fa-plus"></i>Inserir</button>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-success btn-add" onclick="inserirServico()"><i class="fa fa-plus"></i></button>
                                     </div>
                                 </div>
-                                <div class="servico-item" id="listar_servicos"></div>
+                                <div class="item-list-container" id="listar_servicos"></div>
+
+                                <hr class="divider">
+
+                                <div class="section-header">
+                                    <h5 class="section-title">Produtos</h5>
+                                </div>
                                 <div class="row mb-2">
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <label>Produtos</label>
-                                            <select class="form-control sel2" id="produto" name="produto" value="" style="width:100%;" required onchange="listarServicos2()">
+                                            <label>Produto</label>
+                                            <select class="form-control sel2" id="produto" name="produto" style="width:100%;" onchange="listarServicos2()">
                                                 <?php
-                                                $query = $pdo->query("SELECT * FROM produtos where estoque > 0 and id_conta = '$id_conta' ORDER BY nome asc");
-                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                                                foreach ($res as $item) {
-                                                    echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
-                                                }
+                                                
                                                 ?>
                                             </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Quantidade</label>
-                                            <input type="number" class="form-control" name="quantidade" id="quantidade" value="1">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label>Profissional</label>
-                                            <select class="form-control sel2" id="profissional_produto" name="profissional_produto" value="" style="width:100%;" required onchange="listarServicos2()">
-                                                <option value="0">Nenhum</option>
+                                            <label>Quantidade</label>
+                                            <input type="number" class="form-control" name="quantidade" id="quantidade" value="1" min="1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-success btn-add" onclick="inserirProduto()"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="item-list-container" id="listar_produtos"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 modal-right-panel">
+                            <div class="pagamento-container p-3">
+                                <div class="pagamento-header">
+                                    <img src="../../images/registradora.png" alt="Ícone Pagamento" class="pagamento-icon">
+                                    <h4>PAGAMENTO</h4>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label><small>Total Serviços</small></label>
+                                    <input type="text" class="form-control text-right valor-display" id="valor_servicos" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label><small>Total Produtos</small></label>
+                                    <input type="text" class="form-control text-right valor-display" id="valor_produtos" readonly>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label><small>Total a Pagar</small></label>
+                                    <input type="text" class="form-control text-right total-display" id="valor_total_comanda" readonly>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label><small>Valor Pago</small></label>
+                                            <input type="text" class="form-control" name="valor_serv" id="valor_serv" onkeyup="calcularTroco()">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="form-group">
+                                            <label><small>Forma de Pgto</small></label>
+                                            <select class="form-control" id="pgto" name="pgto" style="width:100%;" required>
                                                 <?php
-                                                $query = $pdo->query("SELECT * FROM usuarios where nivel != 'administrador' and id_conta = '$id_conta' ORDER BY nome asc");
+                                                $query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
                                                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
                                                 foreach ($res as $item) {
-                                                    echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
+                                                    echo '<option value="' . $item['nome'] . '">' . htmlspecialchars($item['nome']) . '</option>';
                                                 }
                                                 ?>
                                             </select>
                                         </div>
-                                    </div><br>
-                                    <div class="col-md-2 mt-4">
-                                        <button type="button" class="btn btn-primary novo" onclick="inserirProduto()"><i class="fa fa-plus"></i>Inserir</button>
                                     </div>
                                 </div>
-                                <div class="produto-item" id="listar_produtos"></div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="modal-header2 pagamento-header">
-                                <img src="../../images/registradora.png" alt="Ícone Pagamento" style="height: 50px; margin-right: 10px;">
-                                <h4 style="margin: 0;">PAGAMENTO</h4>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label><small>Valor</small></label>
-                                        <input type="text" class="form-control input-background" name="valor_serv" id="valor_serv">
-                                    </div>
+
+                                <div class="form-group">
+                                    <label><small>Troco</small></label>
+                                    <input type="text" class="form-control text-success font-weight-bold" id="troco_display" readonly>
                                 </div>
-                                <div class="col-md-7">
-                                    <div class="form-group">
-                                        <label><small>Data PGTO</small></label>
-                                        <input type="date" class="form-control input-background" name="data_pgto" id="data_pgto" value="<?php echo date('Y-m-d') ?>">
-                                    </div>
+                                
+                                <div class="d-flex flex-column gap-2 mt-4">
+                                    <a href="#" id="btn_fechar_comanda" class="btn btn-success btn-lg btn-block" onclick="fecharComanda()">
+                                        <i class="fas fa-check-circle"></i> Fechar Comanda
+                                    </a>
+                                    <button type="button" class="btn btn-outline-secondary btn-block" data-dismiss="modal">
+                                        <i class="fas fa-times-circle"></i> Sair
+                                    </button>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label><small>Forma PGTO</small></label>
-                                <select class="form-control input-background" id="pgto" name="pgto" style="width:100%;" required>
-                                    <?php
-                                    $query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
-                                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                                    foreach ($res as $item) {
-                                        echo '<option value="' . $item['nome'] . '">' . htmlspecialchars($item['nome']) . '</option>';
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <a href="#" id="btn_fechar_comanda" style="width: 100%;margin-bottom: 20px;" onclick="fecharComanda()" class="btn btn-success">Fechar Comanda</a>
-                            <button type="button" data-dismiss="modal" class="btn btn-dark" style="width: 100%;margin-bottom: 20px;">Sair</button>
-                            <input type="hidden" name="id" id="id">
-                            <input type="hidden" name="valor_servicos" id="valor_servicos">
-                            <input type="hidden" name="valor_produtos" id="valor_produtos">
-                            <small><div id="mensagem" align="center" class="mt-2"></div></small>
                         </div>
                     </div>
+
+                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="valor_servicos" id="valor_servicos">
+                    <input type="hidden" name="valor_produtos" id="valor_produtos">
+                    <small><div id="mensagem" align="center" class="mt-2"></div></small>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<style>
+    .modal-content {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        border: none;
+    }
+
+    .modal-header-custom {
+        background-color: #f7f9fc;
+        border-bottom: 1px solid #e1e4e8;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        padding: 1.5rem;
+    }
+    
+    .modal-title {
+        color: #333;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .modal-icon {
+        color: #007bff;
+        font-size: 1.8rem;
+    }
+    
+    .modal-body {
+        padding: 0;
+    }
+    
+    .modal-left-panel {
+        background-color: #fff;
+        padding-right: 0;
+    }
+
+    .modal-body-scroll {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .modal-right-panel {
+        background-color: #e9ecef;
+        border-left: 1px solid #e1e4e8;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .pagamento-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .pagamento-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+    
+    .pagamento-icon {
+        height: 40px;
+        filter: grayscale(100%) brightness(50%) sepia(100%) hue-rotate(180deg) saturate(200%);
+    }
+
+    .divider {
+        margin: 20px 0;
+        border-top: 1px dashed #d1d1d1;
+    }
+    
+    .section-header {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-title {
+        font-weight: 600;
+        color: #555;
+        border-left: 4px solid #007bff;
+        padding-left: 10px;
+    }
+    
+    .item-list-container {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        color: #495057;
+    }
+    
+    .form-control {
+        border-radius: 8px;
+    }
+    
+    .sel2 {
+        border-radius: 8px !important;
+    }
+
+    .btn-add {
+        border-radius: 8px;
+        height: 38px;
+        width: 100%;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn-add:hover {
+        transform: translateY(-2px);
+    }
+    
+    .valor-display, .total-display {
+        font-size: 1.1em;
+        font-weight: bold;
+        background-color: #fff;
+        border-color: #ced4da;
+    }
+    
+    .total-display {
+        color: #155724;
+        background-color: #d4edda;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+        transform: translateY(-2px);
+    }
+    
+    .btn-outline-secondary {
+        border-color: #6c757d;
+        color: #6c757d;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btn-lg {
+        padding: 12px 20px;
+    }
+</style>
 
 
 <div class="modal fade" id="modalDados" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
