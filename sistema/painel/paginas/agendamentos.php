@@ -38,6 +38,165 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 </style>
 
+<style>
+    .modal-content {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        border: none;
+    }
+
+    .modal-header-custom {
+        background-color: #f7f9fc;
+        border-bottom: 1px solid #e1e4e8;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        padding: 1.5rem;
+    }
+    
+    .modal-title {
+        color: #333;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .modal-icon {
+        color: #007bff;
+        font-size: 1.8rem;
+    }
+    
+    .modal-body {
+        padding: 0;
+    }
+    
+    .modal-left-panel {
+        background-color: #fff;
+        padding-right: 0;
+    }
+
+    .modal-body-scroll {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .modal-right-panel {
+        background-color: #e9ecef;
+        border-left: 1px solid #e1e4e8;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .pagamento-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .pagamento-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+    
+    .pagamento-icon {
+        height: 40px;
+        filter: grayscale(100%) brightness(50%) sepia(100%) hue-rotate(180deg) saturate(200%);
+    }
+
+    .divider {
+        margin: 20px 0;
+        border-top: 1px dashed #d1d1d1;
+    }
+    
+    .section-header {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-title {
+        font-weight: 600;
+        color: #555;
+        border-left: 4px solid #007bff;
+        padding-left: 10px;
+    }
+    
+    .item-list-container {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        color: #495057;
+    }
+    
+    .form-control {
+        border-radius: 8px;
+    }
+    
+    .sel2 {
+        border-radius: 8px !important;
+    }
+
+    .btn-add {
+        border-radius: 8px;
+        height: 38px;
+        width: 100%;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn-add:hover {
+        transform: translateY(-2px);
+    }
+    
+    .valor-display, .total-display {
+        font-size: 1.1em;
+        font-weight: bold;
+        background-color: #fff;
+        border-color: #ced4da;
+    }
+    
+    .total-display {
+        color: #155724;
+        background-color: #d4edda;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+        transform: translateY(-2px);
+    }
+    
+    .btn-outline-secondary {
+        border-color: #6c757d;
+        color: #6c757d;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btn-lg {
+        padding: 12px 20px;
+    }
+</style>
+
 <div class="row">
 	<div class="col-md-3">
 		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" data-toggle="modal" data-target="#modalForm" type="button" class="btn btn-primary novo" ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
@@ -287,164 +446,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     </div>
 </div>
 
-<style>
-    .modal-content {
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        border: none;
-    }
 
-    .modal-header-custom {
-        background-color: #f7f9fc;
-        border-bottom: 1px solid #e1e4e8;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-        padding: 1.5rem;
-    }
-    
-    .modal-title {
-        color: #333;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .modal-icon {
-        color: #007bff;
-        font-size: 1.8rem;
-    }
-    
-    .modal-body {
-        padding: 0;
-    }
-    
-    .modal-left-panel {
-        background-color: #fff;
-        padding-right: 0;
-    }
-
-    .modal-body-scroll {
-        max-height: 70vh;
-        overflow-y: auto;
-    }
-
-    .modal-right-panel {
-        background-color: #e9ecef;
-        border-left: 1px solid #e1e4e8;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    
-    .pagamento-container {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    .pagamento-header {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: #007bff;
-        margin-bottom: 10px;
-    }
-    
-    .pagamento-icon {
-        height: 40px;
-        filter: grayscale(100%) brightness(50%) sepia(100%) hue-rotate(180deg) saturate(200%);
-    }
-
-    .divider {
-        margin: 20px 0;
-        border-top: 1px dashed #d1d1d1;
-    }
-    
-    .section-header {
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .section-title {
-        font-weight: 600;
-        color: #555;
-        border-left: 4px solid #007bff;
-        padding-left: 10px;
-    }
-    
-    .item-list-container {
-        margin-top: 10px;
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        font-weight: 500;
-        color: #495057;
-    }
-    
-    .form-control {
-        border-radius: 8px;
-    }
-    
-    .sel2 {
-        border-radius: 8px !important;
-    }
-
-    .btn-add {
-        border-radius: 8px;
-        height: 38px;
-        width: 100%;
-        font-size: 1rem;
-        transition: all 0.2s ease;
-    }
-
-    .btn-add:hover {
-        transform: translateY(-2px);
-    }
-    
-    .valor-display, .total-display {
-        font-size: 1.1em;
-        font-weight: bold;
-        background-color: #fff;
-        border-color: #ced4da;
-    }
-    
-    .total-display {
-        color: #155724;
-        background-color: #d4edda;
-    }
-
-    .btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
-        transition: all 0.2s ease;
-    }
-    
-    .btn-success:hover {
-        background-color: #218838;
-        border-color: #1e7e34;
-        transform: translateY(-2px);
-    }
-    
-    .btn-outline-secondary {
-        border-color: #6c757d;
-        color: #6c757d;
-        transition: all 0.2s ease;
-    }
-    
-    .btn-outline-secondary:hover {
-        background-color: #6c757d;
-        color: #fff;
-        transform: translateY(-2px);
-    }
-
-    .btn-lg {
-        padding: 12px 20px;
-    }
-</style>
 
 
 <div class="modal fade" id="modalDados" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
