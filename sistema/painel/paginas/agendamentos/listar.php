@@ -334,6 +334,7 @@ if ($total_reg > 0) {
                     <div class="stats" align="center">
                       <span style="">                      
                         <small> <span class="{$ocultar_cartoes}" style=""><img class="icon-rounded-vermelho" src="img/presente.jpg" width="20px" height="20px"></span> <span style="color:{$classe_deb}; font-size:13px">{$nome_cliente}</span> (<i><span style="color:#061f9c; font-size:12px">{$nome_serv}</span></i>)</small></span>
+                        <small> <span class="{$ocultar_cartoes}" style=""></span> <span style="color:{$classe_deb}; font-size:13px">Prof: {$nome_usu}</span></small></span>
 						<small><small><button style='cursor: default;border-radius: 10px;border: 0px;background-color: #F0E68C;'>via {$origem}</button></small></small>
                     </div>
                 </div>
