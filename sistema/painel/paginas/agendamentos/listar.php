@@ -271,9 +271,23 @@ if ($total_reg > 0) {
         $valor_pago = $res[$i]['valor_pago'];
         $origem = $res[$i]['origem'];
         $status = $res[$i]['status'];
+        $comanda = $res[$i]['comanda_id'];
         $obs = str_replace('"', "**", $res[$i]['obs']);
 
         $horaF = date("H:i", strtotime($hora));
+
+        $query_comanda = $pdo->query("SELECT * FROM comanda WHERE id = '$comanda' AND id_conta = '$id_conta'");
+        $item = $query_comanda->fetchAll(PDO::FETCH_ASSOC);
+
+            $id2 = $item[0]['id'];
+            $valor2 = $item[0]['valor'];
+            $cliente2 = $item[0]['cliente'];
+            $obs2 = $item[0]['obs'];
+            $status2 = $item[0]['status'];
+            $data2 = $item[0]['data'];
+            $hora2 = $item[0]['hora'];
+            $funcionario_id = $item[0]["funcionario"];
+            $dataF = implode('/', array_reverse(explode('-', $data2)));
 
         // Obter informações do cliente
         $query_client = $pdo->query("SELECT nome, cartoes FROM clientes WHERE id = '$cliente' AND id_conta = '$id_conta'");
@@ -368,7 +382,7 @@ if ($total_reg > 0) {
             </div>
 
             <div class="service-footer">
-                <a href="#" onclick="editar('{$id}', '{$valor}', '{$cliente}', '{$obs}', '{$status}', '{$nome_pessoa}', '{$nome_funcionario}', '{$dataF}')" title="Abrir Comanda">
+                <a href="#" onclick="editar('{$id2}', '{$valor2}', '{$cliente2}', '{$obs2}', '{$status2}', '{$nome_cliente}', '{$nome_prof}', '{$dataF}')" title="Abrir Comanda">
                         <i class="fa fa-eye"></i> Comanda
                     </a>
             </div>
@@ -481,7 +495,7 @@ HTML;
 
     function excluirComanda(id) {
         $.ajax({
-            url: 'paginas/' + pag + "/excluir.php",
+            url: 'paginas/comanda/excluir.php',
             method: 'POST',
             data: { id },
             dataType: "text",
