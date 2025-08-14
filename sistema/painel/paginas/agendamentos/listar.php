@@ -484,7 +484,7 @@ HTML;
             $('#btn_fechar_comanda').show();
             $('#modalForm2').modal('show');
 
-            listarServicos(id);
+            listarServicos2(id);
             listarProdutos(id);
             calcular();
         }
