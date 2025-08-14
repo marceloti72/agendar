@@ -135,6 +135,8 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 </style>
 <?php
 // Monta a query SQL
+echo $status;
+echo $status_pdo;
 $sql = "SELECT * FROM $tabela WHERE data >= :dataInicial AND data <= :dataFinal $status_pdo AND $func id_conta = :id_conta ORDER BY id ASC";
 $query = $pdo->prepare($sql);
 $query->bindParam(':dataInicial', $dataInicial, PDO::PARAM_STR);
