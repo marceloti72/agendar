@@ -9,20 +9,21 @@ $data_hoje = date('Y-m-d');
 
 $dataInicial = @$_POST['dataInicial'] ?: $data_hoje;
 $dataFinal = @$_POST['dataFinal'] ?: $data_hoje;
-//$status = @$_POST['status'] ?: '';
 $status2 = @$_POST['status'] ?: '';
 
-if($status2 != ''){
+// Monta a condição para o status
+if ($status2 != '') {
     $status_pdo = 'AND status = :status ';
-}else{
+} else {
     $status_pdo = '';
 }
 
-//verificar se ele tem a permissão de estar nessa página
-if(@$_SESSION['nivel_usuario'] != 'administrador'){
-    $func = 'funcionario = :usuario_logado AND';	   
-}else{
-    $func = "";
+// Monta a condição para o usuário logado
+// A lógica foi ajustada para iniciar com 'AND' apenas se houver uma condição anterior.
+if (@$_SESSION['nivel_usuario'] != 'administrador') {
+    $func = 'AND funcionario = :usuario_logado ';
+} else {
+    $func = '';
 }
 ?>
 
@@ -134,16 +135,17 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     }
 </style>
 <?php
-// Monta a query SQL
-echo $status2;
-echo $status_pdo;
-echo $func;
-$sql = "SELECT * FROM $tabela WHERE data >= :dataInicial AND data <= :dataFinal  AND $func id_conta = :id_conta ORDER BY id ASC";
+// Monta a query SQL dinamicamente
+$sql = "SELECT * FROM $tabela WHERE data >= :dataInicial AND data <= :dataFinal $status_pdo $func AND id_conta = :id_conta ORDER BY id ASC";
 $query = $pdo->prepare($sql);
 $query->bindParam(':dataInicial', $dataInicial, PDO::PARAM_STR);
 $query->bindParam(':dataFinal', $dataFinal, PDO::PARAM_STR);
 
-if($func != ''){
+// Bind dos parâmetros apenas se a condição for verdadeira
+if ($status2 != '') {
+    $query->bindParam(':status', $status2, PDO::PARAM_STR);
+}
+if (@$_SESSION['nivel_usuario'] != 'administrador') {
     $query->bindParam(':usuario_logado', $usuario_logado, PDO::PARAM_INT);
 }
 $query->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
