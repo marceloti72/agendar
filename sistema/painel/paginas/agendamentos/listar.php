@@ -368,9 +368,9 @@ if ($total_reg > 0) {
             </div>
 
             <div class="service-footer">
-                <button class="footer-btn btn-finish {$hide_finish_button}" onclick="fecharServico('{$id}', '{$cliente}', '{$servico}', '{$valor_serv}', '{$funcionario}', '{$nome_serv}')">
-                    Finalizar Serviço
-                </button>
+                <a href="#" onclick="editar('{$id}', '{$valor}', '{$cliente}', '{$obs}', '{$status}', '{$nome_pessoa}', '{$nome_funcionario}', '{$dataF}')" title="Abrir Comanda">
+                        <i class="fa fa-eye"></i> Comanda
+                    </a>
             </div>
         </div>
 HTML;
@@ -426,5 +426,75 @@ HTML;
         } else {
             alert('Este serviço já foi concluído.');
         }
+    }
+</script>
+
+<script type="text/javascript">
+    function confirmarExclusao(id) {
+        if (confirm("Confirma Exclusão?")) {
+            excluirComanda(id);
+        }
+    }
+    function editar(id, valor, cliente, obs, status, nome_cliente, nome_func, data) {
+        if (status.trim() === 'Fechada') {
+            $('#cliente_dados').text(nome_cliente);
+            $('#valor_dados').text(valor);
+            $('#data_dados').text(data);
+            $('#func_dados').text(nome_func);
+            $('#modalDados').modal('show');
+
+            listarServicosDados(id);
+            listarProdutosDados(id);
+        } else {
+            $('#id').val(id);
+            $('#cliente').val(cliente).change();
+            $('#valor_serv').val(valor);
+            $('#obs').val(obs);
+
+            $('#valor_serv_agd_restante').val('');
+
+            $('#titulo_comanda').text('Editar Comanda Aberta');
+            $('#btn_fechar_comanda').show();
+            $('#modalForm').modal('show');
+
+            listarServicos(id);
+            listarProdutos(id);
+            calcular();
+        }
+    }
+
+    function limparCampos() {
+        $('#btn_fechar_comanda').hide();
+        $('#titulo_comanda').text('Nova Comanda');
+        $('#id').val('');
+        $('#valor_serv').val('');
+        $('#cliente').val('').change();
+        $('#data_pgto').val('<?= $data_hoje ?>');
+        $('#valor_serv_agd_restante').val('');
+        $('#data_pgto_restante').val('');
+        $('#pgto_restante').val('').change();
+
+        listarServicos();
+        listarProdutos();
+        calcular();
+    }
+
+    function excluirComanda(id) {
+        $.ajax({
+            url: 'paginas/' + pag + "/excluir.php",
+            method: 'POST',
+            data: { id },
+            dataType: "text",
+            success: function(mensagem) {
+                if (mensagem.trim() === "Excluído com Sucesso") {
+                    listar();
+                } else {
+                    alert(mensagem);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert("Erro ao excluir: " + error);
+            }
+        });
     }
 </script>

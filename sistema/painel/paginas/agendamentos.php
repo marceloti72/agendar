@@ -392,16 +392,56 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 	</div>
 </div>
 
+<div class="modal fade" id="modalDados" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-custom">
+                <h4 class="modal-title">Informações da Comanda</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px;"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="border-bottom: 1px solid #cac7c7;">
+                    <div class="col-md-8">
+					</div>
+                    <div class="col-md-4">
+                        <span><b>Valor: </b></span>
+                        <span id="valor_dados"></span>
+                    </div>
+                </div>
+
+                <div class="row" style="border-bottom: 1px solid #cac7c7;">
+                    <div class="col-md-8">
+                        <span><b>Aberta Por: </b></span>
+                        <span id="func_dados"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <span><b>Data: </b></span>
+                        <span id="data_dados"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 servico-item" id="listar_servicos_dados"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 produto-item" id="listar_produtos_dados"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
-<script type="text/javascript">var pag = "<?=$pag?>"</script>
+
+<script type="text/javascript">var pag = "<?=$pag?>";</script>
 <script src="js/ajax.js"></script>
 
-<!-- SweetAlert2 -->
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
 
 
-<!-- calendar -->
+
 <script type="text/javascript" src="js/monthly.js"></script>
 <script type="text/javascript">
 	$(window).load( function() {
@@ -725,4 +765,427 @@ $("#form-text").submit(function (event) {
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
     })
-</script>
+
+
+
+
+function calcular() {
+      setTimeout(function() {
+        var produtos = parseFloat($('#valor_produtos').val() || 0); // Garante que é número
+        var servicos = parseFloat($('#valor_servicos').val() || 0);
+
+        var total = produtos + servicos;
+        $('#valor_serv').val(total.toFixed(2));
+
+        abaterValor(); //Chama depois de calcular o total
+    }, 500);
+    }
+
+    function inserirServico() {
+    $("#mensagem").text(''); // Limpa mensagens anteriores na página principal, se houver
+    var servico = $("#servico").val();
+    var funcionario = $("#funcionario").val();
+    var cliente = $("#cliente").val(); // Este é o ID do CLIENTE
+    var id_atual_comanda = $("#id").val(); // Pega o ID atual ANTES do AJAX
+
+    console.log("Iniciando inserirServico. ID Comanda Atual:", id_atual_comanda, "Cliente:", cliente, "Serviço:", servico, "Funcionário:", funcionario);
+
+    // Validações
+    if (!cliente) {
+        Swal.fire('Atenção!', 'Selecione um Cliente', 'warning');
+        return;
+    }
+    if (!servico) {
+        Swal.fire('Atenção!', 'Selecione um Serviço', 'warning');
+        return;
+    }
+     // Validação Funcionário (se obrigatório)
+     if (!funcionario) {
+        Swal.fire('Atenção!', 'Selecione um Profissional', 'warning');
+        return;
+     }
+
+
+    // Adicionar um indicador de loading
+    var $botaoOriginal = $('#botao-inserir-servico'); // Certifique-se que seu botão tem id="botao-inserir-servico"
+    if($botaoOriginal.length){ $botaoOriginal.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Inserindo...'); }
+
+
+    $.ajax({
+        url: 'paginas/comanda/inserir_servico.php', // Verifique o caminho e nome do script PHP
+        method: 'POST',
+        data: {
+            servico: servico,
+            funcionario: funcionario,
+            cliente: cliente,
+            id: id_atual_comanda // Envia o ID atual (pode ser 0)
+        },
+        dataType: "json", // Espera JSON
+
+        success: function(response) {
+            console.log("Resposta recebida de inserir_servico.php:", response); // Log da resposta completa
+
+            if (response && response.success) { // Verifica se a resposta é válida e se teve sucesso
+
+                // ***** INÍCIO: VERIFICA E ATUALIZA ID DA COMANDA *****
+                let comanda_id_para_listar = id_atual_comanda; // Usa o ID antigo por padrão
+                if (response.nova_comanda_id && response.nova_comanda_id > 0) {
+                    // Se o PHP criou uma nova comanda e retornou o ID
+                    $('#id').val(response.nova_comanda_id); // ATUALIZA o input hidden
+                    comanda_id_para_listar = response.nova_comanda_id; // Usa o NOVO ID para listar
+                    console.log("Input #id ATUALIZADO com Nova Comanda ID:", comanda_id_para_listar);
+                    // Opcional: Atualizar título do modal, etc.
+                    // $('#titulo_comanda').text('Comanda #' + comanda_id_para_listar);
+                } else {
+                     // Garante que estamos usando um ID válido para listar, mesmo que não seja novo
+                     if (comanda_id_para_listar <= 0 && $('#id').val() > 0) {
+                         comanda_id_para_listar = $('#id').val();
+                         console.log("Usando ID da comanda do input #id:", comanda_id_para_listar);
+                     }
+                }
+                // ***** FIM: VERIFICA E ATUALIZA ID DA COMANDA *****
+
+                // Mostra feedback Swal
+                let swalTitle = 'Sucesso!';
+                let swalText = response.message || 'Operação realizada.';
+                 if(response.tipo_registro === 'Assinante'){
+                     swalTitle = 'Serviço Registrado!';
+                     swalText = response.message + (response.detalhe_assinatura ? ' ' + response.detalhe_assinatura : '');
+                 } else if (response.tipo_registro === 'Servico' && response.detalhe_assinatura) {
+                     swalText += response.detalhe_assinatura;
+                 }
+                  Swal.fire({
+                     position: 'center',
+                     icon: 'success',
+                     title: swalTitle,
+                     text: swalText,
+                     showConfirmButton: false,
+                     timer: 2000
+                 });
+
+                // Atualiza a interface usando o ID CORRETO
+                console.log("Chamando listarServicos com ID:", comanda_id_para_listar);
+                if(typeof listarServicos === 'function') {
+                    listarServicos(comanda_id_para_listar); // <<-- USA O ID CORRETO
+                } else {
+                     console.error("FUNÇÃO LISTARSERVICOS NÃO DEFINIDA!");
+                     alert("Erro Crítico: Função listarServicos não encontrada.");
+                }
+
+                 console.log("Chamando calcular()...");
+                 if(typeof calcular === 'function') {
+                    calcular();
+                } else {
+                     console.warn("Função calcular() não definida!");
+                }
+
+                // Limpar selects após sucesso
+                // Considerar não limpar funcionário se for adicionar outro serviço com o mesmo
+                 $('#servico').val('').trigger('change.select2'); // Limpa Select2 serviço
+                 // $('#funcionario').val('').trigger('change.select2'); // Limpa Select2 funcionário?
+
+            } else {
+                // Se response.success for false
+                Swal.fire('Erro!', response.message || 'Ocorreu um erro ao processar a solicitação.', 'error');
+            }
+        },
+        error: function(xhr, status, error) {
+            // Erro de comunicação ou erro fatal no PHP que não retornou JSON válido
+            Swal.fire('Erro Crítico!', 'Falha na comunicação com o servidor ou erro interno. Verifique o console (F12).', 'error');
+            console.error("Erro AJAX inserirServico:", status, error, xhr.responseText); // Loga o erro real
+        },
+        complete: function() {
+             // Reabilita o botão de inserir serviço
+             if($botaoOriginal.length){ $botaoOriginal.prop('disabled', false).html('<i class="fa fa-plus"></i> Inserir'); }
+        }
+    });
+}
+
+    function listarServicos() {
+        var id_atual_comanda = $("#id").val(); // Pega o ID atual da comanda (pode ser 0)
+        var cliente = $("#cliente").val();
+
+        if (!cliente) {
+        Swal.fire('Atenção!', 'Selecione um Cliente', 'warning');
+        return;
+        }
+
+        $.ajax({
+            url: 'paginas/comanda/listar_servicos.php',
+            method: 'POST',
+            data: { id: id_atual_comanda },
+            dataType: "html", // Importante para conteúdo HTML
+            success: function(result) {
+                $("#listar_servicos").html(result);
+            }
+        });
+    }
+
+    function inserirProduto() {
+    $("#mensagem").text(''); // Limpa mensagens gerais, se houver
+    var produto = $("#produto").val();
+    var funcionario = $("#funcionario2").val(); // Pega do select 'funcionario2'
+    var cliente = $("#cliente").val();
+    var quantidade = $("#quantidade").val();
+    var id_atual_comanda = $("#id").val(); // Pega o ID atual da comanda (pode ser 0)
+
+    // Validações
+    if (!cliente) {
+        Swal.fire('Atenção!', 'Selecione um Cliente', 'warning');
+        return;
+    }
+    if (!produto) {
+        Swal.fire('Atenção!', 'Selecione um Produto', 'warning');
+        return;
+    }
+     if (!quantidade || parseInt(quantidade) <= 0) {
+        Swal.fire('Atenção!', 'Informe uma quantidade válida (maior que zero).', 'warning');
+        return;
+    }
+    // Validação de funcionário é opcional para produto? Se não, adicione:
+    // if (!funcionario || funcionario == "0") { Swal.fire('Atenção!', 'Selecione um funcionário.', 'warning'); return; }
+
+
+    // Indicador de loading no botão (ajuste o seletor do botão se necessário)
+    var $botaoOriginal = $('button[onclick="inserirProduto()"]'); // Tenta pegar pelo onclick
+    if($botaoOriginal.length){ $botaoOriginal.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Inserindo...'); }
+
+    // Log para debug
+    console.log("Enviando para inserir_produto.php:", { produto, funcionario, cliente, quantidade, id: id_atual_comanda });
+
+    $.ajax({
+        url: 'paginas/comanda/inserir_produto.php', // <<< VERIFIQUE O CAMINHO E NOME DO ARQUIVO PHP
+        method: 'POST',
+        data: {
+            produto: produto,
+            funcionario: funcionario, // ID do funcionário (pode ser 0 se 'Nenhum' for selecionado)
+            cliente: cliente,
+            quantidade: quantidade,
+            id: id_atual_comanda // Envia o ID atual da comanda (pode ser 0)
+        },
+        dataType: "json", // <<<----- CORRIGIDO PARA JSON -----<<<
+
+        success: function(response) {
+            console.log("Resposta recebida de inserir_produto.php:", response); // Log da resposta
+
+            if (response && response.success) { // Verifica resposta válida e sucesso
+
+                // ***** INÍCIO: VERIFICA E ATUALIZA ID DA COMANDA *****
+                let comanda_id_para_listar = id_atual_comanda; // Usa o ID antigo por padrão
+                if (response.nova_comanda_id && response.nova_comanda_id > 0) {
+                    // Se o PHP criou uma nova comanda e retornou o ID
+                    $('#id').val(response.nova_comanda_id); // ATUALIZA o input hidden
+                    comanda_id_para_listar = response.nova_comanda_id; // Usa o NOVO ID para listar
+                    console.log("Input #id ATUALIZADO com Nova Comanda ID:", comanda_id_para_listar);
+                } else if (comanda_id_para_listar <= 0 && $('#id').val() > 0){
+                     // Garante que usa o ID do input se ele já existia mas não era novo
+                     comanda_id_para_listar = $('#id').val();
+                }
+                // ***** FIM: ATUALIZA ID DA COMANDA *****
+
+                // Mostra feedback Swal
+                 Swal.fire({
+                     position: 'center',
+                     icon: 'success',
+                     title: 'Sucesso!',
+                     text: response.message || 'Produto adicionado com sucesso!', // Mensagem do PHP
+                     showConfirmButton: false,
+                     timer: 1500 // Timer mais curto
+                 });
+
+                // --- ATUALIZA A LISTA DE PRODUTOS ---
+                // Você precisa ter uma função separada para listar produtos
+                console.log("Chamando listarProdutos com ID:", comanda_id_para_listar);
+                if(typeof listarProdutos === 'function') {
+                    listarProdutos(comanda_id_para_listar); // <<-- CHAMA A FUNÇÃO DE LISTAR PRODUTOS
+                } else {
+                     console.warn("Função listarProdutos não está definida! A lista de produtos não será atualizada.");
+                     // Se a mesma função lista serviços E produtos, chame listarServicos
+                     // if(typeof listarServicos === 'function') { listarServicos(comanda_id_para_listar); }
+                }
+
+                // --- ATUALIZA TOTAIS ---
+                 console.log("Chamando calcular()...");
+                 if(typeof calcular === 'function') {
+                    calcular();
+                } else {
+                     console.warn("Função calcular() não definida!");
+                }
+
+                // Limpa campos do formulário de produto
+                $("#quantidade").val('1');
+                $('#produto').val('').trigger('change.select2');
+                $('#funcionario2').val('0').trigger('change.select2'); // Reseta funcionário do produto
+
+            } else {
+                // Se response.success for false
+                Swal.fire('Erro!', response.message || 'Não foi possível adicionar o produto.', 'error');
+            }
+        },
+        error: function(xhr, status, error) {
+            // Erro de comunicação ou erro fatal no PHP
+            Swal.fire('Erro Crítico!', 'Falha na comunicação ao adicionar produto. Verifique o console (F12).', 'error');
+            console.error("Erro AJAX inserirProduto:", status, error, xhr.responseText);
+        },
+        complete: function() {
+             // Reabilita o botão
+             if($botaoOriginal.length){ $botaoOriginal.prop('disabled', false).html('<i class="fa fa-plus"></i> Inserir'); }
+        }
+    });
+}
+
+    function listarProdutos(id) {
+        $.ajax({
+            url: 'paginas/comanda/listar_produtos.php',
+            method: 'POST',
+            data: { id },
+            dataType: "html",
+            success: function(result) {
+                $("#listar_produtos").html(result);
+            }
+        });
+    }
+
+    function fecharComanda() {
+        var cliente = $("#cliente").val();
+        var valor = $("#valor_serv").val();
+        var valor_restante = $("#valor_serv_agd_restante").val();
+        var data_pgto = $("#data_pgto").val();
+        var data_pgto_restante = $("#data_pgto_restante").val();
+        var pgto_restante = $("#pgto_restante").val();
+        var pgto = $("#pgto").val();
+        var id = $("#id").val();
+
+        if (valor_restante > 0) {
+            if (!data_pgto_restante || !pgto_restante) { //Verificação mais segura
+                alert('Preencha a Data de Pagamento Restante e o tipo de Pagamento Restante');
+                return;
+            }
+        }
+
+        Swal.fire({
+                    title: 'Tem Certeza?',
+                    text: "Deseja realmente fechar essa comanda?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sim, fechar!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Fechando...',
+                            text: 'Aguarde...',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+        $.ajax({
+            url: 'paginas/comanda/fechar_comanda.php',
+            method: 'POST',
+            data: { id, valor, valor_restante, data_pgto, data_pgto_restante, pgto_restante, pgto, cliente },
+            dataType: "text",
+            success: function(result) {
+                Swal.close();
+                if (result.trim() === 'Fechado com Sucesso') {
+                    Swal.fire('Fechado!', result || 'Comanda fechada.', 'success');
+                    $('#btn-fechar').click();
+                                    
+                    $('#data_pgto').val('<?php echo $data_hoje; ?>');
+                    $('#valor_serv_agd_restante').val('');
+                    $('#data_pgto_restante').val('');
+                    $('#valor_serv').val('');
+                    $('#pgto_restante').val('').trigger('change'); //Limpa select2
+                    if (typeof listar === 'function') listar();
+                    setTimeout(function() {                        
+                        location.reload();
+                    }, 1500);
+                } else {
+                    $("#mensagem").text(result);
+                }
+            },
+            error: function(xhr, status, error) {
+                        Swal.close();
+                        Swal.fire('Erro Crítico!', 'Falha na comunicação com o servidor.', 'error');
+                        console.error("Erro AJAX:", status, error, xhr.responseText);
+                    }
+                });
+            }
+        });
+    
+    }
+
+    function listarProdutosDados(id) {
+        $.ajax({
+            url: 'paginas/comanda/listar_produtos_dados.php',
+            method: 'POST',
+            data: { id },
+            dataType: "html",
+            success: function(result) {
+                $("#listar_produtos_dados").html(result);
+            }
+        });
+    }
+
+    function listarServicosDados(id) {
+        $.ajax({
+            url: 'paginas/comanda/listar_servicos_dados.php',
+            method: 'POST',
+            data: { id },
+            dataType: "html",
+            success: function(result) {
+                $("#listar_servicos_dados").html(result);
+            }
+        });
+    }
+
+    $("#form_salvar").submit(function(event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: 'paginas/comanda/salvar.php',
+            type: 'POST',
+            data: formData,
+            success: function(mensagem) {
+                var msg = mensagem.split("*");
+                $('#mensagem').text('');
+                $('#mensagem').removeClass();
+
+                if (mensagem.trim() == "Salvo com Sucesso") {
+                    // var salvar = $('#salvar_comanda').val();
+
+                    // if (salvar == 'Sim') {
+                    //     $("#id").val(msg[1]);
+                    //     fecharComanda();
+                    // }
+                    $('#btn-fechar').click();
+                    listar(); // Atualiza a lista após salvar
+                } else {
+                    $('#mensagem').addClass('text-danger');
+                    $('#mensagem').text(msg[0]);
+                }
+            },
+            cache: false,
+            contentType: false,
+            processData: false,
+        });
+    });
+
+    function abaterValor() {
+     var produtos = parseFloat($('#valor_produtos').val() || 0);  // Valor padrão 0
+        var servicos = parseFloat($('#valor_servicos').val() || 0);
+
+        var total_valores = produtos + servicos;
+
+        var valor = parseFloat($("#valor_serv").val() || 0);
+        var valor_rest = parseFloat($("#valor_serv_agd_restante").val() || 0);
+
+        var total = total_valores - valor_rest;
+        $('#valor_serv').val(total.toFixed(2));
+    } 
+
+	</script>
