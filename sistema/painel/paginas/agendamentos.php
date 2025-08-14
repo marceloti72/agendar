@@ -322,7 +322,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     <div class="col-md-5">
                                         <div class="form-group">
                                             <label>Profissional</label>
-                                            <select class="form-control sel2" id="funcionario" name="funcionario" style="width:100%;">
+                                            <select class="form-control sel2" id="funcionario2" name="funcionario2" style="width:100%;">
                                                 <?php
                                                 $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
                                                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -391,18 +391,18 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 <hr>
                                 <div class="form-group">
                                     <label><small>Total a Pagar</small></label>
-                                    <input type="text" class="form-control text-right total-display" id="valor_total_comanda" readonly>
+                                    <input type="text" class="form-control text-right total-display" name="valor_serv" id="valor_serv" onkeyup="calcularTroco()" readonly>
                                 </div>
 
                                 <div class="row mt-3">
-                                    <div class="col-md-5">
+                                    <!-- <div class="col-md-5">
                                         <div class="form-group">
                                             <label><small>Valor Pago</small></label>
                                             <input type="text" class="form-control" name="valor_serv" id="valor_serv" onkeyup="calcularTroco()">
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-7">
-                                        <div class="form-group">
+                                        <div class="form-control text-right total-display">
                                             <label><small>Forma de Pgto</small></label>
                                             <select class="form-control" id="pgto" name="pgto" style="width:100%;" required>
                                                 <?php
