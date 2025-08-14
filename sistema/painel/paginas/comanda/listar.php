@@ -12,7 +12,7 @@ $dataFinal = @$_POST['dataFinal'] ?: $data_hoje;
 $status = @$_POST['status'] ?: '';
 $status2 = @$_POST['status'];
 
-if($status != ''){
+if($status2 != ''){
     $status_pdo = 'AND status = :status ';
 }else{
     $status_pdo = '';
@@ -20,7 +20,7 @@ if($status != ''){
 
 //verificar se ele tem a permissão de estar nessa página
 if(@$_SESSION['nivel_usuario'] != 'administrador'){
-    $func = "funcionario = :usuario_logado AND";	   
+    $func = 'funcionario = :usuario_logado AND';	   
 }else{
     $func = "";
 }
@@ -135,14 +135,15 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 </style>
 <?php
 // Monta a query SQL
-echo $status;
+echo $status2;
 echo $status_pdo;
+echo $func;
 $sql = "SELECT * FROM $tabela WHERE data >= :dataInicial AND data <= :dataFinal $status_pdo AND $func id_conta = :id_conta ORDER BY id ASC";
 $query = $pdo->prepare($sql);
 $query->bindParam(':dataInicial', $dataInicial, PDO::PARAM_STR);
 $query->bindParam(':dataFinal', $dataFinal, PDO::PARAM_STR);
 if($status != ''){
-    $query->bindParam(':status', $status, PDO::PARAM_STR);
+    $query->bindParam(':status', $status2, PDO::PARAM_STR);
 }
 if($func != ''){
     $query->bindParam(':usuario_logado', $usuario_logado, PDO::PARAM_INT);
