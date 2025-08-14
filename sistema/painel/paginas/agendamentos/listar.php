@@ -501,7 +501,7 @@ HTML;
         $('#data_pgto_restante').val('');
         $('#pgto_restante').val('').change();
 
-        listarServicos();
+        listarServicos2();
         listarProdutos();
         calcular();
     }
