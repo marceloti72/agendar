@@ -24,7 +24,7 @@ body {
 
 /* Estilo do cartão de serviço */
 .service-card {
-    background-color: #fff;
+    background-color: #c0bebeff;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;

@@ -1037,15 +1037,14 @@ $("#form-text").submit(function (event) {
 
 		var funcionario = $('#funcionario_modal').val();	
 		var data = $('#data_agenda').val();	
-        		
+
 		$.ajax({
 			url: 'paginas/' + pag + "/listar-horarios.php",
 			method: 'POST',
 			data: {funcionario, data},
 			dataType: "text",
 
-			success:function(result){	
-                alert(result)
+			success:function(result){	          
 
 				$("#listar-horarios").html(result);
 			}
@@ -1111,8 +1110,7 @@ $("#form-text").submit(function (event) {
 
 <script type="text/javascript">
 	function listarServicos(func){	
-		var serv = $("#servico2").val();
-        alert(func)
+		var serv = $("#servico2").val();        
 				
 		$.ajax({
 			url: 'paginas/' + pag +  "/listar-servicos.php",
