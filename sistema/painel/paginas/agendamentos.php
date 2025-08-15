@@ -277,19 +277,8 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                             <div class="modal-body-scroll p-3">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
-											<h3><?php echo $item['nome']?></h3>
-                                            <!-- <label>Cliente</label>
-                                            <select class="form-control sel2" id="cliente" name="cliente" style="width:100%;" required>
-                                                <option value="">Selecionar Cliente</option>
-                                                <?php                                                
-                                                $query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta' ORDER BY nome asc");
-                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                                                foreach ($res as $item) {
-                                                    echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
-                                                }
-                                                ?>
-                                            </select> -->
+                                        <div class="form-group">                                          
+                                                <h4 id="nome_do_cliente_aqui"></h4>
                                         </div>
                                     </div><br>
                                     <div class="col-md-6">
@@ -367,7 +356,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                         </div>
                                     </div>
                                     <div class="col-md-2 d-flex align-items-end">
-										<label> </label>
+										<label>Adicionar</label>
                                         <button type="button" class="btn btn-success btn-add" onclick="inserirProduto()"><i class="fa fa-plus"></i></button>
                                     </div>
                                 </div>
@@ -419,10 +408,10 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                    
                                 </div>
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label><small>Troco</small></label>
                                     <input type="text" class="form-control text-success font-weight-bold" id="troco_display" readonly>
-                                </div>
+                                </div> -->
                                 
                                 <div class="d-flex flex-column gap-2 mt-4">
                                     <a href="#" id="btn_fechar_comanda" class="btn btn-success btn-lg btn-block" onclick="fecharComanda()">
