@@ -1112,6 +1112,7 @@ $("#form-text").submit(function (event) {
 <script type="text/javascript">
 	function listarServicos(func){	
 		var serv = $("#servico2").val();
+        alert(func)
 				
 		$.ajax({
 			url: 'paginas/' + pag +  "/listar-servicos.php",
