@@ -308,8 +308,8 @@ if ($total_reg > 0) {
         if (!empty($cupom)) {
 
             // 1. Obter os dados do cupom (incluindo o tipo de desconto)
-            $query_cupom = $pdo->prepare("SELECT valor, tipo_desconto, usos_atuais FROM cupons WHERE codigo = :codigo AND id_conta = :id_conta");
-            $query_cupom->bindValue(":codigo", $cupom);
+            $query_cupom = $pdo->prepare("SELECT valor, tipo_desconto, usos_atuais FROM cupons WHERE id = :id AND id_conta = :id_conta");
+            $query_cupom->bindValue(":id", $cupom);
             $query_cupom->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);
             $query_cupom->execute();
             $dados_cupom = $query_cupom->fetch(PDO::FETCH_ASSOC);
@@ -327,7 +327,7 @@ if ($total_reg > 0) {
                     $valor_cupom = $desconto_aplicado;
                 }                
             }
-        }
+        }        
 
         // Obter informações do cliente
         $query_client = $pdo->query("SELECT nome, cartoes FROM clientes WHERE id = '$cliente' AND id_conta = '$id_conta'");
