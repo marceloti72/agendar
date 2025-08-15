@@ -32,7 +32,6 @@ body {
     flex-direction: column;
     overflow: hidden;
 }
-
 .service-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
