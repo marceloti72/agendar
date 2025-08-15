@@ -998,8 +998,8 @@ $("#form-text").submit(function (event) {
 		//$('#funcionario_modal').val(funcionario).change();
 
 		listar();	
-		listarHorarios();
-		listarServicos(funcionario);
+		//listarHorarios();
+		//listarServicos(funcionario);
 
 	}
 </script>
@@ -1025,7 +1025,7 @@ $("#form-text").submit(function (event) {
 		$('#data_agenda').val(data).change();
 
 		listar();	
-		listarHorarios();
+		//listarHorarios();
 
 	}
 </script>
@@ -1037,9 +1037,7 @@ $("#form-text").submit(function (event) {
 
 		var funcionario = $('#funcionario_modal').val();	
 		var data = $('#data_agenda').val();	
-        alert(funcionario)
-
-		
+        		
 		$.ajax({
 			url: 'paginas/' + pag + "/listar-horarios.php",
 			method: 'POST',
