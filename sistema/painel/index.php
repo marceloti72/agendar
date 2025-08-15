@@ -433,11 +433,11 @@ $plano = $res3['plano'];
 								</a>
 							</li>
 
-							<li class="treeview <?php echo @$comanda ?>">
+							<!-- <li class="treeview <?php echo @$comanda ?>">
 								<a href="comanda">
 								<i class="fa fa-clipboard"></i> <span>Comandas</span>
 								</a>
-							</li>
+							</li> -->
 
 							<!-- <li class="treeview <?php echo @$menu_agendamentos ?>">
 								<a href="#">

@@ -278,7 +278,8 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Cliente</label>
+											<h3><?php echo $item['nome']?></h3>
+                                            <!-- <label>Cliente</label>
                                             <select class="form-control sel2" id="cliente" name="cliente" style="width:100%;" required>
                                                 <option value="">Selecionar Cliente</option>
                                                 <?php                                                
@@ -288,9 +289,9 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                                     echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
                                                 }
                                                 ?>
-                                            </select>
+                                            </select> -->
                                         </div>
-                                    </div>
+                                    </div><br>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Observações</label>
@@ -366,6 +367,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                         </div>
                                     </div>
                                     <div class="col-md-2 d-flex align-items-end">
+										<label> </label>
                                         <button type="button" class="btn btn-success btn-add" onclick="inserirProduto()"><i class="fa fa-plus"></i></button>
                                     </div>
                                 </div>
@@ -402,7 +404,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                         </div>
                                     </div> -->
                                     
-                                        <div class="form-control text-right total-display">
+                                        <!-- <div class="form-control text-right total-display">
                                             <label><small>Forma de Pgto</small></label>
                                             <select class="form-control" id="pgto" name="pgto" style="width:100%;" required>
                                                 <?php
@@ -413,7 +415,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                                 }
                                                 ?>
                                             </select>
-                                        </div>
+                                        </div> -->
                                    
                                 </div>
 
