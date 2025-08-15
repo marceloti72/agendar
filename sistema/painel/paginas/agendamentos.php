@@ -994,8 +994,8 @@ $("#form-text").submit(function (event) {
 	
 	function mudarFuncionario(){
 		var funcionario = $('#funcionario').val();
-		$('#id_funcionario').val(funcionario);	
-		$('#funcionario_modal').val(funcionario).change();
+		//$('#id_funcionario').val(funcionario);	
+		//$('#funcionario_modal').val(funcionario).change();
 
 		listar();	
 		listarHorarios();
