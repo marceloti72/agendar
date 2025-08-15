@@ -1037,6 +1037,7 @@ $("#form-text").submit(function (event) {
 
 		var funcionario = $('#funcionario_modal').val();	
 		var data = $('#data_agenda').val();	
+        alert(funcionario)
 
 		
 		$.ajax({
@@ -1046,6 +1047,7 @@ $("#form-text").submit(function (event) {
 			dataType: "text",
 
 			success:function(result){	
+                alert(result)
 
 				$("#listar-horarios").html(result);
 			}
