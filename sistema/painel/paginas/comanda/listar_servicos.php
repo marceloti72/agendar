@@ -56,7 +56,7 @@ HTML;
             $classe_valor = ($valor_item == 0) ? 'text-success font-weight-bold' : '';
             $total_servicos += $valor_item;
 
-            $classe_debito = ($item['pago'] != 'Sim' && !empty($item['data_venc']) && strtotime($item['data_venc']) < strtotime($data_hoje)) ? 'text-info' : '';
+            $classe_debito = ($item['pago'] != 'Sim' && !empty($item['data_venc']) && strtotime($item['data_venc']) < strtotime($data_hoje)) ? 'text-primary' : '';
 
             $html_output .= <<<HTML
             <tr class="{$classe_debito}"> 
