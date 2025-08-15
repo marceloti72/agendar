@@ -159,7 +159,7 @@ if ($total_reg > 0 && $res[0]['id'] != $id) {
 if (!empty($cupom)) {
 
     // 1. Obter os dados do cupom (incluindo o tipo de desconto)
-    $query_cupom = $pdo->prepare("SELECT valor, tipo_desconto, usos_atuais FROM cupons WHERE codigo = :codigo AND id_conta = :id_conta");
+    $query_cupom = $pdo->prepare("SELECT id, usos_atuais FROM cupons WHERE codigo = :codigo AND id_conta = :id_conta");
     $query_cupom->bindValue(":codigo", $cupom);
     $query_cupom->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);
     $query_cupom->execute();
@@ -167,18 +167,9 @@ if (!empty($cupom)) {
 
     // 2. Verificar se o cupom existe e é válido (a validação de data e usos já foi feita no SELECT anterior, mas podemos reforçar)
     if ($dados_cupom) {
-        $valor_desconto = $dados_cupom['valor'];
-        $tipo_desconto = $dados_cupom['tipo_desconto'];
+        $cupom_id = $dados_cupom['id'];        
         $usos_atuais = $dados_cupom['usos_atuais'];
-
-        // Lógica para aplicar o desconto com base no tipo
-        if ($tipo_desconto === 'porcentagem') {
-            // Calcula o valor do desconto em reais (ou na sua moeda)
-            $desconto_aplicado = $valor_servico_original * ($valor_desconto / 100); 
-            
-            // Arredonda o valor do desconto para duas casas decimais
-            $valor_desconto = round($desconto_aplicado, 2);
-        }
+        
         // 3. Atualizar o contador de uso do cupom
         $novo_uso_atual = $usos_atuais + 1;
         $query_update = $pdo->prepare("UPDATE cupons SET usos_atuais = :usos_atuais WHERE codigo = :codigo AND id_conta = :id_conta");
@@ -295,7 +286,7 @@ try {
     $query->bindValue(":data_agd", $data_agd);
     $query->bindValue(":usuario", $usuario_logado, PDO::PARAM_INT);
     $query->bindValue(":obs", $obs);
-    $query->bindValue(":cupom", $valor_desconto);
+    $query->bindValue(":cupom", $cupom_id);
     $query->bindValue(":servico", $servico_id, PDO::PARAM_INT);
     $query->bindValue(":hash", $hash);
     $query->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);
