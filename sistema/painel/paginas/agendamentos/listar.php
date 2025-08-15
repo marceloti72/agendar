@@ -503,11 +503,17 @@ HTML;
             $('#id').val(id);
             $('#cliente').val(cliente).change();
             $('#valor_serv').val(valor);
-            
-            var valor_sinal = parseFloat($('#valor_sinal').val()) || 0;
-            var valor_cupom = parseFloat($('#valor_cupom').val()) || 0;
+            // Converte os valores para números antes de somar
+            var sinal = parseFloat(valor_sinal) || 0;
+            var cupom = parseFloat(valor_cupom) || 0;
+            var total_descontos = sinal + cupom;
 
-            $('#valor_descontos').val(valor_sinal + valor_cupom);
+            // Preenche os inputs com os valores e a soma
+            $('#valor_sinal').val(sinal.toFixed(2));
+            $('#valor_cupom').val(cupom.toFixed(2));
+            $('#valor_descontos').val(total_descontos.toFixed(2));         
+
+            
             $('#obs').val(obs);
 
             $('#valor_serv_agd_restante').val('');
