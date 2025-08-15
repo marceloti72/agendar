@@ -1142,6 +1142,7 @@ function calcular() {
         var descontos = parseFloat($('#valor_descontos').val() || 0);
 
         var total = (produtos + servicos)-descontos;
+        alert(total)
         $('#valor_serv').val(total.toFixed(2));
 
         abaterValor(); //Chama depois de calcular o total
