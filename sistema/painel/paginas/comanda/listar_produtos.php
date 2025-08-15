@@ -90,7 +90,7 @@ HTML;
             // Define classe para destacar linha se vencido/não pago (opcional)
             $classe_debito = '';
             if ($item['pago'] != 'Sim' && !empty($item['data_venc']) && strtotime($item['data_venc']) < strtotime($data_hoje)) {
-                $classe_debito = 'text-danger'; // Aplica cor vermelha à linha inteira
+                $classe_debito = 'text-success'; // Aplica cor vermelha à linha inteira
             }
 
             // Prepara parâmetros para a função excluirProduto JS de forma segura

@@ -125,6 +125,11 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
         border-left: 4px solid #007bff;
         padding-left: 10px;
     }
+
+	#nome_do_cliente_aqui{
+		font-weight: 600;
+		color: #555;
+	}
     
     .item-list-container {
         margin-top: 10px;
@@ -379,6 +384,10 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 <div class="form-group">
                                     <label><small>Total Produtos</small></label>
                                     <input type="text" class="form-control text-right valor-display" id="valor_produtos" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label><small>Total Descontos</small></label>
+                                    <input type="text" class="form-control text-right valor-display" id="valor_descontos" readonly>
                                 </div>
                                 <hr>
                                 <div class="form-group">
