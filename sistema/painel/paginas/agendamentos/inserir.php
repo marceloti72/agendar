@@ -172,14 +172,13 @@ if (!empty($cupom)) {
         $usos_atuais = $dados_cupom['usos_atuais'];
 
         // Lógica para aplicar o desconto com base no tipo
-    if ($tipo_desconto === 'porcentagem') {
-        // Calcula o valor do desconto em reais (ou na sua moeda)
-        $desconto_aplicado = $valor_servico_original * ($valor_desconto / 100); 
-        
-        $valor_desconto = $desconto_aplicado;
-        
-    } 
-
+        if ($tipo_desconto === 'porcentagem') {
+            // Calcula o valor do desconto em reais (ou na sua moeda)
+            $desconto_aplicado = $valor_servico_original * ($valor_desconto / 100); 
+            
+            // Arredonda o valor do desconto para duas casas decimais
+            $valor_desconto = round($desconto_aplicado, 2);
+        }
         // 3. Atualizar o contador de uso do cupom
         $novo_uso_atual = $usos_atuais + 1;
         $query_update = $pdo->prepare("UPDATE cupons SET usos_atuais = :usos_atuais WHERE codigo = :codigo AND id_conta = :id_conta");
