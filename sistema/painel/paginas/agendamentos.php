@@ -588,8 +588,36 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 					</div>
 					<hr>
 
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>CUPOM</label>
+							<select class="form-control" name="cupom" id="cupom">
+								<option value="">Nenhum</option>
+								<?php
+								// Obtém a data atual no formato 'YYYY-MM-DD'
+								$data_atual = date('Y-m-d');
+								
+								// Query para buscar cupons válidos
+								$query = $pdo->prepare("SELECT * FROM cupons WHERE id_conta = :id_conta AND data_validade >= :data_atual AND usos_atuais < max_usos ORDER BY codigo ASC");
+								$query->bindValue(':id_conta', $id_conta);
+								$query->bindValue(':data_atual', $data_atual);
+								$query->execute();
+								$res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-
+								foreach ($res as $item) {
+									// Determina o sufixo com base no tipo de desconto
+									$sufixo = ($item['tipo_desconto'] === 'Porcentagem') ? '%' : '$';
+									
+									// Monta a string de exibição no formato "codigo + valor + tipo"
+									$exibicao = htmlspecialchars($item['codigo']) . ' (' . htmlspecialchars($item['valor']) . $sufixo . ')';
+									
+									echo '<option value="' . htmlspecialchars($item['codigo']) . '">' . $exibicao . '</option>';
+								}
+								?>
+							</select>
+						</div>
+					</div>
+					
 					<div class="col-md-12">						
 						<div class="form-group"> 
 							<label>OBS <small>(Máx 100 Caracteres)</small></label> 
@@ -1100,8 +1128,7 @@ $("#form-text").submit(function (event) {
 <script type="text/javascript">
 	function listarServicos(func){	
 		var serv = $("#servico2").val();
-		alert(func)
-		
+				
 		$.ajax({
 			url: 'paginas/' + pag +  "/listar-servicos.php",
 			method: 'POST',
