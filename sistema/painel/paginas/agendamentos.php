@@ -407,7 +407,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 </div>
                                 <div class="form-group">
                                     <label><small>Total Descontos</small></label>
-                                    <input type="text" class="form-control text-right valor-display" id="valor_descontos" readonly>
+                                    <input type="text" class="form-control text-right valor-display" id="valor_descontos" style="color: red" readonly>
                                 </div>
                                 <hr>
                                 <div class="form-group">

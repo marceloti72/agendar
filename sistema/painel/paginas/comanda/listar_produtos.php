@@ -88,10 +88,8 @@ HTML;
             $total_produtos += $valor_item;
 
             // Define classe para destacar linha se vencido/não pago (opcional)
-            $classe_debito = '';
-            if ($item['pago'] != 'Sim' && !empty($item['data_venc']) && strtotime($item['data_venc']) < strtotime($data_hoje)) {
-                $classe_debito = 'text-primary'; // Aplica cor vermelha à linha inteira
-            }
+            $classe_debito = 'text-primary';
+           
 
             // Prepara parâmetros para a função excluirProduto JS de forma segura
             // Passar: ID do item em receber, ID da comanda, ID do produto, Quantidade vendida (para reverter estoque)
