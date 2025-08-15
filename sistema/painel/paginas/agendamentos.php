@@ -521,12 +521,9 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 										}
 									}
 									?>
-
-
 								</select>    
 							</div>						
 						</div>
-
 
 						<div class="col-md-6">
 							<div class="form-group">
@@ -544,8 +541,6 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 										}
 									}
 									?>
-
-
 								</select>   
 							</div> 	
 						</div>
@@ -567,13 +562,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 								<input type="date" class="form-control" name="data" id="data-modal" onchange="mudarData()"> 
 							</div>						
 						</div>
-
-
-
-
 					</div>
-
-
 					<hr>
 					<div class="row">
 
@@ -583,8 +572,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 									<small>Selecionar Funcionário</small>
 								</div>
 							</div>						
-						</div>					
-
+						</div>	
 					</div>
 					<hr>
 
@@ -606,7 +594,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 								foreach ($res as $item) {
 									// Determina o sufixo com base no tipo de desconto
-									$sufixo = ($item['tipo_desconto'] === 'Porcentagem') ? '%' : '$';
+									$sufixo = ($item['tipo_desconto'] === 'porcentagem') ? '%' : '$';
 									
 									// Monta a string de exibição no formato "codigo + valor + tipo"
 									$exibicao = htmlspecialchars($item['codigo']) . ' (' . htmlspecialchars($item['valor']) . $sufixo . ')';
@@ -617,7 +605,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 							</select>
 						</div>
 					</div>
-					
+
 					<div class="col-md-12">						
 						<div class="form-group"> 
 							<label>OBS <small>(Máx 100 Caracteres)</small></label> 

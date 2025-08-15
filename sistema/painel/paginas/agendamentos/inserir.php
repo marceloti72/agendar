@@ -16,6 +16,7 @@ $obs = $_POST['obs'];
 $id = $_POST['id'];
 $funcionario = $_POST['funcionario'];
 $servico = $_POST['servico'];
+$cupom = $_POST['cupom'];
 $data_agd = $_POST['data'];
 $hora_do_agd = @$_POST['hora'];
 $hash = '';
@@ -154,6 +155,40 @@ if ($total_reg > 0 && $res[0]['id'] != $id) {
     echo json_encode($response);
     exit();
 }
+// Verifica se um cupom foi enviado
+if (!empty($cupom)) {
+
+    // 1. Obter os dados do cupom (incluindo o tipo de desconto)
+    $query_cupom = $pdo->prepare("SELECT valor, tipo_desconto, usos_atuais FROM cupons WHERE codigo = :codigo AND id_conta = :id_conta");
+    $query_cupom->bindValue(":codigo", $cupom);
+    $query_cupom->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);
+    $query_cupom->execute();
+    $dados_cupom = $query_cupom->fetch(PDO::FETCH_ASSOC);
+
+    // 2. Verificar se o cupom existe e é válido (a validação de data e usos já foi feita no SELECT anterior, mas podemos reforçar)
+    if ($dados_cupom) {
+        $valor_desconto = $dados_cupom['valor'];
+        $tipo_desconto = $dados_cupom['tipo_desconto'];
+        $usos_atuais = $dados_cupom['usos_atuais'];
+
+        // Lógica para aplicar o desconto com base no tipo
+    if ($tipo_desconto === 'porcentagem') {
+        // Calcula o valor do desconto em reais (ou na sua moeda)
+        $desconto_aplicado = $valor_servico_original * ($valor_desconto / 100); 
+        
+        $valor_desconto = $desconto_aplicado;
+        
+    } 
+
+        // 3. Atualizar o contador de uso do cupom
+        $novo_uso_atual = $usos_atuais + 1;
+        $query_update = $pdo->prepare("UPDATE cupons SET usos_atuais = :usos_atuais WHERE codigo = :codigo AND id_conta = :id_conta");
+        $query_update->bindValue(":usos_atuais", $novo_uso_atual, PDO::PARAM_INT);
+        $query_update->bindValue(":codigo", $cupom);
+        $query_update->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);
+        $query_update->execute();
+    }
+}
 
 // Verificação de Assinatura
 $coberto_pela_assinatura = false;
@@ -254,13 +289,14 @@ $pdo->beginTransaction();
 
 try {
     // Insere agendamento
-    $query = $pdo->prepare("INSERT INTO $tabela SET funcionario = :funcionario, cliente = :cliente, hora = :hora, data = :data_agd, usuario = :usuario, status = 'Agendado', obs = :obs, data_lanc = CURDATE(), servico = :servico, origem = 'Site', hash = :hash, id_conta = :id_conta");
+    $query = $pdo->prepare("INSERT INTO $tabela SET funcionario = :funcionario, cliente = :cliente, hora = :hora, data = :data_agd, usuario = :usuario, status = 'Agendado', cupom = :cupom, obs = :obs, data_lanc = CURDATE(), servico = :servico, origem = 'Site', hash = :hash, id_conta = :id_conta");
     $query->bindValue(":funcionario", $funcionario_id, PDO::PARAM_INT);
     $query->bindValue(":cliente", $cliente_id, PDO::PARAM_INT);
     $query->bindValue(":hora", $hora);
     $query->bindValue(":data_agd", $data_agd);
     $query->bindValue(":usuario", $usuario_logado, PDO::PARAM_INT);
     $query->bindValue(":obs", $obs);
+    $query->bindValue(":cupom", $valor_desconto);
     $query->bindValue(":servico", $servico_id, PDO::PARAM_INT);
     $query->bindValue(":hash", $hash);
     $query->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);
