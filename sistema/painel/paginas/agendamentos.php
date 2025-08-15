@@ -1010,7 +1010,7 @@ $("#form-text").submit(function (event) {
 	
 	function mudarFuncionarioModal(){	
 		var func = $('#funcionario_modal').val();	
-		listar();	
+		//listar();	
 		listarHorarios();
 		listarServicos(func);
 	}
