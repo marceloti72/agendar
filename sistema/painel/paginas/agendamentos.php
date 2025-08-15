@@ -328,28 +328,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 </div>
                                 <div class="item-list-container" id="listar_servicos"></div>
 
-                                <hr class="divider">
-
-                                <!-- Nova Seção para Descontos -->
-                                <div class="section-header">
-                                    <h5 class="section-title">Descontos</h5>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Sinal (Valor Pago)</label>
-                                            <input type="text" class="form-control text-right valor-display" id="valor_sinal" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Desconto Cupom</label>
-                                            <input type="text" class="form-control text-right valor-display" id="valor_cupom" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <hr class="divider">
+                                <hr class="divider">                               
 
                                 <div class="section-header">
                                     <h5 class="section-title">Produtos</h5>
@@ -381,6 +360,27 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     </div>
                                 </div>
                                 <div class="item-list-container" id="listar_produtos"></div>
+
+                                 <!-- Nova Seção para Descontos -->
+                                <div class="section-header">
+                                    <h5 class="section-title">Descontos</h5>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Sinal (Valor Pago)</label>
+                                            <input type="text" class="form-control text-right valor-display" id="valor_sinal" style="color: red" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Desconto Cupom</label>
+                                            <input type="text" class="form-control text-right valor-display" id="valor_cupom" style="color: red" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="divider">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Observações</label>
