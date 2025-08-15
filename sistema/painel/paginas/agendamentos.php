@@ -265,7 +265,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
 
-            <div class="modal-header modal-header-custom ">
+            <div class="modal-header modal-header-custom">
                 <h4 class="modal-title" id="titulo_comanda">
                     <i class="fas fa-cash-register modal-icon"></i>
                     Nova Comanda
@@ -282,11 +282,10 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                             <div class="modal-body-scroll p-3">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">                                          
-                                                <h3 id="nome_do_cliente_aqui"></h3>
+                                        <div class="form-group">
+                                            <h3 id="nome_do_cliente_aqui"></h3>
                                         </div>
                                     </div><br>
-                                    
                                 </div>
 
                                 <hr class="divider">
@@ -331,6 +330,27 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
                                 <hr class="divider">
 
+                                <!-- Nova Seção para Descontos -->
+                                <div class="section-header">
+                                    <h5 class="section-title">Descontos</h5>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Sinal (Valor Pago)</label>
+                                            <input type="text" class="form-control text-right valor-display" id="valor_sinal" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Desconto Cupom</label>
+                                            <input type="text" class="form-control text-right valor-display" id="valor_cupom" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="divider">
+
                                 <div class="section-header">
                                     <h5 class="section-title">Produtos</h5>
                                 </div>
@@ -356,17 +376,17 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                         </div>
                                     </div>
                                     <div class="col-md-2 d-flex align-items-end">
-										<label>Adicionar</label>
+                                        <label>Adicionar</label>
                                         <button type="button" class="btn btn-success btn-add" onclick="inserirProduto()"><i class="fa fa-plus"></i></button>
                                     </div>
                                 </div>
                                 <div class="item-list-container" id="listar_produtos"></div>
-								<div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Observações</label>
-                                            <input type="text" class="form-control" value="" name="obs" id="obs2" maxlength="1000">
-                                        </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Observações</label>
+                                        <input type="text" class="form-control" value="" name="obs" id="obs2" maxlength="1000">
                                     </div>
+                                </div>
                             </div>
                         </div>
 
@@ -392,37 +412,13 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 <hr>
                                 <div class="form-group">
                                     <label><small>Total a Pagar</small></label>
-                                    <input type="text" class="form-control text-right total-display" name="valor_serv" id="valor_serv" onkeyup="calcularTroco()" readonly>
+                                    <input type="text" class="form-control text-right total-display" name="valor_total" id="valor_total" readonly>
                                 </div>
 
                                 <div class="row mt-3">
-                                    <!-- <div class="col-md-5">
-                                        <div class="form-group">
-                                            <label><small>Valor Pago</small></label>
-                                            <input type="text" class="form-control" name="valor_serv" id="valor_serv" onkeyup="calcularTroco()">
-                                        </div>
-                                    </div> -->
-                                    
-                                        <!-- <div class="form-control text-right total-display">
-                                            <label><small>Forma de Pgto</small></label>
-                                            <select class="form-control" id="pgto" name="pgto" style="width:100%;" required>
-                                                <?php
-                                                $query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
-                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                                                foreach ($res as $item) {
-                                                    echo '<option value="' . $item['nome'] . '">' . htmlspecialchars($item['nome']) . '</option>';
-                                                }
-                                                ?>
-                                            </select>
-                                        </div> -->
-                                   
+                                    <!-- Campos comentados para pagamento e troco podem ser reativados se necessário -->
                                 </div>
 
-                                <!-- <div class="form-group">
-                                    <label><small>Troco</small></label>
-                                    <input type="text" class="form-control text-success font-weight-bold" id="troco_display" readonly>
-                                </div> -->
-                                
                                 <div class="d-flex flex-column gap-2 mt-4">
                                     <a href="#" id="btn_fechar_comanda" class="btn btn-success btn-lg btn-block" onclick="fecharComanda()">
                                         <i class="fas fa-check-circle"></i> Fechar Comanda
@@ -436,8 +432,9 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                     </div>
 
                     <input type="hidden" name="id" id="id">
-                    <input type="hidden" name="valor_servicos" id="valor_servicos">
-                    <input type="hidden" name="valor_produtos" id="valor_produtos">
+                    <input type="hidden" name="valor_servicos" id="valor_servicos_hidden">
+                    <input type="hidden" name="valor_produtos" id="valor_produtos_hidden">
+                    <input type="hidden" name="valor_descontos" id="valor_descontos_hidden">
                     <small><div id="mensagem" align="center" class="mt-2"></div></small>
                 </div>
             </form>
@@ -1142,8 +1139,9 @@ function calcular() {
       setTimeout(function() {
         var produtos = parseFloat($('#valor_produtos').val() || 0); // Garante que é número
         var servicos = parseFloat($('#valor_servicos').val() || 0);
+        var descontos = parseFloat($('#valor_descontos').val() || 0);
 
-        var total = produtos + servicos;
+        var total = (produtos + servicos)-descontos;
         $('#valor_serv').val(total.toFixed(2));
 
         abaterValor(); //Chama depois de calcular o total
@@ -1545,10 +1543,11 @@ function calcular() {
     });
 
     function abaterValor() {
-     var produtos = parseFloat($('#valor_produtos').val() || 0);  // Valor padrão 0
+        var produtos = parseFloat($('#valor_produtos').val() || 0);  // Valor padrão 0
         var servicos = parseFloat($('#valor_servicos').val() || 0);
+	    var descontos = parseFloat($('#valor_descontos').val() || 0);
 
-        var total_valores = produtos + servicos;
+        var total_valores = (produtos + servicos)-descontos;
 
         var valor = parseFloat($("#valor_serv").val() || 0);
         var valor_rest = parseFloat($("#valor_serv_agd_restante").val() || 0);

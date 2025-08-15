@@ -272,6 +272,8 @@ if ($total_reg > 0) {
         $origem = $res[$i]['origem'];
         $status = $res[$i]['status'];
         $comanda = $res[$i]['comanda_id'];
+        $valor_sinal = $res[$i]['valor_pago'];
+        $cupom = $res[$i]['cupom'];
         $obs = str_replace('"', "**", $res[$i]['obs']);
 
         $horaF = date("H:i", strtotime($hora));
@@ -300,6 +302,31 @@ if ($total_reg > 0) {
         } else {
             // Caso a comanda não seja encontrada
             echo "Comanda não encontrada.";
+        }
+
+        // Verifica se um cupom foi enviado
+        if (!empty($cupom)) {
+
+            // 1. Obter os dados do cupom (incluindo o tipo de desconto)
+            $query_cupom = $pdo->prepare("SELECT valor, tipo_desconto, usos_atuais FROM cupons WHERE codigo = :codigo AND id_conta = :id_conta");
+            $query_cupom->bindValue(":codigo", $cupom);
+            $query_cupom->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);
+            $query_cupom->execute();
+            $dados_cupom = $query_cupom->fetch(PDO::FETCH_ASSOC);
+
+            // 2. Verificar se o cupom existe e é válido (a validação de data e usos já foi feita no SELECT anterior, mas podemos reforçar)
+            if ($dados_cupom) {
+                $valor_cupom = $dados_cupom['valor'];
+                $tipo_desconto = $dados_cupom['tipo_desconto'];
+                
+                if ($tipo_desconto === 'porcentagem') {
+                    // Calcula o valor do desconto em reais (ou na sua moeda)
+                    $desconto_aplicado = $valor2 * ($valor_cupom / 100); 
+                    
+                    // Arredonda o valor do desconto para duas casas decimais
+                    $valor_cupom = $desconto_aplicado;
+                }                
+            }
         }
 
         // Obter informações do cliente
@@ -395,7 +422,7 @@ if ($total_reg > 0) {
             </div>
 
             <div class="service-footer">
-                <a href="#" onclick="editar('{$id2}', '{$valor2}', '{$cliente2}', '{$obs2}', '{$status2}', '{$nome_cliente}', '{$nome_prof}', '{$dataF}')" title="Abrir Comanda">
+                <a href="#" onclick="editar('{$id2}', '{$valor2}', '{$cliente2}', '{$obs2}', '{$status2}', '{$nome_cliente}', '{$nome_prof}', '{$dataF}', '{$valor_sinal}', '{$valor_cupom}')" title="Abrir Comanda">
                         <i class="fa fa-eye"></i> Comanda
                     </a>
             </div>
@@ -462,7 +489,7 @@ HTML;
             excluirComanda(id);
         }
     }
-    function editar(id, valor, cliente, obs, status, nome_cliente, nome_func, data) {
+    function editar(id, valor, cliente, obs, status, nome_cliente, nome_func, data, valor_sinal, valor_cupom) {
         if (status.trim() === 'Fechada') {
             $('#cliente_dados').text(nome_cliente);
             $('#valor_dados').text(valor);
@@ -476,6 +503,8 @@ HTML;
             $('#id').val(id);
             $('#cliente').val(cliente).change();
             $('#valor_serv').val(valor);
+            $('#valor_sinal').val(valor_sinal);
+            $('#valor_cupom').val(valor_cupom);
             $('#obs').val(obs);
 
             $('#valor_serv_agd_restante').val('');
