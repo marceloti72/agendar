@@ -10,7 +10,7 @@ $data_atual = date('Y-m-d');
 /* Estilização geral e fontes */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
+    background-color: #dfdfdfff;
     color: #333;
 }
 
@@ -24,7 +24,7 @@ body {
 
 /* Estilo do cartão de serviço */
 .service-card {
-    background-color: #c0bebeff;
+    background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -32,6 +32,7 @@ body {
     flex-direction: column;
     overflow: hidden;
 }
+
 .service-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
