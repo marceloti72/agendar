@@ -260,7 +260,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
 
-            <div class="modal-header modal-header-custom d-flex justify-content-between align-items-center">
+            <div class="modal-header modal-header-custom ">
                 <h4 class="modal-title" id="titulo_comanda">
                     <i class="fas fa-cash-register modal-icon"></i>
                     Nova Comanda
@@ -278,15 +278,10 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">                                          
-                                                <h4 id="nome_do_cliente_aqui"></h4>
+                                                <h3 id="nome_do_cliente_aqui"></h3>
                                         </div>
                                     </div><br>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Observações</label>
-                                            <input type="text" class="form-control" value="" name="obs" id="obs2" maxlength="1000">
-                                        </div>
-                                    </div>
+                                    
                                 </div>
 
                                 <hr class="divider">
@@ -361,6 +356,12 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     </div>
                                 </div>
                                 <div class="item-list-container" id="listar_produtos"></div>
+								<div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Observações</label>
+                                            <input type="text" class="form-control" value="" name="obs" id="obs2" maxlength="1000">
+                                        </div>
+                                    </div>
                             </div>
                         </div>
 

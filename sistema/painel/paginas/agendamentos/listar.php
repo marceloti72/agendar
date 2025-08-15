@@ -483,7 +483,7 @@ HTML;
             $('#titulo_comanda').text('Editar Comanda Aberta');
             $('#btn_fechar_comanda').show();
             $('#modalForm2').modal('show');
-            $('#nome_do_cliente_aqui').text(nome_cliente);
+            $('#nome_do_cliente_aqui').text('Cliente: '+nome_cliente);
 
             listarServicos2(id);
             listarProdutos(id);
