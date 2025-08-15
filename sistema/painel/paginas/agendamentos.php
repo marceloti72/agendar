@@ -412,7 +412,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 <hr>
                                 <div class="form-group">
                                     <label><small>Total a Pagar</small></label>
-                                    <input type="text" class="form-control text-right total-display" name="valor_total" id="valor_total" readonly>
+                                    <input type="text" class="form-control text-right total-display" name="valor_total" id="valor_serv" readonly>
                                 </div>
 
                                 <div class="row mt-3">
@@ -1141,11 +1141,10 @@ function calcular() {
         var servicos = parseFloat($('#valor_servicos').val() || 0);
         var descontos = parseFloat($('#valor_descontos').val() || 0);
 
-        var total = (produtos + servicos)-descontos;
-        alert(total)
+        var total = (produtos + servicos)-descontos;        
         $('#valor_serv').val(total.toFixed(2));
 
-        abaterValor(); //Chama depois de calcular o total
+        //abaterValor(); //Chama depois de calcular o total
     }, 500);
     }
 
