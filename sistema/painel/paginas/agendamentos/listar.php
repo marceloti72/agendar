@@ -505,6 +505,7 @@ HTML;
             $('#valor_serv').val(valor);
             $('#valor_sinal').val(valor_sinal);
             $('#valor_cupom').val(valor_cupom);
+            $('#valor_descontos').val(valor_sinal + valor_cupom);
             $('#obs').val(obs);
 
             $('#valor_serv_agd_restante').val('');
