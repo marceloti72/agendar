@@ -246,7 +246,7 @@ $nome_sistema_maiusculo = mb_strtoupper($nome_sistema);
 $query = $pdo->query("SELECT nome, telefone FROM clientes WHERE id = '$cliente' AND id_conta = '$id_conta'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $nome_cliente = $res[0]['nome'];
-$telefone = $res[0]['telefone'];
+$tel_cliente = $res[0]['telefone'];
 
 // Notificações via API (comentar temporariamente para teste)
 if ($api == 'Sim') {
@@ -270,21 +270,22 @@ if ($api == 'Sim') {
         $data_atual = date('Y-m-d');
         $hora_minutos = strtotime("-$minutos_aviso minutes", strtotime($hora));
         $nova_hora = date('H:i:s', $hora_minutos);
-        $telefone = '55' . preg_replace('/[ ()-]+/', '', $telefone);
+        $telefone = '55' . preg_replace('/[ ()-]+/', '', $tel_cliente);
     }
 }
-
+$telefone = '55' . preg_replace('/[ ()-]+/', '', $tel_cliente);
 // Inicia transação
 $pdo->beginTransaction();
 
 try {
     // Insere agendamento
-    $query = $pdo->prepare("INSERT INTO $tabela SET funcionario = :funcionario, cliente = :cliente, hora = :hora, data = :data_agd, usuario = :usuario, status = 'Agendado', cupom = :cupom, obs = :obs, data_lanc = CURDATE(), servico = :servico, origem = 'Site', hash = :hash, id_conta = :id_conta");
+    $query = $pdo->prepare("INSERT INTO $tabela SET funcionario = :funcionario, cliente = :cliente, hora = :hora, data = :data_agd, usuario = :usuario, status = 'Agendado', cupom = :cupom, phone = :phone, obs = :obs, data_lanc = CURDATE(), servico = :servico, origem = 'Site', hash = :hash, id_conta = :id_conta");
     $query->bindValue(":funcionario", $funcionario_id, PDO::PARAM_INT);
     $query->bindValue(":cliente", $cliente_id, PDO::PARAM_INT);
     $query->bindValue(":hora", $hora);
     $query->bindValue(":data_agd", $data_agd);
     $query->bindValue(":usuario", $usuario_logado, PDO::PARAM_INT);
+    $query->bindValue(":phone", $telefone);
     $query->bindValue(":obs", $obs);
     $query->bindValue(":cupom", $cupom_id);
     $query->bindValue(":servico", $servico_id, PDO::PARAM_INT);

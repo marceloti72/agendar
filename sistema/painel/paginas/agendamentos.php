@@ -354,8 +354,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                             <input type="number" class="form-control" name="quantidade" id="quantidade" value="1" min="1">
                                         </div>
                                     </div>
-                                    <div class="col-md-2 d-flex align-items-end">
-                                        <label>Adicionar</label>
+                                    <div class="col-md-2 d-flex align-items-end">                                
                                         <button type="button" class="btn btn-success btn-add" onclick="inserirProduto()"><i class="fa fa-plus"></i></button>
                                     </div>
                                 </div>
