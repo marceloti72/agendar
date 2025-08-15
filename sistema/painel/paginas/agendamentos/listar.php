@@ -503,8 +503,10 @@ HTML;
             $('#id').val(id);
             $('#cliente').val(cliente).change();
             $('#valor_serv').val(valor);
-            $('#valor_sinal').val(valor_sinal);
-            $('#valor_cupom').val(valor_cupom);
+            
+            var valor_sinal = parseFloat($('#valor_sinal').val()) || 0;
+            var valor_cupom = parseFloat($('#valor_cupom').val()) || 0;
+
             $('#valor_descontos').val(valor_sinal + valor_cupom);
             $('#obs').val(obs);
 
