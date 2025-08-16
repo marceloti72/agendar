@@ -442,7 +442,7 @@ $plano = $res3['plano'];
 						</button>
 						<a class="navbar-brand" href="index.php">
 							<div class="brand-container">
-								<img src="../../images/icone_512.png" alt="Logo do Estúdio" class="logo-image">
+								
 								<div class="brand-text">
 									
 									<span class="system-name"><?php echo $nome_sistema ?></span>
