@@ -63,9 +63,8 @@ try {
         <thead >
         <tr>
         <th>Produto (Qtd)</th>
-        <th class="esc text-right">Valor Total</th>
-        <th class="esc text-center">Estoque Atual</th>
-        <th>Vendedor</th>
+        <th class="esc text-right">Valor</th>
+        <th class="esc text-center">Estoque Atual</th>        
         <th class="text-center">Ações</th>
         </tr>
         </thead>
@@ -106,8 +105,7 @@ HTML;
             <tr class="{$classe_debito}">
                 <td>{$quantidade_item}x {$nome_produto_item}</td>
                 <td class="esc text-right">R$ {$valor_item_formatado}</td>
-                <td class="esc text-center">{$estoque_atual_item}</td>
-                <td>{$nome_vendedor_item}</td>
+                <td class="esc text-center">{$estoque_atual_item}</td>                
                 <td class="text-center">
 				<a href="#" onclick="event.preventDefault(); excluirProduto('{$id_item_receber}', '{$comanda_id}')" title="Excluir Venda deste Produto">
                        <i class="fa fa-trash-o text-danger"></i>

@@ -413,6 +413,8 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     </div>
                                 </div>
                                 <div class="item-list-container" id="listar_produtos"></div>
+                                
+                                <hr class="divider">
 
                                  <!-- Nova Seção para Descontos -->
                                 <div class="section-header">
