@@ -385,15 +385,23 @@ $plano = $res3['plano'];
 			<!--left-fixed -navigation-->
 			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
 				<nav class="navbar navbar-inverse" >
-					<div class="navbar-header" style = "background-color: #516a88;">
-						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".collapse" aria-expanded="false" id="showLeftPush2">
-							<span class="sr-only">Toggle navigation</span>				
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-						<h1><a style="color: white;text-shadow: 1px 1px 3px black; " class="navbar-brand" href="index.php"><i class="bi bi-clock-history"></i> MarkAI<span class="dashboard_text"><?php echo $nome_sistema ?></span></a></h1>
-					</div>
+					<div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".collapse" aria-expanded="false" id="showLeftPush2">
+        <span class="sr-only">Toggle navigation</span>       
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.php">
+        <div class="brand-container">
+            <img src="../../images/icone_512.png" alt="Logo do Estúdio" class="logo-image">
+            <div class="brand-text">
+                
+                <span class="system-name"><?php echo $nome_sistema ?></span>
+            </div>
+        </div>
+    </a>
+</div>
 					
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						
