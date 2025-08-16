@@ -194,6 +194,68 @@ $plano = $res3['plano'];
     transform-origin: bottom center; /* Define o ponto de rotação */
 }
 
+.navbar-header {
+    /* Cor de fundo opcional como fallback */
+    background-color: #516a88;
+    /* Imagem de fundo */
+    background-image: url('caminho/para/sua/imagem-de-fundo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Centraliza o conteúdo verticalmente */
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+}
+
+.navbar-brand {
+    /* Garante que o link não tenha sublinhado e ocupa o espaço necessário */
+    padding: 0;
+    height: auto;
+    display: block;
+}
+
+.brand-container {
+    /* Alinha o logo e o texto um ao lado do outro */
+    display: flex;
+    align-items: center;
+}
+
+.logo-image {
+    /* Estilo para a imagem do logo */
+    height: 50px; /* Ajuste o tamanho conforme necessário */
+    width: auto;
+    margin-right: 15px;
+    border-radius: 50%; /* Opcional: para logos circulares */
+    border: 2px solid white; /* Opcional: borda para destacar */
+}
+
+.brand-text {
+    /* Estilo para o texto */
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    line-height: 1.2;
+}
+
+.studio-name {
+    /* Estilo para o nome principal */
+    font-size: 1.5em; /* Tamanho maior */
+    font-weight: bold;
+    display: block; /* Garante que o nome do estúdio fique acima do nome do sistema */
+}
+
+.system-name {
+    /* Estilo para o nome do sistema */
+    font-size: 0.9em;
+    font-style: italic;
+    color: #e0e0e0;
+}
+
+/* Estilo para os ícones da barra de navegação */
+.navbar-toggle .icon-bar {
+    background-color: white; /* Cor dos ícones para contraste */
+}
+
 
   
   @media (max-width: 768px) {
