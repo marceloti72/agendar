@@ -11,7 +11,7 @@ $hoje = date('Y-m-d');
     /* Estilos gerais */
     .main-page {
         padding: 20px;
-        background-color: #e7edea;
+        background-color: #b7b7b7;
         min-height: 100vh;
     }
     .widget, .stat, .content-top-2 {
