@@ -158,7 +158,7 @@ $plano = $res3['plano'];
 	background-image: linear-gradient(to right, #434371, #9669a0);
 	color: white;
 
-	text-transform: uppercase;
+	
   }
 
   @keyframes pulse {
