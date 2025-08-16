@@ -223,10 +223,9 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     color: #444;
 }
 
-/* Seletor mais específico para garantir que a cor seja aplicada */
-.monthly-calendar .monthly-header .monthly-prev,
-.monthly-calendar .monthly-header .monthly-next {
-    color: #292929; /* Ou qualquer cor que você queira */
+.monthly-prev a,
+.monthly-next a {
+    color: #292929;
 }
 
 /* Dias da semana (cabeçalho) */
