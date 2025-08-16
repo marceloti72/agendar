@@ -339,7 +339,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                         <div class="form-group">
                                             <h3 id="nome_do_cliente_aqui"></h3>
                                         </div>
-                                    </div><br>
+                                    </div>
                                 </div>
 
                                 <hr class="divider">
@@ -413,7 +413,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     </div>
                                 </div>
                                 <div class="item-list-container" id="listar_produtos"></div>
-                                
+
                                 <hr class="divider">
 
                                  <!-- Nova Seção para Descontos -->
@@ -436,7 +436,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 </div>
 
                                 <hr class="divider">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Observações</label>
                                         <input type="text" class="form-control" value="" name="obs" id="obs2" maxlength="1000">
