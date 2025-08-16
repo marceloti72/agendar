@@ -22,6 +22,9 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 		background-color: #48D1CC; /* Amarelo */
 		color: #000; /* Cor do texto */
 	}
+    .novo {
+		background-color: #e99f35;
+	}
 
 	@media (max-width: 768px) {
 	.novo {
@@ -271,7 +274,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 <div class="row">
 	<div class="col-md-3">
-		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" data-toggle="modal" data-target="#modalForm" type="button" class="btn btn-primary novo" ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
+		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" data-toggle="modal" data-target="#modalForm" type="button" class="btn novo" ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
 	</div>
 
 	<div class="col-md-3">
