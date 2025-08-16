@@ -205,8 +205,7 @@ $plano = $res3['plano'];
     /* Centraliza o conteúdo verticalmente */
     display: flex;
     align-items: center;
-    padding: 3px 15px;
-	height: 80px;
+    padding: 3px 15px;	
 }
 
 .navbar-brand {
@@ -222,34 +221,18 @@ $plano = $res3['plano'];
     align-items: center;
 }
 
-.logo-image {
-    /* Estilo para a imagem do logo */
-    height: 50px; /* Ajuste o tamanho conforme necessário */
-    width: auto;
-    margin-right: 15px;
-    border-radius: 50%; /* Opcional: para logos circulares */
-    border: 2px solid white; /* Opcional: borda para destacar */
-	margin-top: 100px;
-}
 
 .brand-text {
     /* Estilo para o texto */
     color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
     line-height: 1.2;
-	margin-top: 100px;
-}
-
-.studio-name {
-    /* Estilo para o nome principal */
-    font-size: 1.2em; /* Tamanho maior */
-    font-weight: bold;
-    display: block; /* Garante que o nome do estúdio fique acima do nome do sistema */
+	margin-top: 30px;
 }
 
 .system-name {
     /* Estilo para o nome do sistema */
-    font-size: 0.6em;
+    font-size: 0.3em;
     font-style: italic;
     color: #e0e0e0;
 }
