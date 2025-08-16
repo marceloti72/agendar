@@ -227,12 +227,12 @@ $plano = $res3['plano'];
     color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
     line-height: 1.2;
-	margin-top: 30px;
+	margin-top: 40px;
 }
 
 .system-name {
     /* Estilo para o nome do sistema */
-    font-size: 0.3em;
+    font-size: 0.4em;
     font-style: italic;
     color: #e0e0e0;
 }
