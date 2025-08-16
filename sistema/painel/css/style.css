@@ -7156,7 +7156,7 @@ h4.asd label {
 		margin-bottom: 2%;
 	}
 	.sidebar-left {
-		width: 210px !important; 
+		width: 200px !important; 
 	}
 	.cbp-spmenu-push div#page-wrapper {
 		margin: 0 0 0 13em;
@@ -7244,7 +7244,7 @@ h4.asd label {
 		top: 47px;
 	}
 	.sidebar-left {
-		width: 250px !important;
+		width: 200px !important;
 	}
 	.navbar-inverse .navbar-toggle {
 		border-color: transparent;
@@ -8461,7 +8461,7 @@ h4.asd label {
 		padding-left: 30px;
 	}
 	.sidebar-left {
-		width: 215px !important;
+		width: 200px !important;
 	}
 	button#showLeftPush {
 		font-size: 1em;
