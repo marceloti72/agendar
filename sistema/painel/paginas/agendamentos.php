@@ -96,7 +96,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
     .divider {
         margin: 20px 0;
-        border-top: 1px dashed #d1d1d1;
+        border-top: 1px dashed #929292ff;
     }
     
     .section-header {
@@ -109,8 +109,8 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     .section-title {
         font-weight: 600;
         color: #555;
-        border-left: 4px solid #007bff;
-        padding-left: 30px;
+        border-left: 6px solid #007bff;
+        padding-left: 10px;
     }
 
 	#nome_do_cliente_aqui{
