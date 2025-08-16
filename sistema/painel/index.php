@@ -152,7 +152,7 @@ $plano = $res3['plano'];
   }
 
   .modal-header{
-	background-image: linear-gradient(to left,rgb(172, 172, 172), #787879);
+	background-image: linear-gradient(to left,rgba(51, 88, 156, 1), #234374ff);
 	text-transform: uppercase;
   }
 
