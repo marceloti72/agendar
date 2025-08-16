@@ -110,7 +110,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
         font-weight: 600;
         color: #555;
         border-left: 4px solid #007bff;
-        padding-left: 10px;
+        padding-left: 30px;
     }
 
 	#nome_do_cliente_aqui{
@@ -350,7 +350,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 <div class="row mb-2">
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <label>Serviço</label>
+                                            <!-- <label>Serviço</label> -->
                                             <select class="form-control sel2" id="servico" name="servico" style="width:100%;">
                                                 <?php
                                                 $query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta' ORDER BY nome asc");
@@ -364,7 +364,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     </div>
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <label>Profissional</label>
+                                            <!-- <label>Profissional</label> -->
                                             <select class="form-control sel2" id="funcionario2" name="funcionario" style="width:100%;">
                                                 <?php
                                                 $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
@@ -390,7 +390,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 <div class="row mb-2">
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <label>Produto</label>
+                                            <!-- <label>Produto</label> -->
                                             <select class="form-control sel2" id="produto" name="produto" style="width:100%;" onchange="listarServicos2()">
                                                 <?php
                                                 $query = $pdo->query("SELECT * FROM produtos where estoque > 0 and id_conta = '$id_conta' ORDER BY nome asc");
@@ -404,7 +404,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label>Quantidade</label>
+                                            <!-- <label>Quantidade</label> -->
                                             <input type="number" class="form-control" name="quantidade" id="quantidade" value="1" min="1">
                                         </div>
                                     </div>
