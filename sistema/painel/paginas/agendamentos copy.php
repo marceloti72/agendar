@@ -32,8 +32,7 @@ if(@$agendamentos == 'ocultar'){
 		margin-bottom: 10px;
 		font-size: 14px;
 		align-items: center;
-		justify-content: center;		
-			
+		justify-content: center;					
         }
 	}
 
