@@ -223,10 +223,10 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     color: #444;
 }
 
-/* Cor dos botões de navegação */
-.monthly-prev,
-.monthly-next {
-    color: #777;
+/* Seletor mais específico para garantir que a cor seja aplicada */
+.monthly-calendar .monthly-header .monthly-prev,
+.monthly-calendar .monthly-header .monthly-next {
+    color: #292929; /* Ou qualquer cor que você queira */
 }
 
 /* Dias da semana (cabeçalho) */
