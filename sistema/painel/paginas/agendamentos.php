@@ -54,7 +54,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     }
     
     .modal-title {
-        color: #333;
+        color: #ffffffff;
         font-weight: 600;
         display: flex;
         align-items: center;
