@@ -965,7 +965,7 @@ $("#form-text").submit(function (event) {
 
 
 		$.ajax({
-			url: 'paginas/' + pag + "/listar.php",
+			url: 'paginas/agendamentos/listar.php',
 			method: 'POST',
 			data: {data, funcionario},
 			dataType: "text",
