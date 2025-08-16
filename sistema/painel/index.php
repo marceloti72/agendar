@@ -198,14 +198,14 @@ $plano = $res3['plano'];
     /* Cor de fundo opcional como fallback */
     background-color: #516a88;
     /* Imagem de fundo */
-    background-image: url('caminho/para/sua/imagem-de-fundo.jpg');
+    background-image: url('../../images/icone_512.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     /* Centraliza o conteúdo verticalmente */
     display: flex;
     align-items: center;
-    padding: 10px 15px;
+    padding: 3px 15px;
 }
 
 .navbar-brand {
@@ -239,7 +239,7 @@ $plano = $res3['plano'];
 
 .studio-name {
     /* Estilo para o nome principal */
-    font-size: 1.5em; /* Tamanho maior */
+    font-size: 1.2em; /* Tamanho maior */
     font-weight: bold;
     display: block; /* Garante que o nome do estúdio fique acima do nome do sistema */
 }
