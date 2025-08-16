@@ -10,7 +10,7 @@ $data_atual = date('Y-m-d');
 /* General styling and fonts */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
+    background-color: #e3e2e0;
     color: #333;
     margin: 0;
     padding: 20px;
