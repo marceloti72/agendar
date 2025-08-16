@@ -227,7 +227,7 @@ $plano = $res3['plano'];
     color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
     line-height: 1.2;
-	margin-top: 40px;
+	margin-top: 38px;
 }
 
 .system-name {
