@@ -228,6 +228,7 @@ $plano = $res3['plano'];
     margin-right: 15px;
     border-radius: 50%; /* Opcional: para logos circulares */
     border: 2px solid white; /* Opcional: borda para destacar */
+	margin-top: 100px;
 }
 
 .brand-text {
@@ -235,6 +236,7 @@ $plano = $res3['plano'];
     color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
     line-height: 1.2;
+	margin-top: 100px;
 }
 
 .studio-name {
@@ -246,7 +248,7 @@ $plano = $res3['plano'];
 
 .system-name {
     /* Estilo para o nome do sistema */
-    font-size: 0.9em;
+    font-size: 0.6em;
     font-style: italic;
     color: #e0e0e0;
 }
