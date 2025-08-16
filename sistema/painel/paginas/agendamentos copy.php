@@ -12,6 +12,7 @@ if(@$agendamentos == 'ocultar'){
 	exit();
 }
 
+
 ?>
 
 <style>
