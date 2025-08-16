@@ -200,7 +200,74 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     .btn-lg {
         padding: 12px 20px;
     }
+
+
+    /* Container principal do calendário */
+.monthly-calendar {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Título e navegação */
+.monthly-header {
+    background-color: #f0f2f5;
+    color: #333;
+    padding: 15px;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Cor do texto do mês e ano */
+.monthly-header-title {
+    color: #444;
+}
+
+/* Cor dos botões de navegação */
+.monthly-prev,
+.monthly-next {
+    color: #777;
+}
+
+/* Dias da semana (cabeçalho) */
+.monthly-day-header {
+    background-color: #fafafa;
+    color: #555;
+    font-weight: bold;
+}
+
+/* Células dos dias */
+.monthly-day-cell {
+    background-color: #ffffff;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Células de dias inativos (outros meses) */
+.monthly-day-cell.monthly-day-unhighlighted {
+    background-color: #f8f8f8;
+    color: #b0b0b0;
+}
+
+/* Dia atual */
+.monthly-day-cell.monthly-today {
+    background-color: #e6f7ff;
+    border: 2px solid #a8e3ff;
+    border-radius: 5px;
+}
+
+/* Eventos */
+.monthly-event-list {
+    background-color: #f1f8ff;
+    border-left: 3px solid #007bff;
+    color: #333;
+    padding: 5px 10px;
+    margin: 2px 0;
+    border-radius: 4px;
+}
 </style>
+
+
 
 <div class="row">
 	<div class="col-md-3">
@@ -210,7 +277,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 	<div class="col-md-3">
 		<div class="form-group">			
 			<select class="form-control sel2" id="funcionario" name="funcionario" style="width:100%;" onchange="mudarFuncionario()"> 
-				<option value="">Selecione um Profissional</option>
+				<option value="">Todos</option>
 				<?php 
 				$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY id desc");
 				$res = $query->fetchAll(PDO::FETCH_ASSOC);
