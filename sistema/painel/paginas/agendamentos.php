@@ -21,23 +21,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 	.tooltip-inner {
 		background-color: #48D1CC; /* Amarelo */
 		color: #000; /* Cor do texto */
-	}
-    .novo {
-		background-color: #e99f35;
-	}
-
-	@media (max-width: 768px) {
-	.novo {
-		display: flex;
-		width: 100%;
-		height: 30px;
-		margin-bottom: 10px;
-		font-size: 14px;
-		align-items: center;
-		justify-content: center;
-			
-        }
-	}
+	}    
 
 </style>
 

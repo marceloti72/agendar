@@ -151,6 +151,25 @@ $plano = $res3['plano'];
     height: 50px;
   }
 
+  .novo {
+		background-color: #e99f35;
+		color: white;
+		font-weight: bold;
+	}
+
+	@media (max-width: 768px) {
+	.novo {
+		display: flex;
+		width: 100%;
+		height: 30px;
+		margin-bottom: 10px;
+		font-size: 14px;
+		align-items: center;
+		justify-content: center;
+			
+        }
+	}
+
   .modal-header{	
 	/* background-image: linear-gradient(to bottom, #d4a0e9, #a0d4e9);
 	background-image: linear-gradient(to right, #6a85b6, #bac8e0);
