@@ -20,6 +20,9 @@ if(@$agendamentos == 'ocultar'){
 		background-color: #48D1CC; /* Amarelo */
 		color: #000; /* Cor do texto */
 	}
+	.novo {
+		background-color: #e99f35;
+	}
 
 	@media (max-width: 768px) {
 	.novo {
@@ -29,7 +32,7 @@ if(@$agendamentos == 'ocultar'){
 		margin-bottom: 10px;
 		font-size: 14px;
 		align-items: center;
-		justify-content: center;
+		justify-content: center;		
 			
         }
 	}
