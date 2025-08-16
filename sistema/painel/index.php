@@ -151,8 +151,12 @@ $plano = $res3['plano'];
     height: 50px;
   }
 
-  .modal-header{
-	background-image: linear-gradient(to left,rgba(51, 88, 156, 1), #234374ff);
+  .modal-header{	
+	/* background-image: linear-gradient(to bottom, #d4a0e9, #a0d4e9);
+	background-image: linear-gradient(to right, #6a85b6, #bac8e0);
+	background-image: linear-gradient(to right, #ff9966, #ff5e62); */
+	background-image: linear-gradient(to right, #434371, #9669a0);
+
 	text-transform: uppercase;
   }
 

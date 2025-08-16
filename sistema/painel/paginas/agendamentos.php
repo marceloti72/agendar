@@ -960,10 +960,7 @@ $("#form-text").submit(function (event) {
 
 		var data = $("#data_agenda").val();	
 		$("#data-modal").val(data);
-        alert(funcionario)
-        alert(data)
-
-
+        
 		$.ajax({
 			url: 'paginas/agendamentos/listar.php',
 			method: 'POST',
