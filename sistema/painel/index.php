@@ -385,7 +385,7 @@ $plano = $res3['plano'];
 			<!--left-fixed -navigation-->
 			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
 				<nav class="navbar navbar-inverse" >
-					<div class="navbar-header" style = "background-color: #374b63;">
+					<div class="navbar-header" style = "background-color: #516a88;">
 						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".collapse" aria-expanded="false" id="showLeftPush2">
 							<span class="sr-only">Toggle navigation</span>				
 							<span class="icon-bar"></span>
