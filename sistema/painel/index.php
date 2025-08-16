@@ -1142,7 +1142,7 @@ $plano = $res3['plano'];
 									<span class="prfil-img"><img src="img/perfil/<?php if(!empty($foto_usuario)){ echo $foto_usuario;}else{?>sem-foto.jpg<?php }?>" alt="" width="50" height="50"> </span> 
 									<div class="user-name esc">
 										<p><?php echo $nome_usuario ?></p>
-										<span><?php echo $nivel_usuario ?></span>
+										<span style="color: white;"><?php echo $nivel_usuario ?></span>
 									</div>
 									<i class="fa fa-angle-down lnr"></i>
 									<i class="fa fa-angle-up lnr"></i>
