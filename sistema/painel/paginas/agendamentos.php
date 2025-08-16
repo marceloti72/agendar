@@ -819,7 +819,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 		$('#mycalendar2').monthly({
 			mode: 'picker',
 			target: '#mytarget',
-			setWidth: '250px',
+			setWidth: '150px',
 			startHidden: true,
 			showTrigger: '#mytarget',
 			stylePast: true,
@@ -960,6 +960,8 @@ $("#form-text").submit(function (event) {
 
 		var data = $("#data_agenda").val();	
 		$("#data-modal").val(data);
+        alert(funcionario)
+        alert(data)
 
 
 		$.ajax({
