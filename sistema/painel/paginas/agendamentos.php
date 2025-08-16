@@ -226,7 +226,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 /* Usando !important para forçar a cor */
 .monthly-prev,
 .monthly-next {
-    color: #292929 !important;
+    color: #292929;
 }
 
 /* Dias da semana (cabeçalho) */
