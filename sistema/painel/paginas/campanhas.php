@@ -11,15 +11,15 @@ if (!isset($_SESSION['id_conta'])) {
 $id_conta = $_SESSION['id_conta'];
 
 // Buscar username (equivalente a fetchUsername)
-try {
-    $query = $pdo->prepare("SELECT nome FROM contas WHERE id = :id_conta");
-    $query->bindValue(':id_conta', $id_conta);
-    $query->execute();
-    $username = $query->fetch(PDO::FETCH_ASSOC)['nome'] ?? '';
-} catch (Exception $e) {
-    $username = '';
-    error_log('Erro ao buscar username: ' . $e->getMessage());
-}
+// try {
+//     $query = $pdo->prepare("SELECT nome FROM contas WHERE id = :id_conta");
+//     $query->bindValue(':id_conta', $id_conta);
+//     $query->execute();
+//     $username = $query->fetch(PDO::FETCH_ASSOC)['nome'] ?? '';
+// } catch (Exception $e) {
+//     $username = '';
+//     error_log('Erro ao buscar username: ' . $e->getMessage());
+// }
 
 // Buscar clientes segmentados por tempo sem retorno (equivalente a fetchClientesSegmentos)
 $clientes_segmentos = [
@@ -33,10 +33,10 @@ try {
     $query = $pdo->prepare("
         SELECT 
             CASE 
-                WHEN DATEDIFF(CURDATE(), ultima_visita) BETWEEN 30 AND 90 THEN '30-90'
-                WHEN DATEDIFF(CURDATE(), ultima_visita) BETWEEN 91 AND 180 THEN '90-180'
-                WHEN DATEDIFF(CURDATE(), ultima_visita) BETWEEN 181 AND 365 THEN '180-365'
-                WHEN DATEDIFF(CURDATE(), ultima_visita) > 365 THEN '365+'
+                WHEN DATEDIFF(CURDATE(), data_retorno) BETWEEN 30 AND 90 THEN '30-90'
+                WHEN DATEDIFF(CURDATE(), data_retorno) BETWEEN 91 AND 180 THEN '90-180'
+                WHEN DATEDIFF(CURDATE(), data_retorno) BETWEEN 181 AND 365 THEN '180-365'
+                WHEN DATEDIFF(CURDATE(), data_retorno) > 365 THEN '365+'
                 ELSE 'sem-retorno'
             END AS segmento,
             COUNT(*) AS total
