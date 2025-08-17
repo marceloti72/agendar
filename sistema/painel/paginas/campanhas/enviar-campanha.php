@@ -4,7 +4,7 @@ require_once("../../../conexao.php"); // Ajuste o caminho conforme necessário
 
 header('Content-Type: application/json');
 
-$response = ['success' => false, 'message' => 'Erro desconhecido'];
+$response = ['success' => false, 'message' => 'Erro desconhecido', 'details' => []];
 
 try {
     $id_conta = isset($_POST['id_conta']) ? (int)$_POST['id_conta'] : 0;
@@ -74,61 +74,109 @@ try {
         }
     }
 
-    // Configurações da API do Menuia    
+    // Configurações da API do Menuia
+    $instancia = 'SUA_INSTANCIA_MENUIA'; // Substitua pela sua appkey
+    $token = 'SEU_AUTH_TOKEN_MENUIA'; // Substitua pelo seu authkey
+    $nome_sistema = 'Markai'; // Substitua pelo nome real do sistema
     $success_count = 0;
+    $failed_count = 0;
+    $details = [];
+
+    // Calcular data inicial para agendamento (1 minuto a partir de agora)
+    $data_mensagem = new DateTime();
+    $data_mensagem->modify('+1 minute');
 
     foreach ($clientes as $cliente) {
-        $mensagem = "Olá, {$cliente['nome']}! 😊\nSentimos sua falta, na ".$nome_sistema." !";        
-        if ($cupom_codigo) {
-            $mensagem .= "Volte e use o cupom {$cupom_codigo} para um desconto especial! ";
-        }else{
-            $mensagem .= "Que tal voltar para um serviço especial ?";
+        // Validar e formatar telefone
+        $telefone = preg_replace('/[ ()-]+/', '', $cliente['telefone']);
+        if (!preg_match('/^\d{10,11}$/', $telefone)) {
+            $details[] = "Telefone inválido para {$cliente['nome']}: {$cliente['telefone']}";
+            $failed_count++;
+            continue;
         }
-        $mensagem .= "Agende agora: https://markai.skysee.com.br/agendamentos.php?u=".$id_conta;
-        $mensagem = str_replace("%0A", "\n", $mensagem);
-        $telefone = '55' . preg_replace('/[ ()-]+/', '', $cliente['telefone']);
+        $telefone = '55' . $telefone;
 
+        // Montar mensagem
+        $mensagem = "Olá, {$cliente['nome']}! 😊\nSentimos sua falta, na *{$nome_sistema}*!\n";
+        if ($cupom_codigo) {
+            $mensagem .= "Volte e use o cupom *{$cupom_codigo}* para um desconto especial!\n\n ";
+        } else {
+            $mensagem .= "Que tal voltar para um serviço especial?\n\n ";
+        }
+        $mensagem .= "Agende agora:\n https://markai.skysee.com.br/agendamentos.php?u={$id_conta}";
+        $mensagem = str_replace("%0A", "\n", $mensagem);
+
+        // Formatar data de agendamento (Y-m-d H:i:s)
+        $data_mensagem_str = $data_mensagem->format('Y-m-d H:i:s');
+
+        // Enviar mensagem via API do Menuia com agendamento
         $curl = curl_init();
-        curl_setopt_array($curl, array(
+        curl_setopt_array($curl, [
             CURLOPT_URL => 'https://chatbot.menuia.com/api/create-message',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
+            CURLOPT_TIMEOUT => 30,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => array(
+            CURLOPT_POSTFIELDS => [
                 'appkey' => $instancia,
                 'authkey' => $token,
                 'to' => $telefone,
                 'message' => $mensagem,
-            ),
-        ));
+                'agendamento' => $data_mensagem_str
+            ],
+        ]);
 
         $api_response = curl_exec($curl);
         $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $curl_error = curl_error($curl);
         curl_close($curl);
-        $api_response = json_decode($api_response, true);
 
-        if ($http_code == 200 && isset($api_response['status']) && $api_response['status'] == 'success') {
-            $success_count++;
-            // Opcional: salvar log da mensagem
-            // save_log($pdo, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'CAMPANHA', $api_response, 'texto', $cliente['telefone'], $mensagem, $id_conta);
+        if ($curl_error) {
+            $details[] = "Erro cURL para {$cliente['nome']} ({$telefone}): {$curl_error}";
+            $failed_count++;
+        } else {
+            $api_response = json_decode($api_response, true);
+            if ($http_code == 200 && isset($api_response['status']) && $api_response['status'] == 'success') {
+                $success_count++;
+                // Atualizar usos do cupom, se aplicável
+                if ($cupom_codigo) {
+                    $query = $pdo->prepare("
+                        UPDATE cupons
+                        SET usos_atuais = COALESCE(usos_atuais, 0) + 1
+                        WHERE id = :id_cupom AND id_conta = :id_conta
+                    ");
+                    $query->bindValue(':id_cupom', $id_cupom, PDO::PARAM_INT);
+                    $query->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
+                    $query->execute();
+                }
+                // Opcional: salvar log da mensagem
+                // save_log($pdo, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'CAMPANHA', $api_response, 'texto', $telefone, $mensagem, $id_conta);
+            } else {
+                $details[] = "Erro API para {$cliente['nome']} ({$telefone}): HTTP {$http_code}, Resposta: " . json_encode($api_response);
+                $failed_count++;
+            }
         }
+
+        // Incrementar data de agendamento em 60 segundos
+        $data_mensagem->modify('+60 seconds');
     }
-    
 
     $response = [
-        'success' => true,
-        'message' => "Mensagens enviadas para $success_count de " . count($clientes) . " clientes.",
-        'clientes' => $clientes
+        'success' => $success_count > 0,
+        'message' => "Agendamentos iniciados para $success_count de " . count($clientes) . " clientes. Mensagens serão disparadas a cada 60 segundos. Falhas: $failed_count.",
+        'clientes' => $clientes,
+        'details' => $details
     ];
     if ($success_count < count($clientes)) {
         http_response_code(207); // Sucesso parcial
     }
 } catch (Exception $e) {
     $response['message'] = 'Erro: ' . $e->getMessage();
+    $response['details'] = ['Exception' => $e->getMessage()];
+    error_log('Erro em enviar-campanha.php: ' . $e->getMessage());
 }
 
 echo json_encode($response);

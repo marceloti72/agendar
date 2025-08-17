@@ -557,6 +557,7 @@ select {
             document.getElementById('cupom-picker').style.display = oferecerCupom === 'Sim' ? 'block' : 'none';
         }
 
+        
         function startCampaign() {
             if (!selectedSegmento) {
                 document.getElementById('error-oferta').style.display = 'block';
@@ -570,8 +571,6 @@ select {
                 document.getElementById('error-oferta').innerText = 'Selecione um cupom válido.';
                 return;
             }
-
-            // if (!checkAndRefreshToken()) return;
 
             document.getElementById('loading-overlay').style.display = 'flex';
             $.ajax({
@@ -587,40 +586,42 @@ select {
                 success: function(response) {
                     document.getElementById('loading-overlay').style.display = 'none';
                     if (response.success) {
-                        const clientes = response.clientes || [];
-                        const startTime = new Date().toLocaleString('pt-BR');
-                        const estimatedEndTime = new Date(Date.now() + clientes.length * 15000).toLocaleString('pt-BR');
-                        document.getElementById('timeline-container').style.display = 'block';
-                        document.getElementById('timeline-start').innerText = `Início: ${startTime}`;
-                        document.getElementById('timeline-end').innerText = `Fim estimado: ${estimatedEndTime}`;
-                        document.getElementById('timeline-progress').innerText = `Progresso: 0 de ${clientes.length} clientes`;
-
-                        let current = 0;
-                        intervalId = setInterval(() => {
-                            current++;
-                            if (current >= clientes.length) {
-                                clearInterval(intervalId);
-                            }
-                            document.getElementById('timeline-progress').innerText = `Progresso: ${current} de ${clientes.length} clientes`;
-                        }, 15000);
-
-                        Swal.fire('Sucesso', response.message || 'Campanha iniciada! As mensagens estão sendo enviadas.', 'success');
+                        Swal.fire({
+                            title: 'Sucesso',
+                            text: response.message || 'Os envios foram iniciados e serão disparados a cada 60 segundos.',
+                            icon: 'success',
+                            html: response.details && response.details.length > 0 ? 
+                                `${response.message}<br><small>Detalhes: ${response.details.join('<br>')}</small>` : 
+                                response.message
+                        });
                         setTimeout(() => {
                             document.getElementById('modal-oferta').style.display = 'none';
-                            location.reload(); // Recarregar para atualizar dados
-                        }, 1500);
+                            location.reload();
+                        }, 3000);
                     } else {
-                        Swal.fire('Erro', response.message || 'Erro ao iniciar a campanha.', 'error');
-                        document.getElementById('timeline-container').style.display = 'none';
+                        Swal.fire({
+                            title: 'Erro',
+                            text: response.message || 'Erro ao iniciar os agendamentos.',
+                            icon: 'error',
+                            html: response.details && response.details.length > 0 ? 
+                                `${response.message}<br><small>Detalhes: ${response.details.join('<br>')}</small>` : 
+                                response.message
+                        });
                     }
                 },
                 error: function(xhr, status, error) {
                     document.getElementById('loading-overlay').style.display = 'none';
-                    Swal.fire('Erro', 'Erro ao conectar com o servidor.', 'error');
+                    Swal.fire({
+                        title: 'Erro',
+                        text: 'Erro ao conectar com o servidor.',
+                        icon: 'error',
+                        html: `Erro ao conectar com o servidor.<br><small>Detalhes: ${xhr.status} ${xhr.statusText}</small>`
+                    });
                     console.error('Erro AJAX:', status, error, xhr.responseText);
                 }
             });
         }
+
     </script>
 </body>
 </html>
