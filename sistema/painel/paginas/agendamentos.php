@@ -15,12 +15,13 @@ if(@$agendamentos == 'ocultar'){
 
 <style>
     .tooltip-inner {
-        background-color: #48D1CC;
-        color: #000;
+        background-color: #48D1CC; /* Amarelo */
+        color: #000; /* Cor do texto */
     }
     .novo {
         background-color: #e99f35;
     }
+
     @media (max-width: 768px) {
         .novo {
             display: flex;
@@ -29,10 +30,11 @@ if(@$agendamentos == 'ocultar'){
             margin-bottom: 10px;
             font-size: 14px;
             align-items: center;
-            justify-content: center;
+            justify-content: center;                    
         }
     }
-    /* Payment Modal Styles */
+
+    /* Estilos do Modal de Pagamento */
     .payment-option-btn {
         display: flex;
         align-items: center;
@@ -99,7 +101,8 @@ if(@$agendamentos == 'ocultar'){
                 $total_reg = @count($res);
                 if($total_reg > 0){
                     for($i=0; $i < $total_reg; $i++){
-                        echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
+                        foreach ($res[$i] as $key => $value){}
+                            echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
                     }
                 }
                 ?>
@@ -150,7 +153,8 @@ if(@$agendamentos == 'ocultar'){
                                     $total_reg = @count($res);
                                     if($total_reg > 0){
                                         for($i=0; $i < $total_reg; $i++){
-                                            echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
+                                            foreach ($res[$i] as $key => $value){}
+                                                echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
                                         }
                                     }
                                     ?>
@@ -169,7 +173,8 @@ if(@$agendamentos == 'ocultar'){
                                     $total_reg = @count($res);
                                     if($total_reg > 0){
                                         for($i=0; $i < $total_reg; $i++){
-                                            echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
+                                            foreach ($res[$i] as $key => $value){}
+                                                echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
                                         }
                                     }
                                     ?>
@@ -181,7 +186,8 @@ if(@$agendamentos == 'ocultar'){
                         <div class="col-md-8">                        
                             <div class="form-group"> 
                                 <label>Serviço</label> 
-                                <select class="form-control sel3" id="servico" name="servico" style="width:100%;" required></select>    
+                                <select class="form-control sel3" id="servico" name="servico" style="width:100%;" required>                                     
+                                </select>    
                             </div>                        
                         </div>
 
@@ -249,7 +255,8 @@ if(@$agendamentos == 'ocultar'){
                                     $total_reg = @count($res);
                                     if($total_reg > 0){
                                         for($i=0; $i < $total_reg; $i++){
-                                            echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
+                                            foreach ($res[$i] as $key => $value){}
+                                                echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
                                         }
                                     }
                                     ?>
@@ -283,7 +290,8 @@ if(@$agendamentos == 'ocultar'){
                                     $total_reg = @count($res);
                                     if($total_reg > 0){
                                         for($i=0; $i < $total_reg; $i++){
-                                            echo '<option value="'.$res[$i]['nome'].'">'.$res[$i]['nome'].'</option>';
+                                            foreach ($res[$i] as $key => $value){}
+                                                echo '<option value="'.$res[$i]['nome'].'">'.$res[$i]['nome'].'</option>';
                                         }
                                     }
                                     ?>
@@ -293,14 +301,14 @@ if(@$agendamentos == 'ocultar'){
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4">                        
+                        <div class="col-md-4" id="">                        
                             <div class="form-group"> 
-                                <label>Valor Restante <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Caso o cliente efetue o pagamento com duas formas diferentes. Ex: Pix e Cartão."></i></label> 
+                                <label>Valor Restante <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Caso o cliente efetue o pagamento com duas formas diferentes. Ex: Pix e Cartão." style="color: blue;"></i></label> 
                                 <input type="text" class="form-control" name="valor_serv_agd_restante" id="valor_serv_agd_restante" placeholder="Mais de uma forma PGTO"> 
                             </div>                        
                         </div>
 
-                        <div class="col-md-4">                        
+                        <div class="col-md-4" id="">                        
                             <div class="form-group"> 
                                 <label>Data PGTO Restante</label> 
                                 <input type="date" class="form-control" name="data_pgto_restante" id="data_pgto_restante" value=""> 
@@ -310,7 +318,7 @@ if(@$agendamentos == 'ocultar'){
                         <div class="col-md-4">                        
                             <div class="form-group"> 
                                 <label>Forma PGTO Restante</label> 
-                                <select class="form-control" id="pgto_restante" name="pgto_restante" style="width:100;"> 
+                                <select class="form-control" id="pgto_restante" name="pgto_restante" style="width:100%;" > 
                                     <option value="">Selecionar Pgto</option>
                                     <?php 
                                     $query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
@@ -318,7 +326,8 @@ if(@$agendamentos == 'ocultar'){
                                     $total_reg = @count($res);
                                     if($total_reg > 0){
                                         for($i=0; $i < $total_reg; $i++){
-                                            echo '<option value="'.$res[$i]['nome'].'">'.$res[$i]['nome'].'</option>';
+                                            foreach ($res[$i] as $key => $value){}
+                                                echo '<option value="'.$res[$i]['nome'].'">'.$res[$i]['nome'].'</option>';
                                         }
                                     }
                                     ?>
@@ -390,10 +399,12 @@ if(@$agendamentos == 'ocultar'){
 
 <script type="text/javascript">var pag = "<?=$pag?>"</script>
 <script src="js/ajax.js"></script>
+<!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+<!-- QRCode.js -->
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<!-- calendar -->
 <script type="text/javascript" src="js/monthly.js"></script>
-
 <script type="text/javascript">
     $(window).load(function() {
         $('#mycalendar').monthly({
@@ -423,13 +434,14 @@ if(@$agendamentos == 'ocultar'){
         $('.sel3').select2({
             dropdownParent: $('#modalForm')
         });
+
         $('.sel2').select2();
+
         $('.sel4').select2({
             dropdownParent: $('#modalServico')
         });
-        $('[data-toggle="tooltip"]').tooltip();
 
-        // Open payment modal
+        // Abrir modal de pagamento
         $('#btn-fechar-comanda').click(function() {
             $('#modalServico').modal('hide');
             var valor = parseFloat($('#valor_serv_agd').val()) || 0;
@@ -442,7 +454,7 @@ if(@$agendamentos == 'ocultar'){
             $('#modalPagamento').modal('show');
         });
 
-        // Handle QR Code generation
+        // Criar QR Code
         $('#btn-criar-qr').click(function() {
             var id_agd = $('#id_agd').val();
             $.ajax({
@@ -471,7 +483,7 @@ if(@$agendamentos == 'ocultar'){
             });
         });
 
-        // Handle Send Payment Link
+        // Enviar Link de Pagamento
         $('#btn-enviar-link').click(function() {
             var id_agd = $('#id_agd').val();
             $.ajax({
@@ -493,7 +505,7 @@ if(@$agendamentos == 'ocultar'){
             });
         });
 
-        // Handle Confirm Payment
+        // Confirmar Pagamento
         $('#btn-confirmar-pagamento').click(function() {
             var id_agd = $('#id_agd').val();
             Swal.fire({
@@ -510,7 +522,7 @@ if(@$agendamentos == 'ocultar'){
             });
         });
 
-        // Handle WhatsApp Send
+        // Enviar Código via WhatsApp
         $('#btn-whatsapp').click(function() {
             var id_agd = $('#id_agd').val();
             $.ajax({
@@ -531,7 +543,7 @@ if(@$agendamentos == 'ocultar'){
             });
         });
 
-        // Function to close comanda
+        // Função para fechar comanda
         function fecharComanda(id_agd) {
             $.ajax({
                 url: 'paginas/comanda/fechar_comanda.php',
@@ -572,7 +584,8 @@ if(@$agendamentos == 'ocultar'){
                     listar();
                     listarHorarios();
                 } else {
-                    $('#mensagem').addClass('text-danger').text(mensagem);
+                    $('#mensagem').addClass('text-danger');
+                    $('#mensagem').text(mensagem);
                 }
             },
             cache: false,
@@ -658,7 +671,8 @@ if(@$agendamentos == 'ocultar'){
                     $('#btn-fechar-servico').click();
                     listar();
                 } else {
-                    $('#mensagem-servico').addClass('text-danger').text(mensagem);
+                    $('#mensagem-servico').addClass('text-danger');
+                    $('#mensagem-servico').text(mensagem);
                 }
             },
             cache: false,
@@ -680,4 +694,22 @@ if(@$agendamentos == 'ocultar'){
             }
         });
     }
+
+    function listarServicos2(func) {    
+        var serv = $("#servico").val();
+        
+        $.ajax({
+            url: 'paginas/' + pag + "/listar-servicos2.php",
+            method: 'POST',
+            data: {func},
+            dataType: "text",
+            success: function(result) {
+                $("#servico").html(result);
+            }
+        });
+    }
+
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 </script>
