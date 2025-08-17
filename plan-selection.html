@@ -3,32 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seleção de Planos - MARKAI</title>
+    <title>Planos MARKAI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .highlighted-plan {
+            border: 3px solid #6b46c1; /* Cor de destaque para o plano recomendado */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .highlighted-plan::before {
+            content: "Mais Econômico"; /* Seta de destaque */
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #6b46c1;
+            color: white;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 9999px;
+            white-space: nowrap;
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
-    <div class="container mx-auto px-4 py-6">
-        <!-- Seção de Cupom -->
-        <div id="coupon-section" class="bg-white p-6 rounded-lg shadow-md mb-6 hidden">
-            <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Possui um cupom de desconto?</h2>
+<body class="bg-gray-50 font-sans">
+    <div class="container mx-auto px-4 py-12 min-h-screen flex flex-col justify-center items-center">
+        <div id="coupon-section" class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg mb-8 transition-all duration-300 ease-in-out hidden">
+            <h2 class="text-3xl font-extrabold text-center text-gray-900 mb-4">Possui um cupom?</h2>
+            <p class="text-center text-gray-500 mb-6">Digite seu cupom de desconto abaixo.</p>
             <input
                 type="text"
                 id="coupon-input"
-                class="w-full p-3 border border-gray-300 rounded-md mb-4 uppercase"
-                placeholder="Digite seu cupom"
+                class="w-full p-4 border border-gray-300 rounded-lg mb-4 text-center uppercase focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="EXEMPLO10"
             >
-            <div class="flex justify-between">
+            <div class="flex flex-col sm:flex-row justify-between gap-4">
                 <button
                     id="no-coupon-btn"
-                    class="bg-purple-800 text-white font-bold py-2 px-4 rounded-md hover:bg-purple-900"
+                    class="w-full sm:w-1/2 bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-lg hover:bg-gray-300 transition-colors"
                 >
                     Não tenho cupom
                 </button>
                 <button
                     id="proceed-btn"
-                    class="bg-purple-800 text-white font-bold py-2 px-4 rounded-md hover:bg-purple-900"
+                    class="w-full sm:w-1/2 bg-purple-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-purple-800 transition-colors"
                 >
                     Prosseguir
                 </button>
@@ -36,204 +58,106 @@
             <p id="coupon-error" class="text-red-500 text-center mt-4 hidden"></p>
         </div>
 
-        <!-- Seção de Planos -->
         <div id="plans-section" class="hidden">
-            <h1 class="text-3xl font-bold text-center text-gray-800 mb-4">Planos MARKAI</h1>
-            <p class="text-lg text-center text-gray-600 mb-4">Escolha o plano que melhor encaixa na sua gestão de negócio.</p>
-            <p class="text-lg text-center text-gray-600 mb-6" id="trial-days">15 dias grátis para teste.</p>
+            <div class="text-center mb-10">
+                <h1 class="text-4xl font-extrabold text-gray-900 mb-2">Escolha seu plano MARKAI</h1>
+                <p class="text-xl text-gray-500 mb-4">Gerencie seu negócio com inteligência. Qual o melhor plano para você?</p>
+                <p class="text-lg text-gray-600 font-medium" id="trial-days">15 dias grátis para teste.</p>
+            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Plano Empresa Mensal -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold text-purple-800 mb-4">Empresa Mensal</h3>
-                    <p class="text-2xl font-bold text-green-500 mb-4">R$ 79,90/mês</p>
-                    <p class="text-gray-600 mb-4">Multi usuários, ideal para negócios com funcionários ou parceiros.</p>
-                    <button
-                        class="w-full bg-purple-800 text-white font-bold py-3 rounded-md hover:bg-purple-900"
-                        onclick="openCheckout('price_1RUE2EJEPhV4vIDMarwc8vo4', 1)"
-                    >
-                        Assine agora
-                    </button>
-                    <p class="text-center text-gray-600 mt-4 hidden" id="loading-1">Carregando...</p>
-                    <p class="text-center text-red-500 mt-4 hidden" id="error-1"></p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+                        <h3 class="text-2xl font-bold text-purple-700 mb-2">Empresa Mensal</h3>
+                        <p class="text-4xl font-extrabold text-green-600 mb-4">R$ 79,90<span class="text-base font-normal text-gray-500">/mês</span></p>
+                        <p class="text-gray-600 mb-6">Multi usuários, ideal para negócios com funcionários ou parceiros.</p>
+                        <button
+                            class="w-full bg-purple-700 text-white font-bold py-3 rounded-lg hover:bg-purple-800 transition-colors"
+                            onclick="openCheckout('price_1RUE2EJEPhV4vIDMarwc8vo4', 1)"
+                        >
+                            Assinar Agora
+                        </button>
+                        <p class="text-center text-gray-600 mt-4 hidden" id="loading-1">Carregando...</p>
+                        <p class="text-center text-red-500 mt-4 hidden" id="error-1"></p>
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl shadow-lg highlighted-plan">
+                        <h3 class="text-2xl font-bold text-purple-700 mb-2">Empresa Anual</h3>
+                        <p class="text-4xl font-extrabold text-green-600 mb-4">R$ 786,21<span class="text-base font-normal text-gray-500">/ano</span></p>
+                        <p class="text-gray-600 mb-6">Pague de uma vez e economize **18%**.</p>
+                        <button
+                            class="w-full bg-purple-700 text-white font-bold py-3 rounded-lg hover:bg-purple-800 transition-colors"
+                            onclick="openCheckout('price_1RUE3OJEPhV4vIDMzNgVl1jY', 2)"
+                        >
+                            Assinar Agora
+                        </button>
+                        <p class="text-center text-gray-600 mt-4 hidden" id="loading-2">Carregando...</p>
+                        <p class="text-center text-red-500 mt-4 hidden" id="error-2"></p>
+                    </div>
                 </div>
-                <!-- Plano Empresa Anual -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold text-purple-800 mb-4">Empresa Anual</h3>
-                    <p class="text-2xl font-bold text-green-500 mb-4">R$ 786,21/ano (18% off)</p>
-                    <p class="text-gray-600 mb-4">Pague de uma vez e economize R$ 172,86.</p>
-                    <button
-                        class="w-full bg-purple-800 text-white font-bold py-3 rounded-md hover:bg-purple-900"
-                        onclick="openCheckout('price_1RUE3OJEPhV4vIDMzNgVl1jY', 2)"
-                    >
-                        Assine agora
-                    </button>
-                    <p class="text-center text-gray-600 mt-4 hidden" id="loading-2">Carregando...</p>
-                    <p class="text-center text-red-500 mt-4 hidden" id="error-2"></p>
-                </div>
-                <!-- Plano Individual Mensal -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold text-purple-800 mb-4">Individual Mensal</h3>
-                    <p class="text-2xl font-bold text-green-500 mb-4">R$ 49,90/mês</p>
-                    <p class="text-gray-600 mb-4">Ideal para quem trabalha sozinho. Todas as funcionalidades, menos gestão de profissionais.</p>
-                    <button
-                        class="w-full bg-purple-800 text-white font-bold py-3 rounded-md hover:bg-purple-900"
-                        onclick="openCheckout('price_1RTZKzJEPhV4vIDM8SLdZ1Gx', 3)"
-                    >
-                        Assine agora
-                    </button>
-                    <p class="text-center text-gray-600 mt-4 hidden" id="loading-3">Carregando...</p>
-                    <p class="text-center text-red-500 mt-4 hidden" id="error-3"></p>
-                </div>
-                <!-- Plano Individual Anual -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold text-purple-800 mb-4">Individual Anual</h3>
-                    <p class="text-2xl font-bold text-green-500 mb-4">R$ 526,94/ano (12% off)</p>
-                    <p class="text-gray-600 mb-4">Pague de uma vez e economize R$ 71,85.</p>
-                    <button
-                        class="w-full bg-purple-800 text-white font-bold py-3 rounded-md hover:bg-purple-900"
-                        onclick="openCheckout('price_1RU5HjJEPhV4vIDMTnrVVyxT', 4)"
-                    >
-                        Assine agora
-                    </button>
-                    <p class="text-center text-gray-600 mt-4 hidden" id="loading-4">Carregando...</p>
-                    <p class="text-center text-red-500 mt-4 hidden" id="error-4"></p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+                        <h3 class="text-2xl font-bold text-purple-700 mb-2">Individual Mensal</h3>
+                        <p class="text-4xl font-extrabold text-green-600 mb-4">R$ 49,90<span class="text-base font-normal text-gray-500">/mês</span></p>
+                        <p class="text-gray-600 mb-6">Ideal para quem trabalha sozinho.</p>
+                        <button
+                            class="w-full bg-purple-700 text-white font-bold py-3 rounded-lg hover:bg-purple-800 transition-colors"
+                            onclick="openCheckout('price_1RTZKzJEPhV4vIDM8SLdZ1Gx', 3)"
+                        >
+                            Assinar Agora
+                        </button>
+                        <p class="text-center text-gray-600 mt-4 hidden" id="loading-3">Carregando...</p>
+                        <p class="text-center text-red-500 mt-4 hidden" id="error-3"></p>
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+                        <h3 class="text-2xl font-bold text-purple-700 mb-2">Individual Anual</h3>
+                        <p class="text-4xl font-extrabold text-green-600 mb-4">R$ 526,94<span class="text-base font-normal text-gray-500">/ano</span></p>
+                        <p class="text-gray-600 mb-6">Pague de uma vez e economize **12%**.</p>
+                        <button
+                            class="w-full bg-purple-700 text-white font-bold py-3 rounded-lg hover:bg-purple-800 transition-colors"
+                            onclick="openCheckout('price_1RU5HjJEPhV4vIDMTnrVVyxT', 4)"
+                        >
+                            Assinar Agora
+                        </button>
+                        <p class="text-center text-gray-600 mt-4 hidden" id="loading-4">Carregando...</p>
+                        <p class="text-center text-red-500 mt-4 hidden" id="error-4"></p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Funcionalidades -->
-            <div class="bg-white p-6 rounded-lg shadow-md mt-6">
-                <h2 class="text-2xl font-bold text-purple-800 text-center mb-4">Funcionalidades do MARKAI</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <p class="text-gray-800">• Gestão de agendamentos</p>
-                    <p class="text-gray-800">• Gestão de clientes</p>
-                    <p class="text-gray-800">• Gestão de profissionais (plano empresa)</p>
-                    <p class="text-gray-800">• Gestão de serviços</p>
-                    <p class="text-gray-800">• Gestão de produtos e fornecedores</p>
-                    <p class="text-gray-800">• Gestão financeira</p>
-                    <p class="text-gray-800">• Gestão de comissões</p>
-                    <p class="text-gray-800">• WhatsApp integrado</p>
-                    <p class="text-gray-800">• Mercado Pago integrado</p>
-                    <p class="text-gray-800">• App ou link personalizado para seus clientes</p>
-                    <p class="text-gray-800">• Página principal com gráficos/métricas</p>
-                    <p class="text-gray-800">• Campanha de retorno (métricas/disparos WhatsApp)</p>
-                    <p class="text-gray-800">• Clube do assinante</p>
-                    <p class="text-gray-800">• Cadastro de cupons promocionais</p>
-                    <p class="text-gray-800">• Opção de encaixes</p>
-                    <p class="text-gray-800">• Prontuários</p>
-                    <p class="text-gray-800">• Controle de depoimentos</p>
-                    <p class="text-gray-800">• Cartão fidelidade</p>
-                    <p class="text-gray-800">• Pesquisa de satisfação</p>
-                    <p class="text-gray-800">• Mensagens de alertas por WhatsApp</p>
-                    <p class="text-gray-800">• E muito mais</p>
+            <div class="bg-white p-8 rounded-2xl shadow-lg mt-12 w-full max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-purple-700 text-center mb-6">Recursos Inclusos</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-8 text-gray-700">
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Gestão de Agendamentos</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Gestão de Clientes</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Gestão de Profissionais (Plano Empresa)</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Gestão de Serviços</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Gestão de Produtos e Fornecedores</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Gestão Financeira e Comissões</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> WhatsApp Integrado</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Mercado Pago Integrado</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Aplicativo ou Link Personalizado</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Dashboard com Métricas</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Campanhas de Retorno</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Clube do Assinante e Cupons</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Opção de Encaixes</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Prontuários e Depoimentos</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Cartão Fidelidade</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Pesquisa de Satisfação</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> Mensagens de Alerta</p>
+                    <p class="flex items-center"><span class="text-purple-600 mr-2">✔️</span> E muito mais...</p>
                 </div>
             </div>
 
-            <!-- Botão Voltar -->
-            <button
-                class="w-full md:w-auto bg-white text-purple-800 font-bold py-3 px-6 rounded-md mt-6 border border-purple-800 hover:bg-purple-100"
-                onclick="window.location.href='login.php'"
-            >
-                ← Voltar para o Login
-            </button>
-
-            <div class="h-6"></div>
+            <div class="mt-8 text-center">
+                <button
+                    class="w-full sm:w-auto bg-gray-100 text-purple-700 font-bold py-3 px-6 rounded-lg border-2 border-purple-700 hover:bg-gray-200 transition-colors"
+                    onclick="window.location.href='login.php'"
+                >
+                    ← Voltar para o Login
+                </button>
+            </div>
         </div>
     </div>
-
-    <script>
-        const API_BASE_URL = 'https://markai.skysee.com.br/api';
-        let coupon = '';
-        let trialDays = 15;
-
-        // Mostrar seção de cupom inicialmente
-        document.getElementById('coupon-section').classList.remove('hidden');
-
-        // Função para validar cupom
-        document.getElementById('proceed-btn').addEventListener('click', async () => {
-            const couponInput = document.getElementById('coupon-input').value.trim().toUpperCase();
-            const couponError = document.getElementById('coupon-error');
-
-            if (!couponInput) {
-                couponError.textContent = 'Por favor, insira um cupom';
-                couponError.classList.remove('hidden');
-                return;
-            }
-
-            try {
-                const response = await fetch(`validate-coupon.php`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ coupon: couponInput })
-                });
-
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error(data.error || 'Erro ao validar cupom');
-                }
-
-                coupon = couponInput;
-                trialDays = data.trialDays || 30;
-                document.getElementById('coupon-section').classList.add('hidden');
-                document.getElementById('plans-section').classList.remove('hidden');
-                document.getElementById('trial-days').textContent = `${trialDays} dias grátis para teste.`;
-            } catch (err) {
-                couponError.textContent = err.message || 'Cupom não existente';
-                couponError.classList.remove('hidden');
-            }
-        });
-
-        // Função para prosseguir sem cupom
-        document.getElementById('no-coupon-btn').addEventListener('click', () => {
-            coupon = '';
-            trialDays = 15;
-            document.getElementById('coupon-section').classList.add('hidden');
-            document.getElementById('plans-section').classList.remove('hidden');
-            document.getElementById('trial-days').textContent = '15 dias grátis para teste.';
-        });
-
-        // Função para abrir checkout
-        async function openCheckout(priceId, planIndex) {
-            const loadingElement = document.getElementById(`loading-${planIndex}`);
-            const errorElement = document.getElementById(`error-${planIndex}`);
-
-            if (!loadingElement || !errorElement) {
-                console.error(`Elementos loading-${planIndex} ou error-${planIndex} não encontrados`);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Erro',
-                    text: 'Erro interno. Tente novamente mais tarde.'
-                });
-                return;
-            }
-
-            loadingElement.classList.remove('hidden');
-            errorElement.classList.add('hidden');
-
-            try {
-                const response = await fetch(`create-checkout-session.php`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ priceId, coupon: coupon || null })
-                });
-
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error(data.error || `Erro na requisição: ${response.status}`);
-                }
-
-                if (data.url) {
-                    window.location.href = data.url;
-                } else {
-                    throw new Error('URL de checkout não retornada');
-                }
-            } catch (err) {
-                errorElement.textContent = `Erro: ${err.message}`;
-                errorElement.classList.remove('hidden');
-            } finally {
-                loadingElement.classList.add('hidden');
-            }
-        }
-    </script>
 </body>
 </html>
