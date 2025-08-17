@@ -110,6 +110,8 @@ $plano = $res3['plano'];
 	<!-- //font-awesome icons CSS-->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
 
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
 	<!-- Incluindo Font Awesome via CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -707,11 +709,11 @@ $plano = $res3['plano'];
 								</ul>
 							</li>
 
-							<li class="treeview <?php echo @$clientes_retorno ?>">
+							<!-- <li class="treeview <?php echo @$clientes_retorno ?>">
                                 <a href="clientes_retorno">
                                     <i class="fa fa-bell"></i><span>Clientes Retornos</span>
                                 </a>
-                             </li>	
+                             </li>	 -->
 
 
 							<li class="treeview <?= @$whatsapp?>">
@@ -732,16 +734,16 @@ $plano = $res3['plano'];
                          
 
                             <li class="treeview <?= @$marketing ?>">
-                                <a href="marketingp">
-                                    <i class="fa fa-paper-plane"></i><span>Campanha Marketing</span>
+                                <a href="campanhas">
+                                    <i class="fa fa-paper-plane"></i><span>Campanha de retorno</span>
                                 </a>
                              </li>					
                             
-								<li class="treeview <?php echo @$calendario ?>">
+								<!-- <li class="treeview <?php echo @$calendario ?>">
 								<a href="calendario">
 									<i class="fa fa-calendar-o"></i> <span>Calendário</span>
 								</a>
-							</li>
+							</li> -->
 
 
 							<li class="treeview <?php echo @$menu_site ?>" >
