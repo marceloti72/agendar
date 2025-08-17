@@ -86,6 +86,7 @@ try {
         }
         $mensagem .= "Agende agora: https://markai.skysee.com.br/agendamentos.php?u=".$id_conta;
         $mensagem = str_replace("%0A", "\n", $mensagem);
+        $telefone = '55' . preg_replace('/[ ()-]+/', '', $cliente['telefone']);
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -100,7 +101,7 @@ try {
             CURLOPT_POSTFIELDS => array(
                 'appkey' => $instancia,
                 'authkey' => $token,
-                'to' => $cliente['telefone'],
+                'to' => $telefone,
                 'message' => $mensagem,
             ),
         ));
