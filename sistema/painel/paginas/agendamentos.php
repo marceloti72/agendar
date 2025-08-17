@@ -889,6 +889,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
         // Abrir Modal de Pagamento
         function abrirModalPagamento() {
+            alert('eeeee')
             $('#modalForm2').modal('hide');
             var total = parseFloat($('#valor_serv').val()) || 0;
             $('#total-pagar').text(total.toFixed(2));
