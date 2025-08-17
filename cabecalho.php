@@ -126,7 +126,7 @@ if(isset($_GET['id'])){
               
             </li>
           </ul>
-          <a href="precos.php"><button class="botao2">Teste Grátis</button></a>
+          <a href="plan-selection.html"><button class="botao2">Teste Grátis</button></a>
           <a href="login.php" class="botao">Acesse</a>
         </div>
       </nav>
