@@ -309,6 +309,9 @@ select {
     .container {
         padding: 0 0.5rem;
     }
+    h1 {
+        font-size: 24px;
+    }
 
     .chart-wrapper {
         max-width: 100%;
@@ -338,6 +341,10 @@ select {
 
     canvas {
         height: clamp(250px, 30vw, 220px) !important;
+    }
+
+    h1 {
+        font-size: 24px;
     }
 
     .modal-content, .modal-content2 {
