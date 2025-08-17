@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("../../conexao.php"); // Ajuste o caminho conforme necessário
+require_once("../../../conexao.php"); // Ajuste o caminho conforme necessário
 
 header('Content-Type: application/json');
 
@@ -29,15 +29,15 @@ try {
     // Buscar clientes do segmento
     $query = "SELECT id, nome, telefone FROM clientes WHERE id_conta = :id_conta";
     if ($segmento === '30-90') {
-        $query .= " AND DATEDIFF(CURDATE(), ultima_visita) BETWEEN 30 AND 90";
+        $query .= " AND DATEDIFF(CURDATE(), data_retorno) BETWEEN 30 AND 90";
     } elseif ($segmento === '90-180') {
-        $query .= " AND DATEDIFF(CURDATE(), ultima_visita) BETWEEN 91 AND 180";
+        $query .= " AND DATEDIFF(CURDATE(), data_retorno) BETWEEN 91 AND 180";
     } elseif ($segmento === '180-365') {
-        $query .= " AND DATEDIFF(CURDATE(), ultima_visita) BETWEEN 181 AND 365";
+        $query .= " AND DATEDIFF(CURDATE(), data_retorno) BETWEEN 181 AND 365";
     } elseif ($segmento === '365+') {
-        $query .= " AND DATEDIFF(CURDATE(), ultima_visita) > 365";
+        $query .= " AND DATEDIFF(CURDATE(), data_retorno) > 365";
     } elseif ($segmento === 'sem-retorno') {
-        $query .= " AND ultima_visita IS NULL";
+        $query .= " AND data_retorno IS NULL";
     }
 
     $stmt = $pdo->prepare($query);
@@ -55,7 +55,7 @@ try {
     $cupom_codigo = null;
     if ($oferecer_cupom === 'Sim' && $id_cupom) {
         $query = $pdo->prepare("
-            SELECT codigo, valor, tipo_desconto
+            SELECT codigo, valor, tipo_desconto, data_validade
             FROM cupons
             WHERE id = :id_cupom AND id_conta = :id_conta
             AND data_validade >= CURDATE()
@@ -78,11 +78,13 @@ try {
     $success_count = 0;
 
     foreach ($clientes as $cliente) {
-        $mensagem = "Olá, {$cliente['nome']}!\nSentimos sua falta! ";
+        $mensagem = "Olá, {$cliente['nome']}! 😊\nSentimos sua falta, na ".$nome_sistema." !";        
         if ($cupom_codigo) {
             $mensagem .= "Volte e use o cupom {$cupom_codigo} para um desconto especial! ";
+        }else{
+            $mensagem .= "Que tal voltar para um serviço especial ?";
         }
-        $mensagem .= "Agende agora: https://seusite.com/agendamento";
+        $mensagem .= "Agende agora: https://markai.skysee.com.br/agendamentos.php?u=".$id_conta;
         $mensagem = str_replace("%0A", "\n", $mensagem);
 
         $curl = curl_init();
@@ -114,19 +116,7 @@ try {
             // save_log($pdo, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'CAMPANHA', $api_response, 'texto', $cliente['telefone'], $mensagem, $id_conta);
         }
     }
-
-    // Atualizar usos do cupom, se aplicável
-    if ($cupom_codigo && $success_count > 0) {
-        $query = $pdo->prepare("
-            UPDATE cupons
-            SET usos_atuais = usos_atuais + :success_count
-            WHERE id = :id_cupom AND id_conta = :id_conta
-        ");
-        $query->bindValue(':success_count', $success_count);
-        $query->bindValue(':id_cupom', $id_cupom);
-        $query->bindValue(':id_conta', $id_conta);
-        $query->execute();
-    }
+    
 
     $response = [
         'success' => true,

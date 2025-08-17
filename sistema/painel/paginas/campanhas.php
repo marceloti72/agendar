@@ -104,7 +104,7 @@ try {
 .chart-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
     margin: 1rem 0;
     gap: 1rem;
 }
