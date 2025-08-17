@@ -91,7 +91,7 @@ try {
 }
 
 .add-button {
-    background-color: #4A90E2;
+    background-color: #e99f35;
     color: #FFFFFF;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
