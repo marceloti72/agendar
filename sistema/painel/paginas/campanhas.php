@@ -10,17 +10,6 @@ if (!isset($_SESSION['id_conta'])) {
 
 $id_conta = $_SESSION['id_conta'];
 
-// Buscar username (equivalente a fetchUsername)
-// try {
-//     $query = $pdo->prepare("SELECT nome FROM contas WHERE id = :id_conta");
-//     $query->bindValue(':id_conta', $id_conta);
-//     $query->execute();
-//     $username = $query->fetch(PDO::FETCH_ASSOC)['nome'] ?? '';
-// } catch (Exception $e) {
-//     $username = '';
-//     error_log('Erro ao buscar username: ' . $e->getMessage());
-// }
-
 // Buscar clientes segmentados por tempo sem retorno (equivalente a fetchClientesSegmentos)
 $clientes_segmentos = [
     '30-90' => 0,
@@ -72,6 +61,15 @@ try {
 }
 ?>
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campanhas de Marketing</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -99,21 +97,31 @@ try {
             font-weight: 600;
         }
         .chart-container {
-            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
             margin: 16px 0;
+            gap: 16px;
+        }
+        .chart-wrapper {
+            flex: 1;
+            min-width: 300px;
+            max-width: 45%;
+            text-align: center;
         }
         .chart-title {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             color: #333333;
-            margin: 16px 0 8px;
+            margin: 8px 0;
         }
         canvas {
             max-width: 100%;
-            border-radius: 16px;
+            height: 200px !important;
+            border-radius: 8px;
         }
         .no-data-text {
-            font-size: 14px;
+            font-size: 12px;
             color: #666666;
             text-align: center;
             margin: 8px 0;
@@ -262,9 +270,14 @@ try {
             height: 20px;
             background-color: #4A90E2;
         }
+        @media (max-width: 768px) {
+            .chart-wrapper {
+                max-width: 100%;
+            }
+        }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
+</head>
+<body>
     <div class="container">
         <div class="loading-overlay" id="loading-overlay">
             <span class="loading-text">Carregando...</span>
@@ -274,12 +287,16 @@ try {
             <a href="#" class="add-button" onclick="openCampanhaModal()">+ Nova Campanha</a>
         </div>
         <div class="chart-container">
-            <h2 class="chart-title">Distribuição de Clientes por Tempo sem Retorno</h2>
-            <canvas id="lineChart"></canvas>
-            <h2 class="chart-title">Distribuição Percentual de Clientes por Tempo sem Retorno</h2>
-            <canvas id="pieChart"></canvas>
-            <div id="no-data-text" class="no-data-text" style="display: none;">
-                Nenhum dado disponível para o gráfico de pizza
+            <div class="chart-wrapper">
+                <h2 class="chart-title">Distribuição de Clientes por Tempo sem Retorno</h2>
+                <canvas id="lineChart"></canvas>
+            </div>
+            <div class="chart-wrapper">
+                <h2 class="chart-title">Distribuição Percentual de Clientes por Tempo sem Retorno</h2>
+                <canvas id="pieChart"></canvas>
+                <div id="no-data-text" class="no-data-text" style="display: none;">
+                    Nenhum dado disponível para o gráfico de pizza
+                </div>
             </div>
         </div>
         <div id="error-text" class="error-text" style="display: none;"></div>
@@ -358,16 +375,6 @@ try {
         const clientesSegmentos = <?php echo json_encode($clientes_segmentos); ?>;
         let selectedSegmento = null;
         let intervalId = null;
-
-        // Função para verificar token (simulada com sessionStorage)
-        // function checkAndRefreshToken() {
-        //     const token = sessionStorage.getItem('token');
-        //     if (!token) {
-        //         Swal.fire('Sessão Expirada', 'Por favor, faça login novamente.', 'error');
-        //         return false;
-        //     }
-        //     return true;
-        // }
 
         // Inicializar gráficos
         const totalClientes = Object.values(clientesSegmentos).reduce((sum, val) => sum + val, 0);
@@ -478,7 +485,7 @@ try {
                 return;
             }
 
-            if (!checkAndRefreshToken()) return;
+            // if (!checkAndRefreshToken()) return;
 
             document.getElementById('loading-overlay').style.display = 'flex';
             $.ajax({
@@ -529,3 +536,5 @@ try {
             });
         }
     </script>
+</body>
+</html>
