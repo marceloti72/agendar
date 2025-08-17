@@ -136,7 +136,7 @@ try {
             $failed_count++;
         } else {
             $api_response = json_decode($api_response, true);
-            if ($http_code == 200 && isset($api_response['status']) && $api_response['status'] == 'success') {
+            if ($http_code == 200 && isset($api_response['status']) && $api_response['status'] == 200) {
                 $success_count++;
                 
                 // Opcional: salvar log da mensagem
