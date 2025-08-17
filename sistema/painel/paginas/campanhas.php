@@ -75,8 +75,7 @@ try {
     font-family: Arial, sans-serif;
     background-color: #F0F8FF;
     margin: 0;
-    padding: 2vw;
-}
+    }
 
 .container {
     max-width: 100%;
