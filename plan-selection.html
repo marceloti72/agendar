@@ -159,5 +159,125 @@
             </div>
         </div>
     </div>
+    <script>
+        const API_BASE_URL = 'https://markai.skysee.com.br/api';
+        let coupon = '';
+        let trialDays = 15;
+
+        // Mostrar seção de cupom inicialmente
+        document.getElementById('coupon-section').classList.remove('hidden');
+
+        // Função para validar cupom
+        document.getElementById('proceed-btn').addEventListener('click', async () => {
+            const couponInput = document.getElementById('coupon-input').value.trim().toUpperCase();
+            const couponError = document.getElementById('coupon-error');
+            
+            // Mostra um spinner de carregamento no botão
+            const proceedBtn = document.getElementById('proceed-btn');
+            proceedBtn.textContent = 'Verificando...';
+            proceedBtn.disabled = true;
+
+            if (!couponInput) {
+                couponError.textContent = 'Por favor, insira um cupom.';
+                couponError.classList.remove('hidden');
+                proceedBtn.textContent = 'Prosseguir';
+                proceedBtn.disabled = false;
+                return;
+            }
+
+            try {
+                const response = await fetch(`validate-coupon.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ coupon: couponInput })
+                });
+
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || 'Erro ao validar cupom');
+                }
+
+                coupon = couponInput;
+                trialDays = data.trialDays || 30;
+                
+                document.getElementById('coupon-section').classList.add('hidden');
+                document.getElementById('plans-section').classList.remove('hidden');
+                document.getElementById('trial-days').textContent = `${trialDays} dias grátis para teste.`;
+                
+                // Exibe um alerta de sucesso
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Cupom Aplicado!',
+                    text: 'Seu período de teste foi estendido. Aproveite!',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+                
+            } catch (err) {
+                couponError.textContent = err.message || 'Cupom não existente.';
+                couponError.classList.remove('hidden');
+            } finally {
+                proceedBtn.textContent = 'Prosseguir';
+                proceedBtn.disabled = false;
+            }
+        });
+
+        // Função para prosseguir sem cupom
+        document.getElementById('no-coupon-btn').addEventListener('click', () => {
+            coupon = '';
+            trialDays = 15;
+            document.getElementById('coupon-section').classList.add('hidden');
+            document.getElementById('plans-section').classList.remove('hidden');
+            document.getElementById('trial-days').textContent = '15 dias grátis para teste.';
+        });
+
+        // Função para abrir checkout
+        async function openCheckout(priceId, planIndex) {
+            const loadingElement = document.getElementById(`loading-${planIndex}`);
+            const errorElement = document.getElementById(`error-${planIndex}`);
+
+            if (!loadingElement || !errorElement) {
+                console.error(`Elementos loading-${planIndex} ou error-${planIndex} não encontrados`);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro',
+                    text: 'Erro interno. Tente novamente mais tarde.'
+                });
+                return;
+            }
+
+            loadingElement.classList.remove('hidden');
+            errorElement.classList.add('hidden');
+
+            try {
+                const response = await fetch(`create-checkout-session.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ priceId, coupon: coupon || null })
+                });
+
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || `Erro na requisição: ${response.status}`);
+                }
+
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    throw new Error('URL de checkout não retornada');
+                }
+            } catch (err) {
+                errorElement.textContent = `Erro: ${err.message}`;
+                errorElement.classList.remove('hidden');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro no Checkout',
+                    text: err.message
+                });
+            } finally {
+                loadingElement.classList.add('hidden');
+            }
+        }
+    </script>
 </body>
 </html>
