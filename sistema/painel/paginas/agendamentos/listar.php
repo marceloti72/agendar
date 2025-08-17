@@ -13,7 +13,7 @@ body {
     background-color: #e3e2e0;
     color: #333;
     margin: 0;
-    padding: 20px;
+    /* padding: 20px; */
 }
 
 /* Container for the appointment list */
