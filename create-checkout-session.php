@@ -1,13 +1,17 @@
 <?php
-require './vendor/autoload.php'; // Ajuste o caminho para o autoload do Stripe
+// Forçar codificação UTF-8
+mb_internal_encoding('UTF-8');
+mb_http_output('UTF-8');
+ini_set('default_charset', 'UTF-8');
 
- use Stripe\Stripe;
+require_once './vendor/autoload.php'; // Ajuste o caminho para o autoload do Stripe
+
+use Stripe\Stripe;
 use Stripe\Checkout\Session;
-use Stripe\Webhook;
-use Stripe\Subscription;
 
-header('Content-Type: application/json');
-session_start();
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
 
 $response = ['error' => 'Erro desconhecido'];
 
@@ -19,14 +23,18 @@ try {
     if (!$priceId) {
         http_response_code(400);
         $response['error'] = 'priceId é obrigatório';
+        error_log('Erro: priceId é obrigatório');
         echo json_encode($response);
         exit;
     }
-     
 
-// Configurações do Stripe
-Stripe::setApiKey(getenv('STRIPE_SECRET_KEY')); // Pega a chave da variável de ambiente
-
+    // Configurar Stripe
+    $stripeKey = getenv('STRIPE_SECRET_KEY');
+    if (empty($stripeKey)) {
+        throw new Exception('Chave secreta do Stripe não configurada. Verifique a variável de ambiente STRIPE_SECRET_KEY.');
+    }
+    Stripe::setApiKey($stripeKey);
+    Stripe::setApiVersion('2023-10-16');
 
     $trialPeriodDays = $coupon ? 30 : 15;
 
