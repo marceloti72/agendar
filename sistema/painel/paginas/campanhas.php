@@ -316,7 +316,7 @@ select {
     }
 
     canvas {
-        height: clamp(120px, 35vw, 180px) !important;
+        height: clamp(250px, 35vw, 180px) !important;
     }
 
     .modal-content, .modal-content2 {
@@ -337,7 +337,7 @@ select {
     }
 
     canvas {
-        height: clamp(150px, 30vw, 220px) !important;
+        height: clamp(250px, 30vw, 220px) !important;
     }
 
     .modal-content, .modal-content2 {
@@ -351,7 +351,7 @@ select {
     }
 
     canvas {
-        height: clamp(180px, 25vw, 300px) !important;
+        height: clamp(250px, 25vw, 300px) !important;
     }
 }
     </style>
