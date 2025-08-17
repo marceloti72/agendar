@@ -1,5 +1,17 @@
 <?php
-require_once 'sistema/conexao.php'; // Ajuste o caminho conforme necessário
+// Conexão com o banco de dados
+$db_servidor = 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
+$db_usuario = 'skysee';
+$db_senha = '9vtYvJly8PK6zHahjPUg';        
+$db_nome2 = 'gestao_sistemas';        
+
+try {
+    $pdo2 = new PDO("mysql:host=$db_servidor;dbname=$db_nome2;charset=utf8", $db_usuario, $db_senha);
+    $pdo2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    file_put_contents('/var/www/markai/error_log.txt', date('Y-m-d H:i:s') . " - Erro ao conectar com o banco 'gestao_sistemas': " . $e->getMessage() . "\n", FILE_APPEND);
+    throw new Exception("Erro ao conectar com o banco de dados 'gestao_sistemas': " . $e->getMessage());
+}
 
 header('Content-Type: application/json');
 
@@ -21,7 +33,7 @@ try {
 
     // Consultar o cupom na tabela usuarios
     error_log('Verificando cupom: ' . $coupon);
-    $query = $pdo->prepare('SELECT * FROM usuarios WHERE cupom = :coupon');
+    $query = $pdo2->prepare('SELECT * FROM usuarios WHERE cupom = :coupon');
     $query->bindValue(':coupon', $coupon, PDO::PARAM_STR);
     $query->execute();
     $results = $query->fetchAll(PDO::FETCH_ASSOC);
