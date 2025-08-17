@@ -74,10 +74,7 @@ try {
         }
     }
 
-    // Configurações da API do Menuia
-    $instancia = 'SUA_INSTANCIA_MENUIA'; // Substitua pela sua appkey
-    $token = 'SEU_AUTH_TOKEN_MENUIA'; // Substitua pelo seu authkey
-    $nome_sistema = 'Markai'; // Substitua pelo nome real do sistema
+    // Configurações da API do Menuia        
     $success_count = 0;
     $failed_count = 0;
     $details = [];
@@ -108,7 +105,7 @@ try {
 
         // Formatar data de agendamento (Y-m-d H:i:s)
         $data_mensagem_str = $data_mensagem->format('Y-m-d H:i:s');
-
+        
         // Enviar mensagem via API do Menuia com agendamento
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -141,17 +138,7 @@ try {
             $api_response = json_decode($api_response, true);
             if ($http_code == 200 && isset($api_response['status']) && $api_response['status'] == 'success') {
                 $success_count++;
-                // Atualizar usos do cupom, se aplicável
-                if ($cupom_codigo) {
-                    $query = $pdo->prepare("
-                        UPDATE cupons
-                        SET usos_atuais = COALESCE(usos_atuais, 0) + 1
-                        WHERE id = :id_cupom AND id_conta = :id_conta
-                    ");
-                    $query->bindValue(':id_cupom', $id_cupom, PDO::PARAM_INT);
-                    $query->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
-                    $query->execute();
-                }
+                
                 // Opcional: salvar log da mensagem
                 // save_log($pdo, 'f4QGNF6L4KhSNvEWP1VTHaDAI57bDTEj89Kemni1iZckHne3j9', 'CAMPANHA', $api_response, 'texto', $telefone, $mensagem, $id_conta);
             } else {
