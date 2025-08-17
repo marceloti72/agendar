@@ -416,7 +416,7 @@ try {
             $mensagem .= 'Aguardamos você! 😃';
             $id_envio = $ult_id;
             $data_envio = $data_agd . ' ' . $nova_hora;
-
+            
             if ($minutos_aviso > 0) {
                 require("../../../../ajax/confirmacao.php");
                 $id_hash = $id;
