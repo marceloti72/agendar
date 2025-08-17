@@ -263,7 +263,7 @@ try {
             background-color: #4A90E2;
         }
     </style>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
     <div class="container">
         <div class="loading-overlay" id="loading-overlay">
@@ -360,14 +360,14 @@ try {
         let intervalId = null;
 
         // Função para verificar token (simulada com sessionStorage)
-        function checkAndRefreshToken() {
-            const token = sessionStorage.getItem('token');
-            if (!token) {
-                Swal.fire('Sessão Expirada', 'Por favor, faça login novamente.', 'error');
-                return false;
-            }
-            return true;
-        }
+        // function checkAndRefreshToken() {
+        //     const token = sessionStorage.getItem('token');
+        //     if (!token) {
+        //         Swal.fire('Sessão Expirada', 'Por favor, faça login novamente.', 'error');
+        //         return false;
+        //     }
+        //     return true;
+        // }
 
         // Inicializar gráficos
         const totalClientes = Object.values(clientesSegmentos).reduce((sum, val) => sum + val, 0);
