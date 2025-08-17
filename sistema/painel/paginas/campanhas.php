@@ -72,210 +72,288 @@ try {
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #F0F8FF;
-            margin: 0;
-            padding: 16px;
-        }
-        .container {
-            max-width: 1200px;
-            height: 400px;
-            margin: 0 auto;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        .add-button {
-            background-color: #4A90E2;
-            color: #FFFFFF;
-            padding: 8px 16px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .chart-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin: 16px 0;
-            gap: 16px;
-        }
-        .chart-wrapper {
-            flex: 1;
-            min-width: 300px;
-            max-width: 45%;
-            text-align: center;
-        }
-        .chart-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #333333;
-            margin: 8px 0;
-        }
-        canvas {
-            max-width: 100%;
-            height: 200px !important;
-            border-radius: 8px;
-        }
-        .no-data-text {
-            font-size: 12px;
-            color: #666666;
-            text-align: center;
-            margin: 8px 0;
-        }
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background-color: #FFFFFF;
-            border-radius: 10px;
-            padding: 20px;
-            width: 80%;
-            max-width: 400px;
-            max-height: 80%;
-            overflow-y: auto;
-        }
-        .modal-content2 {
-            background-color: #FFFFFF;
-            border-radius: 10px;
-            padding: 20px;
-            width: 80%;
-            max-width: 300px;
-        }
-        .modal-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333333;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-        .modal-sub-text {
-            font-size: 14px;
-            color: #666666;
-            margin-bottom: 12px;
-        }
-        .segmento-button {
-            background-color: #4A90E2;
-            color: #FFFFFF;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 6px 0;
-            text-align: center;
-            cursor: pointer;
-        }
-        .picker-container {
-            margin: 8px 0;
-        }
-        .picker-label {
-            font-size: 14px;
-            color: #333333;
-            margin-bottom: 4px;
-        }
-        select {
-            width: 100%;
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid #DDDDDD;
-            font-size: 14px;
-        }
-        .modal-button-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 16px;
-        }
-        .modal-button {
-            flex: 1;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 0 4px;
-            text-align: center;
-            color: #FFFFFF;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .cancel-button {
-            background-color: #FF4444;
-        }
-        .confirm-button {
-            background-color: #4A90E2;
-        }
-        .error-text {
-            font-size: 14px;
-            color: #FF4444;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-        .loading-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1001;
-        }
-        .loading-text {
-            font-size: 18px;
-            color: #FFFFFF;
-            font-weight: 600;
-        }
-        .timeline-container {
-            margin: 16px 0;
-            text-align: center;
-        }
-        .timeline-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #333333;
-            margin-bottom: 8px;
-        }
-        .timeline {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .timeline-point {
-            text-align: center;
-        }
-        .timeline-text {
-            font-size: 14px;
-            color: #333333;
-            margin: 4px 0;
-        }
-        .timeline-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 5px;
-            background-color: #4A90E2;
-            margin: 4px auto;
-        }
-        .timeline-line {
-            width: 2px;
-            height: 20px;
-            background-color: #4A90E2;
-        }
-        @media (max-width: 768px) {
-            .chart-wrapper {
-                max-width: 100%;
-            }
-        }
+    font-family: Arial, sans-serif;
+    background-color: #F0F8FF;
+    margin: 0;
+    padding: 2vw;
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.add-button {
+    background-color: #4A90E2;
+    color: #FFFFFF;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+    font-weight: 600;
+}
+
+.chart-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 1rem 0;
+    gap: 1rem;
+}
+
+.chart-wrapper {
+    flex: 1;
+    min-width: 250px;
+    max-width: 48%;
+    text-align: center;
+}
+
+.chart-title {
+    font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+    font-weight: 600;
+    color: #333333;
+    margin: 0.5rem 0;
+}
+
+canvas {
+    max-width: 100%;
+    height: clamp(150px, 40vw, 300px) !important;
+    border-radius: 0.5rem;
+}
+
+.no-data-text {
+    font-size: clamp(0.7rem, 2vw, 0.75rem);
+    color: #666666;
+    text-align: center;
+    margin: 0.5rem 0;
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #FFFFFF;
+    border-radius: 0.625rem;
+    padding: 1.25rem;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-content2 {
+    background-color: #FFFFFF;
+    border-radius: 0.625rem;
+    padding: 1.25rem;
+    width: 90%;
+    max-width: 300px;
+}
+
+.modal-title {
+    font-size: clamp(1rem, 3vw, 1.125rem);
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.modal-sub-text {
+    font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+    color: #666666;
+    margin-bottom: 0.75rem;
+}
+
+.segmento-button {
+    background-color: #4A90E2;
+    color: #FFFFFF;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin: 0.375rem 0;
+    text-align: center;
+    cursor: pointer;
+    font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+}
+
+.picker-container {
+    margin: 0.5rem 0;
+}
+
+.picker-label {
+    font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+    color: #333333;
+    margin-bottom: 0.25rem;
+}
+
+select {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #DDDDDD;
+    font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+}
+
+.modal-button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.modal-button {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin: 0 0.25rem;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-button {
+    background-color: #FF4444;
+}
+
+.confirm-button {
+    background-color: #4A90E2;
+}
+
+.error-text {
+    font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+    color: #FF4444;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.loading-text {
+    font-size: clamp(1rem, 3vw, 1.125rem);
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+.timeline-container {
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.timeline-title {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 0.5rem;
+}
+
+.timeline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timeline-point {
+    text-align: center;
+}
+
+.timeline-text {
+    font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+    color: #333333;
+    margin: 0.25rem 0;
+}
+
+.timeline-dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    background-color: #4A90E2;
+    margin: 0.25rem auto;
+}
+
+.timeline-line {
+    width: 2px;
+    height: 1.25rem;
+    background-color: #4A90E2;
+}
+
+/* Media Queries para Responsividade */
+@media (max-width: 600px) {
+    .container {
+        padding: 0 0.5rem;
+    }
+
+    .chart-wrapper {
+        max-width: 100%;
+        min-width: 100%;
+    }
+
+    canvas {
+        height: clamp(120px, 35vw, 180px) !important;
+    }
+
+    .modal-content, .modal-content2 {
+        width: 95%;
+        padding: 0.75rem;
+    }
+
+    .add-button, .segmento-button, .modal-button {
+        font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+        padding: 0.4rem 0.8rem;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 1024px) {
+    .chart-wrapper {
+        max-width: 48%;
+        min-width: 280px;
+    }
+
+    canvas {
+        height: clamp(150px, 30vw, 220px) !important;
+    }
+
+    .modal-content, .modal-content2 {
+        width: 85%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .chart-wrapper {
+        max-width: 45%;
+    }
+
+    canvas {
+        height: clamp(180px, 25vw, 300px) !important;
+    }
+}
     </style>
 </head>
 <body>
