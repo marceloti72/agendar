@@ -38,6 +38,7 @@ try {
 
     $trialPeriodDays = $coupon ? 30 : 15;
 
+    
     // Criar sessão de checkout
     $session = Session::create([
         'payment_method_types' => ['card'],
