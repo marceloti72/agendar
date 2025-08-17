@@ -161,7 +161,7 @@
             }
 
             try {
-                const response = await fetch(`validate-coupon.php`, {
+                const response = await fetch(`${API_BASE_URL}/validate-coupon.php`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ coupon: couponInput })
@@ -211,7 +211,7 @@
             errorElement.classList.add('hidden');
 
             try {
-                const response = await fetch(`create-checkout-session.php`, {
+                const response = await fetch(`${API_BASE_URL}/create-checkout-session.php`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ priceId, coupon: coupon || null })

@@ -1,5 +1,5 @@
 <?php
-require_once './vendor/autoload.php'; // Ajuste o caminho para o autoload do Stripe
+require './vendor/autoload.php'; // Ajuste o caminho para o autoload do Stripe
 
  use Stripe\Stripe;
 use Stripe\Checkout\Session;
@@ -26,7 +26,7 @@ try {
 
 // Configurações do Stripe
 Stripe::setApiKey(getenv('STRIPE_SECRET_KEY')); // Pega a chave da variável de ambiente
-$endpoint_secret = getenv('STRIPE_WEBHOOK_SECRET'); // Pega o segredo do webhook da variável de ambiente
+
 
     $trialPeriodDays = $coupon ? 30 : 15;
 
