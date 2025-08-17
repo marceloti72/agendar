@@ -50,7 +50,7 @@
                     <p class="text-gray-600 mb-4">Multi usuários, ideal para negócios com funcionários ou parceiros.</p>
                     <button
                         class="w-full bg-purple-800 text-white font-bold py-3 rounded-md hover:bg-purple-900"
-                        onclick="openCheckout('price_1RUE2EJEPhV4vIDMarwc8vo4')"
+                        onclick="openCheckout('price_1RUE2EJEPhV4vIDMarwc8vo4', 1)"
                     >
                         Assine agora
                     </button>
@@ -64,7 +64,7 @@
                     <p class="text-gray-600 mb-4">Pague de uma vez e economize R$ 172,86.</p>
                     <button
                         class="w-full bg-purple-800 text-white font-bold py-3 rounded-md hover:bg-purple-900"
-                        onclick="openCheckout('price_1RUE3OJEPhV4vIDMzNgVl1jY')"
+                        onclick="openCheckout('price_1RUE3OJEPhV4vIDMzNgVl1jY', 2)"
                     >
                         Assine agora
                     </button>
@@ -78,7 +78,7 @@
                     <p class="text-gray-600 mb-4">Ideal para quem trabalha sozinho. Todas as funcionalidades, menos gestão de profissionais.</p>
                     <button
                         class="w-full bg-purple-800 text-white font-bold py-3 rounded-md hover:bg-purple-900"
-                        onclick="openCheckout('price_1RTZKzJEPhV4vIDM8SLdZ1Gx')"
+                        onclick="openCheckout('price_1RTZKzJEPhV4vIDM8SLdZ1Gx', 3)"
                     >
                         Assine agora
                     </button>
@@ -92,7 +92,7 @@
                     <p class="text-gray-600 mb-4">Pague de uma vez e economize R$ 71,85.</p>
                     <button
                         class="w-full bg-purple-800 text-white font-bold py-3 rounded-md hover:bg-purple-900"
-                        onclick="openCheckout('price_1RU5HjJEPhV4vIDMTnrVVyxT')"
+                        onclick="openCheckout('price_1RU5HjJEPhV4vIDMTnrVVyxT', 4)"
                     >
                         Assine agora
                     </button>
@@ -193,9 +193,19 @@
         });
 
         // Função para abrir checkout
-        async function openCheckout(priceId) {
-            const loadingElement = document.getElementById(`loading-${priceId.split('_')[1]}`);
-            const errorElement = document.getElementById(`error-${priceId.split('_')[1]}`);
+        async function openCheckout(priceId, planIndex) {
+            const loadingElement = document.getElementById(`loading-${planIndex}`);
+            const errorElement = document.getElementById(`error-${planIndex}`);
+
+            if (!loadingElement || !errorElement) {
+                console.error(`Elementos loading-${planIndex} ou error-${planIndex} não encontrados`);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro',
+                    text: 'Erro interno. Tente novamente mais tarde.'
+                });
+                return;
+            }
 
             loadingElement.classList.remove('hidden');
             errorElement.classList.add('hidden');
