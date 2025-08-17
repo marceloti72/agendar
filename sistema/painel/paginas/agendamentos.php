@@ -852,6 +852,18 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script type="text/javascript" src="js/monthly.js"></script>
 <script type="text/javascript">
+    // Função global para abrir o modal de pagamento
+    window.abrirModalPagamento = function() {
+        console.log('Função abrirModalPagamento chamada');
+        $('#modalForm2').modal('hide');
+        var total = parseFloat($('#valor_serv').val()) || 0;
+        $('#total-pagar').text(total.toFixed(2));
+        $('#qr-code-container').hide();
+        $('#payment-options').show();
+        $('#mensagem-pagamento').text('');
+        $('#modalPagamento').modal('show');
+    };
+
     $(window).load(function() {
         $('#mycalendar').monthly({
             mode: 'event',
@@ -886,19 +898,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
         $('.sel4').select2({
             dropdownParent: $('#modalServico')
         });
-
-        // Abrir Modal de Pagamento
-        function abrirModalPagamento() {
-            alert('eeeee')
-            $('#modalForm2').modal('hide');
-            var total = parseFloat($('#valor_serv').val()) || 0;
-            $('#total-pagar').text(total.toFixed(2));
-            $('#qr-code-container').hide();
-            $('#payment-options').show();
-            $('#mensagem-pagamento').text('');
-            $('#modalPagamento').modal('show');
-        }
-
+        
         // Criar QR Code
         $('#btn-criar-qr').click(function() {
             var id = $('#id').val();
