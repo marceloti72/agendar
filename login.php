@@ -90,7 +90,7 @@
 </head>
 <body class="bg-gray-100 font-sans">
 
-    <div class="flex flex-col items-center justify-center min-h-screen p-6" style="background-image: linear-gradient(to right, #8b5cf6, #6b46c1);">
+    <div class="flex flex-col items-center justify-center min-h-screen p-6" style="background-image: linear-gradient(to right, #4A90E2, #50C9C3);">
         
         <div class="login-card">
             <div class="text-center mb-8">
