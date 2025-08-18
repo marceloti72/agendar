@@ -121,109 +121,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 // Ensure no output before this point
 ob_start();
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciar Cupons</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #F0F8FF;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .header h1 {
-            font-size: 24px;
-            color: #333333;
-            font-weight: bold;
-        }
-        .add-button {
-            background-color: #4A90E2;
-            color: #FFFFFF;
-            padding: 8px 16px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .add-button:hover {
-            background-color: #357ABD;
-        }
-        .coupon-list {
-            margin-top: 20px;
-        }
-        .coupon-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #FFFFFF;
-            padding: 12px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .coupon-item.invalid {
-            background-color: #FFE6E6;
-        }
-        .coupon-info p {
-            margin: 4px 0;
-            color: #333333;
-            font-size: 16px;
-        }
-        .coupon-info p.subtext {
-            color: #666666;
-            font-size: 14px;
-        }
-        .coupon-info p.status {
-            color: #FF4444;
-            font-size: 12px;
-            font-style: italic;
-        }
-        .button-container {
-            display: flex;
-            gap: 8px;
-        }
-        .edit-button, .delete-button {
-            padding: 8px;
-            border-radius: 8px;
-            color: #FFFFFF;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .edit-button {
-            background-color: #4A90E2;
-        }
-        .edit-button:hover {
-            background-color: #357ABD;
-        }
-        .delete-button {
-            background-color: #FF4444;
-        }
-        .delete-button:hover {
-            background-color: #CC3333;
-        }
-        .no-coupons {
-            text-align: center;
-            color: #666666;
-            font-size: 16px;
-            margin-top: 20px;
-        }
         .modal-overlay {
             display: none;
             position: fixed;
@@ -239,84 +145,6 @@ ob_start();
         .modal-overlay.active {
             display: flex;
         }
-        .modal-content {
-            background-color: #FFFFFF;
-            border-radius: 10px;
-            padding: 20px;
-            width: 80%;
-            max-width: 400px;
-        }
-        .modal-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333333;
-            text-align: center;
-            margin-bottom: 16px;
-        }
-        .input {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 1px solid #DDDDDD;
-            border-radius: 8px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        .picker-container {
-            margin: 8px 0;
-        }
-        .picker-label {
-            font-size: 14px;
-            color: #333333;
-            margin-bottom: 4px;
-        }
-        .picker {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #DDDDDD;
-            border-radius: 8px;
-            font-size: 16px;
-            background-color: #FFFFFF;
-        }
-        .modal-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 16px;
-        }
-        .modal-button {
-            flex: 1;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            color: #FFFFFF;
-            font-size: 16px;
-            font-weight: 600;
-            margin: 0 4px;
-            cursor: pointer;
-        }
-        .cancel-button {
-            background-color: #FF4444;
-        }
-        .cancel-button:hover {
-            background-color: #CC3333;
-        }
-        .confirm-button {
-            background-color: #4A90E2;
-        }
-        .confirm-button:hover {
-            background-color: #357ABD;
-        }
-        .error-text, .success-text {
-            font-size: 14px;
-            text-align: center;
-            margin-bottom: 8px;
-        }
-        .error-text {
-            color: #FF4444;
-        }
-        .success-text {
-            color: #4A90E2;
-        }
         .loading-overlay {
             display: none;
             position: fixed;
@@ -324,7 +152,7 @@ ob_start();
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.7);
             justify-content: center;
             align-items: center;
             z-index: 2000;
@@ -332,50 +160,61 @@ ob_start();
         .loading-overlay.active {
             display: flex;
         }
-        .loading-text {
-            color: #FFFFFF;
-            font-size: 18px;
-            font-weight: 600;
-        }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Cupons de Desconto</h1>
-            <button class="add-button" onclick="openModal(false)">+ Novo Cupom</button>
+<body class="bg-gray-100 font-sans p-4">
+
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-lg p-6 md:p-8">
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-4 sm:mb-0">Gestão de Cupons</h1>
+            <button onclick="openModal(false)" class="bg-blue-600 text-white px-6 py-2 rounded-full font-semibold shadow-md hover:bg-blue-700 transition-colors duration-300">
+                <i class="fas fa-plus mr-2"></i>Novo Cupom
+            </button>
         </div>
+
         <?php if ($error): ?>
-            <div class="error-text"><?php echo htmlspecialchars($error); ?></div>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4" role="alert">
+                <span class="block sm:inline"><?php echo htmlspecialchars($error); ?></span>
+            </div>
         <?php endif; ?>
         <?php if (isset($_GET['success'])): ?>
-            <div class="success-text"><?php echo htmlspecialchars($_GET['success']); ?></div>
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative mb-4" role="alert">
+                <span class="block sm:inline"><?php echo htmlspecialchars($_GET['success']); ?></span>
+            </div>
         <?php endif; ?>
-        <div class="coupon-list">
+
+        <div class="space-y-4">
             <?php if (empty($cupons)): ?>
-                <p class="no-coupons">Nenhum cupom cadastrado.</p>
+                <p class="text-center text-gray-500 py-10">Nenhum cupom cadastrado. Clique em "Novo Cupom" para começar.</p>
             <?php else: ?>
                 <?php foreach ($cupons as $cupom): ?>
                     <?php
                     $is_invalid = strtotime($cupom['data_validade']) < time() || ($cupom['usos_atuais'] ?? 0) >= $cupom['max_usos'];
                     $validade = date('d/m/Y', strtotime($cupom['data_validade']));
+                    $desconto_texto = ($cupom['tipo_desconto'] === 'porcentagem' ? $cupom['valor'] . '%' : 'R$' . number_format($cupom['valor'], 2, ',', '.'));
                     ?>
-                    <div class="coupon-item <?php echo $is_invalid ? 'invalid' : ''; ?>">
-                        <div class="coupon-info">
-                            <p><?php echo htmlspecialchars($cupom['codigo']); ?></p>
-                            <p class="subtext">Desconto: <?php echo $cupom['valor'] . ($cupom['tipo_desconto'] === 'porcentagem' ? '%' : ' R$'); ?></p>
-                            <p class="subtext">Validade: <?php echo $validade; ?></p>
-                            <p class="subtext">Máximo de Usos: <?php echo $cupom['max_usos']; ?> (Usos atuais: <?php echo $cupom['usos_atuais'] ?? 0; ?>)</p>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm flex flex-col sm:flex-row justify-between items-center <?php echo $is_invalid ? 'opacity-60 border-l-4 border-red-500' : 'border-l-4 border-green-500'; ?>">
+                        <div class="flex-1 mb-4 sm:mb-0">
+                            <h3 class="font-bold text-lg text-gray-800"><?php echo htmlspecialchars($cupom['codigo']); ?></h3>
+                            <p class="text-sm text-gray-600">Desconto: <span class="font-semibold"><?php echo $desconto_texto; ?></span></p>
+                            <p class="text-sm text-gray-600">Validade: <span class="font-semibold"><?php echo $validade; ?></span></p>
+                            <p class="text-sm text-gray-600">Usos: <span class="font-semibold"><?php echo ($cupom['usos_atuais'] ?? 0) . '/' . $cupom['max_usos']; ?></span></p>
                             <?php if ($is_invalid): ?>
-                                <p class="status"><?php echo strtotime($cupom['data_validade']) < time() ? 'Cupom Vencido' : 'Limite de Usos Atingido'; ?></p>
+                                <p class="text-xs text-red-500 italic mt-1">
+                                    <?php echo strtotime($cupom['data_validade']) < time() ? 'Cupom Vencido' : 'Limite de Usos Atingido'; ?>
+                                </p>
                             <?php endif; ?>
                         </div>
-                        <div class="button-container">
-                            <button class="edit-button" onclick='editCoupon(<?php echo json_encode($cupom); ?>)'>✎</button>
+                        <div class="flex space-x-2">
+                            <button onclick='editCoupon(<?php echo json_encode($cupom); ?>)' class="bg-yellow-500 text-white p-2 rounded-full hover:bg-yellow-600 transition-colors duration-300" title="Editar">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
                             <form method="POST" id="delete-form-<?php echo $cupom['id']; ?>" style="display:inline;">
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="editId" value="<?php echo $cupom['id']; ?>">
-                                <button type="submit" class="delete-button" onclick="return confirm('Deseja excluir o cupom <?php echo htmlspecialchars($cupom['codigo']); ?>?')">🗑</button>
+                                <button type="submit" class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors duration-300" onclick="return confirm('Deseja excluir o cupom <?php echo htmlspecialchars($cupom['codigo']); ?>?')" title="Excluir">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -385,33 +224,56 @@ ob_start();
     </div>
 
     <div id="modal-overlay" class="modal-overlay">
-        <div class="modal-content">
-            <h2 id="modal-title" class="modal-title">Criar Novo Cupom</h2>
+        <div class="bg-white rounded-lg shadow-xl p-6 w-11/12 max-w-lg animate-fade-in-up">
+            <h2 id="modal-title" class="text-2xl font-bold text-center mb-6 text-gray-800">Criar Novo Cupom</h2>
             <form id="coupon-form" method="POST">
                 <input type="hidden" name="action" id="form-action" value="create">
                 <input type="hidden" name="editId" id="edit-id" value="0">
-                <input type="text" id="codigo" name="codigo" class="input" placeholder="Código do Cupom (ex.: DESCONTO10)" maxlength="20" oninput="this.value = this.value.toUpperCase()">
-                <input type="text" id="valorDesconto" name="valorDesconto" class="input" placeholder="Valor do Desconto" oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
-                <div class="picker-container">
-                    <label class="picker-label">Tipo de Desconto:</label>
-                    <select id="tipoDesconto" name="tipoDesconto" class="picker">
+                
+                <div class="mb-4">
+                    <label for="codigo" class="block text-gray-700 font-semibold mb-2">Código do Cupom</label>
+                    <input type="text" id="codigo" name="codigo" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: DESCONTO10" maxlength="20" oninput="this.value = this.value.toUpperCase()">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="valorDesconto" class="block text-gray-700 font-semibold mb-2">Valor do Desconto</label>
+                    <input type="text" id="valorDesconto" name="valorDesconto" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: 10 ou 25.50" oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="tipoDesconto" class="block text-gray-700 font-semibold mb-2">Tipo de Desconto</label>
+                    <select id="tipoDesconto" name="tipoDesconto" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="porcentagem">Porcentagem (%)</option>
                         <option value="fixo">Valor Fixo (R$)</option>
                     </select>
                 </div>
-                <input type="text" id="dataValidade" name="dataValidade" class="input" placeholder="Data de Validade (DD/MM/YYYY)" maxlength="10" oninput="formatDate(this)">
-                <input type="text" id="maxUsos" name="maxUsos" class="input" placeholder="Máximo de Usos (ex.: 100)" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                <div id="modal-error" class="error-text" style="display: none;"></div>
-                <div class="modal-buttons">
-                    <button type="button" class="modal-button cancel-button" onclick="closeModal()">Cancelar</button>
-                    <button type="submit" class="modal-button confirm-button" id="confirm-button">Criar</button>
+                
+                <div class="mb-4">
+                    <label for="dataValidade" class="block text-gray-700 font-semibold mb-2">Data de Validade</label>
+                    <input type="text" id="dataValidade" name="dataValidade" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="DD/MM/YYYY" maxlength="10" oninput="formatDate(this)">
+                </div>
+                
+                <div class="mb-6">
+                    <label for="maxUsos" class="block text-gray-700 font-semibold mb-2">Máximo de Usos</label>
+                    <input type="text" id="maxUsos" name="maxUsos" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: 100" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                </div>
+                
+                <div id="modal-error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4" style="display: none;"></div>
+                
+                <div class="flex justify-end space-x-4">
+                    <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-800 px-6 py-2 rounded-full font-semibold hover:bg-gray-400 transition-colors duration-300">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-full font-semibold shadow-md hover:bg-blue-700 transition-colors duration-300" id="confirm-button">
+                        Criar
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
     <div id="loading-overlay" class="loading-overlay">
-        <div class="loading-text">Carregando...</div>
+        <div class="text-white text-xl font-bold">Carregando...</div>
     </div>
 
     <script>
