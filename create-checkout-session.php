@@ -36,6 +36,10 @@ try {
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
     $dotenv->load();
 
+    // Tenta carregar as variáveis e imprime o resultado
+print_r(Dotenv\Dotenv::createImmutable(__DIR__)->load());
+die();
+
     // Configurar Stripe
     $stripeKey = getenv('STRIPE_SECRET_KEY');
 
