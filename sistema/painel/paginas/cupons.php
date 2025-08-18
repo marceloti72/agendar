@@ -4,8 +4,10 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Start session
-session_start();
+// Start session only if not already active
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Check if user is logged in
 if (!isset($_SESSION['id_conta'])) {
@@ -30,7 +32,7 @@ try {
     $cupons = $query->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $error = 'Erro ao carregar cupons: ' . $e->getMessage();
-    error_log($error); // Log error for debugging
+    error_log($error);
 }
 
 // Handle form submission for creating/updating/deleting coupons
