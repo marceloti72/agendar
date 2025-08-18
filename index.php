@@ -72,7 +72,7 @@
                 Descubra o MarkAi, o sistema completo para serviços que revoluciona a forma como você gerencia seu negócio!
             </p>
             <div class="space-x-4">
-                <a href="precos.php" class="custom-button primary-button">TESTAR GRÁTIS POR 7 DIAS</a>
+                <a href="plan-selection.html" class="custom-button primary-button">TESTAR GRÁTIS POR 7 DIAS</a>
                 <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a>
             </div>
         </div>
@@ -82,31 +82,22 @@
 <section class="py-16 bg-white" id="sessao-1">
     <div class="container mx-auto px-6 text-center">
         <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-12">
-            Alguns vídeos das funcionalidades do nosso APP
+            Teaser de Apresentação
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             <div class="flex flex-col items-center bg-gray-100 rounded-lg p-4 shadow-md">
-                <p class="text-lg font-semibold text-gray-700 mb-4">Agendamentos</p>
-                <video class="w-full rounded-lg" controls muted preload="metadata" loop>
-                    <source src="images/app_agendar.mp4" type="video/mp4">
-                    Seu navegador não suporta o elemento de vídeo.
-                </video>
+                <p class="text-lg font-semibold text-gray-700 mb-4">Teaser</p>
+                <iframe 
+                    class="w-full rounded-lg" 
+                    height="315"
+                    src="https://www.youtube.com/embed/bc4pbzZFuzE"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                ></iframe>
             </div>
-            <div class="flex flex-col items-center bg-gray-100 rounded-lg p-4 shadow-md">
-                <p class="text-lg font-semibold text-gray-700 mb-4">Encaixe</p>
-                <video class="w-full rounded-lg" controls muted preload="metadata" loop>
-                    <source src="images/encaixe.mp4" type="video/mp4">
-                    Seu navegador não suporta o elemento de vídeo.
-                </video>
             </div>
-            <div class="flex flex-col items-center bg-gray-100 rounded-lg p-4 shadow-md">
-                <p class="text-lg font-semibold text-gray-700 mb-4">Venda de Produtos</p>
-                <video class="w-full rounded-lg" controls muted preload="metadata" loop>
-                    <source src="images/produtos.mp4" type="video/mp4">
-                    Seu navegador não suporta o elemento de vídeo.
-                </video>
-            </div>
-        </div>
     </div>
 </section>
 
@@ -280,7 +271,7 @@
             Comece agora seu teste grátis de 7 dias e descubra como o MarkAi pode transformar sua gestão.
         </p>
         <div class="space-x-4">
-            <a href="precos.php" class="custom-button primary-button">TESTAR GRÁTIS AGORA</a>
+            <a href="plan-selection.html" class="custom-button primary-button">TESTAR GRÁTIS AGORA</a>
             <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a>
         </div>
     </div>
