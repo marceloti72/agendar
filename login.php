@@ -64,6 +64,28 @@
                 box-shadow: 0 0 0 10px rgba(139, 92, 246, 0);
             }
         }
+
+        /* NOVO ESTILO PARA O BOTÃO DE DOWNLOAD */
+        .download-app-button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #10b981; /* green-500 */
+            color: white;
+            font-weight: bold;
+            border-radius: 0.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .download-app-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            color: white; /* Mantém a cor do texto branca ao passar o mouse */
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -95,6 +117,13 @@
                     </button>
                 </div>
             </form>
+
+            <div class="text-center mt-4">
+                <a href="app.html" class="download-app-button">
+                    <i class="fas fa-download"></i>
+                    Baixar o App MARKAI
+                </a>
+            </div>
             
             <div class="text-center mt-6 text-sm">
                 <p class="text-gray-600 mb-2">Primeiro acesso? 

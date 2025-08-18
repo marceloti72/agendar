@@ -4,84 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Baixe o MARKAI - Gestão de Serviços</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
-            text-align: center;
-        }
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 2rem;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-        }
-        .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 1rem;
-        }
         .download-btn {
-            display: inline-block;
-            background-color: #28a745;
-            color: white;
-            padding: 1rem 2rem;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 1.2rem;
-            margin: 1rem 0;
-            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            column-gap: 0.5rem; /* space-x-2 */
+            background-color: #22c55e; /* bg-green-500 */
+            color: #ffffff; /* text-white */
+            font-weight: bold;
+            padding: 1rem 2rem; /* py-4 px-8 */
+            border-radius: 9999px; /* rounded-full */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+            transition-property: transform, box-shadow;
+            transition-duration: 300ms;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
+        
         .download-btn:hover {
-            background-color: #218838;
-        }
-        .security-note {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            border-radius: 5px;
-        }
-        .security-note h2 {
-            color: #007bff;
-            font-size: 1.5rem;
-        }
-        .security-note p {
-            line-height: 1.6;
-        }
-        footer {
-            background-color: #007bff;
-            color: white;
-            padding: 1rem;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
     </style>
 </head>
-<body>
-    <header>
-        <h1>MARKAI - Seu App de Gestão de Serviços</h1>
-    </header>
-    <div class="container">
-        <h2>Bem-vindo ao MARKAI!</h2>
-        <p>Gerencie seus serviços com facilidade e eficiência. O MARKAI é a solução perfeita para organizar, acompanhar e otimizar suas tarefas diárias.</p>
-        
-        <a href="https://www.markai.skysee.com.br/download/markai.apk" class="download-btn">Baixar o MARKAI Agora</a>
+<body class="bg-gray-100 font-sans">
+    <div class="flex flex-col items-center justify-center min-h-screen py-10 px-6" style="background-image: linear-gradient(to right, #8b5cf6, #6b46c1);">
+        <div class="bg-white p-8 sm:p-12 rounded-3xl shadow-2xl max-w-2xl text-center transition-all duration-300 ease-in-out hover:scale-105">
+            <header>
+                <h1 class="text-3xl md:text-5xl font-extrabold text-gray-800 mb-4">MARKAI</h1>
+                <h2 class="text-xl md:text-2xl text-gray-600 mb-8">Seu App de Gestão de Serviços</h2>
+            </header>
+            
+            <p class="text-base sm:text-lg text-gray-700 mb-6">
+                Parabéns! Você está a um passo de transformar a gestão do seu negócio. O MARKAI é a solução completa para organizar, acompanhar e otimizar suas tarefas diárias.
+            </p>
+            
+            <a href="https://www.markai.skysee.com.br/download/markai.apk" class="download-btn">
+                <i class="fas fa-download text-2xl"></i>
+                <span>Baixar o MARKAI Agora</span>
+            </a>
 
-        <div class="security-note">
-            <h2>Baixe com Confiança!</h2>
-            <p>Como o MARKAI ainda não está na Play Store, seu dispositivo pode exibir um aviso de segurança ao instalar. Não se preocupe! Nosso app pode parecer "desconhecido" para seu celular, mas é 100% seguro e testado. Desenvolvido com carinho pela nossa equipe, garantimos que ele é confiável e livre de vilões digitais. Para instalar, é só permitir a instalação de fontes desconhecidas nas configurações do seu dispositivo. Vamos juntos tornar sua gestão de serviços épica!</p>
+            <div class="bg-gray-50 border border-gray-200 text-gray-700 p-6 rounded-2xl mt-8 text-left relative">
+                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 p-2 rounded-full bg-yellow-400">
+                    <i class="fas fa-exclamation-triangle text-xl text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-center mt-2 mb-2">Baixe com Confiança!</h3>
+                <p class="text-sm sm:text-base">
+                    Como o MARKAI ainda não está na Play Store, seu dispositivo pode exibir um aviso de segurança ao instalar. Não se preocupe! Nosso app pode parecer "desconhecido" para seu celular, mas é **100% seguro e testado**. Desenvolvido com carinho pela nossa equipe, garantimos que ele é confiável e livre de vilões digitais. Para instalar, é só permitir a instalação de fontes desconhecidas nas configurações do seu dispositivo. Vamos juntos tornar sua gestão de serviços épica!
+                </p>
+            </div>
         </div>
+        
+        <footer class="mt-12 text-sm text-white">
+            <p>&copy; 2025 MARKAI. Todos os direitos reservados.</p>
+        </footer>
     </div>
-    <footer>
-        <p>&copy; 2025 MARKAI. Todos os direitos reservados.</p>
-    </footer>
 </body>
 </html>
