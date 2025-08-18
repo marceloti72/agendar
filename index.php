@@ -49,13 +49,13 @@
         }
 
         .primary-button {
-            background-color: #8b5cf6;
+            background-color: #5c5ff6ff;
             color: #ffffff;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         .primary-button:hover {
-            background-color: #7c3aed;
+            background-color: #5c5ff6ff;
         }
 
         .secondary-button {
@@ -103,7 +103,7 @@
             font-size: 1rem;
             color: white;
             border-radius: 50%; /* Torna o botão redondo */
-            background-color: #7c3aed; /* Cor roxa para combinar com o tema */
+            background-color: #5c5ff6ff; /* Cor roxa para combinar com o tema */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s;
             display: flex;
@@ -116,7 +116,7 @@
 
         .acessar-button:hover {
             transform: scale(1.1);
-            background-color: #6d28d9;
+            background-color: #5c5ff6ff;
         }
     </style>
 </head>
