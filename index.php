@@ -107,50 +107,50 @@
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             <div class="section-card">
-                <i class="fas fa-bell icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Lembrete de Horários</h3>
-                <p class="text-gray-600 flex-grow">
-                    Diminua as ausências dos seus clientes com notificações automáticas via WhatsApp e e-mail.
-                </p>
-            </div>
-
-            <div class="section-card">
-                <i class="fas fa-calendar-alt icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Flexibilização da Agenda</h3>
-                <p class="text-gray-600 flex-grow">
-                    Personalize a jornada de trabalho de cada profissional para um controle preciso de horários.
-                </p>
-            </div>
-
-            <div class="section-card">
-                <i class="fas fa-bullhorn icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Envio de Promoções</h3>
-                <p class="text-gray-600 flex-grow">
-                    Envie campanhas de marketing pelo WhatsApp para todos os seus clientes ou grupos específicos.
-                </p>
-            </div>
-
-            <div class="section-card">
-                <i class="fas fa-chart-line icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Gestão Financeira</h3>
-                <p class="text-gray-600 flex-grow">
-                    Controle suas finanças com clareza: gerencie contas a pagar e a receber, comissões e tenha seus resultados sempre atualizados.
-                </p>
-            </div>
-
-            <div class="section-card">
                 <i class="fas fa-clock icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Agenda Automatizada</h3>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Agendamentos Online 24H</h3>
                 <p class="text-gray-600 flex-grow">
-                    Sua agenda se adapta em tempo real. Ofereça pagamento online e garanta que os agendamentos se convertam em lucro.
+                    Seus clientes podem marcar horários a qualquer momento, com praticidade e autonomia.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fas fa-sync-alt icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Campanhas de Retorno de Clientes</h3>
+                <p class="text-gray-600 flex-grow">
+                    Reconquiste seus clientes com disparos de WhatsApp incentivando retorno e com a opção de oferecer cupom de desconto.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fas fa-bell icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Notificações e Lembretes Automatizados</h3>
+                <p class="text-gray-600 flex-grow">
+                    Mantenha seus clientes engajados com comunicações pontuais e profissionais.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fas fa-mobile-alt icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">App ou Link Personalizado</h3>
+                <p class="text-gray-600 flex-grow">
+                    Ofereça uma experiência exclusiva com um aplicativo sob medida para seus clientes.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fas fa-list-ol icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Encaixe com fila de espera</h3>
+                <p class="text-gray-600 flex-grow">
+                    Não havendo horarios disponíveis o cliente pode se cadastrar na fila de espera, encaixe, e será notificada caso haja cancelamentos. Sua agenda sempre cheia. Não perca clientes! 
                 </p>
             </div>
             
             <div class="section-card">
-                <i class="fas fa-file-alt icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Relatórios Detalhados</h3>
+                <i class="fas fa-ticket-alt icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Cupons de Descontos</h3>
                 <p class="text-gray-600 flex-grow">
-                    Tome decisões inteligentes com relatórios de produtos, entradas, saídas, comissões, serviços e muito mais.
+                    Crie e ofeceça cupons a seus clientes, em capanhas de retorno, aniversários e muito mais.
                 </p>
             </div>
             
@@ -164,41 +164,41 @@
             
             <div class="section-card">
                 <i class="fas fa-boxes icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Gestão de Estoque</h3>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Cadastre e Venda Produtos</h3>
                 <p class="text-gray-600 flex-grow">
-                    Monitore o saldo e o custo dos produtos, receba alertas de estoque baixo e controle a validade dos itens.
+                    Com o MarkAi vc cadastrar produtos e fornecedores, e pode vender em seu App ou Link com o Mercado Pago com diversas formas de pagamento. 
                 </p>
             </div>
             
             <div class="section-card">
-                <i class="fas fa-ticket-alt icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Comandas Flexíveis</h3>
+                <i class="fas fa-hand-holding-usd icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Comissões Automáticas</h3>
                 <p class="text-gray-600 flex-grow">
-                    Gere comandas para serviços e produtos, aplique descontos e gerencie os pagamentos com total controle.
+                    No MarkAi ao fechar a comanda todas as comissões são automaticamente distribuidas aos profissionais. Gestão completo com metricas e gráficos a sua disposição. 
                 </p>
             </div>
 
             <div class="section-card">
-                <i class="fas fa-cloud icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Online 24h, 7 dias por semana</h3>
+                <i class="fas fa-tachometer-alt icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Página Principal</h3>
                 <p class="text-gray-600 flex-grow">
-                    Sua agenda está sempre disponível, permitindo que clientes marquem horários a qualquer momento, de qualquer lugar.
+                    Página com metrícas e graficos importantes para seu dia a dia, alertas e informações que facilitam sua gestão.
                 </p>
             </div>
 
             <div class="section-card">
-                <i class="fas fa-list-ul icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Lista de Espera Inteligente</h3>
+                <i class="fas fa-gem icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Clube do Assinante</h3>
                 <p class="text-gray-600 flex-grow">
-                    Não perca clientes! O sistema avisa automaticamente quando um horário livre aparece na agenda.
+                    Crie suas assinaturas e ofeceça vantagens exclusivas a seus clientes. Painel de controle robusto para sua gerência.
                 </p>
             </div>
 
             <div class="section-card">
-                <i class="fas fa-comment-dots icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Mensagens de Retorno</h3>
+                <i class="fas fa-credit-card icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Mercado Pago integrado</h3>
                 <p class="text-gray-600 flex-grow">
-                    Fidelize clientes com mensagens automáticas enviadas no momento certo para incentivá-los a retornar.
+                    Com ele vc poderá cobrar adiantamento nos agendamentos e oferecer diversas formas de pagamento a seus clientes, com baixa automática.
                 </p>
             </div>
 
@@ -212,49 +212,49 @@
 
             <div class="section-card">
                 <i class="fas fa-id-card icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Cartão Fidelidade Digital</h3>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Cartão Fidelidade</h3>
                 <p class="text-gray-600 flex-grow">
                     Recompense seus clientes mais fiéis com um sistema de fidelidade automático, aumentando a recorrência.
                 </p>
             </div>
 
             <div class="section-card">
-                <i class="fas fa-globe icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Site Personalizado</h3>
+                <i class="fas fa-users icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Cadastros</h3>
                 <p class="text-gray-600 flex-grow">
-                    Tenha um site próprio para seu negócio, otimizado para que seus clientes te encontrem e agendem facilmente.
+                    Cadastros de clientes, profissionais e fornecedores com historico e métricas individualizadas.
                 </p>
             </div>
 
             <div class="section-card">
-                <i class="fab fa-facebook icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Agendamento Integrado</h3>
+                <i class="fas fa-desktop icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">App ou Web</h3>
                 <p class="text-gray-600 flex-grow">
-                    Integre o link de agendamento em seu site, Facebook ou Instagram para captar mais clientes.
+                    Vc poderá usar o sistema pelo nosso App ou se preferir pela Web através do site.
                 </p>
             </div>
 
             <div class="section-card">
                 <i class="fas fa-birthday-cake icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Mensagens de Aniversário</h3>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Alertas de Aniversário</h3>
                 <p class="text-gray-600 flex-grow">
                     Surpreenda seus clientes com mensagens de parabéns e promoções no dia do aniversário, fortalecendo a relação.
                 </p>
             </div>
 
             <div class="section-card">
-                <i class="fas fa-credit-card icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Pagamento Online</h3>
+                <i class="fas fa-user-friends icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Multi Usuários</h3>
                 <p class="text-gray-600 flex-grow">
-                    Reduza faltas e ofereça comodidade aos seus clientes. Proteja seu lucro com pagamentos antecipados.
+                    Seus profissionais terão acesso ao App ou Site através de login e senha para gerenciar sua agenda. Exclusivo para o plano Empresa.
                 </p>
             </div>
             
             <div class="section-card">
-                <i class="fas fa-money-check-alt icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Controle de Comissões</h3>
+                <i class="fas fa-cloud icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Qualquer Dispositivo e Lugar</h3>
                 <p class="text-gray-600 flex-grow">
-                    Gerencie as comissões da sua equipe de forma clara e automatizada, evitando erros e garantindo a transparência.
+                    O sistema poderá ser usado 24 horas por dia de qualquer dispoditivo e lugar. Sistema e banco de dados na Amazon Web Services (AWS), plataforma de nuvem mais segura e mais abrangente do mundo.
                 </p>
             </div>
         </div>
