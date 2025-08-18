@@ -44,6 +44,26 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
+        
+        /* NOVO CSS PARA O EFEITO PULSANTE DO LOGO */
+        .logo-pulse {
+            animation: pulse-glow 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .logo-pulse:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(139, 92, 246, 0);
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -52,7 +72,9 @@
         
         <div class="login-card">
             <div class="text-center mb-8">
-                <img src="sistema/img/icon.png" alt="Logo MarkAi" class="mx-auto w-3/4 max-w-xs mb-4">
+                <img src="sistema/img/icon.png" alt="Logo MarkAi" class="mx-auto w-3/4 max-w-xs mb-4 rounded-full logo-pulse">
+                
+                <h2 class="text-2xl font-semibold text-gray-800">Bem-vindo de volta!</h2>
             </div>
             
             <form action="sistema/autenticar.php" method="post" class="space-y-6">
@@ -121,7 +143,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script type="text/javascript">
-        // Mantém a funcionalidade do formulário e SweetAlert2
         $("#form").submit(function (event) {
             event.preventDefault();
             var formData = new FormData(this);
@@ -157,7 +178,6 @@
             });
         });
 
-        // Adiciona funcionalidade de mostrar/esconder senha
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('senhaInput');
         togglePassword.addEventListener('click', function (e) {
