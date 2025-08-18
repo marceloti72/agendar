@@ -28,6 +28,10 @@ try {
         exit;
     }
 
+    // Carrega as variáveis de ambiente do arquivo .env
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+
     // Configurar Stripe
     $stripeKey = getenv('STRIPE_SECRET_KEY');
     if (empty($stripeKey)) {
