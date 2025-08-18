@@ -665,7 +665,7 @@ foreach ($res_pagar_tipo as $row) {
 
 <!-- HTML para os Gráficos de Pizza -->
 <div class="row" style="margin-top: 20px;">
-    <div class="col-md-6 stat" style="margin-left: 0;">
+    <div class="col-md-6 stat" style="margin-left: 0 !important;">
         <div class="content-top-1">
             <div class="card-header">
                 <h3>Receitas (<?php echo $ano_atual; ?>)</h3>
