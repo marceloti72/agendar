@@ -12,60 +12,60 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .icon-card {
-        color: #5d53c8;
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-    }
+            color: #5d53c8;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
 
-    .section-card {
-        background-color: #ffffff;
-        padding: 1.5rem;
-        border-radius: 0.75rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        transition-property: all;
-        transition-duration: 300ms;
-        transform: scale(1);
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
+        .section-card {
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition-property: all;
+            transition-duration: 300ms;
+            transform: scale(1);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
 
-    .section-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
+        .section-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
 
-    .custom-button {
-        font-weight: bold;
-        padding: 0.75rem 1.5rem;
-        border-radius: 9999px;
-        transition-property: all;
-        transition-duration: 300ms;
-        transform: scale(1);
-    }
+        .custom-button {
+            font-weight: bold;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            transition-property: all;
+            transition-duration: 300ms;
+            transform: scale(1);
+        }
 
-    .custom-button:hover {
-        transform: scale(1.05);
-    }
+        .custom-button:hover {
+            transform: scale(1.05);
+        }
 
-    .primary-button {
-        background-color: #8b5cf6;
-        color: #ffffff;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    }
+        .primary-button {
+            background-color: #8b5cf6;
+            color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
 
-    .primary-button:hover {
-        background-color: #7c3aed;
-    }
+        .primary-button:hover {
+            background-color: #7c3aed;
+        }
 
-    .secondary-button {
-        background-color: #e5e7eb;
-        color: #374151;
-    }
+        .secondary-button {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
 
-    .secondary-button:hover {
-        background-color: #d1d5db;
-    }
+        .secondary-button:hover {
+            background-color: #d1d5db;
+        }
 
         .whatsapp-button {
             position: fixed;
@@ -91,7 +91,7 @@
             color: white;
             font-size: 2rem;
         }
-        
+            
         /* NOVO CSS PARA O BOTÃO "ACESSAR" */
         .acessar-button {
             position: fixed;
@@ -118,12 +118,11 @@
             transform: scale(1.1);
             background-color: #6d28d9;
         }
-
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
 
-<section class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-20 md:py-32" id="sessao-0">
+<section class="bg-gradient-to-r from-[#4A90E2] to-[#50C9C3] text-white py-20 md:py-32" id="sessao-0">
     <div class="container mx-auto px-6">
         <div class="flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto">
             <div class="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
@@ -307,7 +306,7 @@
     </div>
 </section>
 
-<section class="py-16 md:py-24 bg-gradient-to-l from-purple-500 to-indigo-600 text-white">
+<section class="py-16 md:py-24 bg-gradient-to-l from-[#4A90E2] to-[#50C9C3] text-white">
     <div class="container mx-auto px-6 text-center">
         <h2 class="text-3xl md:text-5xl font-extrabold mb-4">
             Pronto para Revolucionar Seu Negócio?
