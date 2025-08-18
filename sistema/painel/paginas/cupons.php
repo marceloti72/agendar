@@ -22,40 +22,56 @@ try {
     $error_message = 'Erro ao carregar cupons: ' . $e->getMessage();
 }
 
-// Handle form submission for creating/updating coupons
+// Handle form submission for creating/updating/deleting coupons
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $action = $_POST['action'];
-    $codigo = strtoupper(trim($_POST['codigo'] ?? ''));
-    $valor = floatval($_POST['valorDesconto'] ?? 0);
-    $tipo_desconto = $_POST['tipoDesconto'] ?? 'porcentagem';
-    $data_validade = $_POST['dataValidade'] ?? '';
-    $max_usos = intval($_POST['maxUsos'] ?? 0);
-    $edit_id = intval($_POST['editId'] ?? 0);
-
-    // Validate inputs
     $error = '';
-    if (!preg_match('/^[A-Z0-9]{3,20}$/', $codigo)) {
-        $error = 'O código do cupom deve ter entre 3 e 20 caracteres alfanuméricos.';
-    } elseif ($valor <= 0) {
-        $error = 'O valor do desconto deve ser um número maior que zero.';
-    } elseif ($tipo_desconto === 'porcentagem' && $valor > 100) {
-        $error = 'O desconto em porcentagem não pode exceder 100%.';
-    } elseif (!preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $data_validade)) {
-        $error = 'Por favor, insira uma data válida no formato DD/MM/YYYY.';
-    } else {
-        $date_parts = explode('/', $data_validade);
-        $data_validade_sql = "{$date_parts[2]}-{$date_parts[1]}-{$date_parts[0]}";
-        if (strtotime($data_validade_sql) < strtotime(date('Y-m-d'))) {
-            $error = 'A data de validade deve ser futura.';
-        }
-    }
-    if ($max_usos <= 0) {
-        $error = 'O número máximo de usos deve ser um número maior que zero.';
-    }
 
-    if (!$error) {
-        try {
-            if ($action === 'create' || ($action === 'edit' && $edit_id > 0)) {
+    if ($action === 'delete') {
+        $edit_id = intval($_POST['editId'] ?? 0);
+        if ($edit_id > 0) {
+            try {
+                $query = $pdo->prepare("DELETE FROM cupons WHERE id = ? AND id_conta = ?");
+                $query->execute([$edit_id, $id_conta]);
+                $success_message = 'Cupom excluído com sucesso!';
+                header('Location: index.php?success=' . urlencode($success_message));
+                exit();
+            } catch (PDOException $e) {
+                $error = 'Erro ao excluir cupom: ' . $e->getMessage();
+            }
+        } else {
+            $error = 'ID do cupom inválido.';
+        }
+    } else {
+        $codigo = strtoupper(trim($_POST['codigo'] ?? ''));
+        $valor = floatval($_POST['valorDesconto'] ?? 0);
+        $tipo_desconto = $_POST['tipoDesconto'] ?? 'porcentagem';
+        $data_validade = $_POST['dataValidade'] ?? '';
+        $max_usos = intval($_POST['maxUsos'] ?? 0);
+        $edit_id = intval($_POST['editId'] ?? 0);
+
+        // Validate inputs for create/edit
+        if (!preg_match('/^[A-Z0-9]{3,20}$/', $codigo)) {
+            $error = 'O código do cupom deve ter entre 3 e 20 caracteres alfanuméricos.';
+        } elseif ($valor <= 0) {
+            $error = 'O valor do desconto deve ser um número maior que zero.';
+        } elseif ($tipo_desconto === 'porcentagem' && $valor > 100) {
+            $error = 'O desconto em porcentagem não pode exceder 100%.';
+        } elseif (!preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $data_validade)) {
+            $error = 'Por favor, insira uma data válida no formato DD/MM/YYYY.';
+        } else {
+            $date_parts = explode('/', $data_validade);
+            $data_validade_sql = "{$date_parts[2]}-{$date_parts[1]}-{$date_parts[0]}";
+            if (strtotime($data_validade_sql) < strtotime(date('Y-m-d'))) {
+                $error = 'A data de validade deve ser futura.';
+            }
+        }
+        if ($max_usos <= 0) {
+            $error = 'O número máximo de usos deve ser um número maior que zero.';
+        }
+
+        if (!$error && ($action === 'create' || ($action === 'edit' && $edit_id > 0))) {
+            try {
                 // Check for duplicate code
                 $check_query = $pdo->prepare("SELECT id FROM cupons WHERE id_conta = ? AND codigo = ? AND id != ?");
                 $check_query->execute([$id_conta, $codigo, $edit_id]);
@@ -78,17 +94,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                         $query->execute([$codigo, $valor, $tipo_desconto, $data_validade_sql, $max_usos, $edit_id, $id_conta]);
                         $success_message = 'Cupom atualizado com sucesso!';
                     }
+                    header('Location: index.php?success=' . urlencode($success_message));
+                    exit();
                 }
-            } elseif ($action === 'delete' && $edit_id > 0) {
-                $query = $pdo->prepare("DELETE FROM cupons WHERE id = ? AND id_conta = ?");
-                $query->execute([$edit_id, $id_conta]);
-                $success_message = 'Cupom excluído com sucesso!';
+            } catch (PDOException $e) {
+                $error = 'Erro ao ' . ($action === 'edit' ? 'atualizar' : 'criar') . ' cupom: ' . $e->getMessage();
             }
-            // Redirect to avoid form resubmission
-            header('Location: index.php?success=' . urlencode($success_message));
-            exit();
-        } catch (PDOException $e) {
-            $error = 'Erro ao ' . ($action === 'delete' ? 'excluir' : ($action === 'edit' ? 'atualizar' : 'criar')) . ' cupom: ' . $e->getMessage();
         }
     }
 }
@@ -344,7 +355,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                         </div>
                         <div class="button-container">
                             <button class="edit-button" onclick='editCoupon(<?php echo json_encode($cupom); ?>)'>✎</button>
-                            <form method="POST" style="display:inline;">
+                            <form method="POST" id="delete-form-<?php echo $cupom['id']; ?>" style="display:inline;">
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="editId" value="<?php echo $cupom['id']; ?>">
                                 <button type="submit" class="delete-button" onclick="return confirm('Deseja excluir o cupom <?php echo htmlspecialchars($cupom['codigo']); ?>?')">🗑</button>
@@ -441,46 +452,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             openModal(true, coupon);
         }
 
-        // Client-side form validation
+        // Client-side form validation for create/edit only
         document.getElementById('coupon-form').addEventListener('submit', function(event) {
-            const codigo = document.getElementById('codigo').value.trim().toUpperCase();
-            const valorDesconto = document.getElementById('valorDesconto').value;
-            const tipoDesconto = document.getElementById('tipoDesconto').value;
-            const dataValidade = document.getElementById('dataValidade').value;
-            const maxUsos = document.getElementById('maxUsos').value;
+            const action = document.getElementById('form-action').value;
+            if (action === 'create' || action === 'edit') {
+                const codigo = document.getElementById('codigo').value.trim().toUpperCase();
+                const valorDesconto = document.getElementById('valorDesconto').value;
+                const tipoDesconto = document.getElementById('tipoDesconto').value;
+                const dataValidade = document.getElementById('dataValidade').value;
+                const maxUsos = document.getElementById('maxUsos').value;
 
-            if (!codigo || !/^[A-Z0-9]{3,20}$/.test(codigo)) {
-                showError('O código do cupom deve ter entre 3 e 20 caracteres alfanuméricos.');
-                event.preventDefault();
-                return;
-            }
-            if (!valorDesconto || isNaN(parseFloat(valorDesconto)) || parseFloat(valorDesconto) <= 0) {
-                showError('O valor do desconto deve ser um número maior que zero.');
-                event.preventDefault();
-                return;
-            }
-            if (tipoDesconto === 'porcentagem' && parseFloat(valorDesconto) > 100) {
-                showError('O desconto em porcentagem não pode exceder 100%.');
-                event.preventDefault();
-                return;
-            }
-            const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-            if (!dataValidade || !dateRegex.test(dataValidade)) {
-                showError('Por favor, insira uma data válida no formato DD/MM/YYYY.');
-                event.preventDefault();
-                return;
-            }
-            const [_, day, month, year] = dataValidade.match(dateRegex);
-            const date = new Date(`${year}-${month}-${day}`);
-            if (isNaN(date.getTime()) || date < new Date().setHours(0, 0, 0, 0)) {
-                showError('A data de validade deve ser futura.');
-                event.preventDefault();
-                return;
-            }
-            if (!maxUsos || isNaN(parseInt(maxUsos)) || parseInt(maxUsos) <= 0) {
-                showError('O número máximo de usos deve ser um número maior que zero.');
-                event.preventDefault();
-                return;
+                if (!codigo || !/^[A-Z0-9]{3,20}$/.test(codigo)) {
+                    showError('O código do cupom deve ter entre 3 e 20 caracteres alfanuméricos.');
+                    event.preventDefault();
+                    return;
+                }
+                if (!valorDesconto || isNaN(parseFloat(valorDesconto)) || parseFloat(valorDesconto) <= 0) {
+                    showError('O valor do desconto deve ser um número maior que zero.');
+                    event.preventDefault();
+                    return;
+                }
+                if (tipoDesconto === 'porcentagem' && parseFloat(valorDesconto) > 100) {
+                    showError('O desconto em porcentagem não pode exceder 100%.');
+                    event.preventDefault();
+                    return;
+                }
+                const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+                if (!dataValidade || !dateRegex.test(dataValidade)) {
+                    showError('Por favor, insira uma data válida no formato DD/MM/YYYY.');
+                    event.preventDefault();
+                    return;
+                }
+                const [_, day, month, year] = dataValidade.match(dateRegex);
+                const date = new Date(`${year}-${month}-${day}`);
+                if (isNaN(date.getTime()) || date < new Date().setHours(0, 0, 0, 0)) {
+                    showError('A data de validade deve ser futura.');
+                    event.preventDefault();
+                    return;
+                }
+                if (!maxUsos || isNaN(parseInt(maxUsos)) || parseInt(maxUsos) <= 0) {
+                    showError('O número máximo de usos deve ser um número maior que zero.');
+                    event.preventDefault();
+                    return;
+                }
             }
             showLoading();
         });
