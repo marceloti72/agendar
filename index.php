@@ -85,6 +85,77 @@
             background-color: #6d28d9;
         }
 
+
+        .custom-button {
+        @apply font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl;
+    }
+
+    .primary-button {
+        @apply bg-white text-purple-600 shadow-md;
+    }
+
+    .primary-button:hover {
+        @apply bg-purple-100;
+    }
+
+    .secondary-button {
+        @apply bg-transparent text-white border-2 border-white shadow-md;
+    }
+
+    .secondary-button:hover {
+        @apply bg-white text-indigo-600;
+    }
+
+    /* Estilos do botão flutuante para a página de login */
+    .acessar-button {
+        position: fixed;
+        bottom: 20px;
+        right: 100px;
+        z-index: 1000;
+        width: 60px;
+        height: 60px;
+        font-weight: bold;
+        color: white;
+        border-radius: 50%;
+        background-color: #7c3aed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s, background-color 0.3s;
+    }
+
+    .acessar-button:hover {
+        transform: scale(1.1);
+        background-color: #6d28d9;
+    }
+
+    /* Estilos do botão flutuante do WhatsApp */
+    .whatsapp-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #25D366;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s;
+    }
+
+    .whatsapp-button:hover {
+        transform: scale(1.1);
+    }
+
+    .whatsapp-button i {
+        color: white;
+        font-size: 2rem;
+    }
+
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
