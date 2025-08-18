@@ -665,7 +665,7 @@ foreach ($res_pagar_tipo as $row) {
 
 <!-- HTML para os Gráficos de Pizza -->
 <div class="row" style="margin-top: 20px;">
-    <div class="col-md-4 stat">
+    <div class="col-md-6 stat">
         <div class="content-top-1">
             <div class="card-header">
                 <h3>Receitas (<?php echo $ano_atual; ?>)</h3>
@@ -674,7 +674,7 @@ foreach ($res_pagar_tipo as $row) {
         </div>
     </div>
     
-    <div class="col-md-4 stat">
+    <div class="col-md-6 stat">
         <div class="content-top-1">
             <div class="card-header">
                 <h3>Despesas (<?php echo $ano_atual; ?>)</h3>
@@ -707,18 +707,7 @@ am4core.ready(function() {
     chartReceberTipo.legend = new am4charts.Legend();
     chartReceberTipo.legend.position = "bottom";
 
-    // Gráfico de Pizza para Receber - Pgto
-    var chartReceberPgto = am4core.create("pieChartReceberPgto", am4charts.PieChart);
-    chartReceberPgto.data = <?php echo json_encode($data_receber_pgto); ?>;
-    var pieSeriesReceberPgto = chartReceberPgto.series.push(new am4charts.PieSeries());
-    pieSeriesReceberPgto.dataFields.value = "value";
-    pieSeriesReceberPgto.dataFields.category = "category";
-    pieSeriesReceberPgto.slices.template.stroke = am4core.color("#fff");
-    pieSeriesReceberPgto.slices.template.strokeWidth = 2;
-    pieSeriesReceberPgto.slices.template.strokeOpacity = 1;
-    chartReceberPgto.legend = new am4charts.Legend();
-    chartReceberPgto.legend.position = "bottom";
-
+    
     // Gráfico de Pizza para Pagar - Tipo
     var chartPagarTipo = am4core.create("pieChartPagarTipo", am4charts.PieChart);
     chartPagarTipo.data = <?php echo json_encode($data_pagar_tipo); ?>;
