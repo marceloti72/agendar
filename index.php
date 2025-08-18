@@ -12,26 +12,60 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .icon-card {
-            color: #5d53c8;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
+        color: #5d53c8;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
 
-        .section-card {
-            @apply bg-white p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl flex flex-col h-full;
-        }
+    .section-card {
+        background-color: #ffffff;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition-property: all;
+        transition-duration: 300ms;
+        transform: scale(1);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
 
-        .custom-button {
-            @apply font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105;
-        }
+    .section-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
 
-        .primary-button {
-            @apply bg-purple-600 text-white shadow-lg hover:bg-purple-700;
-        }
+    .custom-button {
+        font-weight: bold;
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        transition-property: all;
+        transition-duration: 300ms;
+        transform: scale(1);
+    }
 
-        .secondary-button {
-            @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
-        }
+    .custom-button:hover {
+        transform: scale(1.05);
+    }
+
+    .primary-button {
+        background-color: #8b5cf6;
+        color: #ffffff;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .primary-button:hover {
+        background-color: #7c3aed;
+    }
+
+    .secondary-button {
+        background-color: #e5e7eb;
+        color: #374151;
+    }
+
+    .secondary-button:hover {
+        background-color: #d1d5db;
+    }
 
         .whatsapp-button {
             position: fixed;
@@ -84,77 +118,6 @@
             transform: scale(1.1);
             background-color: #6d28d9;
         }
-
-
-        .custom-button {
-        @apply font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl;
-    }
-
-    .primary-button {
-        @apply bg-white text-purple-600 shadow-md;
-    }
-
-    .primary-button:hover {
-        @apply bg-purple-100;
-    }
-
-    .secondary-button {
-        @apply bg-transparent text-white border-2 border-white shadow-md;
-    }
-
-    .secondary-button:hover {
-        @apply bg-white text-indigo-600;
-    }
-
-    /* Estilos do botão flutuante para a página de login */
-    .acessar-button {
-        position: fixed;
-        bottom: 20px;
-        right: 100px;
-        z-index: 1000;
-        width: 60px;
-        height: 60px;
-        font-weight: bold;
-        color: white;
-        border-radius: 50%;
-        background-color: #7c3aed;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s, background-color 0.3s;
-    }
-
-    .acessar-button:hover {
-        transform: scale(1.1);
-        background-color: #6d28d9;
-    }
-
-    /* Estilos do botão flutuante do WhatsApp */
-    .whatsapp-button {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1000;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background-color: #25D366;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s;
-    }
-
-    .whatsapp-button:hover {
-        transform: scale(1.1);
-    }
-
-    .whatsapp-button i {
-        color: white;
-        font-size: 2rem;
-    }
 
     </style>
 </head>
