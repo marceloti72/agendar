@@ -32,7 +32,7 @@
         .secondary-button {
             @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
         }
-        
+
         .whatsapp-button {
             position: fixed;
             bottom: 20px;
@@ -52,10 +52,37 @@
         .whatsapp-button:hover {
             transform: scale(1.1);
         }
-        
+
         .whatsapp-button i {
             color: white;
             font-size: 2rem;
+        }
+        
+        /* NOVO CSS PARA O BOTÃO "ACESSAR" */
+        .acessar-button {
+            position: fixed;
+            bottom: 20px;
+            right: 100px; /* Ajusta a posição para não colidir com o botão do WhatsApp */
+            z-index: 1000;
+            padding: 1rem;
+            font-weight: bold;
+            font-size: 1rem;
+            color: white;
+            border-radius: 50%; /* Torna o botão redondo */
+            background-color: #7c3aed; /* Cor roxa para combinar com o tema */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            text-align: center;
+        }
+
+        .acessar-button:hover {
+            transform: scale(1.1);
+            background-color: #6d28d9;
         }
 
     </style>
@@ -65,7 +92,6 @@
 <section class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-20 md:py-32" id="sessao-0">
     <div class="container mx-auto px-6">
         <div class="flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto">
-
             <div class="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
                 <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
                     Teste Grátis do MarkAi: Transforme a Gestão do Seu Negócio em Apenas 7 Dias!
@@ -78,11 +104,9 @@
                     <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a>
                 </div>
             </div>
-
             <div class="md:w-1/2 flex justify-center">
                 <img src="./images/menu_principal.jpg" alt="Descrição da Imagem" class="w-full max-w-sm rounded-lg shadow-lg">
             </div>
-
         </div>
     </div>
 </section>
@@ -92,7 +116,6 @@
         <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-12">
             Veja o MarkAi em Ação
         </h2>
-        
         <div class="max-w-4xl mx-auto flex flex-col items-center bg-gray-100 rounded-lg p-4 shadow-xl">
             <iframe 
                 class="w-full rounded-lg" 
@@ -104,7 +127,6 @@
                 allowfullscreen
             ></iframe>
         </div>
-        
     </div>
 </section>
 
@@ -121,7 +143,6 @@
                     Seus clientes podem marcar horários a qualquer momento, com praticidade e autonomia.
                 </p>
             </div>
-
             <div class="section-card">
                 <i class="fas fa-sync-alt icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Campanhas de Retorno de Clientes</h3>
@@ -129,7 +150,6 @@
                     Reconquiste seus clientes com disparos de WhatsApp incentivando retorno e com a opção de oferecer cupom de desconto.
                 </p>
             </div>
-
             <div class="section-card">
                 <i class="fas fa-bell icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Notificações e Lembretes Automatizados</h3>
@@ -137,7 +157,6 @@
                     Mantenha seus clientes engajados com comunicações pontuais e profissionais.
                 </p>
             </div>
-
             <div class="section-card">
                 <i class="fas fa-mobile-alt icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">App ou Link Personalizado</h3>
@@ -145,7 +164,6 @@
                     Ofereça uma experiência exclusiva com um aplicativo sob medida para seus clientes.
                 </p>
             </div>
-
             <div class="section-card">
                 <i class="fas fa-list-ol icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Encaixe com fila de espera</h3>
@@ -153,7 +171,6 @@
                     Não havendo horarios disponíveis o cliente pode se cadastrar na fila de espera, encaixe, e será notificado caso haja cancelamentos. Sua agenda sempre cheia. Não perca clientes! 
                 </p>
             </div>
-            
             <div class="section-card">
                 <i class="fas fa-ticket-alt icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Cupons de Descontos</h3>
@@ -161,7 +178,6 @@
                     Crie e ofeceça cupons a seus clientes, em capanhas de retorno, aniversários e muito mais.
                 </p>
             </div>
-            
             <div class="section-card">
                 <i class="fab fa-whatsapp icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">WhatsApp Integrado</h3>
@@ -169,7 +185,6 @@
                     Automatize notificações, lembretes, confirmações de agendamento e mensagens de marketing diretamente pelo WhatsApp.
                 </p>
             </div>
-            
             <div class="section-card">
                 <i class="fas fa-boxes icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Cadastro e Venda Produtos</h3>
@@ -177,7 +192,6 @@
                     Com o MarkAi vc cadastrar produtos e fornecedores, e pode vender em seu App ou Link com o Mercado Pago, diversas formas de pagamento. 
                 </p>
             </div>
-            
             <div class="section-card">
                 <i class="fas fa-hand-holding-usd icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Comissões Automáticas</h3>
@@ -185,7 +199,6 @@
                     No MarkAi ao fechar a comanda todas as comissões são automaticamente distribuidas aos profissionais. Gestão completo com métricas e gráficos a sua disposição. 
                 </p>
             </div>
-
             <div class="section-card">
                 <i class="fas fa-tachometer-alt icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Página Principal</h3>
@@ -193,7 +206,6 @@
                     Página com metrícas e graficos importantes para seu dia a dia, alertas e informações que facilitam sua gestão.
                 </p>
             </div>
-
             <div class="section-card">
                 <i class="fas fa-gem icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Clube do Assinante</h3>
@@ -201,7 +213,6 @@
                     Crie suas assinaturas e ofeceça vantagens exclusivas a seus clientes. Painel de controle robusto para sua gerência.
                 </p>
             </div>
-
             <div class="section-card">
                 <i class="fas fa-credit-card icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Mercado Pago integrado</h3>
@@ -209,7 +220,6 @@
                     Com ele vc poderá cobrar adiantamento nos agendamentos e oferecer diversas formas de pagamento a seus clientes, com baixa automática.
                 </p>
             </div>
-
             <div class="section-card">
                 <i class="fas fa-star icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Pesquisa de Satisfação</h3>
@@ -217,7 +227,6 @@
                     Receba feedback sobre seus serviços e profissionais para manter a excelência e a satisfação do cliente.
                 </p>
             </div>
-
             <div class="section-card">
                 <i class="fas fa-id-card icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Cartão Fidelidade</h3>
@@ -225,7 +234,6 @@
                     Recompense seus clientes mais fiéis com um sistema de fidelidade automático, aumentando a recorrência.
                 </p>
             </div>
-
             <div class="section-card">
                 <i class="fas fa-users icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Cadastros</h3>
@@ -233,7 +241,6 @@
                     Cadastros de clientes, profissionais e fornecedores com historico e métricas individualizadas.
                 </p>
             </div>
-
             <div class="section-card">
                 <i class="fas fa-desktop icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">App ou Web</h3>
@@ -241,7 +248,6 @@
                     Vc poderá usar o sistema pelo nosso App ou se preferir pela Web através do site.
                 </p>
             </div>
-
             <div class="section-card">
                 <i class="fas fa-birthday-cake icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Alertas de Aniversário</h3>
@@ -249,7 +255,6 @@
                     Surpreenda seus clientes com mensagens de parabéns e promoções no dia do aniversário, fortalecendo a relação.
                 </p>
             </div>
-
             <div class="section-card">
                 <i class="fas fa-user-friends icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Multi Usuários</h3>
@@ -257,7 +262,6 @@
                     Seus profissionais terão acesso ao App ou Site através de login e senha para gerenciar sua agenda. Exclusivo para o plano Empresa.
                 </p>
             </div>
-            
             <div class="section-card">
                 <i class="fas fa-cloud icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Qualquer Dispositivo e Lugar</h3>
@@ -284,10 +288,11 @@
     </div>
 </section>
 
-
 <a href="https://wa.me/5522998838694" target="_blank" class="whatsapp-button">
     <i class="fab fa-whatsapp"></i>
 </a>
+
+<a href="login.php" class="acessar-button">Acessar</a>
 
 <?php
 // Inclua seu arquivo de rodapé aqui, se necessário.
