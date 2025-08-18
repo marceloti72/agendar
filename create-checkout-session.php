@@ -28,12 +28,21 @@ try {
         exit;
     }
 
+    // --- LINHAS DE DEPURACAO TEMPORARIAS ---
+    error_log('Diretório do script: ' . __DIR__);
+    // ----------------------------------------
+    
     // Carrega as variáveis de ambiente do arquivo .env
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
     $dotenv->load();
 
     // Configurar Stripe
     $stripeKey = getenv('STRIPE_SECRET_KEY');
+
+    // --- LINHA DE DEPURACAO TEMPORARIA ---
+    error_log('Valor da chave do Stripe: ' . $stripeKey);
+    // ----------------------------------------
+
     if (empty($stripeKey)) {
         throw new Exception('Chave secreta do Stripe não configurada. Verifique a variável de ambiente STRIPE_SECRET_KEY.');
     }
