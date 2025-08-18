@@ -63,18 +63,26 @@
 <body class="bg-gray-50 font-sans">
 
 <section class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-20 md:py-32" id="sessao-0">
-    <div class="container mx-auto px-6 text-center">
-        <div class="max-w-4xl mx-auto">
-            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
-                Teste Grátis do MarkAi: Transforme a Gestão do Seu Negócio em Apenas 7 Dias!
-            </h1>
-            <p class="text-xl md:text-2xl mb-8">
-                Descubra o MarkAi, o sistema completo para serviços que revoluciona a forma como você gerencia seu negócio!
-            </p>
-            <div class="space-x-4">
-                <a href="plan-selection.html" class="custom-button primary-button">TESTAR GRÁTIS POR 7 DIAS</a>
-                <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a>
+    <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto">
+
+            <div class="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+                    Teste Grátis do MarkAi: Transforme a Gestão do Seu Negócio em Apenas 7 Dias!
+                </h1>
+                <p class="text-xl md:text-2xl mb-8">
+                    Descubra o MarkAi, o sistema completo para serviços que revoluciona a forma como você gerencia seu negócio!
+                </p>
+                <div class="space-x-4">
+                    <a href="plan-selection.html" class="custom-button primary-button">TESTAR GRÁTIS POR 7 DIAS</a>
+                    <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a>
+                </div>
             </div>
+
+            <div class="md:w-1/2 flex justify-center">
+                <img src="./images/menu_principal.jpg" alt="Descrição da Imagem" class="w-full max-w-sm rounded-lg shadow-lg">
+            </div>
+
         </div>
     </div>
 </section>
