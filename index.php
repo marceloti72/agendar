@@ -1,561 +1,299 @@
 <?php
-require_once("cabecalho.php");?>
+// Inclua seu arquivo de cabeçalho aqui, se necessário.
+// require_once("cabecalho.php");
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARKAI - Sistema de Gestão para Serviços</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .icon-card {
+            color: #5d53c8;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
 
-<section class="content" >
-  
-    <div class="text">
-        <h1>Sistema completo de Gestão e agendamentos para Serviços</h1>
-        <p>Diga adeus às dores de cabeça na hora de organizar sua agenda. Com o MARKAI, seu estabelecimento ganha um sistema simples, rápido e completo para gerenciar horários e otimizar o dia a dia.</p>
-        <div class="buttons">
-            <a href="precos.php" class="trial-large">TESTAR GRÁTIS POR 30 DIAS</a>
-            <a href="https://wa.me/5522998838694" target="_blank" class="sales">FALAR COM VENDAS</a>
-            
-        </div>
-    </div>
-    <div class="image">
-        <img src="images/menu_principal.jpg" alt="Sistema de Gestão para Serviços">
-    </div>
-  
+        .section-card {
+            @apply bg-white p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl flex flex-col h-full;
+        }
 
-  <button class="scroll-up" data-section="sessao-0">
-    <i class="fa-solid fa-arrow-up fa-beat-fade fa-2x"></i>
-  </button>
+        .custom-button {
+            @apply font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105;
+        }
 
-  <button class="scroll-down" data-section="sessao-2">
-    <i class="fa-solid fa-arrow-down fa-beat-fade fa-2x"></i>
-  </button>
-</section>
-</div>
+        .primary-button {
+            @apply bg-purple-600 text-white shadow-lg hover:bg-purple-700;
+        }
 
-<section id="sessao-1">
-    <main class="container">
-        <h2>Alguns vídeos das funcionalidades do nosso APP</h2>
-        <br><br>
-        <div class="row" style="gap: 40px; justify-content: center;">
-            <div class="col-md-2 col-sm-4 col-6 px-0">
-                <div class="img-box">
-                    <p class="video-title">Agendamentos</p>
-                    <video class="box_img" controls autoplay muted preload="metadata" loop>
-                        <source src="images/app_agendar.mp4" type="video/mp4">
-                        Seu navegador não suporta o elemento de vídeo.
-                    </video>
-                </div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-6 px-0">
-                <div class="img-box">
-                    <p class="video-title">Encaixe</p>
-                    <video class="box_img" controls autoplay muted preload="metadata" loop>
-                        <source src="images/encaixe.mp4" type="video/mp4">
-                        Seu navegador não suporta o elemento de vídeo.
-                    </video>
-                </div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-6 px-0">
-                <div class="img-box">
-                    <p class="video-title">Venda de Produtos</p>
-                    <video class="box_img" controls autoplay muted preload="metadata" loop>
-                        <source src="images/produtos.mp4" type="video/mp4">
-                        Seu navegador não suporta o elemento de vídeo.
-                    </video>
-                </div>
-            </div>
-            <!-- <div class="col-md-2 col-sm-4 col-6 px-0">
-                <div class="img-box">
-                    <p class="video-title">Agendamentos</p>
-                    <video class="box_img" controls autoplay muted preload="metadata" loop>
-                        <source src="images/app_agendar.mp4" type="video/mp4">
-                        Seu navegador não suporta o elemento de vídeo.
-                    </video>
-                </div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-6 px-0">
-                <div class="img-box">
-                    <p class="video-title">Agendamentos</p>
-                    <video class="box_img" controls autoplay muted preload="metadata" loop>
-                        <source src="images/app_agendar.mp4" type="video/mp4">
-                        Seu navegador não suporta o elemento de vídeo.
-                    </video>
-                </div>
-            </div> -->
-        </div>
-    </main>
-</section><br><br><br>   
-
-
-
-<section id="sessao-2">      
-
-    
-    <main class="container">
-        <h2 class="text-center mb-5">Funcionalidades do MARKAI</h2>
-
-        <div class="row">
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-bell section-icon"></i>
-                    <h3>Lembrete de Horários</h3>
-                    <p>Diminua o risco de esquecimentos/ausências dos seus clientes através dos Lembretes de Horários.<br>
-                    Seu cliente, ao agendar horários, receberá automaticamente uma notificação (via WhatsApp) e um e-mail, no horário configurado para lembrá-lo.</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-calendar-alt section-icon"></i>
-                    <h3>Flexibilização da Agenda dos Profissionais</h3>
-                    <p><strong>Jornada por dia da semana e Jornada por Período</strong></p>
-                    <p>Cada profissional pode ter sua própria jornada de trabalho por dia da semana. Assim, o sistema fará o controle automático para não deixar ocorrer agendamentos fora da jornada de trabalho.</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-bullhorn section-icon"></i>
-                    <h3>Envio de Notícias e Promoções</h3>
-                    <p>Precisa enviar para todos os seus clientes que irá promover um evento em alguma data, ou lançar alguma promoção ?</p>
-                    <p>O MARKAI possui um sistema de marketing via WhatsApp configurável com textos, imagens e audio, você consegue enviar para todos ou um grupo de clientes.</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-chart-line section-icon"></i>
-                    <h3>Gestão Financeira</h3>
-                    <p>Ter o controle do seu estabelecimento é primordial para o sucesso do seu negócio.</p>
-                    <p>Com o MARKAI, é possível te o controle de contas a pagar e a receber, controlar o processo de comissões, etc. E assim, você tem os resultados financeiros sempre atualizados. Controle total de seus numeros!</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-clock section-icon"></i>
-                    <h3>Controle automatizado da Agenda</h3>
-                    <p>Ter a agenda on-line e disponível para seus clientes e profissionais agendarem tem grandes vantagens.</p>
-                    <p>A sua agenda vai se moldando conforme os usuários vão cadastrando os agendamentos de acordo com os horários disponíveis. Você terá a opção de cobrar ou não na hora do agendamento, de 0 a 100% do valor. Habilitando o Mercado Pago o processo de cobrança é automático.</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-file-alt section-icon"></i>
-                    <h3>Relatórios Financeiros</h3>
-                    <p>Transformar dados e informações em CONHECIMENTO é um grande diferencial para tomadas de decisões. No MARKAI, você tem:</p>
-                    <ul>
-                        <li>Relatório de Produtos</li>
-                        <li>Relatório de Entradas</li>
-                        <li>Relatório de Saídas</li>
-                        <li>Relatório de Comissões</li>
-                        <li>Relatório de Serviços <small>(por dia, mês e ano. Filtro por forma de pagamento e serviço)</small></li>
-                        <li>Relatório de Aniversariantes</li>
-                        <li>Relatório de Demonstrativo de Lucro</li>                       
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fab fa-whatsapp section-icon"></i>
-                    <h3>WhatsApp Marketing</h3>
-                    <p>O sistema já possui o whatsapp intregrado. Com ele vc poderá enviar notificações automáticas de agendamentos, cancelamentos, lembretes, mensagens de retorno, marketing e muito mais.</p>
-                    <p>Deixe o sistema fazer tudo isso por você!</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-boxes section-icon"></i>
-                    <h3>Gestão de Estoque</h3>
-                    <p>No MARKAI vc faz o controle de estoque que é primordial para evitar prejuízos com perda ou vencimento de produtos. Com o MARKAI você consegue:</p>
-                    <ul>
-                        <li>Saber o saldo de cada produto no estoque;</li>
-                        <li>Histórico de movimentações de Entrada e Saída;</li>
-                        <li>Saber o custo por produto;</li>
-                        <li>Lucro por produto;</li>
-                        <li>Receber avisos/alertas de produtos com quantidades baixas no estoque;</li>
-                        <li>Controlar a validade dos produtos;</li>
-                        <li>Controlar o valor em estoque (inventário).</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-ticket-alt section-icon"></i>
-                    <h3>Comandas e Controle de Consumo</h3>
-                    <p>Controlar o que seu cliente consome é muito importante para não causar erros que possam prejudicar o próprio cliente ou o estabelecimento.</p>
-                    <p>Gera uma Comanda, onde pode ser adicionado outros serviços e/ou produtos. Caso o cliente venha a consumir apenas produtos, pode ser aberta uma comanda e adicionados os produtos nessa comanda. O estabelecimento tem total flexibilidade para aplicar descontos, escolher a forma de pagamento, entre outras funcionalidades.</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-cloud section-icon"></i>
-                    <h3>On-line 24 horas por dia, todos os dias</h3>
-                    <p>Ter seus Serviços on-line traz muitas vantagens.</p>
-                    <p>Domingo de manhã, o cliente quer agendar um serviço para a semana, mas o seu estabelecimento está fechado. E se você estiver de férias, como fica o controle do negócio? Com nossa solução em nuvem, os clientes marcam horários a qualquer momento e horário, e você acompanha tudo em tempo real, de qualquer lugar. Sua estabelecimento nunca para!.</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-list-ul section-icon"></i>
-                    <h3>Lista de Espera</h3>
-                    <p>Não perca oportunidades por falta de tempo! Com a Lista de Espera do MARKAI, seus clientes se colocam na fila pelo site e são avisados automaticamente assim que um horário aparece. Você mantém o foco no seu talento, e nós garantimos que sua agenda esteja sempre aproveitada ao máximo.</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-comment-dots section-icon"></i>
-                    <h3>Mensagens de Retorno Automáticas</h3>
-                    <p>Manter seus clientes voltando é chave para o seu negócio crescer. Estudos apontam que fidelizar pode ser 5 vezes mais econômico do que buscar novos clientes. Com o MARKAI, mensagens automáticas de retorno são enviadas no dia perfeito, garantindo que eles não se esqueçam de você.</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-star section-icon"></i>
-                    <h3>Pesquisa de Satisfação</h3>
-                    <p>A satisfação do cliente é a chave para a fidelidade e a excelência no serviço. Habilite a pesquisa de satisfação no MARKAI: depois de cada atendimento, seu cliente dá um feedback sobre o profissional. Você analisa as respostas e toma decisões para manter todos felizes e voltando sempre.</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-id-card section-icon"></i>
-                    <h3>Cartão Fidelidade</h3>
-                    <p>Transforme clientes casuais em fiéis com o cartão fidelidade! Defina quantos serviços valem um desconto ou serviço grátis, e veja o benefício ser aplicado automaticamente no agendamento. Seu negócio ganha mais recorrência e um time de clientes apaixonados!</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-globe section-icon"></i>
-                    <h3>Site do Estabelecimento</h3>
-                    <p>Leve seu negócio mais longe com um site próprio! O MARKAI cria um site pra você customizar com horários, localização, serviços, produtos e fotos. Seus clientes te encontram nas buscas e agendam direto – uma ponte perfeita entre você e quem quer seus serviços!</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fab fa-facebook section-icon"></i>
-                    <h3>Agendar pelo Site ou Facebook</h3>
-                    <p>Já tem um site ou uma página no Facebook pro seu negócio? Dê um passo além: adicione o link de Agendamento Online do MARKAI! É mais um canal pra facilitar a vida dos seus clientes e turbinar seus agendamentos.</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-birthday-cake section-icon"></i>
-                    <h3>Aniversariantes</h3>
-                    <p>Um parabéns no aniversário pode conquistar o coração do cliente! O MARKAI te avisa quem está comemorando, pra você enviar uma mensagem ou uma promoção única. Ative as mensagens automáticas no WhatsApp e veja o MARKAI transformar datas especiais em fidelidade sem esforço. </p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-credit-card section-icon"></i>
-                    <h3>Pagamento On-line</h3>
-                    <p>O consumo online avança 90% por ano, mudando rapidinho como os clientes consomem. Adote o pagamento online com o MARKAI: você protege seu lucro contra ausências, incentiva o cliente a comparecer (quem paga antes não perde!), oferece praticidade e posiciona seu negócio numa tendência mundial com tecnologia confiável.</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="section-card">
-                    <i class="fas fa-money-check-alt section-icon"></i>
-                    <h3>Comissões de Profissionais</h3>
-                    <p>Transforme a gestão de comissões com o MARKAI! Configure por serviço, gere relatórios poderosos e tenha as informações certas pra pagar seus profissionais com clareza e confiança, fortalecendo seu time.</p>
-                </div>
-            </div>
-       
-
-    </div>   
-
-    <button class="scroll-up" data-section="sessao-0">
-      <i class="fa-solid fa-arrow-up fa-beat-fade fa-2x"></i>
-    </button>
-
-    <button class="scroll-down" data-section="sessao-2">
-      <i class="fa-solid fa-arrow-down fa-beat-fade fa-2x"></i>
-    </button>
-
-</section>
-
-<section class="content">
-
-<div class="text">
+        .secondary-button {
+            @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+        }
         
-        <div class="buttons">
-            <a href="precos.php" class="trial-large">COMEÇAR AGORA</a>
-            <a href="https://wa.me/5522998838694" target="_blank" class="sales">FALAR COM VENDAS</a>
-            
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #25D366;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .whatsapp-button i {
+            color: white;
+            font-size: 2rem;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+<section class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-20 md:py-32" id="sessao-0">
+    <div class="container mx-auto px-6 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+                Teste Grátis do MarkAi: Transforme a Gestão do Seu Negócio em Apenas 7 Dias!
+            </h1>
+            <p class="text-xl md:text-2xl mb-8">
+                Descubra o MarkAi, o sistema completo para serviços que revoluciona a forma como você gerencia seu negócio!
+            </p>
+            <div class="space-x-4">
+                <a href="precos.php" class="custom-button primary-button">TESTAR GRÁTIS POR 7 DIAS</a>
+                <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a>
+            </div>
         </div>
     </div>
-    <!-- <div class="image">
-        <img src="images/testegratis.png" alt="Teste Grátis" style="width: 70%;">
-    </div> -->
-  
+</section>
 
-  <button class="scroll-up" data-section="sessao-0">
-    <i class="fa-solid fa-arrow-up fa-beat-fade fa-2x"></i>
-  </button>
+<section class="py-16 bg-white" id="sessao-1">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-12">
+            Alguns vídeos das funcionalidades do nosso APP
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="flex flex-col items-center bg-gray-100 rounded-lg p-4 shadow-md">
+                <p class="text-lg font-semibold text-gray-700 mb-4">Agendamentos</p>
+                <video class="w-full rounded-lg" controls muted preload="metadata" loop>
+                    <source src="images/app_agendar.mp4" type="video/mp4">
+                    Seu navegador não suporta o elemento de vídeo.
+                </video>
+            </div>
+            <div class="flex flex-col items-center bg-gray-100 rounded-lg p-4 shadow-md">
+                <p class="text-lg font-semibold text-gray-700 mb-4">Encaixe</p>
+                <video class="w-full rounded-lg" controls muted preload="metadata" loop>
+                    <source src="images/encaixe.mp4" type="video/mp4">
+                    Seu navegador não suporta o elemento de vídeo.
+                </video>
+            </div>
+            <div class="flex flex-col items-center bg-gray-100 rounded-lg p-4 shadow-md">
+                <p class="text-lg font-semibold text-gray-700 mb-4">Venda de Produtos</p>
+                <video class="w-full rounded-lg" controls muted preload="metadata" loop>
+                    <source src="images/produtos.mp4" type="video/mp4">
+                    Seu navegador não suporta o elemento de vídeo.
+                </video>
+            </div>
+        </div>
+    </div>
+</section>
 
-  <button class="scroll-down" data-section="sessao-2">
-    <i class="fa-solid fa-arrow-down fa-beat-fade fa-2x"></i>
-  </button>
+<section class="py-16 bg-gray-100" id="sessao-2">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-12">
+            Funcionalidades que Transformam Seu Negócio
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="section-card">
+                <i class="fas fa-bell icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Lembrete de Horários</h3>
+                <p class="text-gray-600 flex-grow">
+                    Diminua as ausências dos seus clientes com notificações automáticas via WhatsApp e e-mail.
+                </p>
+            </div>
 
+            <div class="section-card">
+                <i class="fas fa-calendar-alt icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Flexibilização da Agenda</h3>
+                <p class="text-gray-600 flex-grow">
+                    Personalize a jornada de trabalho de cada profissional para um controle preciso de horários.
+                </p>
+            </div>
 
+            <div class="section-card">
+                <i class="fas fa-bullhorn icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Envio de Promoções</h3>
+                <p class="text-gray-600 flex-grow">
+                    Envie campanhas de marketing pelo WhatsApp para todos os seus clientes ou grupos específicos.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fas fa-chart-line icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Gestão Financeira</h3>
+                <p class="text-gray-600 flex-grow">
+                    Controle suas finanças com clareza: gerencie contas a pagar e a receber, comissões e tenha seus resultados sempre atualizados.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fas fa-clock icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Agenda Automatizada</h3>
+                <p class="text-gray-600 flex-grow">
+                    Sua agenda se adapta em tempo real. Ofereça pagamento online e garanta que os agendamentos se convertam em lucro.
+                </p>
+            </div>
+            
+            <div class="section-card">
+                <i class="fas fa-file-alt icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Relatórios Detalhados</h3>
+                <p class="text-gray-600 flex-grow">
+                    Tome decisões inteligentes com relatórios de produtos, entradas, saídas, comissões, serviços e muito mais.
+                </p>
+            </div>
+            
+            <div class="section-card">
+                <i class="fab fa-whatsapp icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">WhatsApp Integrado</h3>
+                <p class="text-gray-600 flex-grow">
+                    Automatize notificações, lembretes, confirmações de agendamento e mensagens de marketing diretamente pelo WhatsApp.
+                </p>
+            </div>
+            
+            <div class="section-card">
+                <i class="fas fa-boxes icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Gestão de Estoque</h3>
+                <p class="text-gray-600 flex-grow">
+                    Monitore o saldo e o custo dos produtos, receba alertas de estoque baixo e controle a validade dos itens.
+                </p>
+            </div>
+            
+            <div class="section-card">
+                <i class="fas fa-ticket-alt icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Comandas Flexíveis</h3>
+                <p class="text-gray-600 flex-grow">
+                    Gere comandas para serviços e produtos, aplique descontos e gerencie os pagamentos com total controle.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fas fa-cloud icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Online 24h, 7 dias por semana</h3>
+                <p class="text-gray-600 flex-grow">
+                    Sua agenda está sempre disponível, permitindo que clientes marquem horários a qualquer momento, de qualquer lugar.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fas fa-list-ul icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Lista de Espera Inteligente</h3>
+                <p class="text-gray-600 flex-grow">
+                    Não perca clientes! O sistema avisa automaticamente quando um horário livre aparece na agenda.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fas fa-comment-dots icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Mensagens de Retorno</h3>
+                <p class="text-gray-600 flex-grow">
+                    Fidelize clientes com mensagens automáticas enviadas no momento certo para incentivá-los a retornar.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fas fa-star icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Pesquisa de Satisfação</h3>
+                <p class="text-gray-600 flex-grow">
+                    Receba feedback sobre seus serviços e profissionais para manter a excelência e a satisfação do cliente.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fas fa-id-card icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Cartão Fidelidade Digital</h3>
+                <p class="text-gray-600 flex-grow">
+                    Recompense seus clientes mais fiéis com um sistema de fidelidade automático, aumentando a recorrência.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fas fa-globe icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Site Personalizado</h3>
+                <p class="text-gray-600 flex-grow">
+                    Tenha um site próprio para seu negócio, otimizado para que seus clientes te encontrem e agendem facilmente.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fab fa-facebook icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Agendamento Integrado</h3>
+                <p class="text-gray-600 flex-grow">
+                    Integre o link de agendamento em seu site, Facebook ou Instagram para captar mais clientes.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fas fa-birthday-cake icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Mensagens de Aniversário</h3>
+                <p class="text-gray-600 flex-grow">
+                    Surpreenda seus clientes com mensagens de parabéns e promoções no dia do aniversário, fortalecendo a relação.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <i class="fas fa-credit-card icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Pagamento Online</h3>
+                <p class="text-gray-600 flex-grow">
+                    Reduza faltas e ofereça comodidade aos seus clientes. Proteja seu lucro com pagamentos antecipados.
+                </p>
+            </div>
+            
+            <div class="section-card">
+                <i class="fas fa-money-check-alt icon-card"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Controle de Comissões</h3>
+                <p class="text-gray-600 flex-grow">
+                    Gerencie as comissões da sua equipe de forma clara e automatizada, evitando erros e garantindo a transparência.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-16 md:py-24 bg-gradient-to-l from-purple-500 to-indigo-600 text-white">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-5xl font-extrabold mb-4">
+            Pronto para Revolucionar Seu Negócio?
+        </h2>
+        <p class="text-xl md:text-2xl mb-8">
+            Comece agora seu teste grátis de 7 dias e descubra como o MarkAi pode transformar sua gestão.
+        </p>
+        <div class="space-x-4">
+            <a href="precos.php" class="custom-button primary-button">TESTAR GRÁTIS AGORA</a>
+            <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a>
+        </div>
+    </div>
 </section>
 
 
+<a href="https://wa.me/5522998838694" target="_blank" class="whatsapp-button">
+    <i class="fab fa-whatsapp"></i>
+</a>
 
-
-
-
-
-<div class="modal fade" id="modalVideos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="border-radius: 20px">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-
-    <div class="modal-header text-white" style="background-color: #4CAF50;">
-				<h5 class="modal-title" id="staticBackdropLabel">Vídeos Tutoriais</h5>
-			  	<button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-			  	</button>
-			</div>  
-      
-      <div class="modal-body">
-          <div class="row">
-              <div class="col-md-6">
-                  <div class="form-group">
-                      <div>
-                          <label>Portal do Administrador</label>
-                      </div>
-                      <div>        
-                          <iframe width="260" 
-                          height="160" src="https://www.youtube.com/embed/RyZgpS0UjFg" 
-                          title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="col-md-6">
-                  <div class="form-group">
-                      <div>
-                          <label>Portal da Secretaria</label>
-                      </div>
-                      <div>        
-                          <iframe width="260" 
-                          height="160" src="https://www.youtube.com/embed/KTrHJuTFFXs" 
-                          title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                      </div>
-                  </div>
-              </div>
-          </div>          
-          
-          <div class="row">
-             <div class="col-md-6">
-                  <div class="form-group">
-                      <div>
-                          <label>Portal da Tesouraria</label>
-                      </div>
-                      <div>        
-                          <iframe width="260" 
-                          height="160" src="https://www.youtube.com/embed/NeR0nMlTz4I" 
-                          title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                      </div>
-                  </div>
-              </div>
-             <div class="col-md-6">
-                  <div class="form-group">
-                      <div>
-                          <label>Portal do Professor</label>
-                      </div>
-                      <div>        
-                          <iframe width="260" 
-                          height="160" src="https://www.youtube.com/embed/ocUNTisP_0c" 
-                          title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                      </div>
-                  </div>
-              </div>
-          </div>          
-          
-          <div class="row">
-
-             <div class="col-md-6">
-                  <div class="form-group">
-                      <div>
-                          <label>Portal do Aluno</label>
-                      </div>
-                      <div>        
-                          <iframe width="260" 
-                          height="160" src="https://www.youtube.com/embed/RkVq8gGB3Hw" 
-                          title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                      </div>
-                  </div>
-              </div>
-             <div class="col-md-6">
-                  <div class="form-group">
-                      <div>
-                          <label>Portal do Responsável</label>
-                      </div>
-                      <div>        
-                          <iframe width="260" 
-                          height="160" src="https://www.youtube.com/embed/eTaFOxIaP9s" 
-                          title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                      </div>
-                  </div>
-              </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="btn-fechar"class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-  </div>
-</div> 
-</div>
-
-
-
-<?php require_once("rodape.php") ?>
-
-
-<script type="text/javascript"> 
-  $("#form-email").submit(function() {
-    event.preventDefault();
-    var formData = new FormData(this);    
-   
-    var email = document.getElementById('email').value;
-    var username = document.getElementById('username').value;
-    
-    $.ajax({
-           url: "cadastramento.php",
-           type: 'POST',
-           data: formData,
-
-           success: function (mensagem) {               
-
-               $('#mensagem').removeClass()               
-                                                          
-                    Swal.fire({
-                    title: "Cadastro efetuado!",                
-                    html: "Segue os dados de acesso:📝<br><spam style = 'color:blue'>Login: <b>" + username +"</b></spam><br><spam style = 'color:blue'>Senha: <b>123</b><br><br><small style = 'color:black'><small>🚨 Altere sua senha assim que acessar, em configurações de perfil.</small></small><br><small style = 'color:black'><small>Um email e WhatsApp foram enviados com os dados de acesso (verifique a caixa de spam)</small></small>",				
-                    icon: "success"
-                    }).then((result) => {
-                        if(result.isConfirmed){
-                        window.location = "login.php";        
-                        }});                                                                       
-
-               $('#mensagem').text(mensagem)
-
-           },
-
-           cache: false,
-           contentType: false,
-           processData: false,
-           xhr: function () {  // Custom XMLHttpRequest
-               var myXhr = $.ajaxSettings.xhr();
-               if (myXhr.upload) { // Avalia se tem suporte a propriedade upload
-                   myXhr.upload.addEventListener('progress', function () {
-                       /* faz alguma coisa durante o progresso do upload */
-                   }, false);
-               }
-               return myXhr;
-           }
-       });
-  })
-
-
-  $("#close").click(function() {
-    window.location = "index.php";
-  })
-</script>
-
-
-<script type="text/javascript">
-  function carregarImg() {
-    var target = document.getElementById('target');
-    var file = document.querySelector("#foto").files[0];
-
-    var reader = new FileReader();
-
-    reader.onloadend = function() {
-      target.src = reader.result;
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-
-    } else {
-      target.src = "";
-    }
-  }
-</script>
-
-
-
-<!-- <div id="whatsapp-button">
-    <a href="https://wa.me/5522998838694" target="_blank">
-        <img src="img/botao-whatsapp.png" alt="WhatsApp">
-    </a>
-</div> -->
-
-<!-- <div id="promocao">
-  <img src="img/promocao.png" alt="Promoção">
-</div> -->
-
-<style>
-  /* #whatsapp-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-  } */
-  #promocao {
-    position: fixed;
-    bottom: 100px;
-    right: 20px;
-    z-index: 1000;
-
-  }
-
-  /* #whatsapp-button img {
-    width: 180px;
-    height: 60px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
-} */
-
-  #promocao img {
-    width: 200px;
-    height: 200px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.7);
-    border-radius: 20px;
-
-  }
-
-  /* #whatsapp-button img:hover {
-    transform: scale(1.2);
-   
-} */
-</style>
-
-<!-- <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var whatsappButton = document.createElement('div');
-    whatsappButton.id = 'whatsapp-button';
-    whatsappButton.innerHTML = '<a href="https://wa.me/5522998838694" target="_blank"><img src="img/botao-whatsapp.png" alt="WhatsApp"></a>';
-    document.body.appendChild(whatsappButton);
-  });
-</script> -->
-
-<!-- <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var promocao = document.createElement('div');
-    promocao.id = 'promocao';
-    promocao.innerHTML = '<img src="img/promocao.png" alt="Promoção">';
-    document.body.appendChild(promocao);
-  });
-</script> -->
-
+<?php
+// Inclua seu arquivo de rodapé aqui, se necessário.
+// require_once("rodape.php");
+?>
+</body>
+</html>
