@@ -10,8 +10,7 @@
     <title>MARKAI - Sistema de Gestão para Serviços</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    
     <style>
         .icon-card {
             color: #5d53c8;
@@ -87,77 +86,21 @@
             Veja o MarkAi em Ação
         </h2>
         
-        <div class="swiper mySwiper max-w-4xl mx-auto">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide flex flex-col items-center bg-gray-100 rounded-lg p-4 shadow-md">
-                    <p class="text-lg font-semibold text-gray-700 mb-4">Agendamentos</p>
-                    <div class="aspect-w-16 aspect-h-9 w-full">
-                        <iframe 
-                            class="w-full h-full rounded-lg" 
-                            src="https://www.youtube.com/embed/bc4pbzZFuzE"
-                            title="YouTube video player"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen
-                        ></iframe>
-                    </div>
-                </div>
-
-                <div class="swiper-slide flex flex-col items-center bg-gray-100 rounded-lg p-4 shadow-md">
-                    <p class="text-lg font-semibold text-gray-700 mb-4">Encaixe Rápido</p>
-                    <div class="aspect-w-16 aspect-h-9 w-full">
-                        <iframe 
-                            class="w-full h-full rounded-lg" 
-                            src="https://www.youtube.com/embed/KTrHJuTFFXs"
-                            title="YouTube video player"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen
-                        ></iframe>
-                    </div>
-                </div>
-                
-                <div class="swiper-slide flex flex-col items-center bg-gray-100 rounded-lg p-4 shadow-md">
-                    <p class="text-lg font-semibold text-gray-700 mb-4">Gestão de Produtos</p>
-                    <div class="aspect-w-16 aspect-h-9 w-full">
-                        <iframe 
-                            class="w-full h-full rounded-lg" 
-                            src="https://www.youtube.com/embed/eTaFOxIaP9s"
-                            title="YouTube video player"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen
-                        ></iframe>
-                    </div>
-                </div>
-
+        <div class="max-w-4xl mx-auto bg-gray-100 rounded-lg p-4 shadow-xl">            
+            <div class="aspect-w-16 aspect-h-9 w-full">
+                <iframe 
+                    class="w-full h-full rounded-lg" 
+                    src="https://www.youtube.com/embed/bc4pbzZFuzE"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                ></iframe>
             </div>
-            
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-pagination mt-4"></div>
         </div>
         
     </div>
 </section>
-
-<script>
-    var swiper = new Swiper(".mySwiper", {
-        loop: true,
-        autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-        },
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-        },
-    });
-</script>
 
 <section class="py-16 bg-gray-100" id="sessao-2">
     <div class="container mx-auto px-6">
