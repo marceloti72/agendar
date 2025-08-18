@@ -987,7 +987,7 @@ $plano = $res3['plano'];
 						</li>	
 					<?php } ?>
 
-					<?php if(@$clientes_retorno == ''){ 
+					<!-- <?php if(@$clientes_retorno == ''){ 
 
 						//totalizando aniversariantes do dia
 						$query = $pdo->query("SELECT * FROM clientes where alertado != 'Sim' and data_retorno < curDate() and id_conta = '$id_conta' ORDER BY data_retorno asc");
@@ -1043,7 +1043,7 @@ $plano = $res3['plano'];
 								</li>
 							</ul>
 						</li>	
-					<?php } ?>
+					<?php } ?> -->
 
 
 
