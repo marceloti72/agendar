@@ -587,6 +587,8 @@ $plano = $res3['plano'];
 
 										<li class="<?php echo @$servicos ?>"><a href="servicos"><i class="fa fa-angle-right"></i>Serviços</a></li>
 
+										<li class="<?php echo @$servicos ?>"><a href="cupons"><i class="fa fa-angle-right"></i>Cupons de Desconto</a></li>
+
 										<!-- <li><a href="dias"><i class="fa fa-angle-right"></i>Horários / Dias</a></li>
 
 										<li class="<?php echo @$dias_bloqueio ?>"><a href="dias_bloqueio"><i class="fa fa-angle-right"></i>Bloqueio de Dias</a></li> -->
