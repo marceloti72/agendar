@@ -27,10 +27,23 @@ try {
         echo json_encode($response);
         exit;
     }
-    
-    // Carrega as variáveis de ambiente do arquivo .env
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-    $dotenv->load();
+
+    // Carrega as variáveis de ambiente do arquivo .env manualmente
+    $envFile = __DIR__ . '/.env';
+    if (file_exists($envFile)) {
+        $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            if (strpos(trim($line), '#') === 0) {
+                continue;
+            }
+            list($name, $value) = explode('=', $line, 2);
+            putenv(sprintf('%s=%s', $name, $value));
+            $_ENV[$name] = $value;
+            $_SERVER[$name] = $value;
+        }
+    } else {
+        error_log('Erro: Arquivo .env não encontrado em: ' . $envFile);
+    }
 
     // Configurar Stripe
     $stripeKey = getenv('STRIPE_SECRET_KEY');
