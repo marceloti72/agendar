@@ -1,16 +1,27 @@
 <?php
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Start session
 session_start();
 
 // Check if user is logged in
 if (!isset($_SESSION['id_conta'])) {
-    header('Location: login.php'); // Redirect to login page if not authenticated
+    header('Location: login.php');
     exit();
 }
 
 $id_conta = $_SESSION['id_conta'];
 
 // Database connection
-require '../conexao.php'; // Adjust path to your database connection file
+require '../conexao.php';
+
+// Initialize variables
+$cupons = [];
+$error = '';
+$success_message = '';
 
 // Fetch all coupons
 try {
@@ -18,14 +29,13 @@ try {
     $query->execute([$id_conta]);
     $cupons = $query->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    $cupons = [];
-    $error_message = 'Erro ao carregar cupons: ' . $e->getMessage();
+    $error = 'Erro ao carregar cupons: ' . $e->getMessage();
+    error_log($error); // Log error for debugging
 }
 
 // Handle form submission for creating/updating/deleting coupons
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $action = $_POST['action'];
-    $error = '';
 
     if ($action === 'delete') {
         $edit_id = intval($_POST['editId'] ?? 0);
@@ -38,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 exit();
             } catch (PDOException $e) {
                 $error = 'Erro ao excluir cupom: ' . $e->getMessage();
+                error_log($error);
             }
         } else {
             $error = 'ID do cupom inválido.';
@@ -99,10 +110,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 }
             } catch (PDOException $e) {
                 $error = 'Erro ao ' . ($action === 'edit' ? 'atualizar' : 'criar') . ' cupom: ' . $e->getMessage();
+                error_log($error);
             }
         }
     }
 }
+
+// Ensure no output before this point
+ob_start();
 ?>
 
 <!DOCTYPE html>
@@ -328,11 +343,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             <h1>Cupons de Desconto</h1>
             <button class="add-button" onclick="openModal(false)">+ Novo Cupom</button>
         </div>
-        <?php if (isset($error) && $error): ?>
+        <?php if ($error): ?>
             <div class="error-text"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
         <?php if (isset($_GET['success'])): ?>
             <div class="success-text"><?php echo htmlspecialchars($_GET['success']); ?></div>
+        <?php elseif ($success_message): ?>
+            <div class="success-text"><?php echo htmlspecialchars($success_message); ?></div>
         <?php endif; ?>
         <div class="coupon-list">
             <?php if (empty($cupons)): ?>
@@ -501,3 +518,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     </script>
 </body>
 </html>
+<?php
+// Flush output buffer
+ob_end_flush();
+?>
