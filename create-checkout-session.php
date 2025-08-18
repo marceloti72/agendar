@@ -4,7 +4,7 @@ mb_internal_encoding('UTF-8');
 mb_http_output('UTF-8');
 ini_set('default_charset', 'UTF-8');
 
-require_once './vendor/autoload.php'; // Ajuste o caminho para o autoload do Stripe
+require_once './vendor/autoload.php';
 
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
@@ -27,26 +27,13 @@ try {
         echo json_encode($response);
         exit;
     }
-
-    // --- LINHAS DE DEPURACAO TEMPORARIAS ---
-    error_log('Diretório do script: ' . __DIR__);
-    // ----------------------------------------
     
     // Carrega as variáveis de ambiente do arquivo .env
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
     $dotenv->load();
 
-    // Tenta carregar as variáveis e imprime o resultado
-print_r(Dotenv\Dotenv::createImmutable(__DIR__)->load());
-die();
-
     // Configurar Stripe
     $stripeKey = getenv('STRIPE_SECRET_KEY');
-
-    // --- LINHA DE DEPURACAO TEMPORARIA ---
-    error_log('Valor da chave do Stripe: ' . $stripeKey);
-    // ----------------------------------------
-
     if (empty($stripeKey)) {
         throw new Exception('Chave secreta do Stripe não configurada. Verifique a variável de ambiente STRIPE_SECRET_KEY.');
     }
@@ -54,7 +41,6 @@ die();
     Stripe::setApiVersion('2023-10-16');
 
     $trialPeriodDays = $coupon ? 30 : 7;
-
 
     // Criar sessão de checkout
     $session = Session::create([
