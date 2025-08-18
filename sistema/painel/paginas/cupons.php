@@ -4,14 +4,15 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Start session only if not already active
+// Start session only if not active
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 // Check if user is logged in
 if (!isset($_SESSION['id_conta'])) {
-    header('Location: login.php');
+    http_response_code(401);
+    echo json_encode(['success' => false, 'message' => 'Usuário não autenticado']);
     exit();
 }
 
@@ -38,6 +39,7 @@ try {
 // Handle form submission for creating/updating/deleting coupons
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $action = $_POST['action'];
+    $response = ['success' => false, 'message' => ''];
 
     if ($action === 'delete') {
         $edit_id = intval($_POST['editId'] ?? 0);
@@ -45,15 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             try {
                 $query = $pdo->prepare("DELETE FROM cupons WHERE id = ? AND id_conta = ?");
                 $query->execute([$edit_id, $id_conta]);
-                $success_message = 'Cupom excluído com sucesso!';
-                header('Location: cupons.php');
-                exit();
+                $response = ['success' => true, 'message' => 'Cupom excluído com sucesso!'];
             } catch (PDOException $e) {
-                $error = 'Erro ao excluir cupom: ' . $e->getMessage();
-                error_log($error);
+                $response['message'] = 'Erro ao excluir cupom: ' . $e->getMessage();
+                error_log($response['message']);
             }
         } else {
-            $error = 'ID do cupom inválido.';
+            $response['message'] = 'ID do cupom inválido.';
         }
     } else {
         $codigo = strtoupper(trim($_POST['codigo'] ?? ''));
@@ -65,31 +65,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
         // Validate inputs for create/edit
         if (!preg_match('/^[A-Z0-9]{3,20}$/', $codigo)) {
-            $error = 'O código do cupom deve ter entre 3 e 20 caracteres alfanuméricos.';
+            $response['message'] = 'O código do cupom deve ter entre 3 e 20 caracteres alfanuméricos.';
         } elseif ($valor <= 0) {
-            $error = 'O valor do desconto deve ser um número maior que zero.';
+            $response['message'] = 'O valor do desconto deve ser um número maior que zero.';
         } elseif ($tipo_desconto === 'porcentagem' && $valor > 100) {
-            $error = 'O desconto em porcentagem não pode exceder 100%.';
+            $response['message'] = 'O desconto em porcentagem não pode exceder 100%.';
         } elseif (!preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $data_validade)) {
-            $error = 'Por favor, insira uma data válida no formato DD/MM/YYYY.';
+            $response['message'] = 'Por favor, insira uma data válida no formato DD/MM/YYYY.';
         } else {
             $date_parts = explode('/', $data_validade);
             $data_validade_sql = "{$date_parts[2]}-{$date_parts[1]}-{$date_parts[0]}";
             if (strtotime($data_validade_sql) < strtotime(date('Y-m-d'))) {
-                $error = 'A data de validade deve ser futura.';
+                $response['message'] = 'A data de validade deve ser futura.';
             }
         }
         if ($max_usos <= 0) {
-            $error = 'O número máximo de usos deve ser um número maior que zero.';
+            $response['message'] = 'O número máximo de usos deve ser um número maior que zero.';
         }
 
-        if (!$error && ($action === 'create' || ($action === 'edit' && $edit_id > 0))) {
+        if (!$response['message'] && ($action === 'create' || ($action === 'edit' && $edit_id > 0))) {
             try {
                 // Check for duplicate code
                 $check_query = $pdo->prepare("SELECT id FROM cupons WHERE id_conta = ? AND codigo = ? AND id != ?");
                 $check_query->execute([$id_conta, $codigo, $edit_id]);
                 if ($check_query->fetch()) {
-                    $error = 'Código do cupom já existe.';
+                    $response['message'] = 'Código do cupom já existe.';
                 } else {
                     if ($action === 'create') {
                         $query = $pdo->prepare("
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                             VALUES (?, ?, ?, ?, ?, ?, 0)
                         ");
                         $query->execute([$id_conta, $codigo, $valor, $tipo_desconto, $data_validade_sql, $max_usos]);
-                        $success_message = 'Cupom criado com sucesso!';
+                        $response = ['success' => true, 'message' => 'Cupom criado com sucesso!'];
                     } else {
                         $query = $pdo->prepare("
                             UPDATE cupons
@@ -105,17 +105,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                             WHERE id = ? AND id_conta = ?
                         ");
                         $query->execute([$codigo, $valor, $tipo_desconto, $data_validade_sql, $max_usos, $edit_id, $id_conta]);
-                        $success_message = 'Cupom atualizado com sucesso!';
+                        $response = ['success' => true, 'message' => 'Cupom atualizado com sucesso!'];
                     }
-                    header('Location: cupons.php');
-                    exit();
                 }
             } catch (PDOException $e) {
-                $error = 'Erro ao ' . ($action === 'edit' ? 'atualizar' : 'criar') . ' cupom: ' . $e->getMessage();
-                error_log($error);
+                $response['message'] = 'Erro ao ' . ($action === 'edit' ? 'atualizar' : 'criar') . ' cupom: ' . $e->getMessage();
+                error_log($response['message']);
             }
         }
     }
+
+    // Output JSON response for AJAX
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
 }
 
 // Ensure no output before this point
@@ -350,8 +353,6 @@ ob_start();
         <?php endif; ?>
         <?php if (isset($_GET['success'])): ?>
             <div class="success-text"><?php echo htmlspecialchars($_GET['success']); ?></div>
-        <?php elseif ($success_message): ?>
-            <div class="success-text"><?php echo htmlspecialchars($success_message); ?></div>
         <?php endif; ?>
         <div class="coupon-list">
             <?php if (empty($cupons)): ?>
@@ -374,7 +375,7 @@ ob_start();
                         </div>
                         <div class="button-container">
                             <button class="edit-button" onclick='editCoupon(<?php echo json_encode($cupom); ?>)'>✎</button>
-                            <form method="POST" id="delete-form-<?php echo $cupom['id']; ?>" style="display:inline;">
+                            <form method="POST" id="delete-form-<?php echo $cupom['id']; ?>" class="delete-form" style="display:inline;">
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="editId" value="<?php echo $cupom['id']; ?>">
                                 <button type="submit" class="delete-button" onclick="return confirm('Deseja excluir o cupom <?php echo htmlspecialchars($cupom['codigo']); ?>?')">🗑</button>
@@ -471,8 +472,31 @@ ob_start();
             openModal(true, coupon);
         }
 
-        // Client-side form validation for create/edit only
+        // Handle form submissions with AJAX
+        async function submitForm(form, action) {
+            showLoading();
+            const formData = new FormData(form);
+            try {
+                const response = await fetch('cupons.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                hideLoading();
+                if (result.success) {
+                    window.location.href = 'cupons.php?success=' + encodeURIComponent(result.message);
+                } else {
+                    showError(result.message);
+                }
+            } catch (e) {
+                hideLoading();
+                showError('Erro ao processar a solicitação: ' + e.message);
+            }
+        }
+
+        // Client-side form validation for create/edit and AJAX submission
         document.getElementById('coupon-form').addEventListener('submit', function(event) {
+            event.preventDefault();
             const action = document.getElementById('form-action').value;
             if (action === 'create' || action === 'edit') {
                 const codigo = document.getElementById('codigo').value.trim().toUpperCase();
@@ -483,39 +507,43 @@ ob_start();
 
                 if (!codigo || !/^[A-Z0-9]{3,20}$/.test(codigo)) {
                     showError('O código do cupom deve ter entre 3 e 20 caracteres alfanuméricos.');
-                    event.preventDefault();
                     return;
                 }
                 if (!valorDesconto || isNaN(parseFloat(valorDesconto)) || parseFloat(valorDesconto) <= 0) {
                     showError('O valor do desconto deve ser um número maior que zero.');
-                    event.preventDefault();
                     return;
                 }
                 if (tipoDesconto === 'porcentagem' && parseFloat(valorDesconto) > 100) {
                     showError('O desconto em porcentagem não pode exceder 100%.');
-                    event.preventDefault();
                     return;
                 }
                 const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
                 if (!dataValidade || !dateRegex.test(dataValidade)) {
                     showError('Por favor, insira uma data válida no formato DD/MM/YYYY.');
-                    event.preventDefault();
                     return;
                 }
                 const [_, day, month, year] = dataValidade.match(dateRegex);
                 const date = new Date(`${year}-${month}-${day}`);
                 if (isNaN(date.getTime()) || date < new Date().setHours(0, 0, 0, 0)) {
                     showError('A data de validade deve ser futura.');
-                    event.preventDefault();
                     return;
                 }
                 if (!maxUsos || isNaN(parseInt(maxUsos)) || parseInt(maxUsos) <= 0) {
                     showError('O número máximo de usos deve ser um número maior que zero.');
-                    event.preventDefault();
                     return;
                 }
             }
-            showLoading();
+            submitForm(this, action);
+        });
+
+        // Handle delete form submissions with AJAX
+        document.querySelectorAll('.delete-form').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                if (confirm('Deseja excluir o cupom ' + this.querySelector('input[name="editId"]').value + '?')) {
+                    submitForm(this, 'delete');
+                }
+            });
         });
     </script>
 </body>
