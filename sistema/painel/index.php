@@ -1770,7 +1770,7 @@ $plano = $res3['plano'];
 									<label>Entradas / Ganhos</label> 
 									<select class="form-control sel13" name="filtro" style="width:100%;">
 										<option value="">Todas</option>
-										<option value="Produto">Vendas</option>
+										<option value="Produto">Produtos</option>
 										<option value="Serviço">Serviços</option>
 										<option value="Conta">Demais Ganhos</option>
 										

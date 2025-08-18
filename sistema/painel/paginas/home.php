@@ -673,14 +673,7 @@ foreach ($res_pagar_tipo as $row) {
             <div id="pieChartReceberTipo" style="height: 250px;"></div>
         </div>
     </div>
-    <div class="col-md-4 stat">
-        <div class="content-top-1">
-            <div class="card-header">
-                <h3>Tipos de Pagamento (<?php echo $ano_atual; ?>)</h3>
-            </div>
-            <div id="pieChartReceberPgto" style="height: 250px;"></div>
-        </div>
-    </div>
+    
     <div class="col-md-4 stat">
         <div class="content-top-1">
             <div class="card-header">
@@ -835,7 +828,7 @@ am4core.ready(function() {
 
         var graphdata2 = {
             linecolor: "#109447",
-            title: "Vendas",
+            title: "Produtos",
             values: [
             { X: "Janeiro", Y: parseFloat(saldo_mes_venda[0]) },
             { X: "Fevereiro", Y: parseFloat(saldo_mes_venda[1]) },
