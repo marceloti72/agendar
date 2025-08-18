@@ -10,7 +10,6 @@
     <title>MARKAI - Sistema de Gestão para Serviços</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
         .icon-card {
             color: #5d53c8;
@@ -86,17 +85,16 @@
             Veja o MarkAi em Ação
         </h2>
         
-        <div class="max-w-4xl mx-auto bg-gray-100 rounded-lg p-4 shadow-xl">            
-            <div class="aspect-w-16 aspect-h-9 w-full">
-                <iframe 
-                    class="w-full h-full rounded-lg" 
-                    src="https://www.youtube.com/embed/bc4pbzZFuzE"
-                    title="YouTube video player"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                ></iframe>
-            </div>
+        <div class="max-w-4xl mx-auto flex flex-col items-center bg-gray-100 rounded-lg p-4 shadow-xl">
+            <iframe 
+                class="w-full rounded-lg" 
+                height="315"
+                src="https://www.youtube.com/embed/bc4pbzZFuzE"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+            ></iframe>
         </div>
         
     </div>
