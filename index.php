@@ -142,7 +142,7 @@
                 <i class="fas fa-list-ol icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Encaixe com fila de espera</h3>
                 <p class="text-gray-600 flex-grow">
-                    Não havendo horarios disponíveis o cliente pode se cadastrar na fila de espera, encaixe, e será notificada caso haja cancelamentos. Sua agenda sempre cheia. Não perca clientes! 
+                    Não havendo horarios disponíveis o cliente pode se cadastrar na fila de espera, encaixe, e será notificado caso haja cancelamentos. Sua agenda sempre cheia. Não perca clientes! 
                 </p>
             </div>
             
@@ -164,9 +164,9 @@
             
             <div class="section-card">
                 <i class="fas fa-boxes icon-card"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Cadastre e Venda Produtos</h3>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Cadastro e Venda Produtos</h3>
                 <p class="text-gray-600 flex-grow">
-                    Com o MarkAi vc cadastrar produtos e fornecedores, e pode vender em seu App ou Link com o Mercado Pago com diversas formas de pagamento. 
+                    Com o MarkAi vc cadastrar produtos e fornecedores, e pode vender em seu App ou Link com o Mercado Pago, diversas formas de pagamento. 
                 </p>
             </div>
             
@@ -174,7 +174,7 @@
                 <i class="fas fa-hand-holding-usd icon-card"></i>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Comissões Automáticas</h3>
                 <p class="text-gray-600 flex-grow">
-                    No MarkAi ao fechar a comanda todas as comissões são automaticamente distribuidas aos profissionais. Gestão completo com metricas e gráficos a sua disposição. 
+                    No MarkAi ao fechar a comanda todas as comissões são automaticamente distribuidas aos profissionais. Gestão completo com métricas e gráficos a sua disposição. 
                 </p>
             </div>
 

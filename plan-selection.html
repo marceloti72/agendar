@@ -62,7 +62,7 @@
             <div class="text-center mb-10">
                 <h1 class="text-4xl font-extrabold text-gray-900 mb-2">Escolha seu plano MARKAI</h1>
                 <p class="text-xl text-gray-500 mb-4">Gerencie seu negócio com inteligência. Qual o melhor plano para você?</p>
-                <p class="text-lg text-gray-600 font-medium" id="trial-days">15 dias grátis para teste.</p>
+                <p class="text-lg text-gray-600 font-medium" id="trial-days">7 dias grátis para teste.</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -162,7 +162,7 @@
     <script>
         const API_BASE_URL = 'https://markai.skysee.com.br/api';
         let coupon = '';
-        let trialDays = 15;
+        let trialDays = 7;
 
         // Mostrar seção de cupom inicialmente
         document.getElementById('coupon-section').classList.remove('hidden');
@@ -225,10 +225,10 @@
         // Função para prosseguir sem cupom
         document.getElementById('no-coupon-btn').addEventListener('click', () => {
             coupon = '';
-            trialDays = 15;
+            trialDays = 7;
             document.getElementById('coupon-section').classList.add('hidden');
             document.getElementById('plans-section').classList.remove('hidden');
-            document.getElementById('trial-days').textContent = '15 dias grátis para teste.';
+            document.getElementById('trial-days').textContent = '7 dias grátis para teste.';
         });
 
         // Função para abrir checkout
