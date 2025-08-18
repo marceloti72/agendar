@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $query = $pdo->prepare("DELETE FROM cupons WHERE id = ? AND id_conta = ?");
                 $query->execute([$edit_id, $id_conta]);
                 $success_message = 'Cupom excluído com sucesso!';
-                header('Location: cupons.php?success=' . urlencode($success_message));
+                header('Location: cupons.php');
                 exit();
             } catch (PDOException $e) {
                 $error = 'Erro ao excluir cupom: ' . $e->getMessage();
@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                         $query->execute([$codigo, $valor, $tipo_desconto, $data_validade_sql, $max_usos, $edit_id, $id_conta]);
                         $success_message = 'Cupom atualizado com sucesso!';
                     }
-                    header('Location: cupons.php?success=' . urlencode($success_message));
+                    header('Location: cupons.php');
                     exit();
                 }
             } catch (PDOException $e) {
