@@ -36,9 +36,9 @@ try {
     Stripe::setApiKey($stripeKey);
     Stripe::setApiVersion('2023-10-16');
 
-    $trialPeriodDays = $coupon ? 30 : 15;
+    $trialPeriodDays = $coupon ? 30 : 7;
 
-    
+
     // Criar sessão de checkout
     $session = Session::create([
         'payment_method_types' => ['card'],
