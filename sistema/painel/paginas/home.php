@@ -1127,13 +1127,8 @@ for ($i = 1; $i <= 12; $i++) {
                 id_cupom: $('#id_cupom').val()
             };        
             
-            var formDataString = '';
-
-for (var pair of formData.entries()) {
-    formDataString += pair[0] + ': ' + pair[1] + '\n';
-}
-
-alert(formDataString);
+            
+alert(data);
 
             $.ajax({
                 url: 'send-birthday-message.php',
