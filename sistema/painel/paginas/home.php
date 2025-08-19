@@ -1130,11 +1130,12 @@ for ($i = 1; $i <= 12; $i++) {
             alert('lkjkljk')
 
             $.ajax({
-                url: 'send-birthday-message.php',
+                url: './send-birthday-message.php',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
                 success: function(response) {
+                    alert('uuuuuuu')
                     if (response.success) {
                         alert(response.message);
                         $('#birthdayModal').modal('hide');
