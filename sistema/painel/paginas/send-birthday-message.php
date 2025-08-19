@@ -20,6 +20,9 @@ try {
     $oferecer_presente = isset($_POST['oferecer_presente']) ? $_POST['oferecer_presente'] : 'Não';
     $id_cupom = isset($_POST['id_cupom']) ? (int)$_POST['id_cupom'] : null;
 
+    print_r($clientes);
+    exit();
+
     // Validações
     if ($id_conta <= 0 || $id_conta !== (int)$_SESSION['id_conta']) {
         $response['message'] = 'ID da conta inválido ou não autorizado';
@@ -38,23 +41,6 @@ try {
         echo json_encode($response);
         exit;
     }
-
-    // Buscar configurações da conta
-    $query = $pdo->prepare("SELECT instancia, token, nome, username FROM config WHERE id = :id_conta");
-    $query->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
-    $query->execute();
-    $config = $query->fetch(PDO::FETCH_ASSOC);
-
-    if (!$config) {
-        $response['message'] = 'Configurações não encontradas para a conta';
-        echo json_encode($response);
-        exit;
-    }
-
-    $instancia = $config['instancia'];
-    $token = $config['token'];
-    $nomeBarbearia = $config['nome'];
-    $username = $config['username'];
 
     // Buscar cupom, se aplicável
     $cupom = null;
@@ -82,19 +68,36 @@ try {
     $success_count = 0;
     $failed_count = 0;
     $details = [];
-    $data_mensagem = new DateTime();
-    $data_mensagem->modify('+1 minute'); // Iniciar agendamento 1 minuto a partir de agora
 
     foreach ($clientes as $cliente) {
         $nome = isset($cliente['nome']) ? trim($cliente['nome']) : '';
-        $telefone = isset($cliente['telefone']) ? trim($cliente['telefone']) : '';
+        $id_cliente = isset($cliente['id']) ? (int)$cliente['id'] : 0;
 
         // Validar dados do cliente
-        if (empty($nome) || empty($telefone)) {
-            $details[] = "Nome ou telefone ausente para cliente: " . json_encode($cliente);
+        if (empty($nome) || $id_cliente <= 0) {
+            $details[] = "Nome ou ID ausente para cliente: " . json_encode($cliente);
             $failed_count++;
             continue;
         }
+
+        // Buscar telefone na tabela clientes
+        $query = $pdo->prepare("
+            SELECT telefone
+            FROM clientes
+            WHERE id = :id_cliente AND id_conta = :id_conta
+        ");
+        $query->bindValue(':id_cliente', $id_cliente, PDO::PARAM_INT);
+        $query->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
+        $query->execute();
+        $cliente_data = $query->fetch(PDO::FETCH_ASSOC);
+
+        if (!$cliente_data || empty($cliente_data['telefone'])) {
+            $details[] = "Telefone não encontrado para {$nome} (ID: {$id_cliente})";
+            $failed_count++;
+            continue;
+        }
+
+        $telefone = trim($cliente_data['telefone']);
 
         // Normalizar telefone
         $telefone = preg_replace('/[ ()-]+/', '', $telefone);
@@ -110,7 +113,7 @@ try {
 
         // Montar mensagem
         $linkAgendamento = "https://markai.skysee.com.br/agendamentos.php?u={$username}";
-        $mensagem = "Parabéns pelo seu aniversário, {$nome}! 🎉\nA *{$nomeBarbearia}* deseja um dia especial cheio de alegria!\n\n";
+        $mensagem = "Parabéns pelo seu aniversário, {$nome}! 🎉\nA *{$nome_sistema}* deseja um dia especial cheio de alegria!\n\n";
         if ($oferecer_presente === 'Sim' && $cupom) {
             $descontoFormatado = $cupom['tipo_desconto'] === 'porcentagem'
                 ? "{$cupom['valor']}%"
@@ -124,8 +127,7 @@ try {
         }
         $mensagem = str_replace("%0A", "\n", $mensagem);
 
-        // Enviar mensagem via API do Menuia com agendamento
-        $data_mensagem_str = $data_mensagem->format('Y-m-d H:i:s');
+        // Enviar mensagem via API do Menuia imediatamente
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_URL => 'https://chatbot.menuia.com/api/create-message',
@@ -140,8 +142,7 @@ try {
                 'appkey' => $instancia,
                 'authkey' => $token,
                 'to' => $telefone,
-                'message' => $mensagem,
-                'agendamento' => $data_mensagem_str
+                'message' => $mensagem
             ]
         ]);
 
@@ -164,15 +165,12 @@ try {
                 $failed_count++;
             }
         }
-
-        // Incrementar data de agendamento em 60 segundos
-        $data_mensagem->modify('+60 seconds');
     }
 
     // Montar resposta
     $response = [
         'success' => $success_count > 0,
-        'message' => "Mensagens agendadas para {$success_count} de " . count($clientes) . " clientes. Falhas: {$failed_count}.",
+        'message' => "Mensagens enviadas para {$success_count} de " . count($clientes) . " clientes. Falhas: {$failed_count}.",
         'details' => $details
     ];
 
