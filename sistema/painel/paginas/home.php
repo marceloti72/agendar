@@ -66,6 +66,26 @@ try {
     error_log('Erro ao carregar aniversariantes: ' . $e->getMessage());
     $aniversariantes_error = 'Erro ao carregar aniversariantes.';
 }
+
+// Fetch clients awaiting fit-in today
+try {
+    $query = $pdo->prepare("
+        SELECT 
+            e.id,
+            e.nome AS cliente_nome,
+            u.nome AS profissional_nome,
+            e.whatsapp AS cliente_telefone
+        FROM encaixe e
+        INNER JOIN usuarios u ON e.profissional = u.id
+        WHERE e.id_conta = ? AND DATE(e.data) = ?
+    ");
+    $query->execute([$id_conta, $hoje]);
+    $encaixes_hoje = $query->fetchAll(PDO::FETCH_ASSOC);
+    $total_encaixes_hoje = count($encaixes_hoje);
+} catch (PDOException $e) {
+    error_log('Erro ao carregar encaixes de hoje: ' . $e->getMessage());
+    $encaixes_error = 'Erro ao carregar encaixes de hoje.';
+}
 ?>
 
 <style>
@@ -147,12 +167,12 @@ try {
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
     /* Ranking Section (Profissionais e Serviços) */
-    .ranking-section, .servicos-section {
+    .ranking-section, .servicos-section, .encaixes-section {
         margin-top: 20px;
         display: flex;
         gap: 20px;
     }
-    .ranking-list-container, .servicos-list-container {
+    .ranking-list-container, .servicos-list-container, .encaixes-list-container {
         width: 30%;
         background-color: #fff;
         border-radius: 12px;
@@ -166,10 +186,10 @@ try {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         padding: 15px;
     }
-    .ranking-list, .servicos-list {
+    .ranking-list, .servicos-list, .encaixes-list {
         padding: 0;
     }
-    .ranking-item, .servicos-item {
+    .ranking-item, .servicos-item, .encaixes-item {
         display: flex;
         align-items: center;
         padding: 12px;
@@ -178,7 +198,7 @@ try {
         background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .ranking-item:hover, .servicos-item:hover {
+    .ranking-item:hover, .servicos-item:hover, .encaixes-item:hover {
         transform: translateX(5px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
@@ -202,7 +222,7 @@ try {
         font-weight: bold;
         margin-right: 10px;
     }
-    .ranking-item p, .servicos-item p {
+    .ranking-item p, .servicos-item p, .encaixes-item p {
         margin: 0;
         color: #333;
         font-size: 16px;
@@ -212,7 +232,13 @@ try {
         font-weight: bold;
         color: #007bff;
     }
-    .no-ranking, .no-servicos {
+    .encaixes-item .whatsapp-icon {
+        color: #25D366;
+        font-size: 24px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+    .no-ranking, .no-servicos, .no-encaixes {
         text-align: center;
         color: #666;
         font-size: 16px;
@@ -286,14 +312,14 @@ try {
             font-size: 12px;
             padding: 8px;
         }
-        .ranking-section, .servicos-section {
+        .ranking-section, .servicos-section, .encaixes-section {
             flex-direction: column;
             gap: 10px;
         }
-        .ranking-list-container, .ranking-chart-container, .servicos-list-container, .servicos-chart-container {
+        .ranking-list-container, .ranking-chart-container, .servicos-list-container, .servicos-chart-container, .encaixes-list-container {
             width: 100%;
         }
-        .ranking-item p, .servicos-item p {
+        .ranking-item p, .servicos-item p, .encaixes-item p {
             font-size: 14px;
         }
         #rankingChart, #servicosChart {
@@ -315,7 +341,7 @@ try {
         .agileinfo-cdr {
             display: none;
         }
-        .ranking-item p, .servicos-item p {
+        .ranking-item p, .servicos-item p, .encaixes-item p {
             font-size: 12px;
         }
         .ranking-item .rank-icon, .servicos-item .rank-icon {
@@ -323,6 +349,9 @@ try {
             height: 25px;
             line-height: 25px;
             font-size: 12px;
+        }
+        .encaixes-item .whatsapp-icon {
+            font-size: 20px;
         }
         #rankingChart, #servicosChart {
             height: 200px;
@@ -590,7 +619,7 @@ for ($i = 1; $i <= 12; $i++) {
         } else {
             echo "<div style=\"background: #836FFF; color: white; padding:10px; font-size:14px; margin-bottom:10px; width: 100%; border-radius: 10px;\">
             <div><i class=\"fa fa-info-circle\"></i> <b>Aviso: </b> Prezado Cliente, Seu período de teste do sistema termina em <b>{$dias_rest} dias</b>. Clique <a href=\"https://www.gestao.skysee.com.br/pagar/{$id_m}\" target=\"_blank\" ><b style=\"color: #ffc341; font-size: 20px \" >AQUI</b></a> e assine nosso serviço.</div>
-            </div>";
+        </div>";
         }
     }
     ?>
@@ -905,23 +934,33 @@ for ($i = 1; $i <= 12; $i++) {
                 <div id="servicosChart" style="height: 300px;"></div>
             </div>
         </div>
-
-        <!-- Aniversariantes do Dia -->
-        <div class="col-md-3 widget widget1" style="border-radius: 12px;">
-            <div class="r3_counter_box">
-                <i class="pull-left fa fa-birthday-cake birthday icon-rounded"></i>
-                <div class="stats">
-                    <h5><strong><big><?php echo $total_aniversariantes ?></big></strong></h5>
-                </div>
-                <hr>
-                <div align="center">
-                    <small>Aniversariantes Hoje</small>
-                    <?php if ($total_aniversariantes > 0): ?>
-                        <button type="button" class="btn btn-primary btn-sm mt-2" data-toggle="modal" data-target="#birthdayModal">
-                            Enviar Parabéns
-                        </button>
-                    <?php endif; ?>
-                </div>
+        <!-- Clientes Aguardando Encaixe Hoje -->
+        <div class="col-md-12 content-top-2 card encaixes-section">
+            <div class="card-header">
+                <h3>Clientes Aguardando Encaixe Hoje</h3>
+            </div>
+            <div class="encaixes-list-container">
+                <?php if (isset($encaixes_error)): ?>
+                    <p class="no-encaixes"><?php echo htmlspecialchars($encaixes_error); ?></p>
+                <?php elseif (empty($encaixes_hoje)): ?>
+                    <p class="no-encaixes">Nenhum cliente aguardando encaixe hoje.</p>
+                <?php else: ?>
+                    <div class="encaixes-list">
+                        <?php foreach ($encaixes_hoje as $encaixe): ?>
+                            <div class="encaixes-item">
+                                <p>
+                                    <?php echo htmlspecialchars($encaixe['cliente_nome']); ?> 
+                                    (<?php echo htmlspecialchars($encaixe['cliente_telefone']); ?>) 
+                                    - Profissional: <?php echo htmlspecialchars($encaixe['profissional_nome']); ?>
+                                    <a href="https://wa.me/<?php echo preg_replace('/[ ()-]+/', '', $encaixe['cliente_telefone']); ?>?text=Olá%20<?php echo urlencode($encaixe['cliente_nome']); ?>,%20estamos%20confirmando%20seu%20encaixe%20para%20hoje!" 
+                                       target="_blank" class="whatsapp-icon">
+                                        <i class="fa fa-whatsapp"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -1128,7 +1167,7 @@ for ($i = 1; $i <= 12; $i++) {
             };        
             
             $.ajax({
-                url: 'send-birthday-message.php',
+                url: '<?php echo $url_sistema; ?>send-birthday-message.php',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
