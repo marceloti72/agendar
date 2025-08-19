@@ -914,7 +914,8 @@ $("#form-text").submit(function (event) {
 <script type="text/javascript">
 	function listar(){
 
-		var funcionario = $('#funcionario').val();
+		var funcionario = $('#funcionario_modal').val();
+		alert(funcionario)
 
 		var data = $("#data_agenda").val();	
 		$("#data-modal").val(data);
