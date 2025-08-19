@@ -121,12 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 // Ensure no output before this point
 ob_start();
 ?>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Cupons</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"> -->
     <style>
@@ -161,7 +156,7 @@ ob_start();
             display: flex;
         }
     </style>
-</head>
+
 <body class="bg-gray-100 font-sans p-4">
 
     <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-lg p-6 md:p-8">
@@ -379,7 +374,7 @@ ob_start();
         });
     </script>
 </body>
-</html>
+
 <?php
 // Flush output buffer
 ob_end_flush();
