@@ -7,7 +7,6 @@ header('Content-Type: application/json');
 $response = ['success' => false, 'message' => 'Erro desconhecido', 'details' => []];
 
 try {
-    echo "ENTREI";
     // Verificar autenticação
     if (!isset($_SESSION['id_conta']) || $_SESSION['id_conta'] <= 0) {
         $response['message'] = 'Usuário não autenticado';
@@ -20,9 +19,6 @@ try {
     $clientes = isset($_POST['clientes']) ? $_POST['clientes'] : null;
     $oferecer_presente = isset($_POST['oferecer_presente']) ? $_POST['oferecer_presente'] : 'Não';
     $id_cupom = isset($_POST['id_cupom']) ? (int)$_POST['id_cupom'] : null;
-
-    print_r($clientes);
-    exit();
 
     // Validações
     if ($id_conta <= 0 || $id_conta !== (int)$_SESSION['id_conta']) {
@@ -72,33 +68,14 @@ try {
 
     foreach ($clientes as $cliente) {
         $nome = isset($cliente['nome']) ? trim($cliente['nome']) : '';
-        $id_cliente = isset($cliente['id']) ? (int)$cliente['id'] : 0;
+        $telefone = isset($cliente['telefone']) ? trim($cliente['telefone']) : '';
 
         // Validar dados do cliente
-        if (empty($nome) || $id_cliente <= 0) {
-            $details[] = "Nome ou ID ausente para cliente: " . json_encode($cliente);
+        if (empty($nome) || empty($telefone)) {
+            $details[] = "Nome ou telefone ausente para cliente: " . json_encode($cliente);
             $failed_count++;
             continue;
         }
-
-        // Buscar telefone na tabela clientes
-        $query = $pdo->prepare("
-            SELECT telefone
-            FROM clientes
-            WHERE id = :id_cliente AND id_conta = :id_conta
-        ");
-        $query->bindValue(':id_cliente', $id_cliente, PDO::PARAM_INT);
-        $query->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
-        $query->execute();
-        $cliente_data = $query->fetch(PDO::FETCH_ASSOC);
-
-        if (!$cliente_data || empty($cliente_data['telefone'])) {
-            $details[] = "Telefone não encontrado para {$nome} (ID: {$id_cliente})";
-            $failed_count++;
-            continue;
-        }
-
-        $telefone = trim($cliente_data['telefone']);
 
         // Normalizar telefone
         $telefone = preg_replace('/[ ()-]+/', '', $telefone);
