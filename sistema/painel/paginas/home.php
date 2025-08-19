@@ -28,6 +28,27 @@ try {
     error_log('Erro ao carregar ranking de funcionários: ' . $e->getMessage());
     $ranking_error = 'Erro ao carregar ranking de funcionários.';
 }
+
+// Fetch ranking of most used services in the last 12 months
+try {
+    $query = $pdo->prepare("
+        SELECT s.id AS servico_id, s.nome AS servico_nome, COUNT(r.id) AS quantidade
+        FROM receber r
+        INNER JOIN servicos s ON r.servico = s.id
+        WHERE r.id_conta = ?
+          AND r.tipo = 'Serviço'
+          AND r.pago = 'Sim'
+          AND r.data_lanc BETWEEN ? AND ?
+        GROUP BY s.id, s.nome
+        ORDER BY quantidade DESC
+        LIMIT 5
+    ");
+    $query->execute([$id_conta, $data_inicio, $data_fim]);
+    $ranking_servicos = $query->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    error_log('Erro ao carregar ranking de serviços: ' . $e->getMessage());
+    $servicos_error = 'Erro ao carregar ranking de serviços.';
+}
 ?>
 
 <style>
@@ -107,30 +128,30 @@ try {
         font-size: 14px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
-    /* Ranking Section */
-    .ranking-section {
+    /* Ranking Section (Profissionais e Serviços) */
+    .ranking-section, .servicos-section {
         margin-top: 20px;
         display: flex;
         gap: 20px;
     }
-    .ranking-list-container {
+    .ranking-list-container, .servicos-list-container {
         width: 30%;
         background-color: #fff;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         padding: 15px;
     }
-    .ranking-chart-container {
+    .ranking-chart-container, .servicos-chart-container {
         width: 70%;
         background-color: #fff;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         padding: 15px;
     }
-    .ranking-list {
+    .ranking-list, .servicos-list {
         padding: 0;
     }
-    .ranking-item {
+    .ranking-item, .servicos-item {
         display: flex;
         align-items: center;
         padding: 12px;
@@ -139,20 +160,20 @@ try {
         background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .ranking-item:hover {
+    .ranking-item:hover, .servicos-item:hover {
         transform: translateX(5px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
-    .ranking-item.position-1 {
+    .ranking-item.position-1, .servicos-item.position-1 {
         background: linear-gradient(135deg, #ffd700, #ffec80);
     }
-    .ranking-item.position-2 {
+    .ranking-item.position-2, .servicos-item.position-2 {
         background: linear-gradient(135deg, #c0c0c0, #e0e0e0);
     }
-    .ranking-item.position-3 {
+    .ranking-item.position-3, .servicos-item.position-3 {
         background: linear-gradient(135deg, #cd7f32, #e6b8a2);
     }
-    .ranking-item .rank-icon {
+    .ranking-item .rank-icon, .servicos-item .rank-icon {
         background-color: #4A90E2;
         color: #fff;
         border-radius: 50%;
@@ -163,23 +184,23 @@ try {
         font-weight: bold;
         margin-right: 10px;
     }
-    .ranking-item p {
+    .ranking-item p, .servicos-item p {
         margin: 0;
         color: #333;
         font-size: 16px;
         flex: 1;
     }
-    .ranking-item .services {
+    .ranking-item .services, .servicos-item .quantidade {
         font-weight: bold;
         color: #007bff;
     }
-    .no-ranking {
+    .no-ranking, .no-servicos {
         text-align: center;
         color: #666;
         font-size: 16px;
         padding: 12px;
     }
-    #rankingChart {
+    #rankingChart, #servicosChart {
         width: 100%;
         height: 300px;
     }
@@ -247,17 +268,17 @@ try {
             font-size: 12px;
             padding: 8px;
         }
-        .ranking-section {
+        .ranking-section, .servicos-section {
             flex-direction: column;
             gap: 10px;
         }
-        .ranking-list-container, .ranking-chart-container {
+        .ranking-list-container, .ranking-chart-container, .servicos-list-container, .servicos-chart-container {
             width: 100%;
         }
-        .ranking-item p {
+        .ranking-item p, .servicos-item p {
             font-size: 14px;
         }
-        #rankingChart {
+        #rankingChart, #servicosChart {
             height: 250px;
         }
     }
@@ -276,26 +297,26 @@ try {
         .agileinfo-cdr {
             display: none;
         }
-        .ranking-item p {
+        .ranking-item p, .servicos-item p {
             font-size: 12px;
         }
-        .ranking-item .rank-icon {
+        .ranking-item .rank-icon, .servicos-item .rank-icon {
             width: 25px;
             height: 25px;
             line-height: 25px;
             font-size: 12px;
         }
-        #rankingChart {
+        #rankingChart, #servicosChart {
             height: 200px;
         }
     }
     /* Additional CSS for Pie Charts */
-    #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo {
+    #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo, #servicosChart {
         width: 100%;
         height: 250px;
     }
     @media (max-width: 768px) {
-        #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo {
+        #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo, #servicosChart {
             height: 200px;
         }
         .content-top-1 {
@@ -306,7 +327,7 @@ try {
         }
     }
     @media (max-width: 480px) {
-        #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo {
+        #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo, #servicosChart {
             height: 180px;
         }
     }
@@ -778,6 +799,19 @@ for ($i = 1; $i <= 12; $i++) {
         valueLabel.label.text = "{valueY}";
         valueLabel.label.dy = -10;
 
+        // Gráfico de Pizza para Ranking de Serviços
+        var chartServicos = am4core.create("servicosChart", am4charts.PieChart);
+        chartServicos.data = <?php echo json_encode($ranking_servicos); ?>;
+        var pieSeriesServicos = chartServicos.series.push(new am4charts.PieSeries());
+        pieSeriesServicos.dataFields.value = "quantidade";
+        pieSeriesServicos.dataFields.category = "servico_nome";
+        pieSeriesServicos.slices.template.stroke = am4core.color("#fff");
+        pieSeriesServicos.slices.template.strokeWidth = 2;
+        pieSeriesServicos.slices.template.strokeOpacity = 1;
+        pieSeriesServicos.labels.template.text = "{value}";
+        chartServicos.legend = new am4charts.Legend();
+        chartServicos.legend.position = "bottom";
+
         // Adicionar mensagem para gráficos vazios
         if (chartReceberTipo.data.length === 0) {
             document.getElementById("pieChartReceberTipo").innerHTML = "<p style='text-align:center; padding:20px;'>Nenhum dado disponível para <?php echo $ano_atual; ?></p>";
@@ -787,6 +821,9 @@ for ($i = 1; $i <= 12; $i++) {
         }
         if (chartRanking.data.length === 0) {
             document.getElementById("rankingChart").innerHTML = "<p style='text-align:center; padding:20px;'>Nenhum dado disponível para o ranking.</p>";
+        }
+        if (chartServicos.data.length === 0) {
+            document.getElementById("servicosChart").innerHTML = "<p style='text-align:center; padding:20px;'>Nenhum dado disponível para serviços.</p>";
         }
     });
     </script>
@@ -823,6 +860,31 @@ for ($i = 1; $i <= 12; $i++) {
             </div>
             <div class="ranking-chart-container">
                 <div id="rankingChart" style="height: 300px;"></div>
+            </div>
+        </div>
+        <!-- Ranking dos Serviços -->
+        <div class="col-md-12 content-top-2 card servicos-section">
+            <div class="card-header">
+                <h3>Serviços Mais Usados (Últimos 12 Meses)</h3>
+            </div>
+            <div class="servicos-list-container">
+                <?php if (isset($servicos_error)): ?>
+                    <p class="no-servicos"><?php echo htmlspecialchars($servicos_error); ?></p>
+                <?php elseif (empty($ranking_servicos)): ?>
+                    <p class="no-servicos">Nenhum serviço registrado nos últimos 12 meses.</p>
+                <?php else: ?>
+                    <div class="servicos-list">
+                        <?php foreach ($ranking_servicos as $index => $servico): ?>
+                            <div class="servicos-item position-<?php echo $index + 1; ?>">
+                                <span class="rank-icon"><?php echo $index + 1; ?></span>
+                                <p><?php echo htmlspecialchars($servico['servico_nome']); ?> <span class="quantidade"><?php echo $servico['quantidade']; ?> usos</span></p>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="servicos-chart-container">
+                <div id="servicosChart" style="height: 300px;"></div>
             </div>
         </div>
         <div class="clearfix"></div>
