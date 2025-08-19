@@ -17,7 +17,6 @@ $id_usuario = $_SESSION['id_usuario'];
 //     }
 
 //
-echo $id_usuario;
 ?>
 
 <style>
@@ -915,8 +914,7 @@ $("#form-text").submit(function (event) {
 	function listar(){
 
 		var funcionario = $('#funcionario_modal').val();
-		alert(funcionario)
-
+		
 		var data = $("#data_agenda").val();	
 		$("#data-modal").val(data);
         
@@ -952,7 +950,7 @@ $("#form-text").submit(function (event) {
 	function mudarFuncionarioModal(){	
 		var func = $('#funcionario_modal').val();	
 		//listar();	
-		//listarHorarios();
+		listarHorarios();
 		listarServicos(func);
 	}
 </script>
@@ -962,8 +960,7 @@ $("#form-text").submit(function (event) {
 <script type="text/javascript">
 	
 	function mudarData(){
-		var data = $('#data-modal').val();		
-		alert(data)	
+		var data = $('#data-modal').val();				
 		$('#data_agenda').val(data).change();
 		
 
@@ -979,8 +976,7 @@ $("#form-text").submit(function (event) {
 	function listarHorarios(){
 
 		var funcionario = $('#funcionario_modal').val();	
-		var data = $('#data_agenda').val();	
-		alert(data)
+		var data = $('#data_agenda').val();			
 
 		$.ajax({
 			url: 'paginas/' + pag + "/listar-horarios.php",
