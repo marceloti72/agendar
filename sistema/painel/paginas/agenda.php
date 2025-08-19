@@ -332,12 +332,22 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                         <div class="form-group">
                                             <!-- <label>Serviço</label> -->
                                             <select class="form-control sel2" id="servico" name="servico" style="width:100%;">
-                                                <?php
-                                                $query = $pdo->query("SELECT * FROM servicos_func where funcionario = '$id_usuario' and id_conta = '$id_conta' ORDER BY nome asc");
-                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                                                foreach ($res as $item) {
-                                                    echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
-                                                }
+                                                <?php                                                
+									            $query = $pdo->query("SELECT * FROM servicos_func where funcionario = '$id_usuario' and id_conta = '$id_conta' ");
+													$res = $query->fetchAll(PDO::FETCH_ASSOC);
+													if(@count($res) > 0){
+														for($i=0; $i < @count($res); $i++){
+															$serv = $res[$i]['servico'];
+
+															$query2 = $pdo->query("SELECT * FROM servicos where id = '$serv' and ativo = 'Sim' and id_conta = '$id_conta' ");
+															$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);	
+															$nome_func = $res2[0]['nome'];
+
+															echo '<option value="'.$serv.'">'.$nome_func.'</option>';
+														}		
+													}else{
+														echo '<option value="">Nenhum Serviço</option>';
+													}
                                                 ?>
                                             </select>
                                         </div>
