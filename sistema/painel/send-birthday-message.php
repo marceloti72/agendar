@@ -15,11 +15,22 @@ try {
         exit;
     }
 
-    // Obter dados do POST    
-    $clientes = isset($_POST['clientes']) ? $_POST['clientes'] : null;
-    $oferecer_presente = isset($_POST['oferecer_presente']) ? $_POST['oferecer_presente'] : 'Não';
-    $id_cupom = isset($_POST['id_cupom']) ? (int)$_POST['id_cupom'] : null;
-    
+    // Obter dados do corpo da requisição JSON
+    $json = file_get_contents('php://input');
+    $data = json_decode($json, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        $response['message'] = 'Erro ao decodificar JSON: ' . json_last_error_msg();
+        echo json_encode($response);
+        exit;
+    }
+
+    // Obter dados do JSON    
+    $clientes = isset($data['clientes']) ? $data['clientes'] : null;
+    $oferecer_presente = isset($data['oferecer_presente']) ? $data['oferecer_presente'] : 'Não';
+    $id_cupom = isset($data['id_cupom']) ? (int)$data['id_cupom'] : null;
+   
+
     if (!is_array($clientes) || empty($clientes)) {
         $response['message'] = 'Lista de clientes é obrigatória e não pode estar vazia';
         echo json_encode($response);

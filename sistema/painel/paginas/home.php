@@ -1127,9 +1127,6 @@ for ($i = 1; $i <= 12; $i++) {
                 id_cupom: $('#id_cupom').val()
             };        
             
-            
-alert(JSON.stringify(data, null, 2));
-
             $.ajax({
                 url: 'send-birthday-message.php',
                 type: 'POST',
