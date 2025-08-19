@@ -157,6 +157,10 @@ $plano = $res3['plano'];
 		font-weight: bold;
 	}
 
+	html {
+    scroll-behavior: smooth;
+}
+
 	@media (max-width: 768px) {
 	.novo {
 		display: flex;
@@ -871,7 +875,7 @@ $plano = $res3['plano'];
 						?>
 
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell <?php echo $icon2?>" title="Agendamentos hoje"></i>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-calendar-check <?php echo $icon2?>" title="Agendamentos hoje"></i>
 							<?php 								
 								if($total_agendamentos_hoje_usuario_pendentes != 0){							
 									?>
@@ -936,7 +940,7 @@ $plano = $res3['plano'];
 						</li>	
 
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-info <?php echo $icon2?>" title="Encaixes hoje"></i>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell <?php echo $icon2?>" title="Encaixes hoje"></i>
 							<?php 								
 								if($total_encaixes_hoje != 0){							
 									?>
