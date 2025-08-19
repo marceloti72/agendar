@@ -961,9 +961,10 @@ $("#form-text").submit(function (event) {
 <script type="text/javascript">
 	
 	function mudarData(){
-		var data = $('#data-modal').val();			
+		var data = $('#data-modal').val();		
+		alert(data)	
 		$('#data_agenda').val(data).change();
-		alert(data)
+		
 
 		listar();	
 		listarHorarios();
