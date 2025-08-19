@@ -952,7 +952,7 @@ $("#form-text").submit(function (event) {
 	function mudarFuncionarioModal(){	
 		var func = $('#funcionario_modal').val();	
 		//listar();	
-		listarHorarios();
+		//listarHorarios();
 		listarServicos(func);
 	}
 </script>
@@ -968,7 +968,7 @@ $("#form-text").submit(function (event) {
 		
 
 		listar();	
-		//listarHorarios();
+		listarHorarios();
 
 	}
 </script>
