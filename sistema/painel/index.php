@@ -936,7 +936,7 @@ $plano = $res3['plano'];
 						</li>	
 
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-info-circle <?php echo $icon2?>" title="Encaixes hoje"></i>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-info <?php echo $icon2?>" title="Encaixes hoje"></i>
 							<?php 								
 								if($total_encaixes_hoje != 0){							
 									?>
@@ -945,16 +945,14 @@ $plano = $res3['plano'];
 							</a>
 							<ul class="dropdown-menu">
 								<li>
-									<div class="notification_header" align="center">
-										<a href="#encaixes-hoje">
+									<div class="notification_header" align="center">					
 											<h3><?php echo $total_encaixes_hoje ?> Encaixes Hoje</h3>
-										</a>
 									</div>
 								</li>				
 							
 								<li>
 									<div class="notification_bottom" style="background: #ffe8e6">
-										<a href="<?php echo $link_ag?>">Ver Encaixes</a>
+										<a href="#encaixes-hoje">Ver Encaixes</a>
 									</div> 
 								</li>
 							</ul>
