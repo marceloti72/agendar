@@ -984,6 +984,11 @@ $plano = $res3['plano'];
 									<div class="notification_bottom" style="background: #d9ffe1">
 										<a href="#" data-toggle="modal" data-target="#RelAniv">Relatório Aniversáriantes</a>
 									</div> 
+									<?php if ($total_aniversariantes > 0): ?>
+										<button type="button" class="btn btn-primary btn-sm mt-2" data-toggle="modal" data-target="#birthdayModal">
+											Enviar Parabéns
+										</button>
+									<?php endif; ?>
 								</li>
 							</ul>
 						</li>	
