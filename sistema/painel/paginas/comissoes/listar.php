@@ -234,12 +234,19 @@ for($i=0; $i < $total_reg; $i++){
 			$nome_func = $res2[0]['nome'];
 			$chave_pix_func = $res2[0]['chave_pix'];
 			$tipo_chave_func = $res2[0]['tipo_chave'];
+			$nivel = $res2[0]['nivel'];
 		}else{
 			$nome_func = 'Sem Referência!';
 			$chave_pix_func = '';
 			$tipo_chave_func = '';
 
 		}		
+
+		if($nivel != 'administrador'){
+			$visivel2 = 'ocultar';			
+		}else{
+			$visivel2 = '';
+		}
 
 
 		$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
@@ -300,7 +307,7 @@ echo <<<HTML
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="btn btn-danger btn-xs" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
+		<a href="#" class="btn btn-danger btn-xs {$visivel2}" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>

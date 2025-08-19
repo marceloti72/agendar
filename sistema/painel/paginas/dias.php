@@ -6,10 +6,10 @@ require_once("../conexao.php");
 
 $pag = 'funcionarios';
 
-if(@$_SESSION['nivel_usuario'] != 'administrador'){
-	    echo "<script>window.location='agenda.php'</script>";
-    }
-?>
+// if(@$_SESSION['nivel_usuario'] != 'administrador'){
+// 	    echo "<script>window.location='agenda.php'</script>";
+//     }
+// ?>
 <style>
 	@media (max-width: 768px) {
 	.novo {
