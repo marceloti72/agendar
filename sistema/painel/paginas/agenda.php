@@ -253,6 +253,89 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     margin: 2px 0;
     border-radius: 4px;
 }
+
+/* Custom Modal Header */
+.modal-header-custom {
+    background-color: #3b82f6;
+    color: #fff;
+    border-bottom: none;
+    padding: 1rem 1.5rem;
+}
+
+.modal-header-custom .modal-title {
+    font-weight: 600;
+}
+
+.modal-header-custom .close {
+    color: #fff;
+    opacity: 0.9;
+    font-size: 1.5rem;
+    margin-top: -10px;
+}
+
+/* Modal Body Content */
+.modal-body {
+    padding: 1.5rem;
+    color: #4b5563;
+}
+
+.info-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.info-item {
+    flex-grow: 1;
+    min-width: 150px; /* Ensures items don't get too small on smaller screens */
+}
+
+.info-label {
+    font-weight: 700;
+    color: #1f2937;
+    margin-right: 0.25rem;
+}
+
+.info-value {
+    font-weight: 500;
+    color: #6b7280;
+}
+
+/* Section Divider */
+.section-divider {
+    border-bottom: 1px solid #e5e7eb;
+    margin: 1.5rem 0;
+}
+
+/* Details Sections */
+.details-section {
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+    border-bottom: 2px solid #3b82f6;
+    padding-bottom: 0.25rem;
+    display: inline-block;
+}
+
+.item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.item-list > div {
+    background-color: #f9fafb;
+    padding: 0.75rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
 </style>
 
 
@@ -480,37 +563,39 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header modal-header-custom">
-                <h4 class="modal-title">Informações da Comanda</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px;"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Detalhes da Comanda</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <div class="row" style="border-bottom: 1px solid #cac7c7;">
-                    <div class="col-md-8">
-					</div>
-                    <div class="col-md-4">
-                        <span><b>Valor: </b></span>
-                        <span id="valor_dados"></span>
+                <div class="info-group">
+                    <div class="info-item">
+                        <span class="info-label">Valor:</span>
+                        <span id="valor_dados" class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Aberta Por:</span>
+                        <span id="func_dados" class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Data:</span>
+                        <span id="data_dados" class="info-value"></span>
                     </div>
                 </div>
 
-                <div class="row" style="border-bottom: 1px solid #cac7c7;">
-                    <div class="col-md-8">
-                        <span><b>Aberta Por: </b></span>
-                        <span id="func_dados"></span>
-                    </div>
-                    <div class="col-md-4">
-                        <span><b>Data: </b></span>
-                        <span id="data_dados"></span>
-                    </div>
+                <div class="section-divider"></div>
+
+                <div class="details-section">
+                    <h5 class="section-title">Serviços</h5>
+                    <div class="item-list" id="listar_servicos_dados"></div>
+                </div>
+                
+                <div class="details-section">
+                    <h5 class="section-title">Produtos</h5>
+                    <div class="item-list" id="listar_produtos_dados"></div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12 servico-item" id="listar_servicos_dados"></div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12 produto-item" id="listar_produtos_dados"></div>
-                </div>
             </div>
         </div>
     </div>
