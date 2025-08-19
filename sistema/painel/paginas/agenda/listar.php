@@ -1,359 +1,402 @@
-<?php 
+<?php
 require_once("../../../conexao.php");
 @session_start();
 $id_conta = $_SESSION['id_conta'];
 $usuario = @$_SESSION['id_usuario'];
 $data_atual = date('Y-m-d');
+?>
 
-$funcionario = @$_SESSION['id_usuario'];
+<style>
+/* General styling and fonts */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e3e2e0;
+    color: #333;
+    margin: 0;
+    /* padding: 20px; */
+}
+
+/* Container for the appointment list */
+.appointment-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Individual appointment row */
+.appointment-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 1fr 120px 100px;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 12px 20px;
+    transition: opacity 0.3s ease;
+}
+
+/* Transparency for completed status */
+.appointment-row.completed {
+    opacity: 0.5;
+}
+
+/* Professional color coding */
+.professional-color-1 { border-left: 4px solid #007bff; }
+.professional-color-2 { border-left: 4px solid #28a745; }
+.professional-color-3 { border-left: 4px solid #dc3545; }
+.professional-color-4 { border-left: 4px solid #ffc107; }
+.professional-color-5 { border-left: 4px solid #17a2b8; }
+.professional-color-6 { border-left: 4px solid #6f42c1; }
+
+/* Appointment details */
+.appointment-time {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.appointment-client, .appointment-service, .appointment-professional {
+    font-size: 1em;
+    color: #444;
+}
+
+.appointment-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-completed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Action buttons */
+.appointment-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.command-btn {
+    color: #007bff;
+}
+
+.command-btn:hover {
+    color: #0056b3;
+}
+
+.delete-btn {
+    color: #999;
+}
+
+.delete-btn:hover {
+    color: #dc3545;
+}
+
+/* Delete confirmation dropdown */
+.delete-confirm-dropdown {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    min-width: 150px;
+    padding: 10px;
+    display: none;
+    right: 0;
+    margin-top: 5px;
+}
+
+.delete-confirm-dropdown p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.delete-confirm-dropdown a {
+    color: #dc3545;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .appointment-row {
+        grid-template-columns: 80px 1fr 1fr 100px;
+        gap: 10px;
+    }
+    .appointment-service {
+        display: none;
+    }
+}
+</style>
+
+<?php
+$funcionario = $_SESSION['id_usuario'];
 $data = @$_POST['data'];
 
-if($data == ""){
-	$data = date('Y-m-d');
+if ($data == "") {
+    $data = date('Y-m-d');
 }
-?>
-<style>
-	.service-item {
-		display: flex;
-		align-items: center;
-		padding: 10px;
-		border-radius: 8px;
-		background-color: #f9f9f9;
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-		margin-bottom: 10px;
-		transition: all 0.3s ease;
-	}
-
-	/* Ajuste das colunas */
-	.dropdown-column {
-		padding-right: 15px;
-		/* Espaçamento à direita para separar */
-		display: flex;
-		justify-content: center;
-		align-items: flex-start;
-	}
-
-	.service-column {
-		padding-left: 15px;
-		/* Espaçamento à esquerda para separar */
-	}
-
-	.service-item:hover {
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-		background-color: rgb(194, 229, 200);
-	}
-
-	.service-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		width: 100%;
-		margin: 0;
-
-	}
-
-	.service-time {
-		font-size: 16px;
-		font-weight: 600;
-		color: #333;
-	}
-
-	.service-actions {
-		display: flex;
-		gap: 8px;
-	}
-
-	.btn {
-		padding: 6px 12px;
-		font-size: 12px;
-		font-weight: 500;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-		transition: all 0.2s ease;
-	}
-
-	.btn-history {
-		background-color: #007bff;
-		color: white;
-	}
-
-	.btn-history:hover {
-		background-color: #0056b3;
-	}
-
-	.btn-finish {
-		background-color: #dc3545;
-		color: white;
-	}
-
-	.btn-finish:hover {
-		background-color: #b02a37;
-	}
-
-	.payment-status {
-		font-size: 12px;
-		font-weight: 300;
-		padding: 4px 8px;
-		border-radius: 12px;
-	}
-
-	.verde {
-		color: #28a745;
-		background-color: #e6ffe6;
-	}
-
-	/* Classe dinâmica para status (exemplo) */
-	.finalizado {
-		background-color: #6c757d;
-		cursor: not-allowed;
-	}
-
-	.finalizado:hover {
-		background-color: #5c636a;
-	}
-</style>
-<?php 
-
 
 echo <<<HTML
-<small>
+<div class="appointment-list-container">
 HTML;
-$query = $pdo->query("SELECT * FROM agendamentos where funcionario = '$funcionario' and data = '$data' and id_conta = '$id_conta' ORDER BY hora asc");
+
+// Array to assign colors to professionals
+$professional_colors = [
+    'professional-color-1',
+    'professional-color-2',
+    'professional-color-3',
+    'professional-color-4',
+    'professional-color-5',
+    'professional-color-6'
+];
+$professional_index = [];
+
+$query = $pdo->query("SELECT * FROM agendamentos WHERE funcionario = '$funcionario' and data = '$data' AND id_conta = '$id_conta' ORDER BY hora asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
-if($total_reg > 0){
-for($i=0; $i < $total_reg; $i++){
-	foreach ($res[$i] as $key => $value){}
-$id = $res[$i]['id'];
-$funcionario = $res[$i]['funcionario'];
-$cliente = $res[$i]['cliente'];
-$hora = $res[$i]['hora'];
-$data = $res[$i]['data'];
-$usuario = $res[$i]['usuario'];
-$data_lanc = $res[$i]['data_lanc'];
-$obs = $res[$i]['obs'];
-$status = $res[$i]['status'];
-$servico = $res[$i]['servico'];
-$valor_pago = $res[$i]['valor_pago'];
-$origem = $res[$i]['origem'];
 
+if ($total_reg > 0) {
+    for ($i = 0; $i < $total_reg; $i++) {
+        $id = $res[$i]['id'];
+        $funcionario = $res[$i]['funcionario'];
+        $cliente = $res[$i]['cliente'];
+        $hora = $res[$i]['hora'];
+        $servico = $res[$i]['servico'];
+        $valor_pago = $res[$i]['valor_pago'];
+        $origem = $res[$i]['origem'];
+        $status = $res[$i]['status'];
+        $comanda = $res[$i]['comanda_id'];
+        $valor_sinal = $res[$i]['valor_pago'];
+        $cupom = $res[$i]['cupom'];
+        $obs = str_replace('"', "**", $res[$i]['obs']);
 
-$valor_pagoF = number_format($valor_pago, 2, ',', '.');
-if ($valor_pago > 0 and $status == 'Agendado') {
-	$classe_valor_pago = '';
-} else {
-	$classe_valor_pago = 'ocultar';
-}
+        $horaF = date("H:i", strtotime($hora));
 
+        $stmt = $pdo->prepare("SELECT * FROM comandas WHERE id = :comanda AND id_conta = :id_conta");
+        $stmt->bindValue(':comanda', $comanda);
+        $stmt->bindValue(':id_conta', $id_conta);
+        $stmt->execute();
 
+        $item = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($status == 'Agendado') {
-	$imagem = 'relogio-vermelho.png';
-	$classe_status = '';
-	$classe_finalizado = '';	
-	$finalizado = 'Em aberto';	
-	$cor2 = '';
-	$cor3 = '';
-} else {
-	$imagem = 'relogio-azul.png';
-	$classe_status = 'ocultar';
-	$classe_finalizado = '';
-	$finalizado = 'Serviço Finalizado!';
-	$cor2 = '#836FFF';
-	$cor3 = 'white';
-}
+        if ($item) {
+            $id2 = $item['id'];
+            $valor2 = $item['valor'];
+            $cliente2 = $item['cliente'];
+            $obs2 = $item['obs'];
+            $status2 = $item['status'];
+            $data2 = $item['data'];
+            $hora2 = $item['hora'];
+            $funcionario_id = $item['funcionario'];
 
-$dataF = implode('/', array_reverse(explode('-', $data)));
-$horaF = date("H:i", strtotime($hora));
+            $dataF = implode('/', array_reverse(explode('-', $data2)));
+        } else {
+            echo "Comanda não encontrada.";
+            continue;
+        }
 
+        if (!empty($cupom)) {
+            $query_cupom = $pdo->prepare("SELECT valor, tipo_desconto, usos_atuais FROM cupons WHERE id = :id AND id_conta = :id_conta");
+            $query_cupom->bindValue(":id", $cupom);
+            $query_cupom->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);
+            $query_cupom->execute();
+            $dados_cupom = $query_cupom->fetch(PDO::FETCH_ASSOC);
 
-if($status == 'Concluído'){		
-	$classe_linha = '';
-}else{		
-	$classe_linha = 'text-muted';
-}
+            if ($dados_cupom) {
+                $valor_cupom = $dados_cupom['valor'];
+                $tipo_desconto = $dados_cupom['tipo_desconto'];
+                if ($tipo_desconto === 'porcentagem') {
+                    $desconto_aplicado = $valor2 * ($valor_cupom / 100);
+                    $valor_cupom = $desconto_aplicado;
+                }
+            }
+        }
 
+        $query_client = $pdo->query("SELECT nome, cartoes FROM clientes WHERE id = '$cliente' AND id_conta = '$id_conta'");
+        $res_client = $query_client->fetch(PDO::FETCH_ASSOC);
+        $nome_cliente = $res_client ? $res_client['nome'] : 'Sem Cliente';
+        $total_cartoes = $res_client ? $res_client['cartoes'] : 0;
 
-$query2 = $pdo->query("SELECT * FROM usuarios where id = '$usuario' and id_conta = '$id_conta'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-if(@count($res2) > 0){
-	$nome_usu = $res2[0]['nome'];
-}else{
-	$nome_usu = 'Sem Usuário';
-}
+        $query_service = $pdo->query("SELECT nome, valor FROM servicos WHERE id = '$servico' AND id_conta = '$id_conta'");
+        $res_service = $query_service->fetch(PDO::FETCH_ASSOC);
+        $nome_serv = $res_service ? $res_service['nome'] : 'Não Lançado';
+        $valor_serv = $res_service ? $res_service['valor'] : 0;
 
+        $query_prof = $pdo->query("SELECT nome FROM usuarios WHERE id = '$funcionario' AND id_conta = '$id_conta'");
+        $res_prof = $query_prof->fetch(PDO::FETCH_ASSOC);
+        $nome_prof = $res_prof ? $res_prof['nome'] : '';
 
-$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-if(@count($res2) > 0){
-	$nome_serv = $res2[0]['nome'];
-	$valor_serv = $res2[0]['valor'];
-}else{
-	$nome_serv = 'Não Lançado';
-	$valor_serv = '';
-}
+        // Assign a color to the professional
+        if (!isset($professional_index[$funcionario])) {
+            $professional_index[$funcionario] = count($professional_index) % count($professional_colors);
+        }
+        $color_class = $professional_colors[$professional_index[$funcionario]];
 
+        $status_badge_class = ($status == 'Concluído') ? 'status-completed' : 'status-pending';
+        $status_text = ($status == 'Concluído') ? 'Concluído' : 'Em Aberto';
+        $row_class = ($status == 'Concluído') ? 'completed' : '';
 
-$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-if(@count($res2) > 0){
-	$nome_cliente = $res2[0]['nome'];
-	$total_cartoes = $res2[0]['cartoes'];
-}else{
-	$nome_cliente = 'Sem Cliente';
-	$total_cartoes = 0;
-}
-
-if($total_cartoes >= $quantidade_cartoes and $status == 'Agendado'){
-	$ocultar_cartoes = '';
-}else{
-	$ocultar_cartoes = 'ocultar';
-}
-
-//retirar aspas do texto do obs
-$obs = str_replace('"', "**", $obs);
-
-$classe_deb = '#043308';
-$total_debitos = 0;
-$total_pagar = 0;
-$total_vencido = 0;
-$total_debitosF = 0;
-$total_pagarF = 0;
-$total_vencidoF = 0;
-$query2 = $pdo->query("SELECT * FROM receber where pessoa = '$cliente' and pago != 'Sim' and id_conta = '$id_conta'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-$total_reg2 = @count($res2);
-if($total_reg2 > 0){
-	$classe_deb = '#661109';
-	for($i2=0; $i2 < $total_reg2; $i2++){	
-	$valor_s = $res2[$i2]['valor'];		
-	$data_venc = $res2[$i2]['data_venc'];	
-	
-	$total_debitos += $valor_s;
-	$total_debitosF = number_format($total_debitos, 2, ',', '.');
-	
-
-	if(strtotime($data_venc) < strtotime($data_atual)){		
-		$total_vencido += $valor_s;
-	}else{
-		$total_pagar += $valor_s;
-	}
-
-	$total_pagarF = number_format($total_pagar, 2, ',', '.');
-	$total_vencidoF = number_format($total_vencido, 2, ',', '.');
-}
-}
-
-if ($valor_serv == $valor_pago) {
-	$valor_pagoF = 'Pagamento concluido!';
-	$cor = '#90EE90';	
-	$classe_finalizado = 'ocultar';	
-	$finalizado = '';
-} else {
-	$valor_pagoF = 'Sinal pago R$ ' . $valor_pagoF;
-	$cor = '';	
-	$classe_finalizado = 'ocultar';	
-	$finalizado = '';
-}
-
-if($valor_pago > 0){
-	$valor_serv = $valor_serv - $valor_pago;
-}
-
-
-echo <<<HTML
-			<div class="col-xs-12 col-md-4 widget cardTarefas mobile100">
-        		<div class="r3_counter_box">     		
-        		
-        		
-
-				<li class="dropdown head-dpdn2" style="list-style-type: none;">
-				
-
-		<ul class="dropdown-menu" style="margin-left:-30px;">
-		<li>
-		<div class="notification_desc2">
-		<p>Confirmar Exclusão? <a href="#" onclick="excluir('{$id}', '{$horaF}')"><span class="text-danger">Sim</span></a></p>
-		</div>
-		</li>										
-		</ul>
-		</li>
-
-		<div class="row">
-        		<div class="col-md-3 dropdown-column">
-				<li class="dropdown head-dpdn2" style="list-style-type: none;">
-				
-		<img class="icon-rounded-vermelho" src="img/{$imagem}" width="75px" height="75px">		
-		</li>
-        			 
-        		</div>
-        		<div class="col-md-9 service-column" >
-				
-					<h5 class="service-header" >
-					
-					<strong class="service-time">
-						<h2>{$horaF}</h2>
-					</strong>
-					</a>
-						<div class="service-actions">					
-						
-						</div>
-												
-					</h5>
-					
-				       			
-        		</div>
-				<button style='cursor: default; width: 100%; background-color: {$cor};' class="payment-status {$classe_valor_pago}" >{$valor_pagoF}</button>
-				<button style='cursor: default;width: 100%; background-color: {$cor2}; color: {$cor3};' class="payment-status {$classe_finalizado}" >{$finalizado}</button>
-        		</div>
-        		
-        					
-        		<hr style="margin-top:-2px; margin-bottom: 3px">                    
-                    <div class="stats" align="center">
-                      <span style="">                      
-                        <small> <span class="{$ocultar_cartoes}" style=""><img class="icon-rounded-vermelho" src="img/presente.jpg" width="20px" height="20px"></span> <span style="color:{$classe_deb}; font-size:13px">{$nome_cliente}</span> (<i><span style="color:#061f9c; font-size:12px">{$nome_serv}</span></i>)</small></span>
-						<small><small><button style='cursor: default;border-radius: 10px;border: 0px;background-color: #F0E68C;'>via {$origem}</button></small></small>
+        echo <<<HTML
+        <div class="appointment-row {$row_class} {$color_class}">
+            <div class="appointment-time">{$horaF}</div>
+            <div class="appointment-client">{$nome_cliente}</div>
+            <div class="appointment-service">{$nome_serv}</div>
+            <div class="appointment-professional">{$nome_prof}</div>
+            <div class="appointment-status {$status_badge_class}">{$status_text}</div>
+            <div class="appointment-actions">
+                <button class="action-btn command-btn" onclick="editar('{$id2}', '{$valor2}', '{$cliente2}', '{$obs2}', '{$status2}', '{$nome_cliente}', '{$nome_prof}', '{$dataF}', '{$valor_sinal}', '{$valor_cupom}')" title="Abrir Comanda">
+                    <i class="fa fa-eye"></i>
+                </button>
+                <div style="position: relative;">
+                    <button class="action-btn delete-btn" onclick="showDeleteDropdown(this)">
+                        &times;
+                    </button>
+                    <div class="delete-confirm-dropdown">
+                        <p>Confirmar exclusão? <a href="#" onclick="excluir('{$id}', '{$horaF}')">Sim</a></p>
                     </div>
                 </div>
-        	</div>
+            </div>
+        </div>
 HTML;
-	}
+    }
 } else {
-	echo 'Nenhum horário para essa Data!';
+    echo '<p>Nenhum horário para essa data!</p>';
 }
 
+echo <<<HTML
+</div>
+HTML;
 ?>
 
+<script>
+function showDeleteDropdown(button) {
+    const dropdown = button.nextElementSibling;
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
 
+document.addEventListener('click', function(e) {
+    const dropdowns = document.querySelectorAll('.delete-confirm-dropdown');
+    dropdowns.forEach(dropdown => {
+        const parentButton = dropdown.previousElementSibling;
+        if (!parentButton.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+});
 
+function fecharServico(id, cliente, servico, valor_servico, funcionario, nome_serv) {
+    $('#id_agd').val(id);
+    $('#cliente_agd').val(cliente);
+    $('#servico_agd').val(servico);
+    $('#valor_serv_agd').val(valor_servico);
+    $('#funcionario_agd').val(funcionario).change();
+    $('#titulo_servico').text(nome_serv);
+    $('#descricao_serv_agd').val(nome_serv);
+    $('#obs2').val('');
+    $('#valor_serv_agd_restante').val('');
+    $('#data_pgto_restante').val('');
+    $('#pgto_restante').val('').change();
+    $('#modalServico').modal('show');
+}
 
+function verificarStatus(id, cliente, servico, valor_serv, funcionario, nome_serv, status) {
+    if (status !== 'Concluído') {
+        fecharServico(id, cliente, servico, valor_serv, funcionario, nome_serv);
+    } else {
+        alert('Este serviço já foi concluído.');
+    }
+}
 
-<script type="text/javascript">
-	function fecharServico(id, cliente, servico, valor_servico, funcionario, nome_serv){
-	
-		$('#id_agd').val(id);
-		$('#cliente_agd').val(cliente);		
-		$('#servico_agd').val(servico);	
-		$('#valor_serv_agd').val(valor_servico);	
-		$('#funcionario_agd').val(funcionario).change();	
-		$('#titulo_servico').text(nome_serv);	
-		$('#descricao_serv_agd').val(nome_serv);
-		$('#obs2').val('');	
+function confirmarExclusao(id) {
+    if (confirm("Confirma Exclusão?")) {
+        excluirComanda(id);
+    }
+}
 
-		$('#valor_serv_agd_restante').val('');
-		$('#data_pgto_restante').val('');
-		$('#pgto_restante').val('').change();	
+function editar(id, valor, cliente, obs, status, nome_cliente, nome_func, data, valor_sinal, valor_cupom) {
+    if (status.trim() === 'Fechada') {
+        $('#cliente_dados').text(nome_cliente);
+        $('#valor_dados').text(valor);
+        $('#data_dados').text(data);
+        $('#func_dados').text(nome_func);
+        $('#modalDados').modal('show');
+        listarServicosDados(id);
+        listarProdutosDados(id);
+    } else {
+        $('#id').val(id);
+        $('#cliente').val(cliente).change();
+        $('#valor_serv').val(valor);
+        var sinal = parseFloat(valor_sinal) || 0;
+        var cupom = parseFloat(valor_cupom) || 0;
+        var total_descontos = sinal + cupom;
+        $('#valor_sinal').val(sinal.toFixed(2));
+        $('#valor_cupom').val(cupom.toFixed(2));
+        $('#valor_descontos').val(total_descontos.toFixed(2));
+        $('#obs').val(obs);
+        $('#valor_serv_agd_restante').val('');
+        $('#titulo_comanda').text('Editar Comanda Aberta');
+        $('#btn_fechar_comanda').show();
+        $('#modalForm2').modal('show');
+        $('#nome_do_cliente_aqui').text('Cliente: '+nome_cliente);
+        listarServicos2(id);
+        listarProdutos(id);
+        calcular();
+    }
+}
 
-		$('#modalServico').modal('show');
-	}
+function limparCampos() {
+    $('#btn_fechar_comanda').hide();
+    $('#titulo_comanda').text('Nova Comanda');
+    $('#id').val('');
+    $('#valor_serv').val('');
+    $('#cliente').val('').change();
+    $('#data_pgto').val('<?= $data_hoje ?>');
+    $('#valor_serv_agd_restante').val('');
+    $('#data_pgto_restante').val('');
+    $('#pgto_restante').val('').change();
+    listarServicos2();
+    listarProdutos();
+    calcular();
+}
 
-	function verificarStatus(id, cliente, servico, valor_serv, funcionario, nome_serv, status) {
-		if (status !== 'Concluído') {
-			fecharServico(id, cliente, servico, valor_serv, funcionario, nome_serv);
-		} else {
-			// Opcional: Exibir uma mensagem informando que o serviço já foi concluído
-			alert('Este serviço já foi concluído.');
-		}
-	}
+function excluirComanda(id) {
+    $.ajax({
+        url: 'paginas/comanda/excluir.php',
+        method: 'POST',
+        data: { id },
+        dataType: "text",
+        success: function(mensagem) {
+            if (mensagem.trim() === "Excluído com Sucesso") {
+                listar();
+            } else {
+                alert(mensagem);
+            }
+        },
+        error: function(xhr, status, error) {
+            alert("Erro ao excluir: " + error);
+        }
+    });
+}
 </script>
