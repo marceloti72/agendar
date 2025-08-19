@@ -1121,21 +1121,18 @@ for ($i = 1; $i <= 12; $i++) {
                 return;
             }
 
-            var data = {
-                id_conta: <?php echo $id_conta; ?>,
+            var data = {                
                 clientes: clientes,
                 oferecer_presente: $('#oferecer_presente').val(),
                 id_cupom: $('#id_cupom').val()
-            };
-            alert('lkjkljk')
+            };            
 
             $.ajax({
                 url: 'send-birthday-message.php',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
-                success: function(response) {
-                    alert('uuuuuuu')
+                success: function(response) {                    
                     if (response.success) {
                         alert(response.message);
                         $('#birthdayModal').modal('hide');

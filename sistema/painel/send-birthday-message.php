@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once("../conexao.php"); // Ajuste o caminho conforme necessário
+$id_conta = $_SESSION['id_conta'];
 
 header('Content-Type: application/json');
 
@@ -14,19 +15,11 @@ try {
         exit;
     }
 
-    // Obter dados do POST
-    $id_conta = isset($_POST['id_conta']) ? (int)$_POST['id_conta'] : 0;
+    // Obter dados do POST    
     $clientes = isset($_POST['clientes']) ? $_POST['clientes'] : null;
     $oferecer_presente = isset($_POST['oferecer_presente']) ? $_POST['oferecer_presente'] : 'Não';
     $id_cupom = isset($_POST['id_cupom']) ? (int)$_POST['id_cupom'] : null;
-
-    // Validações
-    if ($id_conta <= 0 || $id_conta !== (int)$_SESSION['id_conta']) {
-        $response['message'] = 'ID da conta inválido ou não autorizado';
-        echo json_encode($response);
-        exit;
-    }
-
+    
     if (!is_array($clientes) || empty($clientes)) {
         $response['message'] = 'Lista de clientes é obrigatória e não pode estar vazia';
         echo json_encode($response);
