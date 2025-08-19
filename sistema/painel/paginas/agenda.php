@@ -968,7 +968,7 @@ $("#form-text").submit(function (event) {
 		
 
 		listar();	
-		listarHorarios();
+		//listarHorarios();
 
 	}
 </script>
