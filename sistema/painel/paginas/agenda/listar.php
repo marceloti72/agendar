@@ -348,7 +348,7 @@ function editar(id, valor, cliente, obs, status, nome_cliente, nome_func, data, 
     $('#valor_descontos').val(total_descontos.toFixed(2));
     $('#obs').val(obs);
     $('#valor_serv_agd_restante').val('');
-    $('#titulo_comanda').text('Editar Comanda Aberta');
+    
     $('#nome_do_cliente_aqui').text('Cliente: ' + nome_cliente);
     listarServicos2(id);
     listarProdutos(id);
@@ -357,9 +357,15 @@ function editar(id, valor, cliente, obs, status, nome_cliente, nome_func, data, 
     // Verificação de status para mostrar ou esconder o botão
     if (status.trim() === 'Fechada') {
         // Se a comanda estiver fechada, esconde o botão de fechar.
+		$('#titulo_comanda').text('Comanda Fechada');
         $('#btn_fechar_comanda').hide();
+        $('#servico').hide();
+        $('#produto').hide();
+        $('.fa-plus').hide();
+
     } else {
         // Se estiver aberta, mostra o botão.
+		$('#titulo_comanda').text('Editar Comanda Aberta');
         $('#btn_fechar_comanda').show();
     }
 
