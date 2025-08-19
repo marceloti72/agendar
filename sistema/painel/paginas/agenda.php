@@ -439,7 +439,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     </div>
                                     
                                     <div class="col-md-2 d-flex align-items-end">
-                                        <button type="button" class="btn btn-success btn-add" onclick="inserirServico()"><i class="fa fa-plus"></i></button>
+                                        <button type="button" class="btn btn-success btn-add"  onclick="inserirServico()"><i class="fa fa-plus"></i></button>
                                     </div>
                                 </div>
                                 <div class="item-list-container" id="listar_servicos"></div>

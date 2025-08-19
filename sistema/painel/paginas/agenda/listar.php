@@ -361,7 +361,7 @@ function editar(id, valor, cliente, obs, status, nome_cliente, nome_func, data, 
         $('#btn_fechar_comanda').hide();
         $('#servico').hide();
         $('#produto').hide();
-        $('.fa-plus').hide();
+        $('.btn-add').hide();
 
     } else {
         // Se estiver aberta, mostra o botão.
