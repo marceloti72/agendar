@@ -605,12 +605,15 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
-			<div class="modal-header text-white" style="background-color: #4682B4;">
-				<h4 class="modal-title" id="titulo_inserir"></h4>
-				<button id="btn-fechar" type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
+			<div class="modal-header modal-header-custom">
+                <h4 class="modal-title" id="titulo_comanda">
+                    <i class="fas fa-cash-register modal-icon"></i>
+                    Novo Agendamento
+                </h4>
+                <button type="button" id="btn-fechar" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 			<form method="post" id="form-text">
 				<div class="modal-body">
 
