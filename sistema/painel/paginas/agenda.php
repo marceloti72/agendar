@@ -401,7 +401,7 @@ $id_usuario = $_SESSION['id_usuario'];
                         <div class="col-md-8 modal-left-panel">
                             <div class="modal-body-scroll p-3">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <h3 id="nome_do_cliente_aqui"></h3>
                                         </div>
