@@ -16,7 +16,9 @@ $id_usuario = $_SESSION['id_usuario'];
 // 	    echo "<script>window.location='agenda.php'</script>";
 //     }
 
-// ?>
+//
+echo $id_usuario;
+?>
 
 <style>
 	.tooltip-inner {
@@ -961,6 +963,7 @@ $("#form-text").submit(function (event) {
 	function mudarData(){
 		var data = $('#data-modal').val();			
 		$('#data_agenda').val(data).change();
+		alert(data)
 
 		listar();	
 		listarHorarios();
