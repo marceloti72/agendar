@@ -847,11 +847,20 @@ $plano = $res3['plano'];
 							$res = $query->fetchAll(PDO::FETCH_ASSOC);
 							$total_agendamentos_hoje_usuario_pendentes = @count($res);
 							$link_ag = 'agendamentos';
+
+							$query = $pdo->query("SELECT * FROM encaixes where data = curDate() and id_conta = '$id_conta'");
+							$res_encaixes = $query->fetchAll(PDO::FETCH_ASSOC);
+							$total_encaixes_hoje = @count($res_encaixes);
+							
 						}else{
 							$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and funcionario = '$id_usuario' and status = 'Agendado' and id_conta = '$id_conta'");
 							$res = $query->fetchAll(PDO::FETCH_ASSOC);
 							$total_agendamentos_hoje_usuario_pendentes = @count($res);
 							$link_ag = 'agenda';
+
+							$query = $pdo->query("SELECT * FROM encaixes where data = curDate() and profissional = '$id_usuario' and id_conta = '$id_conta'");
+							$res_encaixes = $query->fetchAll(PDO::FETCH_ASSOC);
+							$total_encaixes_hoje = @count($res_encaixes);
 
 						}
 						if($total_agendamentos_hoje_usuario_pendentes != 0){
@@ -921,6 +930,29 @@ $plano = $res3['plano'];
 								<li>
 									<div class="notification_bottom" style="background: #ffe8e6">
 										<a href="<?php echo $link_ag?>">Ver Agendamentos</a>
+									</div> 
+								</li>
+							</ul>
+						</li>	
+
+						<li class="dropdown head-dpdn">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-info-circle <?php echo $icon2?>" title="Encaixes hoje"></i>
+							<?php 								
+								if($total_encaixes_hoje != 0){							
+									?>
+                                    <span class="badge text-danger"><?php echo $total_encaixes_hoje ?></span><?php 
+								}?>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="notification_header" align="center">
+										<h3><?php echo $total_encaixes_hoje ?> Encaixes Hoje</h3>
+									</div>
+								</li>					
+							
+								<li>
+									<div class="notification_bottom" style="background: #ffe8e6">
+										<a href="<?php echo $link_ag?>">Ver Encaixes</a>
 									</div> 
 								</li>
 							</ul>
