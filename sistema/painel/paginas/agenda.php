@@ -980,6 +980,7 @@ $("#form-text").submit(function (event) {
 
 		var funcionario = $('#funcionario_modal').val();	
 		var data = $('#data_agenda').val();	
+		alert(data)
 
 		$.ajax({
 			url: 'paginas/' + pag + "/listar-horarios.php",
