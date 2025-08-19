@@ -950,7 +950,7 @@ $plano = $res3['plano'];
 							<ul class="dropdown-menu">
 								<li>
 									<div class="notification_header" align="center">					
-											<h3><?php echo $total_encaixes_hoje ?> Encaixes Hoje</h3>
+											<h3><?php echo $total_encaixes_hoje ?> Encaixes Hoje Aguardando</h3>
 									</div>
 								</li>				
 							
