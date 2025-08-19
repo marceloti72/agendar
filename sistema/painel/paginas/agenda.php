@@ -3,7 +3,7 @@
 $id_conta = $_SESSION['id_conta'];
 require_once("verificar.php");
 require_once("../conexao.php");
-$pag = 'agendamentos';
+$pag = 'agenda';
 $data_atual = date('Y-m-d');
 $id_usuario = $_SESSION['id_usuario'];
 
@@ -1054,7 +1054,7 @@ $("#form-text").submit(function (event) {
 		$("#data-modal").val(data);
         
 		$.ajax({
-			url: 'paginas/agendamentos/listar.php',
+			url: 'paginas/agenda/listar.php',
 			method: 'POST',
 			data: {data, funcionario},
 			dataType: "text",
@@ -1139,7 +1139,7 @@ $("#form-text").submit(function (event) {
 		var formData = new FormData(this);		
 
 			// Exemplo de como processar a resposta no seu JS (dentro do success do AJAX/Fetch)
-		fetch('paginas/agendamentos/inserir-servico.php', {
+		fetch('paginas/agenda/inserir-servico.php', {
 			method: 'POST',
 			body: formData // Seus dados do formulário
 		})
