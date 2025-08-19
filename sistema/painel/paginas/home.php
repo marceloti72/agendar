@@ -86,6 +86,27 @@ try {
     error_log('Erro ao carregar encaixes de hoje: ' . $e->getMessage());
     $encaixes_error = 'Erro ao carregar encaixes de hoje.';
 }
+
+// Fetch ranking of most active clients in the last 12 months
+try {
+    $query = $pdo->prepare("
+        SELECT c.id AS cliente_id, c.nome AS cliente_nome, COUNT(r.id) AS total_servicos
+        FROM receber r
+        INNER JOIN clientes c ON r.pessoa = c.id
+        WHERE r.id_conta = ?
+          AND r.tipo = 'Serviço'
+          AND r.pago = 'Sim'
+          AND r.data_lanc BETWEEN ? AND ?
+        GROUP BY c.id, c.nome
+        ORDER BY total_servicos DESC
+        LIMIT 5
+    ");
+    $query->execute([$id_conta, $data_inicio, $data_fim]);
+    $ranking_clientes_ativos = $query->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    error_log('Erro ao carregar ranking de clientes ativos: ' . $e->getMessage());
+    $clientes_ativos_error = 'Erro ao carregar ranking de clientes ativos.';
+}
 ?>
 
 <style>
@@ -166,30 +187,30 @@ try {
         font-size: 14px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
-    /* Ranking Section (Profissionais e Serviços) */
-    .ranking-section, .servicos-section, .encaixes-section {
+    /* Ranking Section (Profissionais, Serviços e Clientes Ativos) */
+    .ranking-section, .servicos-section, .encaixes-section, .clientes-ativos-section {
         margin-top: 20px;
         display: flex;
         gap: 20px;
     }
-    .ranking-list-container, .servicos-list-container, .encaixes-list-container {
+    .ranking-list-container, .servicos-list-container, .encaixes-list-container, .clientes-ativos-list-container {
         width: 50%;
         background-color: #fff;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         padding: 15px;
     }
-    .ranking-chart-container, .servicos-chart-container {
+    .ranking-chart-container, .servicos-chart-container, .clientes-ativos-chart-container {
         width: 70%;
         background-color: #fff;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         padding: 15px;
     }
-    .ranking-list, .servicos-list, .encaixes-list {
+    .ranking-list, .servicos-list, .encaixes-list, .clientes-ativos-list {
         padding: 0;
     }
-    .ranking-item, .servicos-item, .encaixes-item {
+    .ranking-item, .servicos-item, .encaixes-item, .clientes-ativos-item {
         display: flex;
         align-items: center;
         padding: 12px;
@@ -198,20 +219,20 @@ try {
         background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .ranking-item:hover, .servicos-item:hover, .encaixes-item:hover {
+    .ranking-item:hover, .servicos-item:hover, .encaixes-item:hover, .clientes-ativos-item:hover {
         transform: translateX(5px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
-    .ranking-item.position-1, .servicos-item.position-1 {
+    .ranking-item.position-1, .servicos-item.position-1, .clientes-ativos-item.position-1 {
         background: linear-gradient(135deg, #ffd700, #ffec80);
     }
-    .ranking-item.position-2, .servicos-item.position-2 {
+    .ranking-item.position-2, .servicos-item.position-2, .clientes-ativos-item.position-2 {
         background: linear-gradient(135deg, #c0c0c0, #e0e0e0);
     }
-    .ranking-item.position-3, .servicos-item.position-3 {
+    .ranking-item.position-3, .servicos-item.position-3, .clientes-ativos-item.position-3 {
         background: linear-gradient(135deg, #cd7f32, #e6b8a2);
     }
-    .ranking-item .rank-icon, .servicos-item .rank-icon {
+    .ranking-item .rank-icon, .servicos-item .rank-icon, .clientes-ativos-item .rank-icon {
         background-color: #4A90E2;
         color: #fff;
         border-radius: 50%;
@@ -222,13 +243,13 @@ try {
         font-weight: bold;
         margin-right: 10px;
     }
-    .ranking-item p, .servicos-item p, .encaixes-item p {
+    .ranking-item p, .servicos-item p, .encaixes-item p, .clientes-ativos-item p {
         margin: 0;
         color: #333;
         font-size: 16px;
         flex: 1;
     }
-    .ranking-item .services, .servicos-item .quantidade {
+    .ranking-item .services, .servicos-item .quantidade, .clientes-ativos-item .services {
         font-weight: bold;
         color: #007bff;
     }
@@ -238,13 +259,13 @@ try {
         margin-left: 10px;
         cursor: pointer;
     }
-    .no-ranking, .no-servicos, .no-encaixes {
+    .no-ranking, .no-servicos, .no-encaixes, .no-clientes-ativos {
         text-align: center;
         color: #666;
         font-size: 16px;
         padding: 12px;
     }
-    #rankingChart, #servicosChart {
+    #rankingChart, #servicosChart, #clientesAtivosChart {
         width: 100%;
         height: 300px;
     }
@@ -312,17 +333,17 @@ try {
             font-size: 12px;
             padding: 8px;
         }
-        .ranking-section, .servicos-section, .encaixes-section {
+        .ranking-section, .servicos-section, .encaixes-section, .clientes-ativos-section {
             flex-direction: column;
             gap: 10px;
         }
-        .ranking-list-container, .ranking-chart-container, .servicos-list-container, .servicos-chart-container, .encaixes-list-container {
+        .ranking-list-container, .ranking-chart-container, .servicos-list-container, .servicos-chart-container, .encaixes-list-container, .clientes-ativos-list-container, .clientes-ativos-chart-container {
             width: 100%;
         }
-        .ranking-item p, .servicos-item p, .encaixes-item p {
+        .ranking-item p, .servicos-item p, .encaixes-item p, .clientes-ativos-item p {
             font-size: 14px;
         }
-        #rankingChart, #servicosChart {
+        #rankingChart, #servicosChart, #clientesAtivosChart {
             height: 250px;
         }
     }
@@ -341,10 +362,10 @@ try {
         .agileinfo-cdr {
             display: none;
         }
-        .ranking-item p, .servicos-item p, .encaixes-item p {
+        .ranking-item p, .servicos-item p, .encaixes-item p, .clientes-ativos-item p {
             font-size: 12px;
         }
-        .ranking-item .rank-icon, .servicos-item .rank-icon {
+        .ranking-item .rank-icon, .servicos-item .rank-icon, .clientes-ativos-item .rank-icon {
             width: 25px;
             height: 25px;
             line-height: 25px;
@@ -353,17 +374,17 @@ try {
         .encaixes-item .whatsapp-icon {
             font-size: 20px;
         }
-        #rankingChart, #servicosChart {
+        #rankingChart, #servicosChart, #clientesAtivosChart {
             height: 200px;
         }
     }
     /* Additional CSS for Pie Charts */
-    #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo, #servicosChart {
+    #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo, #servicosChart, #clientesAtivosChart {
         width: 100%;
         height: 250px;
     }
     @media (max-width: 768px) {
-        #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo, #servicosChart {
+        #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo, #servicosChart, #clientesAtivosChart {
             height: 200px;
         }
         .content-top-1 {
@@ -374,7 +395,7 @@ try {
         }
     }
     @media (max-width: 480px) {
-        #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo, #servicosChart {
+        #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo, #servicosChart, #clientesAtivosChart {
             height: 180px;
         }
     }
@@ -859,6 +880,28 @@ for ($i = 1; $i <= 12; $i++) {
         chartServicos.legend = new am4charts.Legend();
         chartServicos.legend.position = "bottom";
 
+        // Gráfico de Barras para Ranking de Clientes Ativos
+        var chartClientesAtivos = am4core.create("clientesAtivosChart", am4charts.XYChart);
+        chartClientesAtivos.data = <?php echo json_encode($ranking_clientes_ativos); ?>;
+        var categoryAxisClientes = chartClientesAtivos.xAxes.push(new am4charts.CategoryAxis());
+        categoryAxisClientes.dataFields.category = "cliente_nome";
+        categoryAxisClientes.renderer.labels.template.rotation = -45;
+        categoryAxisClientes.renderer.labels.template.horizontalCenter = "right";
+        categoryAxisClientes.renderer.labels.template.verticalCenter = "middle";
+        categoryAxisClientes.renderer.minGridDistance = 20;
+        var valueAxisClientes = chartClientesAtivos.yAxes.push(new am4charts.ValueAxis());
+        valueAxisClientes.title.text = "Número de Serviços";
+        valueAxisClientes.min = 0;
+        var seriesClientes = chartClientesAtivos.series.push(new am4charts.ColumnSeries());
+        seriesClientes.dataFields.valueY = "total_servicos";
+        seriesClientes.dataFields.categoryX = "cliente_nome";
+        seriesClientes.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/] serviços";
+        seriesClientes.columns.template.fill = am4core.color("#4A90E2");
+        seriesClientes.columns.template.strokeWidth = 0;
+        var valueLabelClientes = seriesClientes.bullets.push(new am4charts.LabelBullet());
+        valueLabelClientes.label.text = "{valueY}";
+        valueLabelClientes.label.dy = -10;
+
         // Adicionar mensagem para gráficos vazios
         if (chartReceberTipo.data.length === 0) {
             document.getElementById("pieChartReceberTipo").innerHTML = "<p style='text-align:center; padding:20px;'>Nenhum dado disponível para <?php echo $ano_atual; ?></p>";
@@ -871,6 +914,9 @@ for ($i = 1; $i <= 12; $i++) {
         }
         if (chartServicos.data.length === 0) {
             document.getElementById("servicosChart").innerHTML = "<p style='text-align:center; padding:20px;'>Nenhum dado disponível para serviços.</p>";
+        }
+        if (chartClientesAtivos.data.length === 0) {
+            document.getElementById("clientesAtivosChart").innerHTML = "<p style='text-align:center; padding:20px;'>Nenhum dado disponível para clientes ativos.</p>";
         }
     });
     </script>
@@ -932,6 +978,31 @@ for ($i = 1; $i <= 12; $i++) {
             </div>
             <div class="servicos-chart-container">
                 <div id="servicosChart" style="height: 300px;"></div>
+            </div>
+        </div>
+        <!-- Ranking de Clientes Mais Ativos -->
+        <div class="col-md-12 content-top-2 card clientes-ativos-section">
+            <div class="card-header">
+                <h3>Ranking de Clientes Mais Ativos (Últimos 12 Meses)</h3>
+            </div>
+            <div class="clientes-ativos-list-container">
+                <?php if (isset($clientes_ativos_error)): ?>
+                    <p class="no-clientes-ativos"><?php echo htmlspecialchars($clientes_ativos_error); ?></p>
+                <?php elseif (empty($ranking_clientes_ativos)): ?>
+                    <p class="no-clientes-ativos">Nenhum cliente ativo registrado nos últimos 12 meses.</p>
+                <?php else: ?>
+                    <div class="clientes-ativos-list">
+                        <?php foreach ($ranking_clientes_ativos as $index => $cliente): ?>
+                            <div class="clientes-ativos-item position-<?php echo $index + 1; ?>">
+                                <span class="rank-icon"><?php echo $index + 1; ?></span>
+                                <p><?php echo htmlspecialchars($cliente['cliente_nome']); ?> <span class="services"><?php echo $cliente['total_servicos']; ?> serviços</span></p>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="clientes-ativos-chart-container">
+                <div id="clientesAtivosChart" style="height: 300px;"></div>
             </div>
         </div>
         <!-- Clientes Aguardando Encaixe Hoje -->
@@ -1097,7 +1168,7 @@ for ($i = 1; $i <= 12; $i++) {
     };
 
     var graphdata3 = {
-        linecolor: "#0e248a",
+        linecolor: "#2196f3",
         title: "Serviços",
         values: [
             { X: "Janeiro", Y: parseFloat(saldo_mes_servico[0]) },
@@ -1115,80 +1186,21 @@ for ($i = 1; $i <= 12; $i++) {
         ]
     };
 
-    $(function () {          
+    $(document).ready(function () {
         $("#Linegraph").SimpleChart({
             ChartType: "Line",
             toolwidth: "50",
             toolheight: "25",
-            axiscolor: "#E6E6E6",
-            textcolor: "#6E6E6E",
+            axiscolor: "#333",
+            textcolor: "#666",
             showlegends: true,
             data: [graphdata3, graphdata2, graphdata1],
             legendsize: "30",
             legendposition: 'bottom',
             xaxislabel: 'Meses',
-            title: '',
-            yaxislabel: 'Totais R$',
-        });
-    });
-
-    // JavaScript para Aniversariantes
-    $(document).ready(function() {
-        // Mostrar/esconder campo de cupom com base na seleção
-        $('#oferecer_presente').on('change', function() {
-            if ($(this).val() === 'Sim') {
-                $('#cupom_group').show();
-            } else {
-                $('#cupom_group').hide();
-                $('#id_cupom').val('');
-            }
-        });
-
-        // Enviar mensagens de parabéns
-        $('#enviar_mensagens').on('click', function() {
-            var clientes = [];
-            $('#aniversariantes_list .select-cliente:checked').each(function() {
-                var row = $(this).closest('tr');
-                clientes.push({
-                    nome: row.find('td:eq(0)').text(),
-                    telefone: row.find('td:eq(1)').text()
-                });
-            });
-
-            if (clientes.length === 0) {
-                alert('Selecione pelo menos um cliente para enviar a mensagem.');
-                return;
-            }
-
-            var data = {                
-                clientes: clientes,
-                oferecer_presente: $('#oferecer_presente').val(),
-                id_cupom: $('#id_cupom').val()
-            };        
-            
-            $.ajax({
-                url: '<?php echo $url_sistema; ?>send-birthday-message.php',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                success: function(response) {                    
-                    if (response.success) {
-                        alert(response.message);
-                        $('#birthdayModal').modal('hide');
-                    } else {
-                        alert('Erro ao enviar mensagens: ' + response.message + '\nDetalhes: ' + (response.details ? response.details.join('; ') : ''));
-                    }
-                },
-                error: function(xhr, status, error) {
-                    alert('Erro ao enviar mensagens: ' + (xhr.responseJSON?.message || error));
-                }
-            });
+            title: 'Demonstrativo Anual',
+            yaxislabel: 'Valores R$'
         });
     });
     </script>
-</div>
-<div class="clearfix"></div>
-</div>
-<div class="clearfix"></div>
-</div>
 </div>
