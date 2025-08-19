@@ -173,7 +173,7 @@ try {
         gap: 20px;
     }
     .ranking-list-container, .servicos-list-container, .encaixes-list-container {
-        width: 30%;
+        width: 50%;
         background-color: #fff;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -954,7 +954,7 @@ for ($i = 1; $i <= 12; $i++) {
                                     - Profissional: <?php echo htmlspecialchars($encaixe['profissional_nome']); ?>
                                     <a href="https://wa.me/<?php echo preg_replace('/[ ()-]+/', '', $encaixe['cliente_telefone']); ?>?text=Olá%20<?php echo urlencode($encaixe['cliente_nome']); ?>,%20estamos%20confirmando%20seu%20encaixe%20para%20hoje!" 
                                        target="_blank" class="whatsapp-icon">
-                                        <i class="fa fa-whatsapp"></i>
+                                        <i class="fab fa-whatsapp"></i>
                                     </a>
                                 </p>
                             </div>
