@@ -615,7 +615,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 						<div class="col-md-6">						
 							<div class="form-group"> 
 								<label>Cliente</label> 
-								<select class="form-control sel3" id="cliente" name="cliente" style="width:100%;" required> 
+								<select class="form-control sel3" id="cliente" name="cliente" style="width:100%;" onchange="listarHorarios()" required> 
 
 									<?php 
 									$query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta' ORDER BY nome asc");
