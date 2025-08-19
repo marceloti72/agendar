@@ -7,6 +7,7 @@ header('Content-Type: application/json');
 $response = ['success' => false, 'message' => 'Erro desconhecido', 'details' => []];
 
 try {
+    echo "ENTREI";
     // Verificar autenticação
     if (!isset($_SESSION['id_conta']) || $_SESSION['id_conta'] <= 0) {
         $response['message'] = 'Usuário não autenticado';

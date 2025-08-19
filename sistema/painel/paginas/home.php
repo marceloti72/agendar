@@ -1127,6 +1127,7 @@ for ($i = 1; $i <= 12; $i++) {
                 oferecer_presente: $('#oferecer_presente').val(),
                 id_cupom: $('#id_cupom').val()
             };
+            alert('lkjkljk')
 
             $.ajax({
                 url: 'send-birthday-message.php',
