@@ -49,6 +49,39 @@ try {
     error_log('Erro ao carregar ranking de serviços: ' . $e->getMessage());
     $servicos_error = 'Erro ao carregar ranking de serviços.';
 }
+
+// Fetch birthday clients for today
+try {
+    $query = $pdo->prepare("
+        SELECT nome, data_nasc, telefone
+        FROM clientes
+        WHERE id_conta = ?
+          AND DAY(data_nasc) = DAY(CURDATE())
+          AND MONTH(data_nasc) = MONTH(CURDATE())
+        LIMIT 10
+    ");
+    $query->execute([$id_conta]);
+    $aniversariantes = $query->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    error_log('Erro ao carregar aniversariantes: ' . $e->getMessage());
+    $aniversariantes_error = 'Erro ao carregar aniversariantes.';
+}
+
+// Fetch valid coupons
+try {
+    $query = $pdo->prepare("
+        SELECT id, codigo, valor, tipo_desconto, data_validade
+        FROM cupons
+        WHERE id_conta = ?
+          AND data_validade > NOW()
+          AND usos_atuais < max_usos
+    ");
+    $query->execute([$id_conta]);
+    $cupons = $query->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    error_log('Erro ao carregar cupons: ' . $e->getMessage());
+    $cupons_error = 'Erro ao carregar cupons.';
+}
 ?>
 
 <style>
@@ -129,7 +162,7 @@ try {
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
     /* Ranking Section (Profissionais e Serviços) */
-    .ranking-section, .servicos-section {
+    .ranking-section, .servicos-section, .aniversariantes-section {
         margin-top: 20px;
         display: flex;
         gap: 20px;
@@ -148,10 +181,10 @@ try {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         padding: 15px;
     }
-    .ranking-list, .servicos-list {
+    .ranking-list, .servicos-list, .aniversariantes-list {
         padding: 0;
     }
-    .ranking-item, .servicos-item {
+    .ranking-item, .servicos-item, .aniversariantes-item {
         display: flex;
         align-items: center;
         padding: 12px;
@@ -160,7 +193,7 @@ try {
         background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .ranking-item:hover, .servicos-item:hover {
+    .ranking-item:hover, .servicos-item:hover, .aniversariantes-item:hover {
         transform: translateX(5px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
@@ -173,7 +206,7 @@ try {
     .ranking-item.position-3, .servicos-item.position-3 {
         background: linear-gradient(135deg, #cd7f32, #e6b8a2);
     }
-    .ranking-item .rank-icon, .servicos-item .rank-icon {
+    .ranking-item .rank-icon, .servicos-item .rank-icon, .aniversariantes-item .rank-icon {
         background-color: #4A90E2;
         color: #fff;
         border-radius: 50%;
@@ -184,7 +217,7 @@ try {
         font-weight: bold;
         margin-right: 10px;
     }
-    .ranking-item p, .servicos-item p {
+    .ranking-item p, .servicos-item p, .aniversariantes-item p {
         margin: 0;
         color: #333;
         font-size: 16px;
@@ -194,7 +227,7 @@ try {
         font-weight: bold;
         color: #007bff;
     }
-    .no-ranking, .no-servicos {
+    .no-ranking, .no-servicos, .no-aniversariantes {
         text-align: center;
         color: #666;
         font-size: 16px;
@@ -203,6 +236,80 @@ try {
     #rankingChart, #servicosChart {
         width: 100%;
         height: 300px;
+    }
+    /* Estilos para Aniversariantes */
+    .aniversariantes-section {
+        flex-direction: column;
+    }
+    .aniversariantes-list-container {
+        width: 100%;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+    }
+    .aniversariantes-item .data-nasc {
+        font-weight: bold;
+        color: #007bff;
+    }
+    .btn-enviar-mensagem {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        margin-top: 10px;
+        display: inline-block;
+    }
+    .btn-enviar-mensagem:hover {
+        background-color: #218838;
+    }
+    .btn-enviar-mensagem:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+    }
+    /* Estilos para o Modal */
+    .modal-content {
+        border-radius: 12px;
+    }
+    .modal-header {
+        background: linear-gradient(135deg, #4A90E2, #357ABD);
+        color: #fff;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+    .modal-title {
+        font-size: 18px;
+    }
+    .modal-body {
+        padding: 20px;
+    }
+    .modal-body label {
+        font-size: 16px;
+        color: #333;
+    }
+    .modal-body select, .modal-body input[type="checkbox"] {
+        margin-bottom: 15px;
+    }
+    .modal-body select:disabled {
+        background-color: #e9ecef;
+    }
+    .modal-footer .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+    .modal-footer .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .modal-footer .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+    .modal-footer .btn-secondary:hover {
+        background-color: #5a6268;
     }
     /* Media Query para Mobile (max-width: 768px) */
     @media (max-width: 768px) {
@@ -268,18 +375,28 @@ try {
             font-size: 12px;
             padding: 8px;
         }
-        .ranking-section, .servicos-section {
+        .ranking-section, .servicos-section, .aniversariantes-section {
             flex-direction: column;
             gap: 10px;
         }
-        .ranking-list-container, .ranking-chart-container, .servicos-list-container, .servicos-chart-container {
+        .ranking-list-container, .ranking-chart-container, .servicos-list-container, .servicos-chart-container, .aniversariantes-list-container {
             width: 100%;
         }
-        .ranking-item p, .servicos-item p {
+        .ranking-item p, .servicos-item p, .aniversariantes-item p {
             font-size: 14px;
+        }
+        .ranking-item .rank-icon, .servicos-item .rank-icon, .aniversariantes-item .rank-icon {
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            font-size: 12px;
         }
         #rankingChart, #servicosChart {
             height: 250px;
+        }
+        .btn-enviar-mensagem {
+            width: 100%;
+            padding: 8px;
         }
     }
     /* Ajuste para telas muito pequenas (max-width: 480px) */
@@ -297,17 +414,20 @@ try {
         .agileinfo-cdr {
             display: none;
         }
-        .ranking-item p, .servicos-item p {
+        .ranking-item p, .servicos-item p, .aniversariantes-item p {
             font-size: 12px;
         }
-        .ranking-item .rank-icon, .servicos-item .rank-icon {
-            width: 25px;
-            height: 25px;
-            line-height: 25px;
-            font-size: 12px;
+        .ranking-item .rank-icon, .servicos-item .rank-icon, .aniversariantes-item .rank-icon {
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            font-size: 10px;
         }
         #rankingChart, #servicosChart {
             height: 200px;
+        }
+        .btn-enviar-mensagem {
+            font-size: 14px;
         }
     }
     /* Additional CSS for Pie Charts */
@@ -748,6 +868,11 @@ for ($i = 1; $i <= 12; $i++) {
     <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
 
+    <!-- Incluindo Bootstrap e jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
     <!-- JavaScript para os Gráficos de Pizza e Barras -->
     <script>
     am4core.ready(function() {
@@ -826,6 +951,63 @@ for ($i = 1; $i <= 12; $i++) {
             document.getElementById("servicosChart").innerHTML = "<p style='text-align:center; padding:20px;'>Nenhum dado disponível para serviços.</p>";
         }
     });
+
+    // JavaScript para o Modal e Envio de Mensagens
+    $(document).ready(function() {
+        // Habilitar/desabilitar select de cupom com base no checkbox
+        $('#oferecer-presente').change(function() {
+            $('#cupom-select').prop('disabled', !this.checked);
+        });
+
+        // Enviar mensagens via AJAX
+        $('#enviar-mensagens').click(function() {
+            const clientes = [];
+            $('.cliente-checkbox:checked').each(function() {
+                clientes.push({
+                    nome: $(this).data('nome'),
+                    telefone: $(this).data('telefone')
+                });
+            });
+
+            if (clientes.length === 0) {
+                alert('Selecione pelo menos um cliente para enviar a mensagem.');
+                return;
+            }
+
+            const oferecer_presente = $('#oferecer-presente').is(':checked') ? 'Sim' : 'Não';
+            const id_cupom = $('#cupom-select').val();
+
+            if (oferecer_presente === 'Sim' && !id_cupom) {
+                alert('Selecione um cupom de desconto.');
+                return;
+            }
+
+            const data = {
+                id_conta: <?php echo $id_conta; ?>,
+                clientes: clientes,
+                oferecer_presente: oferecer_presente,
+                id_cupom: oferecer_presente === 'Sim' ? id_cupom : null
+            };
+
+            $.ajax({
+                url: 'send-birthday-message',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    if (response.success) {
+                        alert(response.message);
+                        $('#birthdayModal').modal('hide');
+                    } else {
+                        alert('Erro ao enviar mensagens: ' + response.message + '\nFalhas: ' + (response.falhas ? response.falhas.map(f => f.nome + ': ' + f.erro).join('; ') : ''));
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('Erro ao enviar mensagens: ' + (xhr.responseJSON?.error || error));
+                }
+            });
+        });
+    });
     </script>
 
     <div class="row-one widgettable">
@@ -885,6 +1067,68 @@ for ($i = 1; $i <= 12; $i++) {
             </div>
             <div class="servicos-chart-container">
                 <div id="servicosChart" style="height: 300px;"></div>
+            </div>
+        </div>
+        <!-- Aniversariantes do Dia -->
+        <div class="col-md-12 content-top-2 card aniversariantes-section">
+            <div class="card-header">
+                <h3>Aniversariantes do Dia (<?php echo date('d/m/Y'); ?>)</h3>
+            </div>
+            <div class="aniversariantes-list-container">
+                <?php if (isset($aniversariantes_error)): ?>
+                    <p class="no-aniversariantes"><?php echo htmlspecialchars($aniversariantes_error); ?></p>
+                <?php elseif (empty($aniversariantes)): ?>
+                    <p class="no-aniversariantes">Nenhum aniversariante hoje.</p>
+                <?php else: ?>
+                    <div class="aniversariantes-list">
+                        <?php foreach ($aniversariantes as $index => $cliente): ?>
+                            <div class="aniversariantes-item">
+                                <span class="rank-icon"><?php echo $index + 1; ?></span>
+                                <p><?php echo htmlspecialchars($cliente['nome']); ?> <span class="data-nasc"><?php echo date('d/m/Y', strtotime($cliente['data_nasc'])); ?></span></p>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <button class="btn-enviar-mensagem" data-toggle="modal" data-target="#birthdayModal" <?php echo empty($aniversariantes) ? 'disabled' : ''; ?>>Enviar Mensagem</button>
+                <?php endif; ?>
+            </div>
+        </div>
+        <!-- Modal para Enviar Mensagens -->
+        <div class="modal fade" id="birthdayModal" tabindex="-1" role="dialog" aria-labelledby="birthdayModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="birthdayModalLabel">Enviar Mensagem de Aniversário</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Selecione os clientes para enviar a mensagem de parabéns:</p>
+                        <?php foreach ($aniversariantes as $cliente): ?>
+                            <div>
+                                <input type="checkbox" class="cliente-checkbox" data-nome="<?php echo htmlspecialchars($cliente['nome']); ?>" data-telefone="<?php echo htmlspecialchars($cliente['telefone']); ?>">
+                                <label><?php echo htmlspecialchars($cliente['nome']); ?> (<?php echo date('d/m/Y', strtotime($cliente['data_nasc'])); ?>)</label>
+                            </div>
+                        <?php endforeach; ?>
+                        <hr>
+                        <div>
+                            <input type="checkbox" id="oferecer-presente">
+                            <label for="oferecer-presente">Oferecer cupom de desconto como presente</label>
+                        </div>
+                        <select id="cupom-select" class="form-control" disabled>
+                            <option value="">Selecione um cupom</option>
+                            <?php foreach ($cupons as $cupom): ?>
+                                <option value="<?php echo $cupom['id']; ?>">
+                                    <?php echo htmlspecialchars($cupom['codigo']) . ' (' . ($cupom['tipo_desconto'] === 'porcentagem' ? $cupom['valor'] . '%' : 'R$' . number_format($cupom['valor'], 2, ',', '.')) . ', válido até ' . date('d/m/Y', strtotime($cupom['data_validade'])) . ')'; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" id="enviar-mensagens">Enviar</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="clearfix"></div>
