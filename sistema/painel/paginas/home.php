@@ -1128,7 +1128,7 @@ for ($i = 1; $i <= 12; $i++) {
             };        
             
             
-alert(data);
+alert(JSON.stringify(data, null, 2));
 
             $.ajax({
                 url: 'send-birthday-message.php',
