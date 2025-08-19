@@ -606,8 +606,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header modal-header-custom">
-                <h4 class="modal-title" id="titulo_comanda">
-                    <i class="fas fa-cash-register modal-icon"></i>
+                <h4 class="modal-title" id="titulo_comanda">                    
                     Novo Agendamento
                 </h4>
                 <button type="button" id="btn-fechar" class="close" data-dismiss="modal" aria-label="Close">
