@@ -358,15 +358,14 @@ function editar(id, valor, cliente, obs, status, nome_cliente, nome_func, data, 
     if (status.trim() === 'Fechada') {
         // Se a comanda estiver fechada, esconde o botão de fechar.
 		$('#titulo_comanda').text('Comanda Fechada');
-        $('#btn_fechar_comanda').hide();
-        $('#servico').hide();
-        $('#produto').hide();
+        $('#btn_fechar_comanda').hide();       
         $('.btn-add').hide();
 
     } else {
         // Se estiver aberta, mostra o botão.
 		$('#titulo_comanda').text('Editar Comanda Aberta');
         $('#btn_fechar_comanda').show();
+		$('.btn-add').show();
     }
 
     // Por fim, mostra o modal. Isso deve ser feito fora do if/else.
