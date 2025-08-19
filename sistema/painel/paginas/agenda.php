@@ -12,11 +12,11 @@ $id_usuario = $_SESSION['id_usuario'];
 // 	echo "<script>window.location='../index.php'</script>";
 // 	exit();
 // }
-if(@$_SESSION['nivel_usuario'] != 'administrador'){
-	    echo "<script>window.location='agenda.php'</script>";
-    }
+// if(@$_SESSION['nivel_usuario'] != 'administrador'){
+// 	    echo "<script>window.location='agenda.php'</script>";
+//     }
 
-?>
+// ?>
 
 <style>
 	.tooltip-inner {
