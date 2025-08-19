@@ -476,126 +476,42 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     </div>
 </div>
 
-<div class="modal fade" id="modalDados" tabindex="-1" role="dialog" aria-labelledby="modalForm2Label" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+<div class="modal fade" id="modalDados" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-
             <div class="modal-header modal-header-custom">
-                <h4 class="modal-title" id="titulo_comanda">
-                    <i class="fas fa-cash-register modal-icon"></i>
-                    Comanda Concluida
-                </h4>
-                <button type="button" id="btn-fechar" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h4 class="modal-title">Informações da Comanda</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px;"><span aria-hidden="true">&times;</span></button>
             </div>
-
-            <form id="form_salvar">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-8 modal-left-panel">
-                            <div class="modal-body-scroll p-3">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <h3 id="nome_do_cliente_aqui"></h3>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <hr class="divider">
-
-                                <div class="section-header">
-                                    <h5 class="section-title">Serviços</h5>
-                                </div>
-                                
-                                <div class="item-list-container" id="listar_servicos"></div>
-
-                                <hr class="divider">                               
-
-                                <div class="section-header">
-                                    <h5 class="section-title">Produtos</h5>
-                                </div>
-                                
-                                <div class="item-list-container" id="listar_produtos"></div>
-
-                                <hr class="divider">
-
-                                 <!-- Nova Seção para Descontos -->
-                                <div class="section-header">
-                                    <h5 class="section-title">Descontos</h5>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Sinal (Valor Pago)</label>
-                                            <input type="text" class="form-control text-right valor-display" id="valor_sinal" style="color: red" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Desconto Cupom</label>
-                                            <input type="text" class="form-control text-right valor-display" id="valor_cupom" style="color: red" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <hr class="divider">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>Observações</label>
-                                        <input type="text" class="form-control" value="" name="obs" id="obs2" maxlength="1000" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4 modal-right-panel">
-                            <div class="pagamento-container p-3">
-                                <div class="pagamento-header">
-                                    <img src="../../images/registradora.png" alt="Ícone Pagamento" class="pagamento-icon">
-                                    <h4>PAGAMENTO</h4>
-                                </div>
-                                <hr>
-                                <div class="form-group">
-                                    <label><small>Total Serviços</small></label>
-                                    <input type="text" class="form-control text-right valor-display" id="valor_servicos" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label><small>Total Produtos</small></label>
-                                    <input type="text" class="form-control text-right valor-display" id="valor_produtos" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label><small>Total Descontos</small></label>
-                                    <input type="text" class="form-control text-right valor-display" id="valor_descontos" style="color: red" readonly>
-                                </div>
-                                <hr>
-                                <div class="form-group">
-                                    <label><small>Total a Pagar</small></label>
-                                    <input type="text" class="form-control text-right total-display" name="valor_total" id="valor_serv" readonly>
-                                </div>
-
-                                <div class="row mt-3">
-                                    <!-- Campos comentados para pagamento e troco podem ser reativados se necessário -->
-                                </div>
-
-                                <div class="d-flex flex-column gap-2 mt-4">
-                                    
-                                    <button type="button" class="btn btn-outline-secondary btn-block" data-dismiss="modal">
-                                        <i class="fas fa-times-circle"></i> Sair
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+            <div class="modal-body">
+                <div class="row" style="border-bottom: 1px solid #cac7c7;">
+                    <div class="col-md-8">
+					</div>
+                    <div class="col-md-4">
+                        <span><b>Valor: </b></span>
+                        <span id="valor_dados"></span>
                     </div>
-
-                    <input type="hidden" name="id" id="id">
-                    <input type="hidden" name="valor_servicos" id="valor_servicos_hidden">
-                    <input type="hidden" name="valor_produtos" id="valor_produtos_hidden">
-                    <input type="hidden" name="valor_descontos" id="valor_descontos_hidden">
-                    <small><div id="mensagem" align="center" class="mt-2"></div></small>
                 </div>
-            </form>
+
+                <div class="row" style="border-bottom: 1px solid #cac7c7;">
+                    <div class="col-md-8">
+                        <span><b>Aberta Por: </b></span>
+                        <span id="func_dados"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <span><b>Data: </b></span>
+                        <span id="data_dados"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 servico-item" id="listar_servicos_dados"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 produto-item" id="listar_produtos_dados"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -747,164 +663,6 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 
 
-
-<!-- Modal -->
-<div class="modal fade" id="modalServico" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header text-white" style="background-color: #4682B4;">
-				<h4 class="modal-title">Serviço: <span id="titulo_servico"></span>  </h4>
-				<button id="btn-fechar-servico" type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<form method="post" id="form-servico">
-				<div class="modal-body">
-
-					<div class="row">
-						<div class="col-md-12">						
-							<div class="form-group"> 
-								<label>Funcionário</label> 
-								<select class="form-control sel4" id="funcionario_agd" name="funcionario_agd" style="width:100%;" required> 
-
-									<?php 
-									$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
-									$res = $query->fetchAll(PDO::FETCH_ASSOC);
-									$total_reg = @count($res);
-									if($total_reg > 0){
-										for($i=0; $i < $total_reg; $i++){
-											foreach ($res[$i] as $key => $value){}
-												echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
-										}
-									}
-									?>
-
-
-								</select>    
-							</div>						
-						</div>					
-
-
-					</div>
-
-					<div class="row">
-						<div class="col-md-4" id="nasc">						
-							<div class="form-group"> 
-								<label>Valor (Falta Pagar)</label> 
-								<input type="text" class="form-control" name="valor_serv_agd" id="valor_serv_agd"> 
-							</div>						
-						</div>
-
-
-						<div class="col-md-4" id="nasc">						
-							<div class="form-group"> 
-								<label>Data PGTO</label> 
-								<input type="date" class="form-control" name="data_pgto" id="data_pgto" value="<?php echo $data_atual ?>"> 
-							</div>						
-						</div>
-
-						<div class="col-md-4">						
-							<div class="form-group"> 
-								<label>Forma PGTO</label> 
-								<select class="form-control" id="pgto" name="pgto" style="width:100%;" required> 
-
-									<?php 
-									$query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
-									$res = $query->fetchAll(PDO::FETCH_ASSOC);
-									$total_reg = @count($res);
-									if($total_reg > 0){
-										for($i=0; $i < $total_reg; $i++){
-											foreach ($res[$i] as $key => $value){}
-												echo '<option value="'.$res[$i]['nome'].'">'.$res[$i]['nome'].'</option>';
-										}
-									}
-									?>
-
-
-								</select>    
-							</div>						
-						</div>	
-					</div>
-
-
-
-						<div class="row">
-						<div class="col-md-4" id="">						
-							<div class="form-group"> 
-								<label>Valor Restante <i class="fa fa-info-circle" style="color: blue;" data-toggle="tooltip" data-placement="top" title="Caso o cliente efetue o pagamento com duas formas diferentes. Ex: Pix e Cartão." style="color: blue;"></i></label> 
-								<input type="text" class="form-control" name="valor_serv_agd_restante" id="valor_serv_agd_restante" placeholder="Mais de uma forma PGTO"> 
-							</div>						
-						</div>
-
-
-						<div class="col-md-4" id="">						
-							<div class="form-group"> 
-								<label>Data PGTO Restante</label> 
-								<input type="date" class="form-control" name="data_pgto_restante" id="data_pgto_restante" value=""> 
-							</div>						
-						</div>
-
-						<div class="col-md-4">						
-							<div class="form-group"> 
-								<label>Forma PGTO Restante</label> 
-								<select class="form-control" id="pgto_restante" name="pgto_restante" style="width:100%;" > 
-									<option value="">Selecionar Pgto</option>
-									<?php 
-									$query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
-									$res = $query->fetchAll(PDO::FETCH_ASSOC);
-									$total_reg = @count($res);
-									if($total_reg > 0){
-										for($i=0; $i < $total_reg; $i++){
-											foreach ($res[$i] as $key => $value){}
-												echo '<option value="'.$res[$i]['nome'].'">'.$res[$i]['nome'].'</option>';
-										}
-									}
-									?>
-
-
-								</select>    
-							</div>						
-						</div>	
-					</div>
-
-					<div class="row">
-
-						
-
-						<div class="col-md-12">						
-							<div class="form-group"> 
-								<label>Observações </label> 
-								<input maxlength="1000" type="text" class="form-control" name="obs" id="obs2"> 
-							</div>						
-						</div>
-
-					</div>
-
-
-
-					<br>
-					
-					<input type="hidden" name="id_agd" id="id_agd"> 
-					<input type="hidden" name="cliente_agd" id="cliente_agd"> 
-					<input type="hidden" name="servico_agd" id="servico_agd">
-					<input type="hidden" name="descricao_serv_agd" id="descricao_serv_agd">
-					
-					<small><div id="mensagem-servico" align="center" class="mt-3"></div></small>					
-
-				</div>
-
-
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary">Concluir</button>
-				</div>
-
-
-
-			</form>
-
-		</div>
-	</div>
-</div>
 
 
 
