@@ -167,7 +167,7 @@ ob_start();
             }
         }
         .add-button {
-            background-color: #2563eb;
+            background-color: #e99f35;
             color: #fff;
             padding: 0.5rem 1.5rem;
             border-radius: 9999px;
@@ -176,6 +176,7 @@ ob_start();
             cursor: pointer;
             transition: background-color 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: none;
         }
         .add-button:hover {
             background-color: #1d4ed8;
@@ -258,12 +259,21 @@ ob_start();
             gap: 0.5rem;
         }
         .action-button {
-            padding: 0.5rem;
-            border-radius: 9999px;
+            width: 36px; /* Set a fixed width */
+            height: 36px; /* Set a fixed height to make it a circle */
+            padding: 0; /* Remove padding to avoid distortion */
+            border-radius: 50%; /* Make it a perfect circle */
             color: #fff;
             border: none;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            display: flex; /* Use flexbox */
+            justify-content: center; /* Center the icon horizontally */
+            align-items: center; /* Center the icon vertically */
+        }
+        /* Ensure the Font Awesome icons have a consistent size */
+        .action-button i {
+            font-size: 1rem; /* Adjust icon size as needed */
         }
         .edit-button {
             background-color: #f59e0b;
