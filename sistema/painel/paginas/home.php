@@ -935,7 +935,7 @@ for ($i = 1; $i <= 12; $i++) {
             </div>
         </div>
         <!-- Clientes Aguardando Encaixe Hoje -->
-        <div class="col-md-12 content-top-2 card encaixes-section">
+        <div class="col-md-12 content-top-2 card encaixes-section" id="encaixes-hoje">
             <div class="card-header">
                 <h3>Clientes Aguardando Encaixe Hoje</h3>
             </div>
