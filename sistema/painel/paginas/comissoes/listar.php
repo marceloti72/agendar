@@ -243,7 +243,7 @@ for($i=0; $i < $total_reg; $i++){
 		}		
 
 		if($nivel != 'administrador'){
-			$visivel2 = 'ocultar';			
+			$visivel2 = 'd-none';			
 		}else{
 			$visivel2 = '';
 		}
@@ -307,7 +307,7 @@ echo <<<HTML
 
 
 		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="btn btn-danger btn-xs ocultar" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
+		<a href="#" class="btn btn-danger btn-xs {$visivel2}" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
 
 		<ul class="dropdown-menu" style="margin-left:-230px;">
 		<li>
