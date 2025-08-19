@@ -1125,7 +1125,15 @@ for ($i = 1; $i <= 12; $i++) {
                 clientes: clientes,
                 oferecer_presente: $('#oferecer_presente').val(),
                 id_cupom: $('#id_cupom').val()
-            };            
+            };        
+            
+            var formDataString = '';
+
+for (var pair of formData.entries()) {
+    formDataString += pair[0] + ': ' + pair[1] + '\n';
+}
+
+alert(formDataString);
 
             $.ajax({
                 url: 'send-birthday-message.php',

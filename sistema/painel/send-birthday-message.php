@@ -19,9 +19,6 @@ try {
     $clientes = isset($_POST['clientes']) ? $_POST['clientes'] : null;
     $oferecer_presente = isset($_POST['oferecer_presente']) ? $_POST['oferecer_presente'] : 'Não';
     $id_cupom = isset($_POST['id_cupom']) ? (int)$_POST['id_cupom'] : null;
-
-    var_dump($clientes);
-    exit();
     
     if (!is_array($clientes) || empty($clientes)) {
         $response['message'] = 'Lista de clientes é obrigatória e não pode estar vazia';
