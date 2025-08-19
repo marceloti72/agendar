@@ -277,14 +277,7 @@ echo <<<HTML
 		
 
 		<a href="#" class="btn btn-info btn-xs" onclick="mostrar('{$descricao}', '{$valorF}', '{$data_lancF}', '{$data_vencF}',  '{$data_pgtoF}', '{$nome_usuario_lanc}', '{$nome_usuario_pgto}', '{$tumb_arquivo}', '{$nome_pessoa}', '{$foto}', '{$telefone_pessoa}', '{$nome_func}')" title="Ver Dados"><i class="fe fe-search"></i></a>
-
-
-
-		<li class="dropdown head-dpdn2" style="display: inline-block;">
-		<a href="#" class="btn btn-danger btn-xs" data-toggle="dropdown" aria-expanded="false"><i class="fe fe-trash-2"></i></a>
-
-		<ul class="dropdown-menu" style="margin-left:-230px;">
-		<li>
+		
 		<div class="notification_desc2">
 		<p>Confirmar Exclusão? <a href="#" onclick="excluir('{$id}')"><span class="text-danger">Sim</span></a></p>
 		</div>
