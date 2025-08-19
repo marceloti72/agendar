@@ -259,7 +259,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 <div class="row">
 	<div class="col-md-3">
-		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" data-toggle="modal" data-target="#modalForm" type="button" class="btn novo" ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
+		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" data-toggle="modal" data-target="#modalForm" type="button" class="btn novo" ><i class="fa fa-plus" aria-hidden="true" onClick="listarHorarios()"></i> Novo Agendamento</button>
 	</div>
 
 </div>
@@ -615,7 +615,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 						<div class="col-md-6">						
 							<div class="form-group"> 
 								<label>Cliente</label> 
-								<select class="form-control sel3" id="cliente" name="cliente" style="width:100%;" onchange="listarHorarios()" required> 
+								<select class="form-control sel3" id="cliente" name="cliente" style="width:100%;"  required> 
 
 									<?php 
 									$query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta' ORDER BY nome asc");
