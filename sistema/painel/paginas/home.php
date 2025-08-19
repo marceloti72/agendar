@@ -110,32 +110,68 @@ try {
     /* Ranking Section */
     .ranking-section {
         margin-top: 20px;
+        display: flex;
+        gap: 20px;
     }
-    .ranking-section h3 {
-        font-size: 20px;
-        color: #333;
-        margin: 0;
-        padding-bottom: 10px;
-    }
-    .ranking-list {
+    .ranking-list-container {
+        width: 30%;
         background-color: #fff;
-        padding: 15px;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+    }
+    .ranking-chart-container {
+        width: 70%;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+    }
+    .ranking-list {
+        padding: 0;
     }
     .ranking-item {
         display: flex;
-        justify-content: space-between;
-        padding: 8px 0;
-        border-bottom: 1px solid #eee;
+        align-items: center;
+        padding: 12px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .ranking-item:last-child {
-        border-bottom: none;
+    .ranking-item:hover {
+        transform: translateX(5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    .ranking-item.position-1 {
+        background: linear-gradient(135deg, #ffd700, #ffec80);
+    }
+    .ranking-item.position-2 {
+        background: linear-gradient(135deg, #c0c0c0, #e0e0e0);
+    }
+    .ranking-item.position-3 {
+        background: linear-gradient(135deg, #cd7f32, #e6b8a2);
+    }
+    .ranking-item .rank-icon {
+        background-color: #4A90E2;
+        color: #fff;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        font-weight: bold;
+        margin-right: 10px;
     }
     .ranking-item p {
         margin: 0;
         color: #333;
         font-size: 16px;
+        flex: 1;
+    }
+    .ranking-item .services {
+        font-weight: bold;
+        color: #007bff;
     }
     .no-ranking {
         text-align: center;
@@ -143,13 +179,17 @@ try {
         font-size: 16px;
         padding: 12px;
     }
+    #rankingChart {
+        width: 100%;
+        height: 300px;
+    }
     /* Media Query para Mobile (max-width: 768px) */
     @media (max-width: 768px) {
         .main-page {
             padding: 10px;
         }
         .col_3 .col-md-3 {
-            width: 50%; /* 2 por linha */
+            width: 50%;
             float: left;
             padding: 5px;
         }
@@ -169,7 +209,7 @@ try {
             font-size: 12px;
         }
         .row .col-md-4 {
-            width: 100%; /* Empilha verticalmente */
+            width: 100%;
             padding: 5px;
         }
         .content-top-1 {
@@ -207,17 +247,24 @@ try {
             font-size: 12px;
             padding: 8px;
         }
-        .ranking-section h3 {
-            font-size: 18px;
+        .ranking-section {
+            flex-direction: column;
+            gap: 10px;
+        }
+        .ranking-list-container, .ranking-chart-container {
+            width: 100%;
         }
         .ranking-item p {
             font-size: 14px;
+        }
+        #rankingChart {
+            height: 250px;
         }
     }
     /* Ajuste para telas muito pequenas (max-width: 480px) */
     @media (max-width: 480px) {
         .col_3 .col-md-3 {
-            width: 100%; /* 1 por linha */
+            width: 100%;
         }
         .stats h5 {
             font-size: 18px;
@@ -229,11 +276,17 @@ try {
         .agileinfo-cdr {
             display: none;
         }
-        .ranking-section h3 {
-            font-size: 16px;
-        }
         .ranking-item p {
             font-size: 12px;
+        }
+        .ranking-item .rank-icon {
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            font-size: 12px;
+        }
+        #rankingChart {
+            height: 200px;
         }
     }
     /* Additional CSS for Pie Charts */
@@ -674,7 +727,7 @@ for ($i = 1; $i <= 12; $i++) {
     <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
 
-    <!-- JavaScript para os Gráficos de Pizza -->
+    <!-- JavaScript para os Gráficos de Pizza e Barras -->
     <script>
     am4core.ready(function() {
         am4core.useTheme(am4themes_animated);
@@ -703,12 +756,37 @@ for ($i = 1; $i <= 12; $i++) {
         chartPagarTipo.legend = new am4charts.Legend();
         chartPagarTipo.legend.position = "bottom";
 
+        // Gráfico de Barras para Ranking de Profissionais
+        var chartRanking = am4core.create("rankingChart", am4charts.XYChart);
+        chartRanking.data = <?php echo json_encode($ranking_funcionarios); ?>;
+        var categoryAxis = chartRanking.xAxes.push(new am4charts.CategoryAxis());
+        categoryAxis.dataFields.category = "funcionario_nome";
+        categoryAxis.renderer.labels.template.rotation = -45;
+        categoryAxis.renderer.labels.template.horizontalCenter = "right";
+        categoryAxis.renderer.labels.template.verticalCenter = "middle";
+        categoryAxis.renderer.minGridDistance = 20;
+        var valueAxis = chartRanking.yAxes.push(new am4charts.ValueAxis());
+        valueAxis.title.text = "Número de Serviços";
+        valueAxis.min = 0;
+        var series = chartRanking.series.push(new am4charts.ColumnSeries());
+        series.dataFields.valueY = "total_servicos";
+        series.dataFields.categoryX = "funcionario_nome";
+        series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/] serviços";
+        series.columns.template.fill = am4core.color("#4A90E2");
+        series.columns.template.strokeWidth = 0;
+        var valueLabel = series.bullets.push(new am4charts.LabelBullet());
+        valueLabel.label.text = "{valueY}";
+        valueLabel.label.dy = -10;
+
         // Adicionar mensagem para gráficos vazios
         if (chartReceberTipo.data.length === 0) {
             document.getElementById("pieChartReceberTipo").innerHTML = "<p style='text-align:center; padding:20px;'>Nenhum dado disponível para <?php echo $ano_atual; ?></p>";
         }
         if (chartPagarTipo.data.length === 0) {
             document.getElementById("pieChartPagarTipo").innerHTML = "<p style='text-align:center; padding:20px;'>Nenhum dado disponível para <?php echo $ano_atual; ?></p>";
+        }
+        if (chartRanking.data.length === 0) {
+            document.getElementById("rankingChart").innerHTML = "<p style='text-align:center; padding:20px;'>Nenhum dado disponível para o ranking.</p>";
         }
     });
     </script>
@@ -727,19 +805,24 @@ for ($i = 1; $i <= 12; $i++) {
             <div class="card-header">
                 <h3>Ranking de Profissionais (Últimos 12 Meses)</h3>
             </div>
-            <div class="ranking-list">
+            <div class="ranking-list-container">
                 <?php if (isset($ranking_error)): ?>
                     <p class="no-ranking"><?php echo htmlspecialchars($ranking_error); ?></p>
                 <?php elseif (empty($ranking_funcionarios)): ?>
                     <p class="no-ranking">Nenhum serviço registrado nos últimos 12 meses.</p>
                 <?php else: ?>
-                    <?php foreach ($ranking_funcionarios as $funcionario): ?>
-                        <div class="ranking-item">
-                            <p><?php echo htmlspecialchars($funcionario['funcionario_nome']); ?></p>
-                            <p><?php echo $funcionario['total_servicos']; ?> serviços</p>
-                        </div>
-                    <?php endforeach; ?>
+                    <div class="ranking-list">
+                        <?php foreach ($ranking_funcionarios as $index => $funcionario): ?>
+                            <div class="ranking-item position-<?php echo $index + 1; ?>">
+                                <span class="rank-icon"><?php echo $index + 1; ?></span>
+                                <p><?php echo htmlspecialchars($funcionario['funcionario_nome']); ?> <span class="services"><?php echo $funcionario['total_servicos']; ?> serviços</span></p>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 <?php endif; ?>
+            </div>
+            <div class="ranking-chart-container">
+                <div id="rankingChart" style="height: 300px;"></div>
             </div>
         </div>
         <div class="clearfix"></div>
