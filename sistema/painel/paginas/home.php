@@ -950,9 +950,9 @@ for ($i = 1; $i <= 12; $i++) {
                             <div class="encaixes-item">
                                 <p>
                                     <?php echo htmlspecialchars($encaixe['cliente_nome']); ?> 
-                                    (<?php echo htmlspecialchars($encaixe['cliente_telefone']); ?>) 
+                                    <?php echo htmlspecialchars($encaixe['cliente_telefone']); ?> 
                                     - Profissional: <?php echo htmlspecialchars($encaixe['profissional_nome']); ?>
-                                    <a href="https://wa.me/<?php echo preg_replace('/[ ()-]+/', '', $encaixe['cliente_telefone']); ?>?text=Olá%20<?php echo urlencode($encaixe['cliente_nome']); ?>,%20estamos%20confirmando%20seu%20encaixe%20para%20hoje!" 
+                                    <a href="https://wa.me/55<?php echo preg_replace('/[ ()-]+/', '', $encaixe['cliente_telefone']); ?>?text=Olá%20<?php echo urlencode($encaixe['cliente_nome']); ?>,%20estamos%20confirmando%20seu%20encaixe%20para%20hoje!" 
                                        target="_blank" class="whatsapp-icon">
                                         <i class="fab fa-whatsapp"></i>
                                     </a>
