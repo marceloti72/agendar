@@ -342,34 +342,40 @@ function confirmarExclusao(id) {
 }
 
 function editar(id, valor, cliente, obs, status, nome_cliente, nome_func, data, valor_sinal, valor_cupom) {
+    // Código para preencher os campos do modal, que é o mesmo para ambos os casos
+    $('#id').val(id);
+    $('#cliente').val(cliente).change();
+    $('#valor_serv').val(valor);
+    var sinal = parseFloat(valor_sinal) || 0;
+    var cupom = parseFloat(valor_cupom) || 0;
+    var total_descontos = sinal + cupom;
+    $('#valor_sinal').val(sinal.toFixed(2));
+    $('#valor_cupom').val(cupom.toFixed(2));
+    $('#valor_descontos').val(total_descontos.toFixed(2));
+    $('#obs').val(obs);
+    $('#valor_serv_agd_restante').val('');
+    
+    $('#nome_do_cliente_aqui').text('Cliente: ' + nome_cliente);
+    listarServicos2(id);
+    listarProdutos(id);
+    calcular();
+
+    // Verificação de status para mostrar ou esconder o botão
     if (status.trim() === 'Fechada') {
-        $('#cliente_dados').text(nome_cliente);
-        $('#valor_dados').text(valor);
-        $('#data_dados').text(data);
-        $('#func_dados').text(nome_func);
-        $('#modalDados').modal('show');
-        listarServicosDados(id);
-        listarProdutosDados(id);
+        // Se a comanda estiver fechada, esconde o botão de fechar.
+		$('#titulo_comanda').text('Comanda Fechada');
+        $('#btn_fechar_comanda').hide();       
+        $('.btn-add').hide();
+
     } else {
-        $('#id').val(id);
-        $('#cliente').val(cliente).change();
-        $('#valor_serv').val(valor);
-        var sinal = parseFloat(valor_sinal) || 0;
-        var cupom = parseFloat(valor_cupom) || 0;
-        var total_descontos = sinal + cupom;
-        $('#valor_sinal').val(sinal.toFixed(2));
-        $('#valor_cupom').val(cupom.toFixed(2));
-        $('#valor_descontos').val(total_descontos.toFixed(2));
-        $('#obs').val(obs);
-        $('#valor_serv_agd_restante').val('');
-        $('#titulo_comanda').text('Editar Comanda Aberta');
+        // Se estiver aberta, mostra o botão.
+		$('#titulo_comanda').text('Editar Comanda Aberta');
         $('#btn_fechar_comanda').show();
-        $('#modalForm2').modal('show');
-        $('#nome_do_cliente_aqui').text('Cliente: '+nome_cliente);
-        listarServicos2(id);
-        listarProdutos(id);
-        calcular();
+		$('.btn-add').show();
     }
+
+    // Por fim, mostra o modal. Isso deve ser feito fora do if/else.
+    $('#modalForm2').modal('show');
 }
 
 function limparCampos() {
