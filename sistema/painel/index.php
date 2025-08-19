@@ -848,7 +848,7 @@ $plano = $res3['plano'];
 							$total_agendamentos_hoje_usuario_pendentes = @count($res);
 							$link_ag = 'agendamentos';
 
-							$query = $pdo->query("SELECT * FROM encaixes where data = curDate() and id_conta = '$id_conta'");
+							$query = $pdo->query("SELECT * FROM encaixe where data = curDate() and id_conta = '$id_conta'");
 							$res_encaixes = $query->fetchAll(PDO::FETCH_ASSOC);
 							$total_encaixes_hoje = @count($res_encaixes);
 							
@@ -858,7 +858,7 @@ $plano = $res3['plano'];
 							$total_agendamentos_hoje_usuario_pendentes = @count($res);
 							$link_ag = 'agenda';
 
-							$query = $pdo->query("SELECT * FROM encaixes where data = curDate() and profissional = '$id_usuario' and id_conta = '$id_conta'");
+							$query = $pdo->query("SELECT * FROM encaixe where data = curDate() and profissional = '$id_usuario' and id_conta = '$id_conta'");
 							$res_encaixes = $query->fetchAll(PDO::FETCH_ASSOC);
 							$total_encaixes_hoje = @count($res_encaixes);
 
