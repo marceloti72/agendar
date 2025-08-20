@@ -93,29 +93,27 @@
         }
             
         /* NOVO CSS PARA O BOTÃO "ACESSAR" */
-        .acessar-button {
+        /* Remova o estilo antigo do botão .acessar-button */
+        .acessar-top-button {
+            /* Posição no canto superior direito */
             position: fixed;
-            bottom: 20px;
-            right: 100px; /* Ajusta a posição para não colidir com o botão do WhatsApp */
+            top: 20px; /* Distância do topo */
+            right: 20px; /* Distância da direita */
             z-index: 1000;
-            padding: 1rem;
+            
+            /* Formato e estilo */
+            padding: 0.75rem 1.5rem; /* Espaçamento interno (retangular) */
             font-weight: bold;
             font-size: 1rem;
             color: white;
-            border-radius: 50%; /* Torna o botão redondo */
-            background-color: #5c5ff6ff; /* Cor roxa para combinar com o tema */
+            border-radius: 0.5rem; /* Bordas levemente arredondadas */
+            background-color: #5c5ff6ff; /* Cor roxa */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
-            height: 60px;
-            text-align: center;
         }
 
-        .acessar-button:hover {
-            transform: scale(1.1);
+        .acessar-top-button:hover {
+            transform: scale(1.05);
             background-color: #5c5ff6ff;
         }
     </style>
@@ -325,7 +323,7 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
-<a href="login.php" class="acessar-button">Acessar</a>
+<a href="login.php" class="acessar-top-button">Acessar</a>
 
 <?php
 // Inclua seu arquivo de rodapé aqui, se necessário.
