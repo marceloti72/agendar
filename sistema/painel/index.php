@@ -2505,12 +2505,12 @@ $plano = $res3['plano'];
                 <p class="text-center text-secondary mb-4">Escolha a melhor forma de compartilhar seu link com seus clientes.</p>
 
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-lg btn-light w-100 py-3" onclick="copiarLink()" style="border-radius: 10px; border: 1px solid #e0e6ed; color: #4a5568; font-weight: 600; transition: all 0.3s ease; margin-bottom: 20px">
+                    <button class="btn btn-lg btn-light w-100 py-3" onclick="copiarLink()" style="border-radius: 10px; border: 1px solid #e0e6ed; color: #4a5568; font-weight: 600; transition: all 0.3s ease; margin-bottom: 20px"><br>
                         <i class="fas fa-copy fa-lg mr-3" style="color: #6a82fb;"></i> Copiar Link
                     </button>
                     <button class="btn btn-lg btn-success w-100 py-3" onclick="enviarLink()" style="background-color: #25D366; border-color: #25D366; border-radius: 10px; font-weight: 600; transition: all 0.3s ease; margin-bottom: 20px">
                         <i class="fab fa-whatsapp fa-lg mr-3"></i> Enviar por WhatsApp
-                    </button>
+                    </button><br>
                     <button class="btn btn-lg btn-light w-100 py-3" onclick="mostrarQRCode()" style="border-radius: 10px; border: 1px solid #e0e6ed; color: #4a5568; font-weight: 600; transition: all 0.3s ease;">
                         <i class="fas fa-qrcode fa-lg mr-3" style="color: #fc5c7d;"></i> Exibir QR Code
                     </button>
