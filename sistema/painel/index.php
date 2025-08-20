@@ -3102,8 +3102,8 @@ $plano = $res3['plano'];
                             align-items: center;
                         }
                         .qr-container img {
-                            width: 800px;
-                            height: 800px;
+                            width: 600px;
+                            height: 600px;
                         }
                         .qr-container p {
                             margin-top: 20px;
