@@ -2502,7 +2502,7 @@ $plano = $res3['plano'];
             </div>
 
             <div class="modal-body" style="background-color: #f7f9fc; padding: 30px;">
-                <p class="text-center text-secondary mb-4">Escolha a melhor forma de compartilhar seu link com seus clientes.</p>
+                <p class="text-center text-secondary mb-4">Escolha a melhor forma de compartilhar seu link com seus clientes.</p><br>
 
                 <div class="d-grid gap-3">
                     <button class="btn btn-lg btn-light w-100 py-3" onclick="copiarLink()" style="border-radius: 10px; border: 1px solid #e0e6ed; color: #4a5568; font-weight: 600; transition: all 0.3s ease; margin-bottom: 20px">
