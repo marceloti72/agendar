@@ -395,11 +395,11 @@ if ($session_id) {
         $username = $nomeConfig;
 
         // Conexão com o banco de dados
-        $db_servidor = 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
-        $db_usuario = 'skysee';
-        $db_senha = '9vtYvJly8PK6zHahjPUg';
-        $db_nome = 'barbearia';
-        $db_nome2 = 'gestao_sistemas';
+        $db_servidor = getenv('SERVIDOR');
+        $db_usuario = getenv('USUARIO');
+        $db_senha = getenv('SENHA');
+        $db_nome = getenv('NOME_BARBEARIA');
+        $db_nome2 = getenv('NOME_GESTAO');
 
         try {
             $pdo = new PDO("mysql:host=$db_servidor;dbname=$db_nome;charset=utf8", $db_usuario, $db_senha);
@@ -857,7 +857,7 @@ function formatPhoneNumber($phone) {
         </div>
         <div class="message">Para acessar o app, utilize as seguintes credenciais:</div>
         <div class="credentials">
-            <span class="bold-highlight">Login:</span> <?php echo $email; ?> - <?php echo $telefone?>
+            <span class="bold-highlight">Login:</span> <?php echo $email; ?>
         </div>
         <div class="credentials">
             <span class="bold-highlight">Senha:</span> <?php echo $defaultPassword; ?>
@@ -880,7 +880,7 @@ function formatPhoneNumber($phone) {
     $mensagem .= "Segue os dados para acesso:%0A";
     $mensagem .= "*Login:* $email%0A";
     $mensagem .= "*Senha:* $defaultPassword%0A%0A";
-    $mensagem .= "🚨 Acesse o seu perfil e as configurações do sistema assim que entrar no APP para inserir seus dados corretamente.%0A%0A";
+    $mensagem .= "🚨 Acesse o seu perfil e as configurações do sistema assim que entrar para inserir seus dados corretamente.%0A%0A";
     $mensagem .= "Você tem ".$dias_gratis." grátis para conhecer nosso sistema.%0A%0A";
     
     $mensagem = str_replace("%0A", "\n", $mensagem); 
