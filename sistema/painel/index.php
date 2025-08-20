@@ -3102,8 +3102,8 @@ $plano = $res3['plano'];
                             align-items: center;
                         }
                         .qr-container img {
-                            width: 300px;
-                            height: 300px;
+                            width: 800px;
+                            height: 800px;
                         }
                         .qr-container p {
                             margin-top: 20px;
@@ -3121,7 +3121,7 @@ $plano = $res3['plano'];
             <body>
                 <div class="qr-container">
                     <img src="${qrCodeDataURL}" alt="QR Code">
-                    <p>Acesse no Link!</p>
+                    <p>Acesse nosso Link! 😃</p>
                 </div>
             </body>
         </html>
