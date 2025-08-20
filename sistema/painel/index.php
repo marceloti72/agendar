@@ -2492,35 +2492,42 @@ $plano = $res3['plano'];
 
 	<!-- Modal Seu Link -->
 <div class="modal fade" id="modalSeuLink" tabindex="-1" role="dialog" aria-labelledby="modalSeuLinkLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header" style="background: linear-gradient(45deg, #4682B4, #87CEEB); border-bottom: none;">
-                <h5 class="modal-title text-white" id="modalSeuLinkLabel" style="font-size: 25px;">Seu Link</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9; margin-top: -30px">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+
+            <div class="modal-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #6a82fb, #fc5c7d); border: none; padding: 25px 30px;">
+                <h5 class="modal-title text-white font-weight-bold" id="modalSeuLinkLabel" style="font-size: 1.5rem;">Compartilhe Seu Link</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 1;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="background-color: #F8F9FA; padding: 25px;">
-                <div class="list-group">
-                    <button class="list-group-item list-group-item-action" onclick="copiarLink()">
-                        <i class="fas fa-copy mr-2"></i> Copiar Link
+
+            <div class="modal-body" style="background-color: #f7f9fc; padding: 30px;">
+                <p class="text-center text-secondary mb-4">Escolha a melhor forma de compartilhar seu link com seus clientes.</p>
+
+                <div class="d-grid gap-3">
+                    <button class="btn btn-lg btn-light w-100 py-3 mb-2" onclick="copiarLink()" style="border-radius: 10px; border: 1px solid #e0e6ed; color: #4a5568; font-weight: 600; transition: all 0.3s ease;">
+                        <i class="fas fa-copy fa-lg mr-3" style="color: #6a82fb;"></i> Copiar Link
                     </button>
-                    <button class="list-group-item list-group-item-action" onclick="enviarLink()">
-                        <i class="fab fa-whatsapp mr-2"></i> Enviar Link
+                    <button class="btn btn-lg btn-success w-100 py-3 mb-2" onclick="enviarLink()" style="background-color: #25D366; border-color: #25D366; border-radius: 10px; font-weight: 600; transition: all 0.3s ease;">
+                        <i class="fab fa-whatsapp fa-lg mr-3"></i> Enviar por WhatsApp
                     </button>
-                    <button class="list-group-item list-group-item-action" onclick="mostrarQRCode()">
-                        <i class="fas fa-qrcode mr-2"></i> QR Code do Link
+                    <button class="btn btn-lg btn-light w-100 py-3" onclick="mostrarQRCode()" style="border-radius: 10px; border: 1px solid #e0e6ed; color: #4a5568; font-weight: 600; transition: all 0.3s ease;">
+                        <i class="fas fa-qrcode fa-lg mr-3" style="color: #fc5c7d;"></i> Exibir QR Code
                     </button>
                 </div>
-                <div id="qrcode-container" class="mt-3 text-center" style="display: none;">
-                    <div id="qrcode"></div>
-                    <button class="btn btn-primary mt-3" onclick="imprimirQRCode()">
+
+                <div id="qrcode-container" class="mt-4 text-center" style="display: none; border-top: 1px solid #e0e6ed; padding-top: 20px;">
+                    <p class="text-muted mb-3">Escaneie o código com seu celular para acessar.</p>
+                    <div id="qrcode" class="d-inline-block p-2" style="background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);"></div>
+                    <button class="btn btn-outline-secondary mt-3" onclick="imprimirQRCode()" style="border-radius: 50px; font-weight: 600; padding: 10px 25px;">
                         <i class="fas fa-print mr-2"></i> Imprimir
                     </button>
                 </div>
             </div>
-            <div class="modal-footer" style="border-top: none; padding: 15px 25px;">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 5px; padding: 8px 20px;">Fechar</button>
+
+            <div class="modal-footer" style="border: none; padding: 15px 30px; background-color: #f7f9fc;">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal" style="border-radius: 50px; font-weight: 600; padding: 10px 25px;">Fechar</button>
             </div>
         </div>
     </div>
