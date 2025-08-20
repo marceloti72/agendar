@@ -25,6 +25,8 @@ use Stripe\Subscription;
 Stripe::setApiKey(getenv('STRIPE_SECRET_KEY')); // Pega a chave da variável de ambiente
 $endpoint_secret = getenv('STRIPE_WEBHOOK_SECRET'); // Pega o segredo do webhook da variável de ambiente
 
+echo $endpoint_secret;
+
 // Processamento de requisições POST (webhook ou formulário)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['new_email'])) {
