@@ -72,10 +72,10 @@ span.dashboard_text {
     z-index: 100;
 }
 .header-section {
-    background: linear-gradient(to right, #37474F, #263238); 
-    /* background: linear-gradient(to right, #388E3C, #757575);
-    background: linear-gradient(to right, #512DA8, #303F9F); 
-    background: linear-gradient(to right, #212121, #424242); */
+    /* background: linear-gradient(to right, #37474F, #263238); 
+    background: linear-gradient(to right, #388E3C, #757575);
+    background: linear-gradient(to right, #512DA8, #303F9F);  */
+    background: linear-gradient(to right, #212121, #424242);
     box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
     -webkit-box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
     -moz-box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
