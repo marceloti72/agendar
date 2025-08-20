@@ -416,6 +416,14 @@ $plano = $res3['plano'];
 #qrcode {
     margin: 0 auto;
 }
+.btn-primary {
+    background-color: #4682B4;
+    border: none;
+    transition: all 0.3s;
+}
+.btn-primary:hover {
+    background-color: #5a9bd4;
+}
 
 
 	</style>
@@ -2506,6 +2514,9 @@ $plano = $res3['plano'];
                 </div>
                 <div id="qrcode-container" class="mt-3 text-center" style="display: none;">
                     <div id="qrcode"></div>
+                    <button class="btn btn-primary mt-3" onclick="imprimirQRCode()">
+                        <i class="fas fa-print mr-2"></i> Imprimir
+                    </button>
                 </div>
             </div>
             <div class="modal-footer" style="border-top: none; padding: 15px 25px;">
@@ -3060,11 +3071,75 @@ $plano = $res3['plano'];
         });
     }
 
-    // Reset QR code visibility when modal is closed
-    $('#modalSeuLink').on('hidden.bs.modal', function () {
-        document.getElementById('qrcode-container').style.display = 'none';
-        document.getElementById('qrcode').innerHTML = '';
-    });
+    function imprimirQRCode() {
+    // Get the QR code canvas from qrcode.js
+    const qrcodeCanvas = document.getElementById('qrcode').querySelector('canvas');
+    const qrCodeDataURL = qrcodeCanvas.toDataURL('image/png');
+
+    // Create a new window for printing
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Imprimir QR Code</title>
+                <style>
+                    @media print {
+                        body {
+                            margin: 0;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                            font-family: Arial, sans-serif;
+                        }
+                        .qr-container {
+                            text-align: center;
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                        .qr-container img {
+                            width: 300px;
+                            height: 300px;
+                        }
+                        .qr-container p {
+                            margin-top: 20px;
+                            font-size: 24px;
+                            font-weight: bold;
+                            color: #333;
+                        }
+                        @page {
+                            size: A4;
+                            margin: 0;
+                        }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="qr-container">
+                    <img src="${qrCodeDataURL}" alt="QR Code">
+                    <p>Acesse no Link!</p>
+                </div>
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.onload = function() {
+        printWindow.print();
+        printWindow.onafterprint = function() {
+            printWindow.close();
+        };
+    };
+}
+
+// Reset QR code visibility when modal is closed
+$('#modalSeuLink').on('hidden.bs.modal', function () {
+    document.getElementById('qrcode-container').style.display = 'none';
+    document.getElementById('qrcode').innerHTML = '';
+});
 </script>
 
 
