@@ -857,7 +857,7 @@ function formatPhoneNumber($phone) {
         </div>
         <div class="message">Para acessar o app, utilize as seguintes credenciais:</div>
         <div class="credentials">
-            <span class="bold-highlight">Login:</span> <?php echo $email; ?> -<?php echo $telefone?>
+            <span class="bold-highlight">Login:</span> <?php echo $email; ?> - <?php echo $telefone?>
         </div>
         <div class="credentials">
             <span class="bold-highlight">Senha:</span> <?php echo $defaultPassword; ?>
