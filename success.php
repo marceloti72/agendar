@@ -865,7 +865,7 @@ function formatPhoneNumber($phone) {
         <div class="note">
             🚨 Acesse o seu perfil e as configurações do sistema assim que entrar no APP para inserir seus dados corretamente.
         </div>
-        <a href="intent://markai.skysee.com.br#Intent;scheme=https;package=com.example.app;end" class="login-button">Ir para o APP</a>
+        <a href="login.php" class="login-button">Acessar Sistema</a>
     </div>
 
     <?php 
