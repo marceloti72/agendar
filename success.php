@@ -104,7 +104,7 @@ if ($session_id && isset($_SESSION['processed_session_ids'][$session_id])) {
     if (isset($_GET['coupon']) && !empty($_GET['coupon'])) {
        $trialDays = 30;
     }else{
-       $trialDays = 15;
+       $trialDays = 7;
     }    
     $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
 
@@ -235,7 +235,7 @@ $email = 'carregando...';
 if (isset($_GET['coupon']) && !empty($_GET['coupon'])) {
     $trialDays = 30;
 }else{
-    $trialDays = 15;
+    $trialDays = 7;
 }    
 
 $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
@@ -642,7 +642,7 @@ if ($session_id) {
 
         // Inicializar variável
         $id_repr = '';
-        $dias_gratis = '15 dias';
+        $dias_gratis = '7 dias';
 
         // Verificar se o cupom está presente na URL
         if (isset($_GET['coupon']) && !empty($_GET['coupon'])) {
@@ -724,7 +724,7 @@ if ($session_id) {
         if (isset($_GET['coupon']) && !empty($_GET['coupon'])) {
             $trialDays = 30;
         }else{
-            $trialDays = 15;
+            $trialDays = 7;
         }    
         $trialEndDate = date('d/m/Y', strtotime("+$trialDays days"));
 
