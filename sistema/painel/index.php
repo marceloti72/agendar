@@ -3106,8 +3106,8 @@ $plano = $res3['plano'];
                             height: 600px;
                         }
                         .qr-container p {
-                            margin-top: 20px;
-                            font-size: 24px;
+                            margin-top: 30px;
+                            font-size: 36px;
                             font-weight: bold;
                             color: #333;
                         }
