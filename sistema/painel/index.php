@@ -400,6 +400,23 @@ $plano = $res3['plano'];
 	
 }
 
+.list-group-item-action {
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.list-group-item-action:hover {
+    background-color: #e9ecef;
+}
+.list-group-item-action i {
+    color: #4682B4;
+}
+#qrcode-container {
+    display: none;
+}
+#qrcode {
+    margin: 0 auto;
+}
+
 
 	</style>
 	<!--pie-chart --><!-- index page sales reviews visitors pie chart -->
@@ -741,7 +758,13 @@ $plano = $res3['plano'];
                                 <a href="campanhas">
                                     <i class="fa fa-paper-plane"></i><span>Campanha de retorno</span>
                                 </a>
-                             </li>					
+                             </li> 
+
+                            <li class="treeview">
+								<a href="#" data-toggle="modal" data-target="#modalSeuLink">
+									<i class="fa fa-link"></i><span>Seu Link</span>
+								</a>
+							</li>					
                             
 								<!-- <li class="treeview <?php echo @$calendario ?>">
 								<a href="calendario">
@@ -2459,7 +2482,43 @@ $plano = $res3['plano'];
     </div>
 
 
+	<!-- Modal Seu Link -->
+<div class="modal fade" id="modalSeuLink" tabindex="-1" role="dialog" aria-labelledby="modalSeuLinkLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(45deg, #4682B4, #87CEEB); border-bottom: none;">
+                <h5 class="modal-title text-white" id="modalSeuLinkLabel" style="font-size: 25px;">Seu Link</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9; margin-top: -30px">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background-color: #F8F9FA; padding: 25px;">
+                <div class="list-group">
+                    <button class="list-group-item list-group-item-action" onclick="copiarLink()">
+                        <i class="fas fa-copy mr-2"></i> Copiar Link
+                    </button>
+                    <button class="list-group-item list-group-item-action" onclick="enviarLink()">
+                        <i class="fab fa-whatsapp mr-2"></i> Enviar Link
+                    </button>
+                    <button class="list-group-item list-group-item-action" onclick="mostrarQRCode()">
+                        <i class="fas fa-qrcode mr-2"></i> QR Code do Link
+                    </button>
+                </div>
+                <div id="qrcode-container" class="mt-3 text-center" style="display: none;">
+                    <div id="qrcode"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none; padding: 15px 25px;">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 5px; padding: 8px 20px;">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 	<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> -->
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 
 	
@@ -2955,5 +3014,57 @@ $plano = $res3['plano'];
             font-weight: bold;
         }
     </style>
+
+	<script>
+    // Define the link (replace with your dynamic link)
+    const seuLink = 'https://markai.skysee.com.br/site.php?u=<?=$username?>'; // Adjust this to your actual link, e.g., a specific URL for the user	
+    const mensagemWhatsApp = encodeURIComponent("Confira este link incrível: " + seuLink);
+
+    function copiarLink() {
+        navigator.clipboard.writeText(seuLink).then(() => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Link Copiado!',
+                text: 'O link foi copiado para a área de transferência.',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }).catch(err => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: 'Não foi possível copiar o link.',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        });
+    }
+
+    function enviarLink() {
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${mensagemWhatsApp}`;
+        window.open(whatsappUrl, '_blank');
+    }
+
+    function mostrarQRCode() {
+        const qrcodeContainer = document.getElementById('qrcode-container');
+        const qrcodeElement = document.getElementById('qrcode');
+        qrcodeElement.innerHTML = ''; // Clear previous QR code
+        qrcodeContainer.style.display = 'block';
+        new QRCode(qrcodeElement, {
+            text: seuLink,
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
+
+    // Reset QR code visibility when modal is closed
+    $('#modalSeuLink').on('hidden.bs.modal', function () {
+        document.getElementById('qrcode-container').style.display = 'none';
+        document.getElementById('qrcode').innerHTML = '';
+    });
+</script>
 
 
