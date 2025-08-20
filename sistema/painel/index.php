@@ -2489,7 +2489,6 @@ $plano = $res3['plano'];
         </div>
     </div>
 
-
 	<!-- Modal Seu Link -->
 <div class="modal fade" id="modalSeuLink" tabindex="-1" role="dialog" aria-labelledby="modalSeuLinkLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
