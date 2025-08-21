@@ -132,7 +132,7 @@
                 </p>
                 <div class="space-x-4">
                     <a href="plan-selection.html" class="custom-button primary-button">TESTAR GRÁTIS POR 7 DIAS</a>
-                    <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a>
+                    <!-- <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a> -->
                 </div>
             </div>
             <div class="md:w-1/2 flex justify-center">
@@ -314,7 +314,7 @@
         </p>
         <div class="space-x-4">
             <a href="plan-selection.html" class="custom-button primary-button">TESTAR GRÁTIS AGORA</a>
-            <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a>
+            <!-- <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a> -->
         </div>
     </div>
 </section>
