@@ -612,7 +612,7 @@ $plano = $res3['plano'];
 									<?php }
 									?>									 -->
 
-										<li class="<?php echo @$pgto ?>"><a href="pgto"><i class="fa fa-angle-right"></i>Formas de Pagamento</a></li>
+										<!-- <li class="<?php echo @$pgto ?>"><a href="pgto"><i class="fa fa-angle-right"></i>Formas de Pagamento</a></li> -->
 
 										<li class="<?php echo @$servicos ?>"><a href="servicos"><i class="fa fa-angle-right"></i>Serviços</a></li>
 
@@ -1236,7 +1236,7 @@ $plano = $res3['plano'];
 						if(@$_SESSION['nivel_usuario'] == 'administrador'){
 						?>
 								<li> <a href="" data-toggle="modal" data-target="#assinaturaModal"><i class="fa fa-dollar"></i> Minha Assinatura</a> </li> 
-								<li> <a href="" data-toggle="modal" data-target="#tutoriaisModal"><i class="fa fa-question" style="color: #15b283;"></i> Vídeos Tutoriais</a> </li> 
+								<!-- <li> <a href="" data-toggle="modal" data-target="#tutoriaisModal"><i class="fa fa-question" style="color: #15b283;"></i> Vídeos Tutoriais</a> </li>  -->
 						<?php }?>
 						
 								<li> <a href="logout.php"><i class="fa fa-sign-out"></i> Sair</a> </li>
@@ -2454,11 +2454,11 @@ $plano = $res3['plano'];
                                 <li class="list-group-item video-item" data-video-id="ynGq7XzOBrA">Tutorial 1: Configurando o Sistema</li>
                                 <li class="list-group-item video-item" data-video-id="Tiur6MDk0RU">Tutorial 2: Configurando o Site</li>
 
-                                <li class="list-group-item video-item" data-video-id="ejVM_av7KsQ">Tutorial 3: Utilizando a Comanda</li>
+                                <!-- <li class="list-group-item video-item" data-video-id="ejVM_av7KsQ">Tutorial 3: Utilizando a Comanda</li> -->
 
 								<li class="list-group-item video-item" data-video-id="uJd1G-cFAZc">Tutorial 6: Cadastros</li>
 
-                                <li class="list-group-item video-item" data-video-id="P7s_7ARQpVY">Tutorial 4: Agendamentos e Serviços</li>
+                                <!-- <li class="list-group-item video-item" data-video-id="P7s_7ARQpVY">Tutorial 4: Agendamentos e Serviços</li> -->
 
                                 <li class="list-group-item video-item" data-video-id="UApt6WNUvVs">Tutorial 5: Produtos e controle de estoque</li>
                                 
@@ -2466,7 +2466,7 @@ $plano = $res3['plano'];
 
                                 <li class="list-group-item video-item" data-video-id="3bGNuRtlmAQ">Tutorial 8: Financeiro</li>
 
-                                <li class="list-group-item video-item" data-video-id="k3-zaTr6OUQ">Tutorial 9: WhatsApp e Campanha de Marketing</li> 
+                                <!-- <li class="list-group-item video-item" data-video-id="k3-zaTr6OUQ">Tutorial 9: WhatsApp e Campanha de Marketing</li>  -->
 
                                 <li class="list-group-item video-item" data-video-id="k3-zaTr6OUQ">Tutorial 10: Menu do Profissional</li>
 
