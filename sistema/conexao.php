@@ -1,4 +1,7 @@
 <?php
+// Configura o tempo de vida da sessão para 24 horas (86400 segundos)
+ini_set('session.gc_maxlifetime', 86400);
+ini_set('session.cookie_lifetime', 86400);
 @session_start();
 
 // Configurações da URL
@@ -87,6 +90,7 @@ if (isset($_SESSION['id_conta'])) {
 			$satisfacao = $config['satisfacao'];
 			$assinaturas2 = $config['assinaturas'];
 			$dados_pagamento = $config['dados_pagamento'];
+			$cliente_stripe = $config['id_cliente_stripe'];
 
 			
 			// Novas variáveis Menuia

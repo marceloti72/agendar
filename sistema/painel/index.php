@@ -1233,7 +1233,7 @@ $plano = $res3['plano'];
 								<li> <a href="" data-toggle="modal" data-target="#modalPerfil"><i class="fa fa-suitcase"></i> Editar Perfil</a> </li> 
 						<?php 
 						// DEFINANDO SE É ADMINISTRADOR
-						if(@$_SESSION['nivel_usuario'] == 'administrador'){
+						if(@$_SESSION['nivel_usuario'] == 'administrador' && $cliente_stripe == null){
 						?>
 								<li> <a href="" data-toggle="modal" data-target="#assinaturaModal"><i class="fa fa-dollar"></i> Minha Assinatura</a> </li> 
 								<!-- <li> <a href="" data-toggle="modal" data-target="#tutoriaisModal"><i class="fa fa-question" style="color: #15b283;"></i> Vídeos Tutoriais</a> </li>  -->

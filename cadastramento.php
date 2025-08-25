@@ -249,7 +249,7 @@ try {
     $id_cliente = $pdo2->lastInsertId();
 
     // Calcula a data de vencimento (7 dias após a data de pagamento)
-    $nova_data_vencimento = date('Y-m-d', strtotime("+30 days", strtotime($data_pgto)));
+    $nova_data_vencimento = date('Y-m-d', strtotime("+7 days", strtotime($data_pgto)));
 
     // Insere o registro na tabela 'receber'
     $res4 = $pdo2->prepare("INSERT INTO receber SET empresa = :empresa, tipo = :tipo, descricao = :descricao, pessoa = :pessoa, valor = :valor, subtotal = :subtotal, vencimento = :vencimento, data_lanc = :data_lanc, arquivo = :arquivo, pago = :pago, cliente = :cliente, frequencia = :frequencia");
@@ -353,7 +353,7 @@ try {
     $mensagem .= "*Login:* $email_adm%0A";
     $mensagem .= "*Senha:* 123%0A";
     $mensagem .= "Altere sua senha assim que acessar e complete seus dados!%0A%0A";
-    $mensagem .= "Você tem 30 dias grátis para conhecer nosso sistema.%0A%0A";
+    $mensagem .= "Você tem 7 dias grátis para conhecer nosso sistema.%0A%0A";
     $mensagem .= "*Segue os dados para assinatura*" . $point_down . "  %0A%0A";
     $mensagem .= "Cliente: *" . $nome . "* %0A";
     $mensagem .= "Plano: *" . $plano2 . "* %0A";
