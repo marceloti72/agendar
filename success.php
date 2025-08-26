@@ -381,10 +381,9 @@ if ($session_id) {
             file_put_contents('/var/www/markai/session_log.txt', date('Y-m-d H:i:s') . " - No subscription or amount_total found.\n", FILE_APPEND);
         }
 
-        $plano = ($priceId === 'price_1RTZKzJEPhV4vIDM8SLdZ1Gx' || $priceId === 'price_1RU5HjJEPhV4vIDMTnrVVyxT') ? 1 : 2;
-        $frequencia = ($priceId === 'price_1RU5HjJEPhV4vIDMTnrVVyxT' || $priceId === 'price_1RUE3OJEPhV4vIDMzNgVl1jY') ? 365 : 30;
+        $plano = ($priceId === 'price_1S0LeeJEPhV4vIDMAAmSpThi' || $priceId === 'price_1S0LfCJEPhV4vIDMFGZdx4rv') ? 1 : 2;
+        $frequencia = ($priceId === 'price_1S0LfCJEPhV4vIDMFGZdx4rv' || $priceId === 'price_1RUE3OJEPhV4vIDMzNgVl1jY') ? 365 : 30;
         $dataAtual = date('Y-m-d H:i:s');
-
         // Teste
         // $plano = ($priceId === 'price_1RTXujQwVYKsR3u1RPS4YJ2k' || $priceId === 'price_1RUErpQwVYKsR3u108WBjSM6') ? 1 : 2;
         // $frequencia = ($priceId === 'price_1RUErpQwVYKsR3u108WBjSM6' || $priceId === 'price_1RUEtsQwVYKsR3u1EtM51sF2') ? 365 : 30;

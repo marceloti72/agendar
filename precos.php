@@ -7,8 +7,8 @@ $planos = [
         'anual' => ['preco' => 786.21, 'economia' => 172.58]
     ],
     'individual' => [
-        'mensal' => ['preco' => 49.90, 'desconto_anual' => 12],
-        'anual' => ['preco' => 526.94, 'economia' => 71.85]
+        'mensal' => ['preco' => 39.90, 'desconto_anual' => 12],
+        'anual' => ['preco' => 420.00, 'economia' => 58.80]
     ]
 ];
 
@@ -342,7 +342,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
             <?php if ($tipo_plano === 'anual'): ?>
                 <div class="desconto">12% off</div>
             <?php endif; ?>
-            <p>Ideal para quem trabalha sozinho. Nesse plano não é possível cadastrar colaboradores ou parceiros.</p>
+            <p>Todas as funcionalidades, menos gestão de profissionais.</p>
             <div class="preco">
                 R$ <?php echo number_format($planos['individual'][$tipo_plano]['preco'], 2, ',', '.'); ?> 
                 <?php echo $tipo_plano === 'anual' ? '/ano' : '/mês'; ?>
