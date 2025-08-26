@@ -90,7 +90,7 @@ if (isset($_SESSION['id_conta'])) {
 			$satisfacao = $config['satisfacao'];
 			$assinaturas2 = $config['assinaturas'];
 			$dados_pagamento = $config['dados_pagamento'];
-			$cliente_stripe = $config['id_cliente_stripe'];
+			$cliente_stripe = $config['id_cliente_stripe'];			
 
 			
 			// Novas variáveis Menuia

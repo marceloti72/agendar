@@ -1237,7 +1237,11 @@ $plano = $res3['plano'];
 						?>
 								<li> <a href="" data-toggle="modal" data-target="#assinaturaModal"><i class="fa fa-dollar"></i> Minha Assinatura</a> </li> 
 								<!-- <li> <a href="" data-toggle="modal" data-target="#tutoriaisModal"><i class="fa fa-question" style="color: #15b283;"></i> Vídeos Tutoriais</a> </li>  -->
-						<?php }?>
+						<?php }else{?>
+							<li> <a href="../../portal.php" ><i class="fa fa-dollar"></i> Sua Assinatura</a> </li><?php 
+						}
+						
+						?>
 						
 								<li> <a href="logout.php"><i class="fa fa-sign-out"></i> Sair</a> </li>
 							</ul>
