@@ -52,10 +52,10 @@ function gerarSenha($tamanho = 12, $maiusculas = true, $minusculas = true, $nume
 
 // Gerando e armazenando a senha em um banco de dados (Exemplo com PDO)
 $senha = gerarSenha(6);
-$hash = password_hash($senha, PASSWORD_DEFAULT);
+//$hash = password_hash($senha, PASSWORD_DEFAULT);
 
 $stmt = $pdo->prepare("UPDATE usuarios SET senha = :hash WHERE email = :email");
-$stmt->bindParam(':hash', $hash);
+$stmt->bindParam(':hash', $senha);
 $stmt->bindParam(':email', $email);
 $stmt->execute();
 
