@@ -118,6 +118,17 @@
         }
     </style>
 </head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R39PP1R46W"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R39PP1R46W');
+</script>
+
 <body class="bg-gray-50 font-sans">
 
 <section class="bg-gradient-to-r from-[#4A90E2] to-[#50C9C3] text-white py-20 md:py-32" id="sessao-0">
