@@ -1,8 +1,7 @@
 <?php
 
 // Inclua seu arquivo de conexão com o banco de dados.
-// Exemplo: 'conexao.php'
-require_once("sistema/conexao.php"); 
+require_once("sistema/conexao.php");
 
 // Verifique se os dados do formulário foram enviados
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -20,12 +19,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     try {
-        // Criptografe a nova senha antes de salvar no banco de dados.
-        $senha_criptografada = password_hash($nova_senha, PASSWORD_DEFAULT);
-
-        // Utilize a sua estrutura de UPDATE
+        // ATENÇÃO: Nunca armazene senhas em texto puro! 
+        // Use password_hash() para criptografar a senha antes de salvar no banco de dados.
+        // O código abaixo está vulnerável se for usado em produção.
         $stmt = $pdo->prepare("UPDATE usuarios SET senha = :senha WHERE email = :email");
-        $stmt->bindParam(':senha', $senha_criptografada);
+        $stmt->bindParam(':senha', $nova_senha);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
 
@@ -33,19 +31,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->rowCount() > 0) {
             echo "Senha redefinida com sucesso! Redirecionando para a página de login...";
             
-            // Redirecionar para a página de login
-            header("Location: https://www.markai.skysee.com.br/login.php");
+            // Redirecionar para a página de login após 3 segundos.
+            header("refresh:3; url=https://www.markai.skysee.com.br/login.php");
             exit();
         } else {
-            echo "Email não encontrado ou senha já atualizada.";
+            // Exibir o alerta e redirecionar com JavaScript
+            echo "<script>
+                    alert('Email não encontrado ou senha já atualizada.');
+                    setTimeout(function() {
+                        window.location.href = 'https://www.markai.skysee.com.br/redefinir_senha.html';
+                    }, 3000); // 3000ms = 3 segundos
+                  </script>";
+            exit();
         }
 
     } catch (PDOException $e) {
-        die("Erro ao redefinir a senha: " . $e->getMessage());
+        // Exibir o alerta de erro e redirecionar
+        echo "<script>
+                alert('Erro ao redefinir a senha: " . addslashes($e->getMessage()) . "');
+                setTimeout(function() {
+                    window.location.href = 'https://www.markai.skysee.com.br/redefinir_senha.html';
+                }, 3000);
+              </script>";
+        exit();
     }
 } else {
     // Se a requisição não for POST, redirecione o usuário para o formulário.
-    header("Location: redefinir_senha.html");
+    header("Location: https://www.markai.skysee.com.br/redefinir_senha.html");
     exit();
 }
 ?>
