@@ -126,11 +126,11 @@
             </div>
             
             <div class="text-center mt-6 text-sm">
-                <p class="text-gray-600 mb-2">Primeiro acesso? 
+                <!-- <p class="text-gray-600 mb-2">Primeiro acesso? 
                     <a href="#" data-toggle="modal" data-target="#modalRecuperar" class="font-bold text-indigo-600 hover:underline">
                         Cadastrar Senha
                     </a>
-                </p>
+                </p> -->
                 <p class="text-gray-600">Esqueceu a senha? 
                     <a href="#" data-toggle="modal" data-target="#modalRecuperar" class="font-bold text-red-600 hover:underline">
                         Recuperar
