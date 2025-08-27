@@ -31,46 +31,49 @@ $username = $res[0]['username'];
 
 
 
-function gerarSenha($tamanho = 12, $maiusculas = true, $minusculas = true, $numeros = true, $simbolos = true) {
-    $caracteres = '';
+// function gerarSenha($tamanho = 12, $maiusculas = true, $minusculas = true, $numeros = true, $simbolos = true) {
+//     $caracteres = '';
 
-    if ($maiusculas) $caracteres .= 'ABCDEFGHIJ';
-    if ($minusculas) $caracteres .= 'abcdefghij';
-    if ($numeros)    $caracteres .= '0123456789';
-    if ($simbolos) 
-    $caracteres .= '!@#';
+//     if ($maiusculas) $caracteres .= 'ABCDEFGHIJ';
+//     if ($minusculas) $caracteres .= 'abcdefghij';
+//     if ($numeros)    $caracteres .= '0123456789';
+//     if ($simbolos) 
+//     $caracteres .= '!@#';
 
-    $senha = '';
-    for ($i = 0; $i < $tamanho; $i++) {
-        $senha .= $caracteres[rand(0, strlen($caracteres) - 1)];
-    }
+//     $senha = '';
+//     for ($i = 0; $i < $tamanho; $i++) {
+//         $senha .= $caracteres[rand(0, strlen($caracteres) - 1)];
+//     }
 
-    return $senha;
+//     return $senha;
 
-    // ... (mesma função acima)
-}
+//     // ... (mesma função acima)
+// }
 
 // Gerando e armazenando a senha em um banco de dados (Exemplo com PDO)
-$senha = gerarSenha(6);
+//$senha = gerarSenha(6);
 //$hash = password_hash($senha, PASSWORD_DEFAULT);
 
-$stmt = $pdo->prepare("UPDATE usuarios SET senha = :hash WHERE email = :email");
-$stmt->bindParam(':hash', $senha);
-$stmt->bindParam(':email', $email);
-$stmt->execute();
+// $stmt = $pdo->prepare("UPDATE usuarios SET senha = :senha WHERE email = :email");
+// $stmt->bindParam(':senha', $senha);
+// $stmt->bindParam(':email', $email);
+// $stmt->execute();
 
 
 $telefone = '55'.preg_replace('/[ ()-]+/' , '' , $tel);
 
-$mensagem = '🔔 *Nova senha*%0A%0A';
-$mensagem.= '*MARKAI - Gestão de Serviços*%0A%0A';
+//$mensagem = '🔔 *Nova senha*%0A%0A';
+$mensagem = '*MARKAI - Gestão de Serviços*%0A%0A';
 $mensagem.= 'Houve um pedido de recuperação de senha:%0A';
-$mensagem.= 'Nome: *'.$nome.'*%0A'; 
-$mensagem.= 'Nova senha: *'.$senha.'*%0A%0A';     
-$mensagem.= '*Se desejar altera a senha, vá em configuração de perfil.*%0A';     
+$mensagem.= 'Acesse o link abaixo e redefina sua senha:%0A';
+$mensagem.= 'https://www.markai.skysee.com.br/redefinir_senha.html %0A';
+// $mensagem.= 'Nome: *'.$nome.'*%0A'; 
+// $mensagem.= 'Nova senha: *'.$senha.'*%0A%0A';     
+// $mensagem.= '*Se desejar altera a senha, vá em configuração de perfil.*%0A';     
 
 require("ajax/api-texto-recup.php");
 
-echo 'Sua senha foi Enviada para seu WhatsApp!';
+echo 'Mensagem enviada para seu WhatsApp !';
+//echo 'Sua senha foi Enviada para seu WhatsApp!';
 
  ?>
