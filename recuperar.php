@@ -64,8 +64,8 @@ $telefone = '55'.preg_replace('/[ ()-]+/' , '' , $tel);
 
 //$mensagem = '🔔 *Nova senha*%0A%0A';
 $mensagem = '*MARKAI - Gestão de Serviços*%0A%0A';
-$mensagem.= 'Houve um pedido de recuperação de senha:%0A';
-$mensagem.= 'Acesse o link abaixo e redefina sua senha:%0A';
+$mensagem.= 'Houve um pedido de recuperação de senha. %0A';
+$mensagem.= 'Acesse o link abaixo e a redefina:%0A';
 $mensagem.= 'https://www.markai.skysee.com.br/redefinir_senha.html %0A';
 // $mensagem.= 'Nome: *'.$nome.'*%0A'; 
 // $mensagem.= 'Nova senha: *'.$senha.'*%0A%0A';     
