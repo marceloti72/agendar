@@ -90,9 +90,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 								<div id="divImg">
 									<img src="<?php echo $src_logo; ?>" width="80px" id="target-logo">
 								</div>
-								<!-- <div id="divImg">
-									<img src="../img/logo<?php echo $id_conta?>.png"  width="80px" id="target-logo">									
-								</div> -->
+								
 							</div>							
 
 							<div class="col-md-4">						
@@ -102,9 +100,34 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 								</div>						
 							</div>
 							<div class="col-md-2">
+								<?php
+								// Define o caminho base da imagem e o ID da conta
+								$caminho_base = "../img/";								
+
+								// Constrói o nome do arquivo completo para a logo do cliente
+								$nome_arquivo_rel = "logo_rel" . $id_conta . ".jpg";
+								$caminho_completo_rel = $caminho_base . $nome_arquivo_rel;
+
+								// Define o caminho da imagem alternativa
+								$caminho_rel_alternativa = $caminho_base . "sem_logo.png";
+
+								// Checa se o arquivo de logo do cliente existe
+								if (file_exists($caminho_completo_rel)) {
+									// Se a logo existe, use o caminho dela
+									$src_rel = $caminho_completo_rel;
+								} else {
+									// Se a logo não existe, use o caminho da imagem alternativa
+									$src_rel = $caminho_rel_alternativa;
+								}
+								?>
+
 								<div id="divImg">
-									<img src="../img/logo_rel<?php echo $id_conta?>.jpg"  width="80px" id="target-logo-rel">									
+									<img src="<?php echo $src_rel; ?>" width="80px" id="target-logo-rel">
 								</div>
+
+								<!-- <div id="divImg">
+									<img src="../img/logo_rel<?php echo $id_conta?>.jpg"  width="80px" id="target-logo-rel">									
+								</div> -->
 							</div>
 
 						</div>
@@ -118,9 +141,30 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 								</div>						
 							</div>
 							<div class="col-md-2">
+								<?php 
+								// Constrói o nome do arquivo completo para a logo do cliente
+								$nome_arquivo_icone = "favicon" . $id_conta . ".png";
+								$caminho_completo_icone = $caminho_base . $nome_arquivo_icone;
+
+								// Define o caminho da imagem alternativa
+								$caminho_icone_alternativa = $caminho_base . "sem_logo.png";
+
+								// Checa se o arquivo de logo do cliente existe
+								if (file_exists($caminho_completo_icone)) {
+									// Se a logo existe, use o caminho dela
+									$src_icone = $caminho_completo_icone;
+								} else {
+									// Se a logo não existe, use o caminho da imagem alternativa
+									$src_icone = $caminho_icone_alternativa;
+								}
+								?>
+
 								<div id="divImg">
-									<img src="../../images/favicon<?php echo $id_conta?>.png"  width="50px" id="target-icone-site">									
+									<img src="<?php echo $src_icone; ?>" width="80px" id="target-icone-site">
 								</div>
+								<!-- <div id="divImg">
+									<img src="../../images/favicon<?php echo $id_conta?>.png"  width="50px" id="target-icone-site">									
+								</div> -->
 							</div>
 
 							<!-- <div class="col-md-4">						
