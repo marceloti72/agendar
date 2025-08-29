@@ -142,7 +142,7 @@
                     Descubra o MarkAi, o sistema completo para serviços que revoluciona a forma como você gerencia seu negócio!
                 </p>
                 <div class="space-x-4">
-                    <a href="plan-selection.html" class="custom-button primary-button">TESTAR GRÁTIS POR 7 DIAS</a>
+                    <a href="precos.php" class="custom-button primary-button">TESTAR GRÁTIS POR 7 DIAS</a>
                     <!-- <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a> -->
                 </div>
             </div>
@@ -324,7 +324,7 @@
             Comece agora seu teste grátis de 7 dias e descubra como o MarkAi pode transformar sua gestão.
         </p>
         <div class="space-x-4">
-            <a href="plan-selection.html" class="custom-button primary-button">TESTAR GRÁTIS AGORA</a>
+            <a href="precos.php" class="custom-button primary-button">TESTAR GRÁTIS AGORA</a>
             <!-- <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a> -->
         </div>
     </div>
