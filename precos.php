@@ -277,6 +277,31 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
     .btn-concluir:focus {
         background: var(--secondary-color);
     }
+
+    /* Estilo do botão flutuante */
+    .btn-flutuante {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--primary-color);
+        color: var(--light-text);
+        padding: 15px 25px;
+        border-radius: 50px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        z-index: 1000;
+    }
+
+    .btn-flutuante:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-3px);
+    }
+
+    .btn-flutuante i {
+        margin-right: 8px;
+    }
     
     /* Mobile Responsiveness */
     @media (max-width: 768px) {
@@ -312,6 +337,11 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
         .toggle-plano .btn {
             width: 100%;
             margin: 5px 0;
+        }
+        
+        .btn-flutuante {
+            padding: 12px 20px;
+            font-size: 0.9rem;
         }
     }
 </style>
@@ -350,15 +380,15 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Vc poderá baixar o APP ou usar pela Web o MarkAi</div>
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Link ou APP personalizado para clientes, agendamentos, compra de produtos, venda de assinaturas e outras opções.</div>
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Comandas e controle de consumo</div>
-                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Campanhas de retorno de clientes, disparos em massa com opção de cupom de desconto</div>                
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Campanhas de retorno de clientes, disparos em massa com opção de cupom de desconto</div>             
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Gráficos e métricas -> total de clientes, agendamentos de hoje, distribuição de receitas, saldo do dia, mês e ano, agendamentos por dia da semana, serviços por profissionais, serviços mais realizados, aniversariantes de hoje, clientes aguardando encaixe</div>
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Venda de produtos</div>
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Controle total de estoque</div>
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i>WhatsApp integrado <img src="images/whatsapp.png" alt="Ícone do WhatsApp" style="width: 20px; height: 20px;margin-left: 10px;"> </div>
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Mercado Pago integrado <img src="images/mercado-pago.png" alt="Ícone do Mecado Pago" style="background-color: white;width: 20px; height: 20px;margin-left: 10px;"> <small style="font-size: 12px;margin-left: 10px;"> (diversas formas de pagamentos e baixas automáticas)</small></div>
-                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Notificações automáticas de agendamentos, cancelamentos, lembretes, retornos etc...</div>                
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Notificações automáticas de agendamentos, cancelamentos, lembretes, retornos etc...</div>              
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Cartão Fidelidade - Configure e premie seus clientes pela recorrência</div>
-                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Diversos relatórios Financeiros</div>                     
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Diversos relatórios Financeiros</div>                  
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> e muito mais...</div>
             </ul>
             <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalEmpresa<?php echo $tipo_plano; ?>">Testar grátis por 7 dias</button>
@@ -379,25 +409,29 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                     Pague de uma só vez e economize R$ <?php echo number_format($planos['individual']['anual']['economia'], 2, ',', '.'); ?>
                 </div>
             <?php endif; ?>
-            <ul class="funcionalidades">                
+            <ul class="funcionalidades">                  
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Agendamento online 24h, com fila de espera(Encaixes)</div>
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Vc poderá baixar o APP ou usar pela Web o MarkAi</div>
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Link ou APP personalizado para clientes, agendamentos, compra de produtos, venda de assinaturas e outras opções.</div>
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Comandas e controle de consumo</div>
-                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Campanhas de retorno de clientes, disparos em massa com opção de cupom de desconto</div>                
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Campanhas de retorno de clientes, disparos em massa com opção de cupom de desconto</div>             
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Gráficos e métricas -> total de clientes, agendamentos de hoje, distribuição de receitas, saldo do dia, mês e ano, agendamentos por dia da semana, serviços por profissionais, serviços mais realizados, aniversariantes de hoje, clientes aguardando encaixe</div>
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Venda de produtos</div>
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Controle total de estoque</div>
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i>WhatsApp integrado <img src="images/whatsapp.png" alt="Ícone do WhatsApp" style="width: 20px; height: 20px;margin-left: 10px;"> </div>
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Mercado Pago integrado <img src="images/mercado-pago.png" alt="Ícone do Mecado Pago" style="background-color: white;width: 20px; height: 20px;margin-left: 10px;"> <small style="font-size: 12px;margin-left: 10px;"> (diversas formas de pagamentos e baixas automáticas)</small></div>
-                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Notificações automáticas de agendamentos, cancelamentos, lembretes, retornos etc...</div>                
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Notificações automáticas de agendamentos, cancelamentos, lembretes, retornos etc...</div>              
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Cartão Fidelidade - Configure e premie seus clientes pela recorrência</div>
-                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Diversos relatórios Financeiros</div>                     
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Diversos relatórios Financeiros</div>                  
                 <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> e muito mais...</div>
             </ul>
             <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalIndividual<?php echo $tipo_plano; ?>">Testar grátis por 7 dias</button>
         </div>
     </div><br><br><br><br>
+
+    <a href="https://www.markai.skysee.com.br" class="btn-flutuante">
+        <i class="fas fa-home"></i> Voltar à página principal
+    </a>
 
     <div class="modal fade" id="modalEmpresamensal" tabindex="-1" aria-labelledby="modalEmpresamensalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -564,7 +598,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                     if (mensagem.trim() == "Salvo com Sucesso") {
                         Swal.fire({
                             title: "Cadastro efetuado!",
-                            html: "Segue os dados de acesso:📝<br><span style='color:blue'>Login: <b>" + username + "</b></span><br><span style='color:blue'>Senha: <b>123</b></span><br><br><small style='color:black'><small>🚨 Altere sua senha assim que acessar, em configurações de perfil.</small></small><br><small style='color:black'><small>Um mensagem de WhatsApp foi enviada com os dados de acesso.</small></small>",
+                            html: "Segue os dados de acesso:📝<br><span style='color:blue'>Login: <b>" + username + "</b></span><br><span style='color:blue'>Senha: <b>123</b></span><br><br><small style='color:black'><small>🚨 Altere sua senha assim que acessar, em configurações de perfil.</small></small><br><small style='color:black'><small>Uma mensagem de WhatsApp foi enviada com os dados de acesso.</small></small>",
                             icon: "success"
                         }).then((result) => {
                             if (result.isConfirmed) {
