@@ -24,16 +24,16 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 <div class="row">
 
 <form method="post" id="form-config2">
-				<div class="modal-body">
+				<div class="modal-body">					
 
-					<div class="row">
+					<!-- <div class="row">
 						<div class="col-md-6">
 							<button type="button" id="btnCopiarUrl" style="background-color: dimgrey;color: white;border: 0;padding: 6px; box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)">
 								<i class="fa-regular fa-copy"></i> Copiar Link do Site
 							</button>
 							<span id="mensagemCopia" style="margin-left: 10px; font-style: italic; color: green;"></span>
 						</div>
-					</div>					
+					</div>					 -->
 					<div class="row">					
 						
 						<!-- <div class="col-md-6">
