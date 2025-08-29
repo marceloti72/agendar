@@ -315,12 +315,12 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
             <div class="funcionalidades">
                 <div class="funcionalidade"><i class="fas fa-check"></i> Cadastro ilimitado de usuários</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> Gestão de profissionais</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Agendamento Online 24h, com fila de espera(Encaixes)</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Agendamento online 24h, com fila de espera(Encaixes)</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> Vc poderá baixar o APP ou usar pela Web o MarkAi</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Link ou APP personalizado para clientes, Agendamentos, compra de produtos, venda de assinaturas e outras opções.</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Comandas e Controle de Consumo</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Campanhas de retorno de clientes, disparos em massa com opção de cupons de descontos</div>                
-                <div class="funcionalidade"><i class="fas fa-check"></i> Gráficos e métricas, total de clientes, agendamentos de hoje, distribuição de receitas, saldo d dia, mês e ano, agendamentos por dia da semana, serviços por profissionais, serviços mais realizados, aniversariantes de hoje, clientes aguardando encaixe</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Link ou APP personalizado para clientes, agendamentos, compra de produtos, venda de assinaturas e outras opções.</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Comandas e controle de consumo</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Campanhas de retorno de clientes, disparos em massa com opção de cupom de desconto</div>                
+                <div class="funcionalidade"><i class="fas fa-check"></i> Gráficos e métricas -> total de clientes, agendamentos de hoje, distribuição de receitas, saldo do dia, mês e ano, agendamentos por dia da semana, serviços por profissionais, serviços mais realizados, aniversariantes de hoje, clientes aguardando encaixe</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> Venda de produtos</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> Controle total de estoque</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i>WhatsApp integrado <img src="images/whatsapp.png" alt="Ícone do WhatsApp" style="width: 20px; height: 20px;margin-left: 10px;"> </div>
@@ -349,12 +349,12 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                 </div>
             <?php endif; ?>
             <div class="funcionalidades">                
-                <div class="funcionalidade"><i class="fas fa-check"></i> Agendamento Online 24h, com fila de espera(Encaixes)</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Agendamento online 24h, com fila de espera(Encaixes)</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> Vc poderá baixar o APP ou usar pela Web o MarkAi</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Link ou APP personalizado para clientes, Agendamentos, compra de produtos, venda de assinaturas e outras opções.</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Comandas e Controle de Consumo</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Campanhas de retorno de clientes, disparos em massa com opção de cupons de descontos</div>                
-                <div class="funcionalidade"><i class="fas fa-check"></i> Gráficos e métricas, total de clientes, agendamentos de hoje, distribuição de receitas, saldo d dia, mês e ano, agendamentos por dia da semana, serviços por profissionais, serviços mais realizados, aniversariantes de hoje, clientes aguardando encaixe</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Link ou APP personalizado para clientes, agendamentos, compra de produtos, venda de assinaturas e outras opções.</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Comandas e controle de consumo</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Campanhas de retorno de clientes, disparos em massa com opção de cupom de desconto</div>                
+                <div class="funcionalidade"><i class="fas fa-check"></i> Gráficos e métricas -> total de clientes, agendamentos de hoje, distribuição de receitas, saldo do dia, mês e ano, agendamentos por dia da semana, serviços por profissionais, serviços mais realizados, aniversariantes de hoje, clientes aguardando encaixe</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> Venda de produtos</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> Controle total de estoque</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i>WhatsApp integrado <img src="images/whatsapp.png" alt="Ícone do WhatsApp" style="width: 20px; height: 20px;margin-left: 10px;"> </div>
