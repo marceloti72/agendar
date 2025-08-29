@@ -564,7 +564,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                     if (mensagem.trim() == "Salvo com Sucesso") {
                         Swal.fire({
                             title: "Cadastro efetuado!",
-                            html: "Segue os dados de acesso:📝<br><span style='color:blue'>Login: <b>" + username + "</b></span><br><span style='color:blue'>Senha: <b>123</b></span><br><br><small style='color:black'><small>🚨 Altere sua senha assim que acessar, em configurações de perfil.</small></small><br><small style='color:black'><small>Um email e WhatsApp foram enviados com os dados de acesso (verifique a caixa de spam)</small></small>",
+                            html: "Segue os dados de acesso:📝<br><span style='color:blue'>Login: <b>" + username + "</b></span><br><span style='color:blue'>Senha: <b>123</b></span><br><br><small style='color:black'><small>🚨 Altere sua senha assim que acessar, em configurações de perfil.</small></small><br><small style='color:black'><small>Um mensagem de WhatsApp foi enviada com os dados de acesso.</small></small>",
                             icon: "success"
                         }).then((result) => {
                             if (result.isConfirmed) {

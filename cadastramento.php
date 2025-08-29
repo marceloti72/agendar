@@ -360,7 +360,7 @@ try {
     $mensagem .= "Período: *" . $periodo . "* %0A";
     $mensagem .= "Valor: R$ " . $valor . "%0A";
     $mensagem .= "Vencimento: *" . $data_vencF . "* %0A%0A";
-    $mensagem .= "Link do APP: https://drive.google.com/file/d/1yBNCZo7mqR0V7qbf3cmPUUwR24eHDNzd/view?usp=drive_link";
+    $mensagem .= "Baixe o APP: https://www.markai.skysee.com.br/download/markai.apk";
 
     require("./ajax/api-texto-ass.php");
 
