@@ -23,51 +23,30 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planos MARKAI</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome para ícones -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    
     <style>
     :root {
-        --primary-color: #5d54a4;
-        --secondary-color: #7c72c2;
-        --light-bg: #f5f6fa;
-        --dark-text: #2c3e50;
+        --primary-color: #4a148c;
+        --secondary-color: #7b1fa2;
+        --light-bg: #f8f9fa;
+        --dark-text: #333;
         --light-text: white;
-        --border-color: #e0e0e0;
-        --success-color: #27ae60;
-        --gray-color: #bdc3c7;
-        --icon-color: #5d54a4;
+        --border-color: #dee2e6;
+        --success-color: #28a745;
+        --gray-color: #6c757d;
+        --icon-color: #e1bee7;
     }
 
     body {
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Arial', sans-serif;
         background-color: var(--light-bg);
         padding: 0;
         margin: 0;
-    }
-
-    .header-container {
-        text-align: center;
-        padding: 50px 20px;
-        background-color: var(--light-bg);
-    }
-
-    .header-container h1 {
-        font-weight: 700;
-        color: var(--dark-text);
-        margin-bottom: 10px;
-    }
-
-    .header-container h3 {
-        font-weight: 400;
-        color: var(--gray-color);
-        max-width: 600px;
-        margin: 0 auto;
     }
 
     .planos-container {
@@ -75,31 +54,27 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
         margin: 0 auto;
         display: flex;
         justify-content: center;
-        gap: 20px;
-        padding: 20px;
-        flex-wrap: wrap;
+        gap: 15px; /* Reduced gap for smaller screens */
+        padding: 15px;
+        flex-wrap: nowrap; /* Prevent wrapping to keep cards side by side */
     }
 
     .plano-card {
         flex: 1;
-        min-width: 300px;
-        max-width: 500px;
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        text-align: center;
-        position: relative;
+        min-width: 0; /* Allow cards to shrink below their content width */
+        padding: 15px; /* Slightly reduced padding */
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
     }
 
     .plano-card:hover,
     .plano-card:focus-within {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+        transform: translateY(-5px);
     }
 
     .plano-empresa {
-        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         color: var(--light-text);
     }
 
@@ -108,220 +83,214 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
         color: var(--dark-text);
         border: 1px solid var(--border-color);
     }
-    
-    .plano-empresa .funcionalidade i, .plano-empresa .plano-titulo {
-        color: var(--light-text) !important;
-    }
 
     .plano-titulo {
-        font-size: 1.8rem;
-        font-weight: 600;
+        font-size: 1.5rem;
+        font-weight: bold;
         margin-bottom: 15px;
     }
 
     .preco {
-        font-size: 2.5rem;
-        font-weight: 700;
+        font-size: 2rem;
+        font-weight: bold;
         margin-bottom: 10px;
-    }
-    
-    .preco span {
-        font-size: 1rem;
-        font-weight: 400;
-        color: var(--gray-color);
-    }
-    
-    .plano-empresa .preco span {
-        color: rgba(255, 255, 255, 0.7);
     }
 
     .economia {
         font-size: 0.9rem;
         color: var(--success-color);
         margin-bottom: 20px;
-        font-weight: 500;
-    }
-
-    .funcionalidades {
-        list-style: none;
-        padding: 0;
-        text-align: left;
     }
 
     .funcionalidade {
         display: flex;
         align-items: center;
-        margin-bottom: 15px;
-        font-size: 0.95rem;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
     }
 
     .funcionalidade i {
         color: var(--icon-color);
-        margin-right: 15px;
-        font-size: 1.1rem;
-    }
-    
-    .plano-empresa .funcionalidade i {
-        color: var(--light-text);
+        margin-right: 10px;
     }
 
     .btn-teste {
         display: block;
         width: 100%;
-        padding: 15px;
-        background: var(--primary-color);
-        border: none;
-        border-radius: 10px;
-        color: var(--light-text);
+        padding: 10px;
+        background: var(--light-text);
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        color: var(--primary-color);
         text-align: center;
         text-decoration: none;
         font-weight: bold;
-        margin-top: 30px;
+        margin-top: 20px;
         cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-    
-    .plano-individual .btn-teste {
-        background: var(--primary-color);
-        color: var(--light-text);
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
     }
 
     .btn-teste:hover,
     .btn-teste:focus {
-        background: var(--secondary-color);
-        transform: translateY(-2px);
+        background: var(--light-bg);
+        color: var(--secondary-color);
     }
 
     .toggle-plano {
         display: flex;
         justify-content: center;
         margin-bottom: 30px;
-        margin-top: 20px;
-        background-color: var(--light-text);
-        border-radius: 30px;
-        padding: 5px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-        width: fit-content;
-        margin-left: auto;
-        margin-right: auto;
+        margin-top: 10px;
+        padding: 10px;
     }
 
     .toggle-plano .btn {
         border-radius: 20px;
-        padding: 10px 25px;
-        font-weight: 600;
-        background: transparent;
-        color: var(--dark-text);
+        padding: 10px 20px;
+        font-weight: bold;
+        background: var(--gray-color);
+        color: var(--light-text);
         border: none;
-        margin: 0 5px;
-        min-width: 120px;
-        transition: background-color 0.3s ease, color 0.3s ease;
+        margin: 5px;
+        min-width: 100px;
+        transition: background-color 0.3s ease-in-out;
     }
 
-    .toggle-plano .btn.active {
+    .toggle-plano .btn.active,
+    .toggle-plano .btn:focus {
         background: var(--primary-color);
         color: var(--light-text);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .desconto {
         background: var(--success-color);
         color: var(--light-text);
-        padding: 5px 15px;
-        border-radius: 20px;
+        padding: 5px 10px;
+        border-radius: 5px;
         font-size: 0.8rem;
-        font-weight: 600;
-        position: absolute;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
+        margin-bottom: 10px;
+    }
+
+    #desc_anual {
+        background-color: var(--light-text);
+        color: var(--dark-text);
+        border-radius: 30px;
+        padding: 5px;
     }
 
     .modal-content {
         border-radius: 15px;
-        border: none;
     }
 
-    .modal-header {
-        border-bottom: none;
-        padding-bottom: 0;
-    }
-
-    .modal-title {
-        font-weight: 600;
-        color: var(--dark-text);
-    }
-    
     .modal-body {
         padding: 20px;
     }
 
-    .form-control {
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-        padding: 12px;
+    .form-group {
+        margin-bottom: 15px;
     }
 
     .btn-concluir {
         background: var(--primary-color);
         color: var(--light-text);
         border: none;
-        padding: 12px 20px;
-        border-radius: 8px;
+        padding: 10px 20px;
+        border-radius: 5px;
         font-weight: bold;
         width: 100%;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease-in-out;
     }
 
     .btn-concluir:hover,
     .btn-concluir:focus {
         background: var(--secondary-color);
     }
-    
+
     /* Mobile Responsiveness */
     @media (max-width: 768px) {
         .planos-container {
-            flex-direction: column;
-            align-items: center;
+            gap: 10px; /* Further reduce gap */
+            padding: 10px;
         }
 
         .plano-card {
-            width: 100%;
-            max-width: 400px;
-            margin-bottom: 20px;
-        }
-        
-        .header-container {
-            padding: 30px 15px;
+            padding: 12px; /* Reduce padding */
         }
 
-        .header-container h1 {
+        .plano-titulo {
+            font-size: 1.3rem;
+        }
+
+        .preco {
             font-size: 1.8rem;
         }
 
-        .header-container h3 {
-            font-size: 1rem;
+        .funcionalidade {
+            font-size: 0.85rem;
         }
-        
+
         .toggle-plano {
-            flex-direction: column;
+            flex-direction: column; /* Stack toggle buttons vertically */
             align-items: center;
-            width: 90%;
+            gap: 10px;
         }
 
         .toggle-plano .btn {
-            width: 100%;
-            margin: 5px 0;
+            width: 80%;
+            padding: 12px;
+        }
+
+        .btn-teste {
+            padding: 12px;
+        }
+
+        .modal-dialog {
+            margin: 10px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .planos-container {
+            gap: 8px; /* Even smaller gap */
+        }
+
+        .plano-titulo {
+            font-size: 1.2rem;
+        }
+
+        .preco {
+            font-size: 1.5rem;
+        }
+
+        .funcionalidade {
+            font-size: 0.8rem;
+        }
+
+        .toggle-plano .btn {
+            width: 90%;
+        }
+
+        .plano-card {
+            padding: 10px; /* Further reduce padding */
         }
     }
 </style>
 </head>
 <body>
-<div class="header-container">
-    <h1>Planos e Preços ✨</h1>
-    <h3>Escolha o plano da MARKAI que melhor se encaixa na sua gestão de negócio.</h3>
+<div style="display: flex; align-items: center; justify-content: center; height: 200px; ">
+  <div style="text-align: center;">
+    <h1>Planos e Preços</h1>
+    <h3>Escolha o plano da MARKAI que melhor encaixe na sua gestão de negócio.</h3>
+  </div>
 </div>
-
     <div class="toggle-plano">
         <button class="btn <?php echo $tipo_plano === 'mensal' ? 'active' : ''; ?>" onclick="window.location.href='?tipo=mensal'">Mensal</button>
         <button class="btn <?php echo $tipo_plano === 'anual' ? 'active' : ''; ?>" onclick="window.location.href='?tipo=anual'">Anual <small><small id="desc_anual" class="ms-2">18% off*</small></small></button>
@@ -329,74 +298,78 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
 
     <div class="planos-container">
         <div class="plano-card plano-empresa">
-            <?php if ($tipo_plano === 'anual'): ?>
-                <div class="desconto">18% OFF</div>
-            <?php endif; ?>
             <h2 class="plano-titulo">Empresa</h2>
+            <?php if ($tipo_plano === 'anual'): ?>
+                <div class="desconto">18% off</div>
+            <?php endif; ?>
             <p>Ideal para negócios que possuem funcionários ou parceiros.</p>
             <div class="preco">
                 R$ <?php echo number_format($planos['empresa'][$tipo_plano]['preco'], 2, ',', '.'); ?> 
-                <span><?php echo $tipo_plano === 'anual' ? '/ano' : '/mês'; ?></span>
+                <?php echo $tipo_plano === 'anual' ? '/ano' : '/mês'; ?>
             </div>
             <?php if ($tipo_plano === 'anual'): ?>
                 <div class="economia">
                     Pague de uma só vez e economize R$ <?php echo number_format($planos['empresa']['anual']['economia'], 2, ',', '.'); ?>
                 </div>
             <?php endif; ?>
-            <ul class="funcionalidades">
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Cadastro ilimitado de usuários</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Gestão de profissionais</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Agendamento online 24h, com fila de espera(Encaixes)</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Vc poderá baixar o APP ou usar pela Web o MarkAi</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Link ou APP personalizado para clientes...</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Comandas e controle de consumo</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Campanhas de retorno de clientes</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Gráficos e métricas completas</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Venda de produtos e controle de estoque</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i>WhatsApp integrado <img src="images/whatsapp.png" alt="Ícone do WhatsApp" style="width: 20px; height: 20px; margin-left: 10px;"></li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Mercado Pago integrado <img src="images/mercado-pago.png" alt="Ícone do Mecado Pago" style="width: 20px; height: 20px; margin-left: 10px;"></li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Notificações automáticas de agendamentos...</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Cartão Fidelidade - Configure e premie...</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Diversos relatórios Financeiros</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> e muito mais...</li>
-            </ul>
+            <div class="funcionalidades">
+                <div class="funcionalidade"><i class="fas fa-check"></i> Cadastro ilimitado de usuários</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Gestão de profissionais</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Agendamento online 24h, com fila de espera(Encaixes)</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Vc poderá baixar o APP ou usar pela Web o MarkAi</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Link ou APP personalizado para clientes, agendamentos, compra de produtos, venda de assinaturas e outras opções.</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Comandas e controle de consumo</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Campanhas de retorno de clientes, disparos em massa com opção de cupom de desconto</div>                
+                <div class="funcionalidade"><i class="fas fa-check"></i> Gráficos e métricas -> total de clientes, agendamentos de hoje, distribuição de receitas, saldo do dia, mês e ano, agendamentos por dia da semana, serviços por profissionais, serviços mais realizados, aniversariantes de hoje, clientes aguardando encaixe</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Venda de produtos</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Controle total de estoque</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i>WhatsApp integrado <img src="images/whatsapp.png" alt="Ícone do WhatsApp" style="width: 20px; height: 20px;margin-left: 10px;"> </div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Mercado Pago integrado <img src="images/mercado-pago.png" alt="Ícone do Mecado Pago" style="background-color: white;width: 20px; height: 20px;margin-left: 10px;"> <small style="font-size: 12px;margin-left: 10px;"> (diversas formas de pagamentos e baixas automáticas)</small></div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Notificações automáticas de agendamentos, cancelamentos, lembretes, retornos etc...</div>                
+                <div class="funcionalidade"><i class="fas fa-check"></i> Cartão Fidelidade - Configure e premie seus clientes pela recorrência</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Diversos relatórios Financeiros</div>                     
+                <div class="funcionalidade"><i class="fas fa-check"></i> e muito mais...</div>
+            </div>
             <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalEmpresa<?php echo $tipo_plano; ?>">Testar grátis por 7 dias</button>
         </div>
 
         <div class="plano-card plano-individual">
-            <?php if ($tipo_plano === 'anual'): ?>
-                <div class="desconto">12% OFF</div>
-            <?php endif; ?>
             <h2 class="plano-titulo">Individual</h2>
+            <?php if ($tipo_plano === 'anual'): ?>
+                <div class="desconto">12% off</div>
+            <?php endif; ?>
             <p>Todas as funcionalidades, menos gestão de profissionais.</p>
             <div class="preco">
                 R$ <?php echo number_format($planos['individual'][$tipo_plano]['preco'], 2, ',', '.'); ?> 
-                <span><?php echo $tipo_plano === 'anual' ? '/ano' : '/mês'; ?></span>
+                <?php echo $tipo_plano === 'anual' ? '/ano' : '/mês'; ?>
             </div>
             <?php if ($tipo_plano === 'anual'): ?>
                 <div class="economia">
                     Pague de uma só vez e economize R$ <?php echo number_format($planos['individual']['anual']['economia'], 2, ',', '.'); ?>
                 </div>
             <?php endif; ?>
-            <ul class="funcionalidades">
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Agendamento online 24h, com fila de espera...</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Vc poderá baixar o APP ou usar pela Web o MarkAi</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Link ou APP personalizado para clientes...</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Comandas e controle de consumo</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Campanhas de retorno de clientes...</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Gráficos e métricas completas</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Venda de produtos e controle de estoque</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i>WhatsApp integrado <img src="images/whatsapp.png" alt="Ícone do WhatsApp" style="width: 20px; height: 20px; margin-left: 10px;"></li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Mercado Pago integrado <img src="images/mercado-pago.png" alt="Ícone do Mecado Pago" style="width: 20px; height: 20px; margin-left: 10px;"></li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Notificações automáticas de agendamentos...</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Cartão Fidelidade - Configure e premie...</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Diversos relatórios Financeiros</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> e muito mais...</li>
-            </ul>
+            <div class="funcionalidades">                
+                <div class="funcionalidade"><i class="fas fa-check"></i> Agendamento online 24h, com fila de espera(Encaixes)</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Vc poderá baixar o APP ou usar pela Web o MarkAi</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Link ou APP personalizado para clientes, agendamentos, compra de produtos, venda de assinaturas e outras opções.</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Comandas e controle de consumo</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Campanhas de retorno de clientes, disparos em massa com opção de cupom de desconto</div>                
+                <div class="funcionalidade"><i class="fas fa-check"></i> Gráficos e métricas -> total de clientes, agendamentos de hoje, distribuição de receitas, saldo do dia, mês e ano, agendamentos por dia da semana, serviços por profissionais, serviços mais realizados, aniversariantes de hoje, clientes aguardando encaixe</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Venda de produtos</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Controle total de estoque</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i>WhatsApp integrado <img src="images/whatsapp.png" alt="Ícone do WhatsApp" style="width: 20px; height: 20px;margin-left: 10px;"> </div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Mercado Pago integrado <img src="images/mercado-pago.png" alt="Ícone do Mecado Pago" style="background-color: white;width: 20px; height: 20px;margin-left: 10px;"> <small style="font-size: 12px;margin-left: 10px;"> (diversas formas de pagamentos e baixas automáticas)</small></div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Notificações automáticas de agendamentos, cancelamentos, lembretes, retornos etc...</div>                
+                <div class="funcionalidade"><i class="fas fa-check"></i> Cartão Fidelidade - Configure e premie seus clientes pela recorrência</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Diversos relatórios Financeiros</div>                     
+                <div class="funcionalidade"><i class="fas fa-check"></i> e muito mais...</div>
+            </div>
             <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalIndividual<?php echo $tipo_plano; ?>">Testar grátis por 7 dias</button>
         </div>
     </div><br><br><br><br>
 
+    <!-- Modais -->
+    <!-- Modal Empresa Mensal -->
     <div class="modal fade" id="modalEmpresamensal" tabindex="-1" aria-labelledby="modalEmpresamensalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -409,7 +382,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                         <div class="form-group">
                             <label for="nomeEmpresaMensal">Nome</label>
                             <input type="text" class="form-control" id="nomeEmpresaMensal" name="nome" required>
-                        </div>
+                        </div>                        
                         <div class="form-group">
                             <label for="telefoneEmpresaMensal">Telefone</label>
                             <input type="tel" class="form-control" id="telefoneEmpresaMensal" name="telefone" required>
@@ -429,6 +402,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
         </div>
     </div>
 
+    <!-- Modal Empresa Anual -->
     <div class="modal fade" id="modalEmpresaanual" tabindex="-1" aria-labelledby="modalEmpresaanualLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -441,7 +415,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                         <div class="form-group">
                             <label for="nomeEmpresaAnual">Nome</label>
                             <input type="text" class="form-control" id="nomeEmpresaAnual" name="nome" required>
-                        </div>
+                        </div>                        
                         <div class="form-group">
                             <label for="telefoneEmpresaAnual">Telefone</label>
                             <input type="tel" class="form-control" id="telefoneEmpresaAnual" name="telefone" required>
@@ -461,6 +435,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
         </div>
     </div>
 
+    <!-- Modal Individual Mensal -->
     <div class="modal fade" id="modalIndividualmensal" tabindex="-1" aria-labelledby="modalIndividualmensalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -473,7 +448,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                         <div class="form-group">
                             <label for="nomeIndividualMensal">Nome</label>
                             <input type="text" class="form-control" id="nomeIndividualMensal" name="nome" required>
-                        </div>
+                        </div>                        
                         <div class="form-group">
                             <label for="telefoneIndividualMensal">Telefone</label>
                             <input type="tel" class="form-control" id="telefoneIndividualMensal" name="telefone" required>
@@ -493,6 +468,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
         </div>
     </div>
 
+    <!-- Modal Individual Anual -->
     <div class="modal fade" id="modalIndividualanual" tabindex="-1" aria-labelledby="modalIndividualanualLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -505,7 +481,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                         <div class="form-group">
                             <label for="nomeIndividualAnual">Nome</label>
                             <input type="text" class="form-control" id="nomeIndividualAnual" name="nome" required>
-                        </div>
+                        </div>                        
                         <div class="form-group">
                             <label for="telefoneIndividualAnual">Telefone</label>
                             <input type="tel" class="form-control" id="telefoneIndividualAnual" name="telefone" required>
@@ -524,12 +500,13 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
             </div>
         </div>
     </div>
-    
+
     <?php require_once("rodape.php") ?>
 
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
         function submitForm(event, plano, frequencia, form) {
@@ -537,19 +514,22 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
 
             const formData = new FormData(form);
 
-            const username = formData.get('email'); 
+            const username = formData.get('email');    
             
-            let n;
-            if (plano == 2 && frequencia == 30) {
-                n = '1';
-            } else if (plano == 2 && frequencia == 365) {
-                n = '2';
-            } else if (plano == 1 && frequencia == 30) {
-                n = '3';
-            } else if (plano == 1 && frequencia == 365) {
-                n = '4';
+            if(plano == 2 && frequencia == 30){
+                n='1';
+            }
+            if(plano == 2 && frequencia == 365){
+                n='2';
+            }
+            if(plano == 1 && frequencia == 30){
+                n='3';
+            }
+            if(plano == 1 && frequencia == 365){
+                n='4';
             }
             
+
             $.ajax({
                 url: "cadastramento.php",
                 type: 'POST',
@@ -557,21 +537,24 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function (mensagem) {
+                success: function (mensagem) {   
                     if (mensagem.trim() == "Salvo com Sucesso") {
+
                         Swal.fire({
-                            title: "Cadastro efetuado!",
-                            html: "Segue os dados de acesso:📝<br><span style='color:blue'>Login: <b>" + username + "</b></span><br><span style='color:blue'>Senha: <b>123</b></span><br><br><small style='color:black'><small>🚨 Altere sua senha assim que acessar, em configurações de perfil.</small></small><br><small style='color:black'><small>Um email e WhatsApp foram enviados com os dados de acesso (verifique a caixa de spam)</small></small>",
+                            title: "Cadastro efetuado!",                
+                            html: "Segue os dados de acesso:📝<br><spam style = 'color:blue'>Login: <b>" + username +"</b></spam><br><spam style = 'color:blue'>Senha: <b>123</b><br><br><small style = 'color:black'><small>🚨 Altere sua senha assim que acessar, em configurações de perfil.</small></small><br><small style = 'color:black'><small>Um email e WhatsApp foram enviados com os dados de acesso (verifique a caixa de spam)</small></small>",				
                             icon: "success"
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location = "login.php";
-                            }
-                        });
+                            }).then((result) => {
+                                if(result.isConfirmed){
+                                window.location = "login.php";        
+                        }});          
+
                     } else {
-                        $('#mensagem-ativar' + n).addClass('text-danger');
-                        $('#mensagem-ativar' + n).text(mensagem);
-                    }
+
+                        $('#mensagem-ativar'+n).addClass('text-danger')
+                        $('#mensagem-ativar'+n).text(mensagem)
+                    }                                                           
+                
                 },
             });
         }
