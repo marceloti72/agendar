@@ -430,7 +430,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
     </div><br><br><br><br>
 
     <a href="https://www.markai.skysee.com.br" class="btn-flutuante">
-        <i class="fas fa-home"></i> Voltar à página principal
+        <i class="fas fa-home"></i> Voltar
     </a>
 
     <div class="modal fade" id="modalEmpresamensal" tabindex="-1" aria-labelledby="modalEmpresamensalLabel" aria-hidden="true">
