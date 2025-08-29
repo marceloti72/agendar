@@ -344,21 +344,22 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                 </div>
             <?php endif; ?>
             <ul class="funcionalidades">
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Cadastro ilimitado de usuários</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Gestão de profissionais</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Agendamento online 24h, com fila de espera(Encaixes)</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Vc poderá baixar o APP ou usar pela Web o MarkAi</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Link ou APP personalizado para clientes...</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Comandas e controle de consumo</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Campanhas de retorno de clientes</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Gráficos e métricas completas</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Venda de produtos e controle de estoque</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i>WhatsApp integrado <img src="images/whatsapp.png" alt="Ícone do WhatsApp" style="width: 20px; height: 20px; margin-left: 10px;"></li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Mercado Pago integrado <img src="images/mercado-pago.png" alt="Ícone do Mecado Pago" style="width: 20px; height: 20px; margin-left: 10px;"></li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Notificações automáticas de agendamentos...</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Cartão Fidelidade - Configure e premie...</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> Diversos relatórios Financeiros</li>
-                <li class="funcionalidade"><i class="fas fa-check-circle"></i> e muito mais...</li>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Cadastro ilimitado de usuários</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Gestão de profissionais</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Agendamento online 24h, com fila de espera(Encaixes)</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Vc poderá baixar o APP ou usar pela Web o MarkAi</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Link ou APP personalizado para clientes, agendamentos, compra de produtos, venda de assinaturas e outras opções.</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Comandas e controle de consumo</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Campanhas de retorno de clientes, disparos em massa com opção de cupom de desconto</div>                
+                <div class="funcionalidade"><i class="fas fa-check"></i> Gráficos e métricas -> total de clientes, agendamentos de hoje, distribuição de receitas, saldo do dia, mês e ano, agendamentos por dia da semana, serviços por profissionais, serviços mais realizados, aniversariantes de hoje, clientes aguardando encaixe</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Venda de produtos</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Controle total de estoque</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i>WhatsApp integrado <img src="images/whatsapp.png" alt="Ícone do WhatsApp" style="width: 20px; height: 20px;margin-left: 10px;"> </div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Mercado Pago integrado <img src="images/mercado-pago.png" alt="Ícone do Mecado Pago" style="background-color: white;width: 20px; height: 20px;margin-left: 10px;"> <small style="font-size: 12px;margin-left: 10px;"> (diversas formas de pagamentos e baixas automáticas)</small></div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Notificações automáticas de agendamentos, cancelamentos, lembretes, retornos etc...</div>                
+                <div class="funcionalidade"><i class="fas fa-check"></i> Cartão Fidelidade - Configure e premie seus clientes pela recorrência</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Diversos relatórios Financeiros</div>                     
+                <div class="funcionalidade"><i class="fas fa-check"></i> e muito mais...</div>
             </ul>
             <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalEmpresa<?php echo $tipo_plano; ?>">Testar grátis por 7 dias</button>
         </div>
