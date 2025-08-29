@@ -142,12 +142,13 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 							</div>
 							<div class="col-md-2">
 								<?php 
+								$caminho_base2 = "../../images/";
 								// Constrói o nome do arquivo completo para a logo do cliente
 								$nome_arquivo_icone = "favicon" . $id_conta . ".png";
-								$caminho_completo_icone = $caminho_base . $nome_arquivo_icone;
+								$caminho_completo_icone = $caminho_base2 . $nome_arquivo_icone;
 
 								// Define o caminho da imagem alternativa
-								$caminho_icone_alternativa = $caminho_base . "sem_logo.png";
+								$caminho_icone_alternativa = $caminho_base2 . "sem_logo.png";
 
 								// Checa se o arquivo de logo do cliente existe
 								if (file_exists($caminho_completo_icone)) {
