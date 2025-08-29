@@ -314,24 +314,20 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
             <?php endif; ?>
             <div class="funcionalidades">
                 <div class="funcionalidade"><i class="fas fa-check"></i> Cadastro ilimitado de usuários</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Agendamento Online com ou sem pagamento</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Comissões automáticas </div>                
-                <div class="funcionalidade"><i class="fas fa-check"></i> APP profissinal</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Site personalizado</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Gestão de profissionais</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Agendamento Online 24h, com fila de espera(Encaixes)</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Vc poderá baixar o APP ou usar pela Web o MarkAi</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Link ou APP personalizado para clientes, Agendamentos, compra de produtos, venda de assinaturas e outras opções.</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> Comandas e Controle de Consumo</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Gestão de clientes</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Gestão de funcionários/colaboradores</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Gestão de fornecedores</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Gestão de produtos</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Campanhas de retorno de clientes, disparos em massa com opção de cupons de descontos</div>                
+                <div class="funcionalidade"><i class="fas fa-check"></i> Gráficos e métricas, total de clientes, agendamentos de hoje, distribuição de receitas, saldo d dia, mês e ano, agendamentos por dia da semana, serviços por profissionais, serviços mais realizados, aniversariantes de hoje, clientes aguardando encaixe</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Venda de produtos</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> Controle total de estoque</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i>WhatsApp integrado <img src="images/whatsapp.png" alt="Ícone do WhatsApp" style="width: 20px; height: 20px;margin-left: 10px;"> </div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> Mercado Pago integrado <img src="images/mercado-pago.png" alt="Ícone do Mecado Pago" style="background-color: white;width: 20px; height: 20px;margin-left: 10px;"> <small style="font-size: 12px;margin-left: 10px;"> (diversas formas de pagamentos e baixas automáticas)</small></div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Notificações automáticas de agendamentos, cancelamentos, lembretes, retornos etc...</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Sistema de Marketing com disparos de Promoções</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Notificações automáticas de agendamentos, cancelamentos, lembretes, retornos etc...</div>                
                 <div class="funcionalidade"><i class="fas fa-check"></i> Cartão Fidelidade - Configure e premie seus clientes pela recorrência</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Diversos relatórios Financeiros</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Dashboards Financeiros e Gerenciais</div>              
-                <div class="funcionalidade"><i class="fas fa-check"></i> Lista de Espera</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Diversos relatórios Financeiros</div>                     
                 <div class="funcionalidade"><i class="fas fa-check"></i> e muito mais...</div>
             </div>
             <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalEmpresa<?php echo $tipo_plano; ?>">Testar grátis por 7 dias</button>
@@ -353,22 +349,19 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                 </div>
             <?php endif; ?>
             <div class="funcionalidades">                
-                <div class="funcionalidade"><i class="fas fa-check"></i> Agendamento Online com ou sem pagamento</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> APP profissional</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Site personalizado</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Agendamento Online 24h, com fila de espera(Encaixes)</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Vc poderá baixar o APP ou usar pela Web o MarkAi</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Link ou APP personalizado para clientes, Agendamentos, compra de produtos, venda de assinaturas e outras opções.</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> Comandas e Controle de Consumo</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Gestão de clientes</div>                
-                <div class="funcionalidade"><i class="fas fa-check"></i> Gestão de fornecedores</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Gestão de produtos</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Campanhas de retorno de clientes, disparos em massa com opção de cupons de descontos</div>                
+                <div class="funcionalidade"><i class="fas fa-check"></i> Gráficos e métricas, total de clientes, agendamentos de hoje, distribuição de receitas, saldo d dia, mês e ano, agendamentos por dia da semana, serviços por profissionais, serviços mais realizados, aniversariantes de hoje, clientes aguardando encaixe</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Venda de produtos</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> Controle total de estoque</div>
                 <div class="funcionalidade"><i class="fas fa-check"></i>WhatsApp integrado <img src="images/whatsapp.png" alt="Ícone do WhatsApp" style="width: 20px; height: 20px;margin-left: 10px;"> </div>
                 <div class="funcionalidade"><i class="fas fa-check"></i> Mercado Pago integrado <img src="images/mercado-pago.png" alt="Ícone do Mecado Pago" style="background-color: white;width: 20px; height: 20px;margin-left: 10px;"> <small style="font-size: 12px;margin-left: 10px;"> (diversas formas de pagamentos e baixas automáticas)</small></div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Notificações automáticas de agendamentos, cancelamentos, lembretes, retornos etc...</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Sistema de Marketing com disparos de Promoções</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Notificações automáticas de agendamentos, cancelamentos, lembretes, retornos etc...</div>                
                 <div class="funcionalidade"><i class="fas fa-check"></i> Cartão Fidelidade - Configure e premie seus clientes pela recorrência</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Diversos relatórios Financeiros</div>
-                <div class="funcionalidade"><i class="fas fa-check"></i> Dashboards Financeiros e Gerenciais</div>              
-                <div class="funcionalidade"><i class="fas fa-check"></i> Lista de Espera</div>
+                <div class="funcionalidade"><i class="fas fa-check"></i> Diversos relatórios Financeiros</div>                     
                 <div class="funcionalidade"><i class="fas fa-check"></i> e muito mais...</div>
             </div>
             <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalIndividual<?php echo $tipo_plano; ?>">Testar grátis por 7 dias</button>
