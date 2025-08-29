@@ -66,9 +66,33 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 								</div>						
 							</div>
 							<div class="col-md-2">
+								<?php
+								// Define o caminho base da imagem e o ID da conta
+								$caminho_base = "../img/";								
+
+								// Constrói o nome do arquivo completo para a logo do cliente
+								$nome_arquivo_logo = "logo" . $id_conta . ".png";
+								$caminho_completo_logo = $caminho_base . $nome_arquivo_logo;
+
+								// Define o caminho da imagem alternativa
+								$caminho_logo_alternativa = $caminho_base . "sem_logo.png";
+
+								// Checa se o arquivo de logo do cliente existe
+								if (file_exists($caminho_completo_logo)) {
+									// Se a logo existe, use o caminho dela
+									$src_logo = $caminho_completo_logo;
+								} else {
+									// Se a logo não existe, use o caminho da imagem alternativa
+									$src_logo = $caminho_logo_alternativa;
+								}
+								?>
+
 								<div id="divImg">
-									<img src="../img/logo<?php echo $id_conta?>.png"  width="80px" id="target-logo">									
+									<img src="<?php echo $src_logo; ?>" width="80px" id="target-logo">
 								</div>
+								<!-- <div id="divImg">
+									<img src="../img/logo<?php echo $id_conta?>.png"  width="80px" id="target-logo">									
+								</div> -->
 							</div>							
 
 							<div class="col-md-4">						
