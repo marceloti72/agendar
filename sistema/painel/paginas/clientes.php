@@ -128,7 +128,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
                     </small>
                 </div>
                 <div class="modal-footer">
-                    <a href="modelo_clientes.xlsx" class="btn btn-info" download><i class="fa fa-download"></i> Arquivo Modelo</a>
+                    <a href="https://www.markai.skysee.com.br/download/modelo_clientes.xlsx" class="btn btn-info" download><i class="fa fa-download"></i> Arquivo Modelo</a>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i> Importar</button>
                 </div>
             </form>
