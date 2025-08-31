@@ -1564,8 +1564,9 @@ $plano = $res3['plano'];
 		
 
         // Busca informações do cliente        
-        $query8 = $pdo2->prepare("SELECT * FROM clientes WHERE id_conta = :id_conta");
+        $query8 = $pdo2->prepare("SELECT * FROM clientes WHERE banco = :banco and id_conta = :id_conta");
         $query8->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
+        $query8->bindValue(':banco', 'barbearia');
         $query8->execute();
         $res8 = $query8->fetchAll(PDO::FETCH_ASSOC);
 		$id_cliente = $res8[0]['id'];
