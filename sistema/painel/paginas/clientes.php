@@ -420,6 +420,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "ultserv") {
             processData: false,
         });
     });
+	
 
     function confirmarExportacao() {
         $.ajax({
