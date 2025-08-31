@@ -13,7 +13,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 ?>
 <style>
     @media (max-width: 768px) {
-        .novo, .importar {
+        .novo, .importar, .exportar {
             display: flex;
             width: 100%;
             height: 30px;
@@ -23,7 +23,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
             justify-content: center;
         }
     }
-    .importar {
+    .importar, .exportar {
         margin-left: 10px;
     }
 </style>
@@ -34,6 +34,9 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
     </a>
     <a class="btn btn-success importar" onclick="$('#modalImportar').modal('show')" style='border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'>
         <i class="fa fa-file-excel-o" aria-hidden="true"></i> <span>Importar Clientes</span>
+    </a>
+    <a class="btn btn-info exportar" onclick="confirmarExportacao()" style='border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)'>
+        <i class="fa fa-file-excel-o" aria-hidden="true"></i> <span>Exportar Clientes</span>
     </a>
 </div>
 
@@ -128,7 +131,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
                     </small>
                 </div>
                 <div class="modal-footer">
-                    <a href="https://www.markai.skysee.com.br/download/modelo_clientes.xlsx" class="btn btn-info" download><i class="fa fa-download"></i> Arquivo Modelo</a>
+                    <a href="gerar_modelo.php" class="btn btn-info" download><i class="fa fa-download"></i> Arquivo Modelo</a>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i> Importar</button>
                 </div>
             </form>
@@ -327,6 +330,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "ultserv") {
 }
 ?>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
     var pag = "<?= $pag ?>";
 </script>
@@ -417,13 +421,43 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "ultserv") {
         });
     });
 
+    function confirmarExportacao() {
+        $.ajax({
+            url: 'paginas/' + pag + '/contar_clientes.php',
+            method: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                Swal.fire({
+                    title: 'Confirmar Exportação',
+                    text: `Deseja exportar ${response.total} clientes para um arquivo Excel?`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sim, exportar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'exportar_clientes.php';
+                    }
+                });
+            },
+            error: function() {
+                Swal.fire({
+                    title: 'Erro',
+                    text: 'Não foi possível obter o total de clientes. Tente novamente.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    }
+
     function excluir(id) {
         $.ajax({
             url: 'paginas/' + pag + "/excluir.php",
             method: 'POST',
             data: { id },
             dataType: "text",
-            success: function m (mensagem) {
+            success: function(mensagem) {
                 if (mensagem.trim() == "Excluído com Sucesso") {
                     var pagina = $("#pagina").val();
                     listarClientes(pagina);
@@ -431,7 +465,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "ultserv") {
                     $('#mensagem-excluir').addClass('text-danger');
                     $('#mensagem-excluir').text(mensagem);
                 }
-            },
+            }
         });
     }
 
@@ -488,7 +522,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "ultserv") {
                     $('#mensagem-excluir-baixar').addClass('text-danger');
                     $('#mensagem-excluir-baixar').text(mensagem);
                 }
-            },
+            }
         });
     }
 </script>
