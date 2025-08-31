@@ -1534,6 +1534,14 @@ $plano = $res3['plano'];
 
 
 <!-- Modal Principal -->
+<?php
+// Forçar codificação UTF-8
+mb_internal_encoding('UTF-8');
+mb_http_output('UTF-8');
+ini_set('default_charset', 'UTF-8');
+?>
+
+<!-- Modal Principal -->
 <div class="modal fade" id="assinaturaModal" tabindex="-1" aria-labelledby="assinaturaModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
@@ -1627,6 +1635,7 @@ $plano = $res3['plano'];
                             <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #fff; padding: 12px 15px;"><b>Valor:</b> <span>R$ <?php echo $valorMensal?></span></li>
                             <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #fff; padding: 12px 15px;"><b>Plano:</b> <span><?php echo $plano?></span></li>
                             <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #fff; padding: 12px 15px;"><b>Frequência:</b> <span><?php echo $frequencia ?></span></li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #fff; padding: 12px 15px;"><b>Vencimento:</b> <span><?php echo ($data_venc) ? date('d/m/Y', strtotime($data_venc)) : 'N/A'; ?></span></li>
                         </ul>
 
                         <?php 
@@ -1658,6 +1667,7 @@ $plano = $res3['plano'];
         </div>
     </div>
 </div>
+
 
 <!-- Modal Trocar Plano -->
 <div class="modal fade" id="trocarPlanoModal" tabindex="-1" aria-labelledby="trocarPlanoModalLabel" aria-hidden="true">
