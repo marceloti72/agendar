@@ -1619,8 +1619,7 @@ ini_set('default_charset', 'UTF-8');
                 <div class="card border-0 shadow-sm" style="border-radius: 10px;">
                     <div class="card-body" style="padding: 25px;">
                         <div class="text-center mb-4">
-                            <h3 class="card-text" style="color: #333; font-weight: 700; font-size: 1.75rem;"><?php echo mb_strtoupper($instituicao, 'UTF-8'); ?></h3>
-                            <small class="text-muted" style="font-weight: 500;">ID da Conta: #<?php echo $id_conta ?></small>
+                            <h3 class="card-text" style="color: #333; font-weight: 700; font-size: 1.75rem;"><?php echo mb_strtoupper($instituicao, 'UTF-8'); ?></h3>                            
                         </div>
                         <hr style="border-top: 1px solid #e0e0e0; margin: 20px 0;">
                         
