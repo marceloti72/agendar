@@ -1535,113 +1535,128 @@ $plano = $res3['plano'];
 
 <!-- Modal Principal -->
 <div class="modal fade" id="assinaturaModal" tabindex="-1" aria-labelledby="assinaturaModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-      <div class="modal-header" style="background: linear-gradient(45deg, #4682B4, #87CEEB); border-bottom: none;">
-        <h5 class="modal-title text-white" id="assinaturaModalLabel" style="font-size: 25px;">Dados da Assinatura</h5>
-        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9;margin-top: -30px">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-	  <?php     
-	           
-
-            // Configurações Iniciais e Conexões
-        $url_sistema = explode("//", $url);
-        $host = ($url_sistema[1] == 'localhost/markai/') ? 'localhost' : 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
-        $usuario = ($url_sistema[1] == 'localhost/markai/') ? 'root' : 'skysee';
-        $senha = ($url_sistema[1] == 'localhost/markai/') ? '' : '9vtYvJly8PK6zHahjPUg';
-        $banco = 'gestao_sistemas';
-
-        try {
-            $pdo2 = new PDO("mysql:dbname=$banco;host=$host;charset=utf8", "$usuario", "$senha");
-            $pdo2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (Exception $e) {
-            error_log("Erro ao conectar ao banco de dados: " . $e->getMessage());
-            echo 'Erro ao conectar ao banco de dados!';
-        }
-		
-
-        // Busca informações do cliente        
-        $query8 = $pdo2->prepare("SELECT * FROM clientes WHERE banco = :banco and id_conta = :id_conta");
-        $query8->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
-        $query8->bindValue(':banco', 'barbearia');
-        $query8->execute();
-        $res8 = $query8->fetchAll(PDO::FETCH_ASSOC);
-		$id_cliente = $res8[0]['id'];
-		$instituicao = $res8[0]['instituicao'];
-		if($res8[0]['plano'] === '1'){
-			$plano = 'Individual';
-		}else{
-			$plano = 'Empresa';
-		}	
-		
-        
-
-        $query9 = $pdo2->prepare("SELECT id, vencimento, taxa, valor, subtotal, frequencia FROM receber WHERE pago = 'Não' AND cliente =:cliente");        
-        $query9->bindValue(':cliente', $id_cliente, PDO::PARAM_INT);
-        $query9->execute();
-        $res9 = $query9->fetch(PDO::FETCH_ASSOC);
-
-        if ($res9) {
-            $data_venc = $res9['vencimento'];              
-            $id_pg = $res9['id'];
-            $valorMensal = $res9['valor'];	
-			if($res9['frequencia'] == '30'){
-				$frequencia = 'Mensal';
-			}else{
-				$frequencia = 'Anual';
-			}	
-			
-        } else {
-            // Lidar com o caso em que não há resultados, por exemplo:
-            $data_venc = null;
-            $taxa = 0;
-            $sub_total = 0;
-        }?>
-
-
-
-
-      <div class="modal-body" style="background-color: #F8F9FA; padding: 25px;">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body" style="padding: 20px;">
-            <div class="text-center mb-3">
-              <h3 class="card-text" style="color: #333; font-weight: 700;"><?php echo mb_strtoupper($instituicao, 'UTF-8'); ?> <?php echo $id_conta ?></h3>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+            <div class="modal-header text-white" style="background: linear-gradient(135deg, #4682B4, #3a75a7); border-bottom: none; border-top-left-radius: 15px; border-top-right-radius: 15px; padding: 20px 30px;">
+                <h5 class="modal-title" id="assinaturaModalLabel" style="font-size: 1.5rem; font-weight: bold;">Gerenciar Assinatura</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 1;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <hr style="border-top: 1px solid #E0E0E0;">
-            
-            <?php if($ativo_sistema == 'teste'): ?>
-              <small class="d-block text-center mb-3" style="font-size: 12px; color: #DC3545;">*Em teste grátis</small>
-            <?php endif; ?>
-            
-            <p class="card-text" style="font-weight: 600; color: #444;">Detalhes da Cobrança:</p>
-            <ul class="list-group list-group-flush mb-4" style="border: 1px solid #E9ECEF; border-radius: 5px;">			  
-              <li class="list-group-item d-flex justify-content-between" style="background: #fff; padding-top: 10px"><b>Valor:</b> <span>R$ <?php echo $valorMensal?></span></li>
-              <li class="list-group-item d-flex justify-content-between" style="background: #fff;"><b>Plano:</b> <span><?php echo $plano?></span></li>
-              <li class="list-group-item d-flex justify-content-between" style="background: #fff;  padding-bottom: 10px"><b>Pagamento:</b> <span><?php echo $frequencia ?></span></li>			  
-            </ul>
 
             <?php 
-            if($data_venc < $data_atual){?>
-              <p style="color: #DC3545; font-weight: 500;"><strong>Vencida em:</strong> <?php echo date('d/m/Y', strtotime($data_venc)); ?></p>
-            <?php }else{?>
-              <p style="color: #28A745; font-weight: 500;"><strong>Próximo Vencimento:</strong> <?php echo date('d/m/Y', strtotime($data_venc)); ?></p>
-            <?php } ?>
+            // Configurações Iniciais e Conexões
+            $url_sistema = explode("//", $url);
+            $host = ($url_sistema[1] == 'localhost/markai/') ? 'localhost' : 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
+            $usuario = ($url_sistema[1] == 'localhost/markai/') ? 'root' : 'skysee';
+            $senha = ($url_sistema[1] == 'localhost/markai/') ? '' : '9vtYvJly8PK6zHahjPUg';
+            $banco = 'gestao_sistemas';
 
-            <div class="d-flex gap-2">
-              <a href="https://www.gestao.skysee.com.br/pagar/<?php echo $id_pg?>" target="_blank" class="btn btn-primary w-100" style="background: #4682B4; border: none; transition: all 0.3s;">Pagar</a>
-              <button type="button" class="btn btn-outline-secondary w-100" data-toggle="modal" data-target="#trocarPlanoModal" style="transition: all 0.3s;">Trocar Plano</button>
+            try {
+                $pdo2 = new PDO("mysql:dbname=$banco;host=$host;charset=utf8", "$usuario", "$senha");
+                $pdo2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (Exception $e) {
+                error_log("Erro ao conectar ao banco de dados: " . $e->getMessage());
+                echo 'Erro ao conectar ao banco de dados!';
+            }
+
+            // Busca informações do cliente
+            $query8 = $pdo2->prepare("SELECT * FROM clientes WHERE banco = :banco and id_conta = :id_conta");
+            $query8->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
+            $query8->bindValue(':banco', 'barbearia');
+            $query8->execute();
+            $res8 = $query8->fetchAll(PDO::FETCH_ASSOC);
+            $id_cliente = $res8[0]['id'];
+            $instituicao = $res8[0]['instituicao'];
+            if($res8[0]['plano'] === '1'){
+                $plano = 'Individual';
+            } else {
+                $plano = 'Empresa';
+            } 
+
+            // Busca informações da fatura
+            $query9 = $pdo2->prepare("SELECT id, vencimento, taxa, valor, subtotal, frequencia FROM receber WHERE pago = 'Não' AND cliente =:cliente"); 
+            $query9->bindValue(':cliente', $id_cliente, PDO::PARAM_INT);
+            $query9->execute();
+            $res9 = $query9->fetch(PDO::FETCH_ASSOC);
+
+            $data_venc = null;
+            $valorMensal = null;
+            $frequencia = null;
+            $id_pg = null;
+            $dias_atraso = 0;
+
+            if ($res9) {
+                $data_venc = $res9['vencimento'];
+                $id_pg = $res9['id'];
+                $valorMensal = $res9['valor'];
+                if($res9['frequencia'] == '30'){
+                    $frequencia = 'Mensal';
+                } else {
+                    $frequencia = 'Anual';
+                }
+                
+                // Calcula os dias em atraso
+                $data_atual = date('Y-m-d');
+                $data_venc_obj = new DateTime($data_venc);
+                $data_atual_obj = new DateTime($data_atual);
+                if ($data_venc_obj < $data_atual_obj) {
+                    $interval = $data_atual_obj->diff($data_venc_obj);
+                    $dias_atraso = $interval->days;
+                }
+            }
+            ?>
+
+            <div class="modal-body" style="background-color: #fcfcfc; padding: 30px;">
+                <div class="card border-0 shadow-sm" style="border-radius: 10px;">
+                    <div class="card-body" style="padding: 25px;">
+                        <div class="text-center mb-4">
+                            <h3 class="card-text" style="color: #333; font-weight: 700; font-size: 1.75rem;"><?php echo mb_strtoupper($instituicao, 'UTF-8'); ?></h3>
+                            <small class="text-muted" style="font-weight: 500;">ID da Conta: #<?php echo $id_conta ?></small>
+                        </div>
+                        <hr style="border-top: 1px solid #e0e0e0; margin: 20px 0;">
+                        
+                        <?php if(isset($ativo_sistema) && $ativo_sistema == 'teste'): ?>
+                            <div class="alert alert-info text-center" role="alert" style="font-size: 12px; margin-bottom: 20px; padding: 10px; border-radius: 5px;">
+                                *Em teste grátis
+                            </div>
+                        <?php endif; ?>
+                        
+                        <p class="card-text" style="font-weight: 600; color: #444; font-size: 1.1rem;">Detalhes da Cobrança:</p>
+                        <ul class="list-group list-group-flush mb-4" style="border: 1px solid #E9ECEF; border-radius: 8px;">
+                            <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #fff; padding: 12px 15px;"><b>Valor:</b> <span>R$ <?php echo $valorMensal?></span></li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #fff; padding: 12px 15px;"><b>Plano:</b> <span><?php echo $plano?></span></li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #fff; padding: 12px 15px;"><b>Frequência:</b> <span><?php echo $frequencia ?></span></li>
+                        </ul>
+
+                        <?php 
+                        if ($dias_atraso > 0) {
+                            ?>
+                            <div class="alert alert-danger text-center" role="alert" style="font-size: 1rem; font-weight: 500; border-radius: 8px;">
+                                <strong>Vencida há:</strong> <?php echo $dias_atraso; ?> dias
+                            </div>
+                            <?php
+                        } elseif ($data_venc) {
+                            ?>
+                            <div class="alert alert-success text-center" role="alert" style="font-size: 1rem; font-weight: 500; border-radius: 8px;">
+                                <strong>Próximo Vencimento:</strong> <?php echo date('d/m/Y', strtotime($data_venc)); ?>
+                            </div>
+                            <?php
+                        }
+                        ?>
+
+                        <div class="d-flex gap-2 mt-4">
+                            <a href="https://www.gestao.skysee.com.br/pagar/<?php echo $id_pg?>" target="_blank" class="btn btn-primary w-100" style="background: #4682B4; border: none; font-weight: bold; padding: 12px; border-radius: 8px; transition: background-color 0.3s; box-shadow: 0 4px 10px rgba(70, 130, 180, 0.3);">Pagar Agora</a>
+                            <button type="button" class="btn btn-outline-secondary w-100" data-toggle="modal" data-target="#trocarPlanoModal" style="font-weight: bold; padding: 12px; border-radius: 8px; transition: all 0.3s;">Trocar Plano</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div class="modal-footer" style="border-top: none; padding: 15px 30px;">
+                <button type="button" class="btn btn-secondary" id="btn-fechar2" data-dismiss="modal" style="border-radius: 8px; padding: 10px 25px;">Fechar</button>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer" style="border-top: none; padding: 15px 25px;">
-        <button type="button" class="btn btn-secondary" id="btn-fechar2" data-dismiss="modal" style="border-radius: 5px; padding: 8px 20px;">Fechar</button>
-      </div>
     </div>
-  </div>
 </div>
 
 <!-- Modal Trocar Plano -->
