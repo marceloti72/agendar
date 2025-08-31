@@ -1569,7 +1569,8 @@ $plano = $res3['plano'];
         $query8->execute();
         $res8 = $query8->fetchAll(PDO::FETCH_ASSOC);
 		$id_cliente = $res8[0]['id'];
-		if($res8[0]['plano'] == '1'){
+		$instituicao = $res8[0]['instituicao'];
+		if($res8[0]['plano'] === '1'){
 			$plano = 'Individual';
 		}else{
 			$plano = 'Empresa';
@@ -1606,7 +1607,7 @@ $plano = $res3['plano'];
         <div class="card border-0 shadow-sm">
           <div class="card-body" style="padding: 20px;">
             <div class="text-center mb-3">
-              <h3 class="card-text" style="color: #333; font-weight: 700;"><?php echo mb_strtoupper($id_cliente, 'UTF-8'); ?></h3>
+              <h3 class="card-text" style="color: #333; font-weight: 700;"><?php echo mb_strtoupper($instituicao, 'UTF-8'); ?> <?php echo $id_conta ?></h3>
             </div>
             <hr style="border-top: 1px solid #E0E0E0;">
             
