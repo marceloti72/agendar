@@ -1634,7 +1634,7 @@ ini_set('default_charset', 'UTF-8');
                             <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #fff; padding: 12px 15px;"><b>Valor:</b> <span>R$ <?php echo $valorMensal?></span></li>
                             <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #fff; padding: 12px 15px;"><b>Plano:</b> <span><?php echo $plano?></span></li>
                             <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #fff; padding: 12px 15px;"><b>Frequência:</b> <span><?php echo $frequencia ?></span></li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #fff; padding: 12px 15px;"><b>Vencimento:</b> <span><?php echo ($data_venc) ? date('d/m/Y', strtotime($data_venc)) : 'N/A'; ?></span></li>
+                            
                         </ul>
 
                         <?php 
