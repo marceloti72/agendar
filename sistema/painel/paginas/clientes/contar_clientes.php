@@ -1,5 +1,5 @@
 <?php
-require_once("../conexao.php");
+require_once("../../../conexao.php");
 
 try {
     $query = $pdo->query("SELECT COUNT(*) as total FROM clientes WHERE id_conta = :id_conta");
