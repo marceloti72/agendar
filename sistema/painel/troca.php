@@ -78,8 +78,9 @@ try {
     $query_clientes->execute();
 
     // Busca o id_cliente da tabela clientes
-    $query_cliente = $pdo2->prepare("SELECT id FROM clientes WHERE id_conta = :id_conta");
+    $query_cliente = $pdo2->prepare("SELECT id FROM clientes WHERE banco = :banco and id_conta = :id_conta");
     $query_cliente->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);
+    $query_cliente->bindValue(":banco", 'barbearia');
     $query_cliente->execute();
     $resultado = $query_cliente->fetch(PDO::FETCH_ASSOC);
 
