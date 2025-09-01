@@ -22,7 +22,7 @@ file_put_contents(__DIR__ . '/debug_exportar.txt', date('Y-m-d H:i:s') . " - ID 
 
 try {
     // Verifica e carrega conexão
-    $conexaoPath = __DIR__ . '/../../../conexao.php';
+    $conexaoPath = __DIR__ . '/../conexao.php';
     if (!file_exists($conexaoPath)) {
         throw new Exception("Arquivo conexao.php não encontrado em: $conexaoPath");
     }
@@ -34,7 +34,7 @@ try {
     file_put_contents(__DIR__ . '/debug_exportar.txt', date('Y-m-d H:i:s') . " - PDO OK\n", FILE_APPEND);
 
     // Verifica e carrega PhpSpreadsheet
-    $vendorPath = __DIR__ . '/../../../../../vendor/autoload.php';
+    $vendorPath = __DIR__ . '/../../../vendor/autoload.php';
     if (!file_exists($vendorPath)) {
         throw new Exception("Arquivo vendor/autoload.php não encontrado em: $vendorPath");
     }
