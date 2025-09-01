@@ -428,12 +428,12 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 <hr class="divider">
 
                                 <div class="section-header">
+                                    <i class="fas fa-cut section-icon"></i>
                                     <h5 class="section-title">Serviços</h5>
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <!-- <label>Serviço</label> -->
                                             <select class="form-control sel2" id="servico" name="servico" style="width:100%;">
                                                 <?php
                                                 $query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta' ORDER BY nome asc");
@@ -447,7 +447,6 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     </div>
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <!-- <label>Profissional</label> -->
                                             <select class="form-control sel2" id="funcionario2" name="funcionario" style="width:100%;">
                                                 <?php
                                                 $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
@@ -465,15 +464,15 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 </div>
                                 <div class="item-list-container" id="listar_servicos"></div>
 
-                                <hr class="divider">                               
+                                <hr class="divider">
 
                                 <div class="section-header">
+                                    <i class="fas fa-box section-icon"></i>
                                     <h5 class="section-title">Produtos</h5>
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <!-- <label>Produto</label> -->
                                             <select class="form-control sel2" id="produto" name="produto" style="width:100%;" onchange="listarServicos2()">
                                                 <?php
                                                 $query = $pdo->query("SELECT * FROM produtos where estoque > 0 and id_conta = '$id_conta' ORDER BY nome asc");
@@ -487,11 +486,10 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <!-- <label>Quantidade</label> -->
                                             <input type="number" class="form-control" name="quantidade" id="quantidade" value="1" min="1">
                                         </div>
                                     </div>
-                                    <div class="col-md-2 d-flex align-items-end">                                
+                                    <div class="col-md-2 d-flex align-items-end">
                                         <button type="button" class="btn btn-success btn-add" onclick="inserirProduto()"><i class="fa fa-plus"></i></button>
                                     </div>
                                 </div>
@@ -499,8 +497,8 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
                                 <hr class="divider">
 
-                                 <!-- Nova Seção para Descontos -->
                                 <div class="section-header">
+                                    <i class="fas fa-percentage section-icon"></i>
                                     <h5 class="section-title">Descontos</h5>
                                 </div>
                                 <div class="row mb-2">
@@ -554,7 +552,6 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 </div>
 
                                 <div class="row mt-3">
-                                    <!-- Campos comentados para pagamento e troco podem ser reativados se necessário -->
                                 </div>
 
                                 <div class="d-flex flex-column gap-2 mt-4">
