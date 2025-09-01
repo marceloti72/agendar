@@ -534,7 +534,7 @@ $plano = $res3['plano'];
 
 							<li class="treeview <?php echo @$menu_agendamentos ?>">
 								<a href="agendamentos">
-								<i class="fe fe-clock"></i> <span>Agendamentos</span>
+								<i class="fe fe-clock"></i> <span> Agendamentos</span>
 								</a>
 							</li>
 
@@ -747,7 +747,7 @@ $plano = $res3['plano'];
 							<li class="treeview <?= @$whatsapp?>">
 								<a href="#">
 									<i class="fab fa-whatsapp"></i>
-									<span>Whatsapp</span>
+									<span> Whatsapp</span>
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
 								<ul class="treeview-menu">
@@ -769,7 +769,7 @@ $plano = $res3['plano'];
 
                             <li class="treeview">
 								<a href="#" data-toggle="modal" data-target="#modalSeuLink">
-									<i class="fa fa-link"></i><span>Seu Link</span>
+									<i class="fa fa-link"></i><span> Seu Link</span>
 								</a>
 							</li>					
                             
@@ -782,7 +782,7 @@ $plano = $res3['plano'];
 							
                             <li class="treeview <?= @$menu_site ?>">
                                 <a href="comentarios">
-                                    <i class="fa fa-comments"></i><span>Comentários</span>
+                                    <i class="fa fa-comments"></i><span> Comentários</span>
                                 </a>
                              </li>							                      
 							<?php 
@@ -1214,7 +1214,7 @@ $plano = $res3['plano'];
 						?>
 								<?php if(@$configuracoes == ''){ ?>
 								<li> <a href="configuracoes" ><i class="fa fa-cog"></i> Config. Sistema</a> </li> 	
-								<?php } }?>conf_site
+								<?php } }?>
 								<li> <a href="conf_site" ><i class="fa fa-link"></i></i> Config.Seu Site</a> </li>
 								
 
