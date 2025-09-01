@@ -413,28 +413,28 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "ultserv") {
                 var pagina = $("#pagina").val();
                 listarClientes(pagina);
                 
-                // Cria a mensagem completa para o SweetAlert
-                let messageText = `Importação bem-sucedida!`;
+                // Cria o HTML completo para o SweetAlert
+                let messageHtml = 'Importação bem-sucedida!';
                 
-                // Adiciona a contagem de importados
+                // Adiciona a contagem de importados em verde
                 if (response.imported_count > 0) {
-                    messageText += ` ${response.imported_count} cliente(s) importado(s).`;
+                    messageHtml += `<br><span style="color:green; font-weight: bold;">${response.imported_count} cliente(s) importado(s).</span>`;
                 }
 
                 // Adiciona a contagem de ignorados em vermelho
                 if (response.skipped_count > 0) {
-                    messageText += ` <span style="color:red; font-weight: bold;">${response.skipped_count} cliente(s) ignorado(s) por telefone repetido.</span>`;
+                    messageHtml += `<br><span style="color:red; font-weight: bold;">${response.skipped_count} cliente(s) ignorado(s) por telefone repetido.</span>`;
                 }
                 
                 // Caso não haja nenhuma ação
                 if (response.imported_count === 0 && response.skipped_count === 0) {
-                    messageText = 'Nenhum cliente foi importado ou processado.';
+                    messageHtml = 'Nenhum cliente foi importado ou processado.';
                 }
 
-                // Exibe o SweetAlert de sucesso com a mensagem detalhada e formatada
+                // Exibe o SweetAlert de sucesso com o HTML detalhado e formatado
                 Swal.fire({
                     title: 'Sucesso!',
-                    html: messageText, // Alterado para 'html'
+                    html: messageHtml,
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });
