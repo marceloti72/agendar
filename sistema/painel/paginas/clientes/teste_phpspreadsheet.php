@@ -9,7 +9,7 @@ file_put_contents(__DIR__ . '/teste_phpspreadsheet.txt', date('Y-m-d H:i:s') . "
 
 try {
     // Verifica e carrega PhpSpreadsheet
-    $vendorPath = __DIR__ . '/../../../vendor/autoload.php'; // Ajuste conforme necessário
+    $vendorPath = __DIR__ . '/../../../../vendor/autoload.php'; // Ajuste conforme necessário
     if (!file_exists($vendorPath)) {
         throw new Exception("Arquivo vendor/autoload.php não encontrado em: $vendorPath");
     }
