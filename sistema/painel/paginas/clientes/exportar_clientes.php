@@ -24,6 +24,9 @@ try {
     $query->execute();
     $clientes = $query->fetchAll(PDO::FETCH_ASSOC);
 
+     echo 'kjhjkhjhkhkkjh';
+exit();
+
     // Verifica se há clientes
     if (empty($clientes)) {
         die(json_encode(['error' => 'Nenhum cliente encontrado para exportação']));
@@ -52,8 +55,7 @@ try {
         $sheet->setCellValue('F' . $rowNumber, $cliente['cpf'] ?? '');
         $rowNumber++;
     }
-    echo 'kjhjkhjhkhkkjh';
-exit();
+   
 
     // Garante que nenhum output indesejado foi enviado
     ob_clean();
