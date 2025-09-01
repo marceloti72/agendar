@@ -751,18 +751,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                             <div class="form-group">
                                 <label>Cliente</label>
                                 <select class="form-control sel3" id="cliente" name="cliente" style="width:100%;" required>
-                                    <?php
-                                    $query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta' ORDER BY nome asc");
-                                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                                    $total_reg = @count($res);
-                                    if($total_reg > 0){
-                                        for($i=0; $i < $total_reg; $i++){
-                                            foreach ($res[$i] as $key => $value){}
-                                            echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
-                                        }
-                                    }
-                                    ?>
-                                </select>
+                                    </select>
                             </div>
                         </div>
                     </div>
@@ -773,18 +762,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 <label>Funcionário</label>
                                 <select class="form-control sel2" id="funcionario_modal" name="funcionario" style="width:100%;" onchange="mudarFuncionarioModal()">
                                     <option value="">Selecione um Funcionário</option>
-                                    <?php
-                                    $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY id desc");
-                                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                                    $total_reg = @count($res);
-                                    if($total_reg > 0){
-                                        for($i=0; $i < $total_reg; $i++){
-                                            foreach ($res[$i] as $key => $value){}
-                                            echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
-                                        }
-                                    }
-                                    ?>
-                                </select>
+                                    </select>
                             </div>
                         </div>
                     </div>
@@ -794,21 +772,22 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                             <div class="form-group">
                                 <label>Serviço</label>
                                 <select class="form-control sel3" id="servico2" name="servico" style="width:100%;" required>
-                                </select>
+                                    </select>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12" id="nasc">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>Data</label>
                                 <input type="date" class="form-control" name="data" id="data-modal" onchange="mudarData()">
                             </div>
                         </div>
                     </div>
-
+                    
                     <hr class="divider-agendamento">
+                    
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group horarios-container">
@@ -821,27 +800,14 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                     </div>
                     
                     <hr class="divider-agendamento">
+                    
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>CUPOM</label>
                                 <select class="form-control" name="cupom" id="cupom">
                                     <option value="">Nenhum</option>
-                                    <?php
-                                    $data_atual = date('Y-m-d');
-                                    $query = $pdo->prepare("SELECT * FROM cupons WHERE id_conta = :id_conta AND data_validade >= :data_atual AND usos_atuais < max_usos ORDER BY codigo ASC");
-                                    $query->bindValue(':id_conta', $id_conta);
-                                    $query->bindValue(':data_atual', $data_atual);
-                                    $query->execute();
-                                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-
-                                    foreach ($res as $item) {
-                                        $sufixo = ($item['tipo_desconto'] === 'porcentagem') ? '%' : '$';
-                                        $exibicao = htmlspecialchars($item['codigo']) . ' (' . htmlspecialchars($item['valor']) . $sufixo . ')';
-                                        echo '<option value="' . htmlspecialchars($item['codigo']) . '">' . $exibicao . '</option>';
-                                    }
-                                    ?>
-                                </select>
+                                    </select>
                             </div>
                         </div>
                     </div>
