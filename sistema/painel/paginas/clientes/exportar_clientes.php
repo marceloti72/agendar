@@ -1,7 +1,7 @@
 <?php
 @session_start();
-require_once("../../conexao.php");
-require '../../../vendor/autoload.php';
+require_once("../conexao.php");
+require '../../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
