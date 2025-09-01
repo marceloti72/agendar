@@ -76,6 +76,11 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
         display: flex;
         height: 100%;
     }
+
+    .modal-xl {
+    max-width: 95% !important;
+    width: 95% !important;
+}
     
     /* Painel Esquerdo (Serviços, Produtos, Descontos) */
     .modal-left-panel {
