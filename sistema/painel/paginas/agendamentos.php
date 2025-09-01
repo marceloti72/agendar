@@ -78,8 +78,8 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     }
 
     .modal-xl {
-    max-width: 95% !important;
-    width: 95% !important;
+    max-width: 90% !important;
+    width: 90% !important;
 }
     
     /* Painel Esquerdo (Serviços, Produtos, Descontos) */
