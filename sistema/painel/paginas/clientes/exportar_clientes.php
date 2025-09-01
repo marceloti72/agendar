@@ -1,4 +1,5 @@
 <?php
+echo "ENTREI DKSKDSDKSADSAÇKDÇLSA";
 // Ativa logs para depuração
 error_reporting(E_ALL);
 ini_set('display_errors', 0); // Não exibir erros na tela (segurança)
