@@ -747,7 +747,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                 <div class="modal-body modal-agendamento-body">
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>Cliente</label>
                                 <select class="form-control sel3" id="cliente" name="cliente" style="width:100%;" required>
@@ -765,8 +765,10 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 </select>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>Funcionário</label>
                                 <select class="form-control sel2" id="funcionario_modal" name="funcionario" style="width:100%;" onchange="mudarFuncionarioModal()">
@@ -785,24 +787,27 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 </select>
                             </div>
                         </div>
-
                     </div>
+
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>Serviço</label>
                                 <select class="form-control sel3" id="servico2" name="servico" style="width:100%;" required>
                                 </select>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-md-4" id="nasc">
+                    <div class="row">
+                        <div class="col-md-12" id="nasc">
                             <div class="form-group">
                                 <label>Data</label>
                                 <input type="date" class="form-control" name="data" id="data-modal" onchange="mudarData()">
                             </div>
                         </div>
                     </div>
+
                     <hr class="divider-agendamento">
                     <div class="row">
                         <div class="col-md-12">
@@ -814,9 +819,10 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                             </div>
                         </div>
                     </div>
+                    
                     <hr class="divider-agendamento">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>CUPOM</label>
                                 <select class="form-control" name="cupom" id="cupom">
@@ -838,7 +844,10 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>OBS <small>(Máx 100 Caracteres)</small></label>
                                 <input maxlength="100" type="text" class="form-control" name="obs" id="obs" placeholder="Adicione uma observação...">
