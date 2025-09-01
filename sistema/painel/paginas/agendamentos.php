@@ -558,8 +558,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 <div class="pagamento-header">
                                     <img src="../../images/registradora.png" alt="Ícone Pagamento" class="pagamento-icon">
                                     <h4>FINALIZAÇÃO</h4>
-                                </div>
-                                <hr class="divider-light">
+                                </div>                               
                                 <div class="form-group">
                                     <label class="summary-label"><small>Total Serviços</small></label>
                                     <input type="text" class="form-control text-right summary-value" id="valor_servicos" readonly>
