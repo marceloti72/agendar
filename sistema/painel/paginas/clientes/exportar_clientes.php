@@ -1,29 +1,26 @@
 <?php
-echo "ENTREI DKSKDSDKSADSAÇKDÇLSA";
-// Ativa logs para depuração
 error_reporting(E_ALL);
-ini_set('display_errors', 0); // Não exibir erros na tela (segurança)
+ini_set('display_errors', 0);
 ini_set('log_errors', 1);
-ini_set('error_log', __DIR__ . '/php_errors.log'); // Log no mesmo diretório
+ini_set('error_log', __DIR__ . '/php_errors.log');
 
 // Log inicial
 file_put_contents(__DIR__ . '/debug_exportar.txt', date('Y-m-d H:i:s') . " - Início do script\n", FILE_APPEND);
 
-@session_start();
-
-// Verifica sessão
-if (!isset($_SESSION['id_conta'])) {
-    file_put_contents(__DIR__ . '/debug_exportar.txt', date('Y-m-d H:i:s') . " - ERRO: Sessão id_conta não definida\n", FILE_APPEND);
-    http_response_code(500);
-    echo json_encode(['error' => 'Sessão id_conta não definida']);
-    exit;
-}
-$id_conta = $_SESSION['id_conta'];
-file_put_contents(__DIR__ . '/debug_exportar.txt', date('Y-m-d H:i:s') . " - ID Conta: $id_conta\n", FILE_APPEND);
-
 try {
+    // Tenta iniciar sessão
+    @session_start();
+    file_put_contents(__DIR__ . '/debug_exportar.txt', date('Y-m-d H:i:s') . " - Sessão iniciada\n", FILE_APPEND);
+
+    // Verifica sessão
+    if (!isset($_SESSION['id_conta'])) {
+        throw new Exception('Sessão id_conta não definida');
+    }
+    $id_conta = $_SESSION['id_conta'];
+    file_put_contents(__DIR__ . '/debug_exportar.txt', date('Y-m-d H:i:s') . " - ID Conta: $id_conta\n", FILE_APPEND);
+
     // Verifica e carrega conexão
-    $conexaoPath = __DIR__ . '/../conexao.php';
+    $conexaoPath = __DIR__ . '/../../../conexao.php'; // /var/www/markai/conexao.php
     if (!file_exists($conexaoPath)) {
         throw new Exception("Arquivo conexao.php não encontrado em: $conexaoPath");
     }
@@ -35,12 +32,27 @@ try {
     file_put_contents(__DIR__ . '/debug_exportar.txt', date('Y-m-d H:i:s') . " - PDO OK\n", FILE_APPEND);
 
     // Verifica e carrega PhpSpreadsheet
-    $vendorPath = __DIR__ . '/../../../vendor/autoload.php';
-    if (!file_exists($vendorPath)) {
-        throw new Exception("Arquivo vendor/autoload.php não encontrado em: $vendorPath");
+    // Tente diferentes caminhos para vendor/autoload.php
+    $possibleVendorPaths = [
+        __DIR__ . '/../../../vendor/autoload.php', // /var/www/markai/vendor/autoload.php
+        __DIR__ . '/../../vendor/autoload.php',    // /var/www/markai/sistema/vendor/autoload.php
+        __DIR__ . '/../../../../vendor/autoload.php' // /var/www/vendor/autoload.php
+    ];
+
+    $vendorPath = null;
+    foreach ($possibleVendorPaths as $path) {
+        if (file_exists($path)) {
+            $vendorPath = $path;
+            break;
+        }
+    }
+
+    if (!$vendorPath) {
+        $pathsTried = implode(", ", $possibleVendorPaths);
+        throw new Exception("Arquivo vendor/autoload.php não encontrado. Caminhos tentados: $pathsTried");
     }
     require $vendorPath;
-    file_put_contents(__DIR__ . '/debug_exportar.txt', date('Y-m-d H:i:s') . " - Vendor carregado\n", FILE_APPEND);
+    file_put_contents(__DIR__ . '/debug_exportar.txt', date('Y-m-d H:i:s') . " - Vendor carregado em: $vendorPath\n", FILE_APPEND);
 
     use PhpOffice\PhpSpreadsheet\Spreadsheet;
     use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -101,7 +113,6 @@ try {
     exit;
 
 } catch (Exception $e) {
-    // Log do erro
     file_put_contents(__DIR__ . '/debug_exportar.txt', date('Y-m-d H:i:s') . " - ERRO: " . $e->getMessage() . "\n", FILE_APPEND);
     if (ob_get_level()) {
         ob_end_clean();
