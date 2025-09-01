@@ -1,14 +1,12 @@
 <?php
-// Aumenta o limite de tempo de execução e memória para exportações grandes.
-set_time_limit(300);
-ini_set('memory_limit', '512M');
-error_reporting(E_ALL);
-ini_set('display_errors', 0);
-ini_set('log_errors', 1);
-
+require_once("../../../conexao.php");
+require '../../../../vendor/autoload.php';
 // Retorna uma resposta em formato JSON para erros, caso o script falhe antes de enviar o arquivo.
 header('Content-Type: application/json');
 $response = ['status' => 'error', 'message' => ''];
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 try {
     @session_start();
@@ -17,23 +15,8 @@ try {
     if (!isset($_SESSION['id_conta'])) {
         throw new Exception('Sessão id_conta não definida');
     }
-    $id_conta = $_SESSION['id_conta'];
-
-    $conexaoPath = __DIR__ . '/../../../conexao.php';
-    if (!file_exists($conexaoPath)) {
-        throw new Exception("Arquivo conexao.php não encontrado em: $conexaoPath");
-    }
-    require_once($conexaoPath);
-
-    // Verifica se a biblioteca PhpSpreadsheet foi carregada.
-    $vendorPath = __DIR__ . '/../../../../vendor/autoload.php';
-    if (!file_exists($vendorPath)) {
-        throw new Exception("Arquivo vendor/autoload.php não encontrado em: $vendorPath");
-    }
-    require $vendorPath;
-
-    use PhpOffice\PhpSpreadsheet\Spreadsheet;
-    use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+    $id_conta = $_SESSION['id_conta'];   
+   
 
     // Consulta os dados
     $query = $pdo->prepare("SELECT nome, telefone, email, endereco, data_nasc, cpf FROM clientes WHERE id_conta = :id_conta");
