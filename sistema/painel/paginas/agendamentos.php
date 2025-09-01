@@ -493,7 +493,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                         </div>
                                     </div>
                                     <div class="item-list-container" id="listar_servicos"></div>
-                                </div> <hr class="divider">
+                                </div> 
 
                                 <div class="section-card">
                                     <div class="section-header">
@@ -523,7 +523,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                         </div>
                                     </div>
                                     <div class="item-list-container" id="listar_produtos"></div>
-                                </div> <hr class="divider">
+                                </div> 
 
                                 <div class="section-card">
                                     <div class="section-header">
