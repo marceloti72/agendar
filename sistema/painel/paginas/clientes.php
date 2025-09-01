@@ -415,20 +415,26 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "ultserv") {
                 
                 // Cria a mensagem completa para o SweetAlert
                 let messageText = `Importação bem-sucedida!`;
+                
+                // Adiciona a contagem de importados
                 if (response.imported_count > 0) {
                     messageText += ` ${response.imported_count} cliente(s) importado(s).`;
                 }
+
+                // Adiciona a contagem de ignorados em vermelho
                 if (response.skipped_count > 0) {
-                    messageText += ` ${response.skipped_count} cliente(s) ignorado(s) por telefone repetido.`;
+                    messageText += ` <span style="color:red; font-weight: bold;">${response.skipped_count} cliente(s) ignorado(s) por telefone repetido.</span>`;
                 }
+                
+                // Caso não haja nenhuma ação
                 if (response.imported_count === 0 && response.skipped_count === 0) {
-                    messageText = 'Nenhum cliente foi importado.';
+                    messageText = 'Nenhum cliente foi importado ou processado.';
                 }
 
-                // Exibe o SweetAlert de sucesso com a mensagem detalhada
+                // Exibe o SweetAlert de sucesso com a mensagem detalhada e formatada
                 Swal.fire({
                     title: 'Sucesso!',
-                    text: messageText,
+                    html: messageText, // Alterado para 'html'
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });
