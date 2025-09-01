@@ -1,9 +1,12 @@
 <?php
+@session_start();
 require_once("../../../conexao.php");
+
+$id_conta = $_SESSION['id_conta'];
 
 try {
     $query = $pdo->query("SELECT COUNT(*) as total FROM clientes WHERE id_conta = :id_conta");
-    $query->bindValue(':id_conta', $_SESSION['id_conta']);
+    $query->bindValue(':id_conta', $id_conta);
     $query->execute();
     $result = $query->fetch(PDO::FETCH_ASSOC);
     echo json_encode(['total' => $result['total']]);
