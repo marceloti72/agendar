@@ -396,30 +396,38 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "ultserv") {
         });
     });
 
-    $("#form_importar").submit(function() {
-        event.preventDefault();
-        var formData = new FormData(this);
-        $.ajax({
-            url: 'paginas/' + pag + '/importar_clientes.php',
-            type: 'POST',
-            data: formData,
-            success: function(mensagem) {
-                $('#mensagem_importar').text('');
-                $('#mensagem_importar').removeClass();
-                if (mensagem.trim() == "Dados importados com sucesso!") {
-                    $('#modalImportar').modal('hide');
-                    var pagina = $("#pagina").val();
-                    listarClientes(pagina);
-                } else {
-                    $('#mensagem_importar').addClass('text-danger');
-                    $('#mensagem_importar').text(mensagem);
-                }
-            },
-            cache: false,
-            contentType: false,
-            processData: false,
-        });
+    $("#form_importar").submit(function(event) {
+    event.preventDefault();
+    var formData = new FormData(this);
+    $.ajax({
+        url: 'paginas/' + pag + '/importar_clientes.php',
+        type: 'POST',
+        data: formData,
+        dataType: 'json', // Adicionado: espera uma resposta JSON
+        success: function(response) {
+            $('#mensagem_importar').text('');
+            $('#mensagem_importar').removeClass();
+
+            if (response.status == "success") {
+                $('#modalImportar').modal('hide');
+                var pagina = $("#pagina").val();
+                listarClientes(pagina);
+                // Exibe o alerta com o número de importações
+                alert("Importação bem-sucedida! " + response.imported_count + " cliente(s) importado(s).");
+            } else {
+                $('#mensagem_importar').addClass('text-danger');
+                $('#mensagem_importar').text(response.message);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            $('#mensagem_importar').addClass('text-danger');
+            $('#mensagem_importar').text("Ocorreu um erro na requisição. Detalhes: " + textStatus + " " + errorThrown);
+        },
+        cache: false,
+        contentType: false,
+        processData: false,
     });
+});
 	
 
     function confirmarExportacao() {
