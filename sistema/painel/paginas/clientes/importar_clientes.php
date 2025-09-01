@@ -1,6 +1,6 @@
 <?php
-require_once("../conexao.php");
-require '../../../vendor/autoload.php';
+require_once("../../conexao.php");
+require '../../../../vendor/autoload.php';
 
 $id_conta = $_SESSION['id_conta'];
 

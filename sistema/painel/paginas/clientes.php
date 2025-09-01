@@ -400,7 +400,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "ultserv") {
         event.preventDefault();
         var formData = new FormData(this);
         $.ajax({
-            url: 'importar_clientes.php',
+            url: 'paginas/' + pag + '/importar_clientes.php',
             type: 'POST',
             data: formData,
             success: function(mensagem) {
