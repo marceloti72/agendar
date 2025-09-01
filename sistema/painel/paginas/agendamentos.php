@@ -1120,7 +1120,7 @@ $("#form-text").submit(function (event) {
 		$('#data_agenda').val(data).change();
 
 		listar();	
-		//listarHorarios();
+		listarHorarios();
 
 	}
 </script>
