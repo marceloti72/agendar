@@ -23,14 +23,15 @@ try {
     $query->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
     $query->execute();
     $clientes = $query->fetchAll(PDO::FETCH_ASSOC);
-
-     echo 'kjhjkhjhkhkkjh';
+    
 exit();
 
     // Verifica se há clientes
     if (empty($clientes)) {
         die(json_encode(['error' => 'Nenhum cliente encontrado para exportação']));
     }
+
+    echo 'A PARTIR DAQUI PARA';
 
     // Cria uma nova planilha
     $spreadsheet = new Spreadsheet();
