@@ -27,6 +27,9 @@ try {
     use PhpOffice\PhpSpreadsheet\Spreadsheet;
     use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+    // Log versão do PHP
+    file_put_contents($logFile, date('Y-m-d H:i:s') . " - Versão do PHP: " . PHP_VERSION . "\n", FILE_APPEND);
+
     // Testa criação da planilha
     $spreadsheet = new Spreadsheet();
     file_put_contents($logFile, date('Y-m-d H:i:s') . " - Planilha criada\n", FILE_APPEND);
