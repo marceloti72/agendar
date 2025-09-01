@@ -779,24 +779,12 @@ $plano = $res3['plano'];
 								</a>
 							</li> -->
 
-
-							<li class="treeview <?php echo @$menu_site ?>" >
-								<a href="#">
-									<i class="fa fa-globe"></i>
-									<span>Dados do Site</span>
-									<i class="fa fa-angle-left pull-right"></i>
-								</a>
-								<ul class="treeview-menu">
-									
-									<li> <a href="conf_site" ><i class="fa fa-angle-right"></i> Configurações</a> </li> 		
-
-									
-									<li class="<?php echo @$comentarios ?>"><a href="comentarios"><i class="fa fa-angle-right"></i>Comentários</a></li>
-
-														
-								
-								</ul>
-							</li>                           
+							
+                            <li class="treeview <?= @$menu_site ?>">
+                                <a href="comentarios">
+                                    <i class="fa fa-comments"></i><span>Comentários</span>
+                                </a>
+                             </li>							                      
 							<?php 
 					        }
 							?>
@@ -1226,7 +1214,8 @@ $plano = $res3['plano'];
 						?>
 								<?php if(@$configuracoes == ''){ ?>
 								<li> <a href="configuracoes" ><i class="fa fa-cog"></i> Config. Sistema</a> </li> 	
-								<?php } }?>
+								<?php } }?>conf_site
+								<li> <a href="conf_site" ><i class="fa fa-link"></i></i> Config.Seu Site</a> </li>
 								
 
 								<li> <a href="" data-toggle="modal" data-target="#modalPerfil"><i class="fa fa-suitcase"></i> Editar Perfil</a> </li> 
