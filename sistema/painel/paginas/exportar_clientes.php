@@ -1,35 +1,57 @@
 <?php
+// Ativa exibição de erros para depuração (remova em produção)
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', 'php_errors.log'); // Log em arquivo no mesmo diretório
+
 @session_start();
-require_once("../conexao.php");
-require '../../../vendor/autoload.php';
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
-// Verifica se a sessão id_conta está definida
-if (!isset($_SESSION['id_conta'])) {
-    die(json_encode(['error' => 'Sessão id_conta não definida']));
-}
-
-$id_conta = $_SESSION['id_conta'];
+// Log inicial
+file_put_contents('debug_exportar.txt', date('Y-m-d H:i:s') . " - Script iniciado\n", FILE_APPEND);
 
 try {
-    // Consulta os dados dos clientes
-    $query = $pdo->prepare("SELECT nome, telefone, email, endereco, data_nasc, cpf FROM clientes WHERE id_conta = :id_conta");
-    $query->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
-    $query->execute();
-    $clientes = $query->fetchAll(PDO::FETCH_ASSOC);
+    // Verifica sessão
+    if (!isset($_SESSION['id_conta'])) {
+        throw new Exception('Sessão id_conta não definida');
+    }
+    $id_conta = $_SESSION['id_conta'];
+    file_put_contents('debug_exportar.txt', "ID Conta: $id_conta\n", FILE_APPEND);
 
-    // Verifica se há clientes
+    // Carrega conexão (ajuste o caminho se necessário)
+    require_once("../conexao.php");
+    file_put_contents('debug_exportar.txt', "Conexão carregada\n", FILE_APPEND);
+
+    // Testa PDO
+    $pdo->query("SELECT 1");
+    file_put_contents('debug_exportar.txt', "PDO OK\n", FILE_APPEND);
+
+    // Carrega PhpSpreadsheet (ajuste o caminho se necessário - teste com './vendor/' se estiver na raiz)
+    $vendorPath = '../../../vendor/autoload.php'; // Ajuste conforme sua estrutura
+    if (!file_exists($vendorPath)) {
+        throw new Exception("Arquivo vendor/autoload.php não encontrado em: $vendorPath");
+    }
+    require $vendorPath;
+    file_put_contents('debug_exportar.txt', "Vendor carregado\n", FILE_APPEND);
+
+    use PhpOffice\PhpSpreadsheet\Spreadsheet;
+    use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
+    // Consulta os dados
+    $query = $pdo->prepare("SELECT nome, telefone, email, endereco, data_nasc, cpf FROM clientes WHERE id_conta = ?");
+    $query->execute([$id_conta]);
+    $clientes = $query->fetchAll(PDO::FETCH_ASSOC);
+    file_put_contents('debug_exportar.txt', "Clientes encontrados: " . count($clientes) . "\n", FILE_APPEND);
+
     if (empty($clientes)) {
-        die(json_encode(['error' => 'Nenhum cliente encontrado para exportação']));
+        throw new Exception('Nenhum cliente encontrado para exportação');
     }
 
-    // Cria uma nova planilha
+    // Cria planilha
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
 
-    // Define os cabeçalhos
+    // Cabeçalhos
     $sheet->setCellValue('A1', 'Nome');
     $sheet->setCellValue('B1', 'Telefone');
     $sheet->setCellValue('C1', 'Email');
@@ -37,7 +59,7 @@ try {
     $sheet->setCellValue('E1', 'Data de Nascimento');
     $sheet->setCellValue('F1', 'CPF');
 
-    // Preenche os dados
+    // Preenche dados
     $rowNumber = 2;
     foreach ($clientes as $cliente) {
         $sheet->setCellValue('A' . $rowNumber, $cliente['nome'] ?? '');
@@ -48,12 +70,14 @@ try {
         $sheet->setCellValue('F' . $rowNumber, $cliente['cpf'] ?? '');
         $rowNumber++;
     }
+    file_put_contents('debug_exportar.txt', "Planilha preenchida\n", FILE_APPEND);
 
-    // Garante que nenhum output indesejado foi enviado
-    ob_clean();
+    // Limpa output e define headers
+    if (ob_get_level()) {
+        ob_end_clean();
+    }
     ob_start();
 
-    // Define os cabeçalhos para download
     $filename = 'clientes_exportados_' . date('Y-m-d_H-i-s') . '.xlsx';
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment;filename="' . $filename . '"');
@@ -61,14 +85,23 @@ try {
     header('Expires: 0');
     header('Pragma: public');
 
-    // Salva o arquivo para o output
     $writer = new Xlsx($spreadsheet);
     $writer->save('php://output');
     ob_end_flush();
+    file_put_contents('debug_exportar.txt', "Download iniciado\n", FILE_APPEND);
     exit;
+
 } catch (Exception $e) {
-    ob_clean();
-    echo json_encode(['error' => 'Erro ao exportar dados: ' . $e->getMessage()]);
+    // Log do erro
+    file_put_contents('debug_exportar.txt', "ERRO: " . $e->getMessage() . "\n", FILE_APPEND);
+    
+    // Limpa output
+    if (ob_get_level()) {
+        ob_end_clean();
+    }
+    
+    http_response_code(500);
+    echo "Erro 500: " . $e->getMessage();
     exit;
 }
 ?>
