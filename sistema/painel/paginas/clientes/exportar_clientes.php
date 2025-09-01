@@ -15,8 +15,7 @@ if (!isset($_SESSION['id_conta'])) {
 }
 
 $id_conta = $_SESSION['id_conta'];
-echo 'kjhjkhjhkhkkjh';
-exit();
+
 
 try {
     // Consulta os dados dos clientes
@@ -53,6 +52,8 @@ try {
         $sheet->setCellValue('F' . $rowNumber, $cliente['cpf'] ?? '');
         $rowNumber++;
     }
+    echo 'kjhjkhjhkhkkjh';
+exit();
 
     // Garante que nenhum output indesejado foi enviado
     ob_clean();
