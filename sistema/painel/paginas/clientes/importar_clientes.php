@@ -6,7 +6,6 @@ $id_conta = $_SESSION['id_conta'];
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-
 // Função para aplicar máscara no telefone
 function formatarTelefone($telefone) {
     $telefone = preg_replace('/\D/', '', $telefone); // Remove caracteres não numéricos
@@ -16,50 +15,56 @@ function formatarTelefone($telefone) {
     return $telefone; // Retorna sem formatação se não for possível
 }
 
-// Caminho do arquivo Excel
-$inputFileName = 'clientes.xlsx';
+// Verifique se o arquivo foi enviado
+if (isset($_FILES['arquivo_excel']) && $_FILES['arquivo_excel']['error'] === UPLOAD_ERR_OK) {
+    // Caminho temporário do arquivo enviado
+    $inputFileName = $_FILES['arquivo_excel']['tmp_name'];
 
-try {
-    // Carrega a planilha
-    $spreadsheet = IOFactory::load($inputFileName);
-    $worksheet = $spreadsheet->getActiveSheet();
-    $rows = $worksheet->toArray();
+    try {
+        // Carrega a planilha a partir do caminho temporário
+        $spreadsheet = IOFactory::load($inputFileName);
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
 
-    // Ignora a primeira linha (cabeçalho)
-    array_shift($rows);
+        // Ignora a primeira linha (cabeçalho)
+        array_shift($rows);
 
-    // Prepara a query de inserção
-    $sql = "INSERT INTO clientes (nome, telefone, email, endereco, data_nasc, data_cad, cpf, id_conta) 
-            VALUES (:nome, :telefone, :email, :endereco, :data_nasc, :data_cad, :cpf, :id_conta)";
-    $stmt = $pdo->prepare($sql);
+        // Prepara a query de inserção
+        $sql = "INSERT INTO clientes (nome, telefone, email, endereco, data_nasc, data_cad, cpf, id_conta) 
+                VALUES (:nome, :telefone, :email, :endereco, :data_nasc, :data_cad, :cpf, :id_conta)";
+        $stmt = $pdo->prepare($sql);
 
-    // Data atual para data_cad
-    $data_cad = date('Y-m-d');
+        // Data atual para data_cad
+        $data_cad = date('Y-m-d');
 
-    // Itera sobre as linhas da planilha
-    foreach ($rows as $row) {
-        $nome = $row[0] ?? '';
-        $telefone = formatarTelefone($row[1] ?? '');
-        $email = $row[2] ?? '';
-        $endereco = $row[3] ?? '';
-        $data_nasc = $row[4] ? date('Y-m-d', strtotime($row[4])) : null; // Converte a data
-        $cpf = preg_replace('/\D/', '', $row[5] ?? ''); // Remove formatação do CPF
+        // Itera sobre as linhas da planilha
+        foreach ($rows as $row) {
+            $nome = $row[0] ?? '';
+            $telefone = formatarTelefone($row[1] ?? '');
+            $email = $row[2] ?? '';
+            $endereco = $row[3] ?? '';
+            $data_nasc = $row[4] ? date('Y-m-d', strtotime($row[4])) : null; // Converte a data
+            $cpf = preg_replace('/\D/', '', $row[5] ?? ''); // Remove formatação do CPF
 
-        // Executa a inserção
-        $stmt->execute([
-            ':nome' => $nome,
-            ':telefone' => $telefone,
-            ':email' => $email,
-            ':endereco' => $endereco,
-            ':data_nasc' => $data_nasc,
-            ':data_cad' => $data_cad,
-            ':cpf' => $cpf,
-            ':id_conta' => $id_conta
-        ]);
+            // Executa a inserção
+            $stmt->execute([
+                ':nome' => $nome,
+                ':telefone' => $telefone,
+                ':email' => $email,
+                ':endereco' => $endereco,
+                ':data_nasc' => $data_nasc,
+                ':data_cad' => $data_cad,
+                ':cpf' => $cpf,
+                ':id_conta' => $id_conta
+            ]);
+        }
+
+        echo "Dados importados com sucesso!";
+    } catch (Exception $e) {
+        echo "Erro ao importar dados: " . $e->getMessage();
     }
-
-    echo "Dados importados com sucesso!";
-} catch (Exception $e) {
-    echo "Erro ao importar dados: " . $e->getMessage();
+} else {
+    // Caso o arquivo não tenha sido enviado
+    echo "Erro: Nenhum arquivo foi enviado ou ocorreu um erro no upload.";
 }
 ?>
