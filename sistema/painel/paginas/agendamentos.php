@@ -369,6 +369,138 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
             margin: 1rem auto;
         }
     }
+
+
+    .modal-agendamento {
+    max-width: 800px; /* Largura fixa para este modal */
+}
+
+.modal-agendamento .modal-content {
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.modal-agendamento-header {
+    background-color: #f7f9fc;
+    border-bottom: 1px solid #e1e4e8;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-agendamento-header .modal-title {
+    color: #495057;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.modal-agendamento-header .modal-icon {
+    color: #007bff;
+    font-size: 1.5rem;
+}
+
+.modal-agendamento-header .close {
+    color: #6c757d;
+    opacity: 0.8;
+}
+
+.modal-agendamento-body {
+    padding: 2rem;
+}
+
+.modal-agendamento-body .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.modal-agendamento-body label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.modal-agendamento-body .form-control {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 0.75rem 1rem;
+}
+
+/* Estilo para a linha divisória */
+.divider-agendamento {
+    margin: 2rem 0;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Estilo para a seção de horários */
+.horarios-container {
+    background-color: #e9ecef;
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 1px solid #dee2e6;
+}
+
+.horarios-container .horarios-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #007bff;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.horarios-container .horarios-list {
+    min-height: 100px; /* Espaço para carregar os horários */
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px dashed #ced4da;
+}
+
+.horarios-container .horarios-list small {
+    display: block;
+    text-align: center;
+    color: #6c757d;
+    padding-top: 2rem;
+}
+
+/* Estilo para o rodapé */
+.modal-agendamento-footer {
+    background-color: #f7f9fc;
+    border-top: 1px solid #e1e4e8;
+    padding: 1.5rem;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    text-align: right;
+}
+
+.modal-agendamento-footer .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+/* Select2 custom styles to match form controls */
+.sel2, .sel3 {
+    padding: 0.75rem 1rem;
+    height: auto;
+}
+.select2-container--default .select2-selection--single {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    height: 45px;
+    display: flex;
+    align-items: center;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 45px;
+    padding-left: 1rem;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 45px;
+}
 </style>
 
 
@@ -601,148 +733,131 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 <!-- Modal -->
 <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header modal-header-custom">
-                <h4 class="modal-title" id="titulo_comanda">                    
-                    Novo Agendamento
+    <div class="modal-dialog modal-agendamento" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-agendamento-header">
+                <h4 class="modal-title" id="titulo_comanda">
+                    <i class="fas fa-calendar-alt modal-icon"></i> Novo Agendamento
                 </h4>
                 <button type="button" id="btn-fechar" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-			<form method="post" id="form-text">
-				<div class="modal-body">
+            <form method="post" id="form-text">
+                <div class="modal-body modal-agendamento-body">
 
-					<div class="row">
-						<div class="col-md-6">						
-							<div class="form-group"> 
-								<label>Cliente</label> 
-								<select class="form-control sel3" id="cliente" name="cliente" style="width:100%;" required> 
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Cliente</label>
+                                <select class="form-control sel3" id="cliente" name="cliente" style="width:100%;" required>
+                                    <?php
+                                    $query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta' ORDER BY nome asc");
+                                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                    $total_reg = @count($res);
+                                    if($total_reg > 0){
+                                        for($i=0; $i < $total_reg; $i++){
+                                            foreach ($res[$i] as $key => $value){}
+                                            echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
 
-									<?php 
-									$query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta' ORDER BY nome asc");
-									$res = $query->fetchAll(PDO::FETCH_ASSOC);
-									$total_reg = @count($res);
-									if($total_reg > 0){
-										for($i=0; $i < $total_reg; $i++){
-											foreach ($res[$i] as $key => $value){}
-												echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
-										}
-									}
-									?>
-								</select>    
-							</div>						
-						</div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Funcionário</label>
+                                <select class="form-control sel2" id="funcionario_modal" name="funcionario" style="width:100%;" onchange="mudarFuncionarioModal()">
+                                    <option value="">Selecione um Funcionário</option>
+                                    <?php
+                                    $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY id desc");
+                                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                    $total_reg = @count($res);
+                                    if($total_reg > 0){
+                                        for($i=0; $i < $total_reg; $i++){
+                                            foreach ($res[$i] as $key => $value){}
+                                            echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
 
-						<div class="col-md-6">
-							<div class="form-group">
-							<label>Funcionário </label> 			
-								<select class="form-control sel2" id="funcionario_modal" name="funcionario" style="width:100%;" onchange="mudarFuncionarioModal()"> 
-									<option value="">Selecione um Funcionário</option>
-									<?php 
-									$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY id desc");
-									$res = $query->fetchAll(PDO::FETCH_ASSOC);
-									$total_reg = @count($res);
-									if($total_reg > 0){
-										for($i=0; $i < $total_reg; $i++){
-											foreach ($res[$i] as $key => $value){}
-												echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
-										}
-									}
-									?>
-								</select>   
-							</div> 	
-						</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>Serviço</label>
+                                <select class="form-control sel3" id="servico2" name="servico" style="width:100%;" required>
+                                </select>
+                            </div>
+                        </div>
 
-					</div>
-					<div class="row">
-						<div class="col-md-8">						
-							<div class="form-group"> 
-								<label>Serviço</label> 
-								<select class="form-control sel3" id="servico2" name="servico" style="width:100%;" required> 									
+                        <div class="col-md-4" id="nasc">
+                            <div class="form-group">
+                                <label>Data</label>
+                                <input type="date" class="form-control" name="data" id="data-modal" onchange="mudarData()">
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="divider-agendamento">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group horarios-container">
+                                <label class="horarios-label">Horários Disponíveis</label>
+                                <div id="listar-horarios" class="horarios-list">
+                                    <small class="text-muted">Selecione um Funcionário e uma Data</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="divider-agendamento">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>CUPOM</label>
+                                <select class="form-control" name="cupom" id="cupom">
+                                    <option value="">Nenhum</option>
+                                    <?php
+                                    $data_atual = date('Y-m-d');
+                                    $query = $pdo->prepare("SELECT * FROM cupons WHERE id_conta = :id_conta AND data_validade >= :data_atual AND usos_atuais < max_usos ORDER BY codigo ASC");
+                                    $query->bindValue(':id_conta', $id_conta);
+                                    $query->bindValue(':data_atual', $data_atual);
+                                    $query->execute();
+                                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-								</select>    
-							</div>						
-						</div>
+                                    foreach ($res as $item) {
+                                        $sufixo = ($item['tipo_desconto'] === 'porcentagem') ? '%' : '$';
+                                        $exibicao = htmlspecialchars($item['codigo']) . ' (' . htmlspecialchars($item['valor']) . $sufixo . ')';
+                                        echo '<option value="' . htmlspecialchars($item['codigo']) . '">' . $exibicao . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>OBS <small>(Máx 100 Caracteres)</small></label>
+                                <input maxlength="100" type="text" class="form-control" name="obs" id="obs" placeholder="Adicione uma observação...">
+                            </div>
+                        </div>
+                    </div>
 
-						<div class="col-md-4" id="nasc">						
-							<div class="form-group"> 
-								<label>Data </label> 
-								<input type="date" class="form-control" name="data" id="data-modal" onchange="mudarData()"> 
-							</div>						
-						</div>
-					</div>
-					<hr>
-					<div class="row">
+                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="id_funcionario" id="id_funcionario">
+                    <small><div id="mensagem" align="center" class="mt-3"></div></small>
 
-						<div class="col-md-12" id="nasc">						
-							<div class="form-group"> 								
-								<div id="listar-horarios">
-									<small>Selecionar Funcionário</small>
-								</div>
-							</div>						
-						</div>	
-					</div>
-					<hr>
-
-					<div class="col-md-4">
-						<div class="form-group">
-							<label>CUPOM</label>
-							<select class="form-control" name="cupom" id="cupom">
-								<option value="">Nenhum</option>
-								<?php
-								// Obtém a data atual no formato 'YYYY-MM-DD'
-								$data_atual = date('Y-m-d');
-								
-								// Query para buscar cupons válidos
-								$query = $pdo->prepare("SELECT * FROM cupons WHERE id_conta = :id_conta AND data_validade >= :data_atual AND usos_atuais < max_usos ORDER BY codigo ASC");
-								$query->bindValue(':id_conta', $id_conta);
-								$query->bindValue(':data_atual', $data_atual);
-								$query->execute();
-								$res = $query->fetchAll(PDO::FETCH_ASSOC);
-
-								foreach ($res as $item) {
-									// Determina o sufixo com base no tipo de desconto
-									$sufixo = ($item['tipo_desconto'] === 'porcentagem') ? '%' : '$';
-									
-									// Monta a string de exibição no formato "codigo + valor + tipo"
-									$exibicao = htmlspecialchars($item['codigo']) . ' (' . htmlspecialchars($item['valor']) . $sufixo . ')';
-									
-									echo '<option value="' . htmlspecialchars($item['codigo']) . '">' . $exibicao . '</option>';
-								}
-								?>
-							</select>
-						</div>
-					</div>
-
-					<div class="col-md-12">						
-						<div class="form-group"> 
-							<label>OBS <small>(Máx 100 Caracteres)</small></label> 
-							<input maxlength="100" type="text" class="form-control" name="obs" id="obs">
-						</div>						
-					</div>
-
-
-
-					<br>
-					<input type="hidden" name="id" id="id">
-					<input type="hidden" name="id_funcionario" id="id_funcionario"> 
-					<small><div id="mensagem" align="center" class="mt-3"></div></small>					
-
-				</div>
-
-
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary">Salvar</button>
-				</div>
-
-
-
-			</form>
-
-		</div>
-	</div>
+                </div>
+                <div class="modal-footer modal-agendamento-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Agendamento</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 
