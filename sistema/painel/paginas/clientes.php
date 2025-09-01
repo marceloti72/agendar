@@ -420,7 +420,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "ultserv") {
             processData: false,
         });
     });
-
+	
 
     function confirmarExportacao() {
         $.ajax({
@@ -437,7 +437,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "ultserv") {
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = 'https://www.markai.skysee.com.br/sistema/painel/paginas/exportar_clientes.php';
+                        window.location.href = 'exportar_clientes.php';
                     }
                 });
             },
