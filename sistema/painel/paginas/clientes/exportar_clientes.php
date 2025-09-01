@@ -3,12 +3,13 @@
 require_once("../../../conexao.php");
 require '../../../../vendor/autoload.php';
 
-echo 'kjhjkhjhkhkkjh';
-exit();
+
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+echo 'kjhjkhjhkhkkjh';
+exit();
 // Verifica se a sessão id_conta está definida
 if (!isset($_SESSION['id_conta'])) {
     die(json_encode(['error' => 'Sessão id_conta não definida']));
