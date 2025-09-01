@@ -403,7 +403,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "ultserv") {
         url: 'paginas/' + pag + '/importar_clientes.php',
         type: 'POST',
         data: formData,
-        dataType: 'json', // Adicionado: espera uma resposta JSON
+        dataType: 'json',
         success: function(response) {
             $('#mensagem_importar').text('');
             $('#mensagem_importar').removeClass();
@@ -412,16 +412,49 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "ultserv") {
                 $('#modalImportar').modal('hide');
                 var pagina = $("#pagina").val();
                 listarClientes(pagina);
-                // Exibe o alerta com o número de importações
-                alert("Importação bem-sucedida! " + response.imported_count + " cliente(s) importado(s).");
+                
+                // Cria a mensagem completa para o SweetAlert
+                let messageText = `Importação bem-sucedida!`;
+                if (response.imported_count > 0) {
+                    messageText += ` ${response.imported_count} cliente(s) importado(s).`;
+                }
+                if (response.skipped_count > 0) {
+                    messageText += ` ${response.skipped_count} cliente(s) ignorado(s) por telefone repetido.`;
+                }
+                if (response.imported_count === 0 && response.skipped_count === 0) {
+                    messageText = 'Nenhum cliente foi importado.';
+                }
+
+                // Exibe o SweetAlert de sucesso com a mensagem detalhada
+                Swal.fire({
+                    title: 'Sucesso!',
+                    text: messageText,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+
             } else {
                 $('#mensagem_importar').addClass('text-danger');
                 $('#mensagem_importar').text(response.message);
+                
+                Swal.fire({
+                    title: 'Erro!',
+                    text: response.message,
+                    icon: 'error',
+                    confirmButtonText: 'Fechar'
+                });
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
             $('#mensagem_importar').addClass('text-danger');
             $('#mensagem_importar').text("Ocorreu um erro na requisição. Detalhes: " + textStatus + " " + errorThrown);
+            
+            Swal.fire({
+                title: 'Erro de Requisição!',
+                text: "Não foi possível completar a solicitação. Tente novamente.",
+                icon: 'error',
+                confirmButtonText: 'Fechar'
+            });
         },
         cache: false,
         contentType: false,

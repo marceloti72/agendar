@@ -28,10 +28,17 @@ if (isset($_FILES['arquivo_excel']) && $_FILES['arquivo_excel']['error'] === UPL
         $rows = $worksheet->toArray();
         array_shift($rows); // Ignora o cabeçalho
         
-        $count = 0; // Contador de importações
-        $sql = "INSERT INTO clientes (nome, telefone, email, endereco, data_nasc, data_cad, cpf, id_conta) 
-                VALUES (:nome, :telefone, :email, :endereco, :data_nasc, :data_cad, :cpf, :id_conta)";
-        $stmt = $pdo->prepare($sql);
+        $count_imported = 0; // Contador de clientes importados com sucesso
+        $count_skipped = 0; // Contador de clientes ignorados por telefone repetido
+        
+        // Prepara a query de verificação de telefone
+        $sql_check = "SELECT id FROM clientes WHERE telefone = :telefone AND id_conta = :id_conta";
+        $stmt_check = $pdo->prepare($sql_check);
+        
+        // Prepara a query de inserção
+        $sql_insert = "INSERT INTO clientes (nome, telefone, email, endereco, data_nasc, data_cad, cpf, id_conta) 
+                       VALUES (:nome, :telefone, :email, :endereco, :data_nasc, :data_cad, :cpf, :id_conta)";
+        $stmt_insert = $pdo->prepare($sql_insert);
         $data_cad = date('Y-m-d');
 
         foreach ($rows as $row) {
@@ -41,9 +48,22 @@ if (isset($_FILES['arquivo_excel']) && $_FILES['arquivo_excel']['error'] === UPL
             $endereco = $row[3] ?? '';
             $data_nasc = $row[4] ? date('Y-m-d', strtotime($row[4])) : null;
             $cpf = preg_replace('/\D/', '', $row[5] ?? '');
+            
+            // 1. Verifica se o telefone já existe
+            $stmt_check->execute([
+                ':telefone' => $telefone,
+                ':id_conta' => $id_conta
+            ]);
+            $cliente_existente = $stmt_check->fetchColumn();
 
-            // Executa a inserção e incrementa o contador se for bem-sucedido
-            if ($stmt->execute([
+            // Se o telefone já existe, pula para a próxima iteração
+            if ($cliente_existente) {
+                $count_skipped++;
+                continue; // Pula o restante do loop para esta linha
+            }
+
+            // 2. Se o telefone não existe, executa a inserção
+            if ($stmt_insert->execute([
                 ':nome' => $nome,
                 ':telefone' => $telefone,
                 ':email' => $email,
@@ -53,12 +73,14 @@ if (isset($_FILES['arquivo_excel']) && $_FILES['arquivo_excel']['error'] === UPL
                 ':cpf' => $cpf,
                 ':id_conta' => $id_conta
             ])) {
-                $count++;
+                $count_imported++;
             }
         }
+
         $response['status'] = 'success';
         $response['message'] = 'Dados importados com sucesso!';
-        $response['imported_count'] = $count;
+        $response['imported_count'] = $count_imported;
+        $response['skipped_count'] = $count_skipped; // Adiciona a contagem de ignorados
 
     } catch (Exception $e) {
         $response['message'] = "Erro ao importar dados: " . $e->getMessage();
@@ -68,4 +90,3 @@ if (isset($_FILES['arquivo_excel']) && $_FILES['arquivo_excel']['error'] === UPL
 }
 
 echo json_encode($response);
-?>
