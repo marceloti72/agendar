@@ -1,4 +1,8 @@
 <?php
+// Aumenta o limite de tempo de execução e memória para exportações grandes.
+set_time_limit(300); // 5 minutos de limite de tempo
+ini_set('memory_limit', '512M'); // Aumenta o limite de memória para 512MB
+
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
@@ -108,17 +112,18 @@ try {
     header('Pragma: public');
 
     $writer = new Xlsx($spreadsheet);
+    file_put_contents($logFile, date('Y-m-d H:i:s') . " - Objeto Writer criado\n", FILE_APPEND);
     $writer->save('php://output');
     file_put_contents($logFile, date('Y-m-d H:i:s') . " - Download iniciado\n", FILE_APPEND);
     ob_end_flush();
     exit;
 } catch (Exception $e) {
-    file_put_contents($logFile, date('Y-m-d H:i:s') . " - ERRO: " . $e->getMessage() . "\n", FILE_APPEND);
+    file_put_contents($logFile, date('Y-m-d H:i:s') . " - ERRO: " . $e->getMessage() . " na linha " . $e->getLine() . "\n", FILE_APPEND);
     if (ob_get_level()) {
         ob_end_clean();
     }
     http_response_code(500);
-    echo json_encode(['error' => 'Erro ao exportar dados: ' . $e->getMessage()]);
+    echo json_encode(['error' => 'Erro ao exportar dados: ' . $e->getMessage() . ' na linha ' . $e->getLine()]);
     exit;
 }
 ?>
