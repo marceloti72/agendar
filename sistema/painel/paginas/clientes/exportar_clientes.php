@@ -1,7 +1,10 @@
 <?php
+@session_start();
+require_once("../../conexao.php");
+require '../../../vendor/autoload.php';
 
-
-
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 // Verifica se a sessão id_conta está definida
 if (!isset($_SESSION['id_conta'])) {
