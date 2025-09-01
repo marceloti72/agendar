@@ -20,7 +20,7 @@ if (file_exists($conexaoPath)) {
 }
 
 // Verifica vendor/autoload.php
-$vendorPath = __DIR__ . '/../../../vendor/autoload.php';
+$vendorPath = __DIR__ . '/../../../../../vendor/autoload.php';
 if (file_exists($vendorPath)) {
     file_put_contents(__DIR__ . '/teste_log.txt', date('Y-m-d H:i:s') . " - vendor/autoload.php encontrado\n", FILE_APPEND);
 } else {
