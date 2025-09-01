@@ -1007,12 +1007,13 @@ $("#form-text").submit(function (event) {
                     showConfirmButton: false
                 }).then(() => { // Executa DEPOIS que o Swal fechar
                     // Fecha o modal associado (se o botão existir)
-                     if ($('#btn-fechar').length) {
-                          $('#btn-fechar').click();
-                     } else if ($(form).closest('.modal').length) {
-                         // Tenta fechar o modal pai do formulário (alternativa)
-                         $(form).closest('.modal').modal('hide');
-                     }
+                    //  if ($('#btn-fechar').length) {
+                    //       $('#btn-fechar').click();
+                    //  } else if ($(form).closest('.modal').length) {
+                    //      // Tenta fechar o modal pai do formulário (alternativa)
+                    //      $(form).closest('.modal').modal('hide');
+                    //  }
+                    $('#modalForm').modal('hide');
 
                     // Chama funções para atualizar listas/dados na página principal
                     if (typeof listar === 'function') {
