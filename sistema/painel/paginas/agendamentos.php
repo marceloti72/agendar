@@ -455,9 +455,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     <div class="col-md-12">
                                         <h3 id="nome_do_cliente_aqui" class="client-name">Nome do Cliente</h3>
                                     </div>
-                                </div>
-
-                                <hr class="divider">
+                                </div>                             
 
                                 <div class="section-card">
                                     <div class="section-header">
