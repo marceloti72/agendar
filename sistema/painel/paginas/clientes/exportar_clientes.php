@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../../conexao.php");
+
 
 
 // Verifica se a sessão id_conta está definida
