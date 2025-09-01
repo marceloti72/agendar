@@ -570,8 +570,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 <div class="form-group">
                                     <label class="summary-label"><small>Total Descontos</small></label>
                                     <input type="text" class="form-control text-right summary-value" id="valor_descontos" style="color: red" readonly>
-                                </div>
-                                <hr class="divider-light">
+                                </div>                                
                                 <div class="form-group total-final-section">
                                     <label class="summary-label-total"><small>Total a Pagar</small></label>
                                     <input type="text" class="form-control text-right total-final-value" name="valor_total" id="valor_serv" readonly>
