@@ -54,5 +54,5 @@ RewriteRule ^conf_planos(.*)$ index.php?pag=conf_planos [L]
 RewriteRule ^assinantes(.*)$ index.php?pag=assinantes [L]
 RewriteRule ^campanhas(.*)$ index.php?pag=campanhas [L]
 RewriteRule ^cupons(.*)$ index.php?pag=cupons [L]
-RewriteRule ^exportar_clientes(.*)$ index.php?pag=exportar_clientes [L]
+
 
