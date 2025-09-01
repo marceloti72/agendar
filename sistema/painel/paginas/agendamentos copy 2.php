@@ -26,185 +26,49 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 </style>
 
 <style>
-    /* Estilos Gerais do Modal */
     .modal-content {
         border-radius: 15px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
         border: none;
-        overflow: hidden; /* Garante que os cantos arredondados sejam respeitados */
     }
 
-    /* Cabeçalho do Modal */
     .modal-header-custom {
-        background: linear-gradient(135deg, #4a90e2 0%, #007bff 100%); /* Gradiente Azul */
-        color: #fff;
-        border-bottom: none;
-        padding: 1.5rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        background-color: #f7f9fc;
+        border-bottom: 1px solid #e1e4e8;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        padding: 1.5rem;
     }
     
     .modal-title {
-        color: #fff;
-        font-weight: 700;
+        color: #ffffffff;
+        font-weight: 600;
         display: flex;
         align-items: center;
         gap: 15px;
-        font-size: 1.8rem;
     }
 
     .modal-icon {
-        color: #fff; /* Ícone branco para contraste no fundo azul */
-        font-size: 2.2rem;
-    }
-
-    .modal-header-custom .close {
-        color: #fff;
-        opacity: 0.9;
-        font-size: 2rem;
-        transition: opacity 0.2s ease;
-    }
-
-    .modal-header-custom .close:hover {
-        opacity: 1;
+        color: #007bff;
+        font-size: 1.8rem;
     }
     
-    /* Corpo Principal do Modal */
     .modal-body {
         padding: 0;
-        display: flex;
-        height: 100%;
     }
     
-    /* Painel Esquerdo (Serviços, Produtos, Descontos) */
     .modal-left-panel {
-        background-color: #f8f9fa; /* Fundo mais claro */
+        background-color: #fff;
         padding-right: 0;
-        border-right: 1px solid #e0e0e0; /* Separador sutil */
     }
 
     .modal-body-scroll {
-        max-height: 75vh; /* Aumenta a altura para melhor visualização */
+        max-height: 70vh;
         overflow-y: auto;
-        padding-bottom: 2rem !important; /* Espaço para o final */
     }
 
-    .client-name {
-        font-weight: 700;
-        color: #343a40; /* Cor mais escura para destaque */
-        font-size: 2rem;
-        text-align: center;
-        margin-bottom: 1.5rem;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #e0e0e0;
-    }
-
-    .divider {
-        margin: 2rem 0;
-        border-top: 1px dashed #cccccc; /* Linha tracejada mais clara */
-    }
-
-    /* Estilo para as Seções (Serviços, Produtos, Descontos) */
-    .section-card {
-        background-color: #ffffff; /* Fundo branco para as seções */
-        border: 1px solid #e0e0e0;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Sombra mais visível */
-        transition: all 0.3s ease;
-    }
-
-    .section-card:hover {
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-        transform: translateY(-2px);
-    }
-
-    .section-header {
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        border-bottom: 1px solid #f0f0f0;
-        padding-bottom: 1rem;
-    }
-
-    .section-title {
-        font-weight: 700;
-        color: #343a40; /* Cor escura para o título */
-        font-size: 1.4rem;
-        margin-bottom: 0; /* Remover margem inferior padrão */
-    }
-
-    .section-icon {
-        color: #4a90e2; /* Ícone azul para destaque */
-        font-size: 1.6rem;
-    }
-
-    .item-list-container {
-        margin-top: 1.5rem; /* Mais espaço */
-        margin-bottom: 1rem;
-    }
-
-    /* Campos de Formulário */
-    .form-group label {
-        font-weight: 600;
-        color: #6c757d;
-        margin-bottom: 0.5rem;
-        display: block; /* Garante que o label ocupe sua própria linha */
-    }
-    
-    .form-control, .sel2 {
-        border-radius: 8px;
-        border: 1px solid #ced4da;
-        padding: 0.75rem 1rem;
-        font-size: 1rem;
-    }
-
-    .sel2 {
-        padding: 0.375rem 0.75rem !important; /* Ajuste para Select2 */
-    }
-
-    /* Botões de Adicionar Item */
-    .btn-add-item {
-        border-radius: 8px;
-        height: 45px; /* Altura maior para melhor usabilidade */
-        width: 100%;
-        font-size: 1.1rem;
-        font-weight: 600;
-        background-color: #28a745; /* Verde padrão */
-        border-color: #28a745;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-    }
-
-    .btn-add-item:hover {
-        background-color: #218838;
-        border-color: #1e7e34;
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
-    }
-
-    .btn-add-item i {
-        font-size: 1rem;
-    }
-
-    /* Input de Valores e Totais */
-    .value-input, .summary-value {
-        font-size: 1.1em;
-        font-weight: bold;
-        background-color: #e9ecef; /* Fundo levemente cinza */
-        border: 1px solid #dee2e6;
-        color: #343a40;
-    }
-    
-    /* Painel Direito (Pagamento) */
     .modal-right-panel {
-        background-color: #f0f2f5; /* Fundo ligeiramente mais escuro */
+        background-color: #e9ecef;
         border-left: 1px solid #e1e4e8;
         display: flex;
         flex-direction: column;
@@ -215,155 +79,262 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
         display: flex;
         flex-direction: column;
         height: 100%;
-        padding-bottom: 2rem !important;
     }
 
     .pagamento-header {
         display: flex;
         align-items: center;
-        gap: 15px;
+        gap: 10px;
         color: #007bff;
-        margin-bottom: 1.5rem;
-        border-bottom: 1px solid #e9ecef;
-        padding-bottom: 1rem;
-        justify-content: center;
+        margin-bottom: 10px;
     }
     
-    .pagamento-header h4 {
-        font-weight: 700;
-        color: #343a40;
-        font-size: 1.6rem;
-    }
-
     .pagamento-icon {
-        height: 45px; /* Tamanho maior para o ícone */
-        filter: invert(30%) sepia(80%) saturate(1500%) hue-rotate(200deg) brightness(90%); /* Azul */
+        height: 40px;
+        filter: grayscale(100%) brightness(50%) sepia(100%) hue-rotate(180deg) saturate(200%);
     }
 
-    .divider-light {
-        margin: 1.5rem 0;
-        border-top: 1px solid #e0e0e0;
-    }
-
-    .summary-label {
-        font-weight: 600;
-        color: #555;
-    }
-
-    .summary-value {
-        background-color: #fff;
-        border-color: #dee2e6;
+    .divider {
+        margin: 20px 0;
+        border-top: 1px dashed #929292ff;
     }
     
-    .total-final-section {
-        margin-top: 2rem;
-        padding-top: 1.5rem;
-        border-top: 2px solid #d4edda;
-        background-color: #e2f0e6;
-        border-radius: 8px;
-        padding: 1.5rem;
-    }
-
-    .summary-label-total {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: #1a5e20;
-    }
-
-    .total-final-value {
-        font-size: 1.8em; /* Tamanho maior para o total final */
-        font-weight: bold;
-        color: #155724;
-        background-color: #d4edda;
-        border: 2px solid #28a745;
-        padding: 1rem;
-        border-radius: 10px;
-    }
-
-    /* Botões de Ação Final */
-    .btn-action {
-        border-radius: 10px;
-        padding: 15px 20px;
-        font-size: 1.2rem;
-        font-weight: 600;
+    .section-header {
+        margin-bottom: 15px;
         display: flex;
         align-items: center;
-        justify-content: center;
         gap: 10px;
-        transition: all 0.3s ease;
     }
 
-    .btn-action:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    .section-title {
+        font-weight: 600;
+        color: #555;
+        border-left: 6px solid #007bff;
+        padding-left: 10px;
+    }
+
+	#nome_do_cliente_aqui{
+		font-weight: 600;
+		color: #555;
+	}
+    
+    .item-list-container {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        color: #495057;
+    }
+    
+    .form-control {
+        border-radius: 8px;
+    }
+    
+    .sel2 {
+        border-radius: 8px !important;
+    }
+
+    .btn-add {
+        border-radius: 8px;
+        height: 38px;
+        width: 100%;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn-add:hover {
+        transform: translateY(-2px);
+    }
+    
+    .valor-display, .total-display {
+        font-size: 1.1em;
+        font-weight: bold;
+        background-color: #fff;
+        border-color: #ced4da;
+    }
+    
+    .total-display {
+        color: #155724;
+        background-color: #d4edda;
     }
 
     .btn-success {
         background-color: #28a745;
         border-color: #28a745;
+        transition: all 0.2s ease;
     }
     
     .btn-success:hover {
         background-color: #218838;
         border-color: #1e7e34;
+        transform: translateY(-2px);
     }
     
     .btn-outline-secondary {
         border-color: #6c757d;
         color: #6c757d;
+        transition: all 0.2s ease;
     }
     
     .btn-outline-secondary:hover {
         background-color: #6c757d;
         color: #fff;
+        transform: translateY(-2px);
     }
 
-    /* Customizações para Select2 (necessário para compatibilidade visual) */
-    .select2-container--default .select2-selection--single {
-        height: 45px; /* Altura consistente com outros inputs */
-        border-radius: 8px;
-        border: 1px solid #ced4da;
-        display: flex;
-        align-items: center;
-    }
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        line-height: 45px;
-        padding-left: 1rem;
-        color: #495057;
-    }
-    .select2-container--default .select2-selection--single .select2-selection__arrow {
-        height: 45px;
-        top: 1px;
-        right: 1px;
-    }
-    .select2-container--default .select2-selection--single .select2-selection__arrow b {
-        border-color: #888 transparent transparent transparent;
-        border-width: 5px 5px 0 5px;
-    }
-    .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
-        border-color: transparent transparent #888 transparent;
-        border-width: 0 5px 5px 5px;
+    .btn-lg {
+        padding: 12px 20px;
     }
 
-    /* Responsive adjustments */
-    @media (max-width: 991.98px) {
-        .modal-left-panel, .modal-right-panel {
-            flex: 0 0 100%;
-            max-width: 100%;
-            border-right: none;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .modal-right-panel {
-            border-top: 1px solid #e0e0e0;
-        }
-        .modal-body-scroll {
-            max-height: 60vh; /* Ajuste para telas menores */
-        }
-        .modal-dialog.modal-xl {
-            max-width: 95%; /* Reduz o tamanho do modal em telas menores */
-            margin: 1rem auto;
-        }
-    }
+
+    /* Container principal do calendário */
+.monthly-calendar {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Título e navegação */
+.monthly-header {
+    background-color: #f0f2f5;
+    color: #333;
+    padding: 15px;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Cor do texto do mês e ano */
+.monthly-header-title {
+    color: #444;
+}
+
+/* Usando !important para forçar a cor */
+.monthly-prev,
+.monthly-next {
+    color: #292929;
+}
+
+/* Dias da semana (cabeçalho) */
+.monthly-day-header {
+    background-color: #fafafa;
+    color: #555;
+    font-weight: bold;
+}
+
+/* Células dos dias */
+.monthly-day-cell {
+    background-color: #ffffff;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Células de dias inativos (outros meses) */
+.monthly-day-cell.monthly-day-unhighlighted {
+    background-color: #f8f8f8;
+    color: #b0b0b0;
+}
+
+/* Dia atual */
+.monthly-day-cell.monthly-today {
+    background-color: #e6f7ff;
+    border: 2px solid #a8e3ff;
+    border-radius: 5px;
+}
+
+/* Eventos */
+.monthly-event-list {
+    background-color: #f1f8ff;
+    border-left: 3px solid #007bff;
+    color: #333;
+    padding: 5px 10px;
+    margin: 2px 0;
+    border-radius: 4px;
+}
+
+/* Custom Modal Header */
+.modal-header-custom {
+    background-color: #3b82f6;
+    color: #fff;
+    border-bottom: none;
+    padding: 1rem 1.5rem;
+}
+
+.modal-header-custom .modal-title {
+    font-weight: 600;
+}
+
+.modal-header-custom .close {
+    color: #fff;
+    opacity: 0.9;
+    font-size: 1.5rem;
+    margin-top: -10px;
+}
+
+/* Modal Body Content */
+.modal-body {
+    padding: 1.5rem;
+    color: #4b5563;
+}
+
+.info-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.info-item {
+    flex-grow: 1;
+    min-width: 150px; /* Ensures items don't get too small on smaller screens */
+}
+
+.info-label {
+    font-weight: 700;
+    color: #1f2937;
+    margin-right: 0.25rem;
+}
+
+.info-value {
+    font-weight: 500;
+    color: #6b7280;
+}
+
+/* Section Divider */
+.section-divider {
+    border-bottom: 1px solid #e5e7eb;
+    margin: 1.5rem 0;
+}
+
+/* Details Sections */
+.details-section {
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+    border-bottom: 2px solid #3b82f6;
+    padding-bottom: 0.25rem;
+    display: inline-block;
+}
+
+.item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.item-list > div {
+    background-color: #f9fafb;
+    padding: 0.75rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
 </style>
 
 
@@ -428,7 +399,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 
 <div class="modal fade" id="modalForm2" tabindex="-1" role="dialog" aria-labelledby="modalForm2Label" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
 
             <div class="modal-header modal-header-custom">
@@ -444,142 +415,153 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
             <form id="form_salvar">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-7 modal-left-panel">
-                            <div class="modal-body-scroll p-4">
-                                <div class="row mb-3">
-                                    <div class="col-md-12">
-                                        <h3 id="nome_do_cliente_aqui" class="client-name">Nome do Cliente</h3>
+                        <div class="col-md-8 modal-left-panel">
+                            <div class="modal-body-scroll p-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <h3 id="nome_do_cliente_aqui"></h3>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <hr class="divider">
 
-                                <div class="section-card">
-                                    <div class="section-header">
-                                        <h5 class="section-title"><i class="fas fa-scissors section-icon"></i> Serviços</h5>
-                                    </div>
-                                    <div class="row mb-2">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <select class="form-control sel2" id="servico" name="servico" style="width:100%;">
-                                                    <?php
-                                                    $query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta' ORDER BY nome asc");
-                                                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                                                    foreach ($res as $item) {
-                                                        echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <select class="form-control sel2" id="funcionario2" name="funcionario" style="width:100%;">
-                                                    <?php
-                                                    $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
-                                                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                                                    foreach ($res as $item) {
-                                                        echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 d-flex align-items-end">
-                                            <button type="button" class="btn btn-primary btn-add-item" onclick="inserirServico()"><i class="fa fa-plus"></i> Add</button>
+                                <div class="section-header">
+                                    <h5 class="section-title">Serviços</h5>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <!-- <label>Serviço</label> -->
+                                            <select class="form-control sel2" id="servico" name="servico" style="width:100%;">
+                                                <?php
+                                                $query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta' ORDER BY nome asc");
+                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                                foreach ($res as $item) {
+                                                    echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
+                                                }
+                                                ?>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="item-list-container" id="listar_servicos"></div>
-                                </div> <hr class="divider">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <!-- <label>Profissional</label> -->
+                                            <select class="form-control sel2" id="funcionario2" name="funcionario" style="width:100%;">
+                                                <?php
+                                                $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
+                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                                foreach ($res as $item) {
+                                                    echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-success btn-add" onclick="inserirServico()"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="item-list-container" id="listar_servicos"></div>
 
-                                <div class="section-card">
-                                    <div class="section-header">
-                                        <h5 class="section-title"><i class="fas fa-box-open section-icon"></i> Produtos</h5>
-                                    </div>
-                                    <div class="row mb-2">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <select class="form-control sel2" id="produto" name="produto" style="width:100%;" onchange="listarServicos2()">
-                                                    <?php
-                                                    $query = $pdo->query("SELECT * FROM produtos where estoque > 0 and id_conta = '$id_conta' ORDER BY nome asc");
-                                                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                                                    foreach ($res as $item) {
-                                                        echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <input type="number" class="form-control" name="quantidade" id="quantidade" value="1" min="1">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 d-flex align-items-end">
-                                            <button type="button" class="btn btn-primary btn-add-item" onclick="inserirProduto()"><i class="fa fa-plus"></i> Add</button>
-                                        </div>
-                                    </div>
-                                    <div class="item-list-container" id="listar_produtos"></div>
-                                </div> <hr class="divider">
+                                <hr class="divider">                               
 
-                                <div class="section-card">
-                                    <div class="section-header">
-                                        <h5 class="section-title"><i class="fas fa-tags section-icon"></i> Descontos</h5>
-                                    </div>
-                                    <div class="row mb-2">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label><small>Sinal (Valor Pago)</small></label>
-                                                <input type="text" class="form-control text-right value-input" id="valor_sinal" style="color: red" readonly>
-                                            </div>
+                                <div class="section-header">
+                                    <h5 class="section-title">Produtos</h5>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <!-- <label>Produto</label> -->
+                                            <select class="form-control sel2" id="produto" name="produto" style="width:100%;" onchange="listarServicos2()">
+                                                <?php
+                                                $query = $pdo->query("SELECT * FROM produtos where estoque > 0 and id_conta = '$id_conta' ORDER BY nome asc");
+                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                                foreach($res as $item){
+                                                    echo '<option value="'.$item['id'].'">'.htmlspecialchars($item['nome']).'</option>';
+                                                }
+                                                ?>
+                                            </select>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label><small>Desconto Cupom</small></label>
-                                                <input type="text" class="form-control text-right value-input" id="valor_cupom" style="color: red" readonly>
-                                            </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <!-- <label>Quantidade</label> -->
+                                            <input type="number" class="form-control" name="quantidade" id="quantidade" value="1" min="1">
                                         </div>
                                     </div>
-                                </div> <hr class="divider">
+                                    <div class="col-md-2 d-flex align-items-end">                                
+                                        <button type="button" class="btn btn-success btn-add" onclick="inserirProduto()"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="item-list-container" id="listar_produtos"></div>
+
+                                <hr class="divider">
+
+                                 <!-- Nova Seção para Descontos -->
+                                <div class="section-header">
+                                    <h5 class="section-title">Descontos</h5>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Sinal (Valor Pago)</label>
+                                            <input type="text" class="form-control text-right valor-display" id="valor_sinal" style="color: red" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Desconto Cupom</label>
+                                            <input type="text" class="form-control text-right valor-display" id="valor_cupom" style="color: red" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="divider">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Observações</label>
-                                        <input type="text" class="form-control" value="" name="obs" id="obs2" maxlength="1000" placeholder="Adicione observações para a comanda...">
+                                        <input type="text" class="form-control" value="" name="obs" id="obs2" maxlength="1000">
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-5 modal-right-panel">
-                            <div class="pagamento-container p-4">
+                        <div class="col-md-4 modal-right-panel">
+                            <div class="pagamento-container p-3">
                                 <div class="pagamento-header">
                                     <img src="../../images/registradora.png" alt="Ícone Pagamento" class="pagamento-icon">
-                                    <h4>FINALIZAÇÃO</h4>
+                                    <h4>PAGAMENTO</h4>
                                 </div>
-                                <hr class="divider-light">
+                                <hr>
                                 <div class="form-group">
-                                    <label class="summary-label"><small>Total Serviços</small></label>
-                                    <input type="text" class="form-control text-right summary-value" id="valor_servicos" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label class="summary-label"><small>Total Produtos</small></label>
-                                    <input type="text" class="form-control text-right summary-value" id="valor_produtos" readonly>
+                                    <label><small>Total Serviços</small></label>
+                                    <input type="text" class="form-control text-right valor-display" id="valor_servicos" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label class="summary-label"><small>Total Descontos</small></label>
-                                    <input type="text" class="form-control text-right summary-value" id="valor_descontos" style="color: red" readonly>
+                                    <label><small>Total Produtos</small></label>
+                                    <input type="text" class="form-control text-right valor-display" id="valor_produtos" readonly>
                                 </div>
-                                <hr class="divider-light">
-                                <div class="form-group total-final-section">
-                                    <label class="summary-label-total"><small>Total a Pagar</small></label>
-                                    <input type="text" class="form-control text-right total-final-value" name="valor_total" id="valor_serv" readonly>
+                                <div class="form-group">
+                                    <label><small>Total Descontos</small></label>
+                                    <input type="text" class="form-control text-right valor-display" id="valor_descontos" style="color: red" readonly>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label><small>Total a Pagar</small></label>
+                                    <input type="text" class="form-control text-right total-display" name="valor_total" id="valor_serv" readonly>
                                 </div>
 
-                                <div class="d-flex flex-column gap-3 mt-5">
-                                    <a href="#" id="btn_fechar_comanda" class="btn btn-success btn-lg btn-block btn-action" onclick="fecharComanda()">
+                                <div class="row mt-3">
+                                    <!-- Campos comentados para pagamento e troco podem ser reativados se necessário -->
+                                </div>
+
+                                <div class="d-flex flex-column gap-2 mt-4">
+                                    <a href="#" id="btn_fechar_comanda" class="btn btn-success btn-lg btn-block" onclick="fecharComanda()">
                                         <i class="fas fa-check-circle"></i> Fechar Comanda
                                     </a>
-                                    <button type="button" class="btn btn-outline-secondary btn-block btn-action" data-dismiss="modal">
+                                    <button type="button" class="btn btn-outline-secondary btn-block" data-dismiss="modal">
                                         <i class="fas fa-times-circle"></i> Sair
                                     </button>
                                 </div>
