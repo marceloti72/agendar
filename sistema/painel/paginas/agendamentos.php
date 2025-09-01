@@ -74,7 +74,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     .modal-body {
         padding: 0;
         display: flex;
-        height: 85%;
+        height: 80%;
     }
 
     .modal-xl {
