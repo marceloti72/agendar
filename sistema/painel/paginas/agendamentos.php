@@ -51,7 +51,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
         display: flex;
         align-items: center;
         gap: 15px;
-        font-size: 1.8rem;
+        font-size: 1.2rem;
     }
 
     .modal-icon {
@@ -78,8 +78,8 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     }
 
     .modal-xl {
-    max-width: 90% !important;
-    width: 90% !important;
+    max-width: 80% !important;
+    width: 80% !important;
 }
     
     /* Painel Esquerdo (Serviços, Produtos, Descontos) */
@@ -98,7 +98,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     .client-name {
         font-weight: 700;
         color: #343a40; /* Cor mais escura para destaque */
-        font-size: 2rem;
+        font-size: 1.2rem;
         text-align: center;
         margin-bottom: 1.5rem;
         padding-bottom: 10px;
