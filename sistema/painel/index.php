@@ -1239,17 +1239,7 @@ input:checked + .slider:before {
 										<a href="comentarios">Ver Depoimentos</a>
 									</div> 
 								</li>
-
-								<li>
-									<div class="theme-switcher-container">
-										<span class="theme-label-text">Tema</span>
-										<label class="switch">
-											<input type="checkbox" id="theme-toggle">
-											<span class="slider round"></span>
-										</label>
-										<span id="theme-status" class="theme-label-text">Claro</span>
-									</div>
-								</li>
+								
 							</ul>
 						</li>	
 					<?php }
@@ -1257,10 +1247,16 @@ input:checked + .slider:before {
 					?>
                         <li class="dropdown head-dpdn" style="margin-left: 20px; color: <?php echo $cor?>" title='<?php echo $status?>'><small><i class="fab fa-whatsapp fa-2x"></i></small></li>
 
-
-
-
-						
+						<li>
+							<div class="theme-switcher-container">
+								<span class="theme-label-text">Tema</span>
+								<label class="switch">
+									<input type="checkbox" id="theme-toggle">
+									<span class="slider round"></span>
+								</label>
+								<span id="theme-status" class="theme-label-text">Claro</span>
+							</div>
+						</li>					
 
 
 					</ul>
