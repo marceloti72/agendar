@@ -3255,29 +3255,29 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
     const themeStatus = document.getElementById('theme-status');
 
     // Verifica a preferência de tema do usuário no localStorage
-    // Usa 'light' como padrão se nada for encontrado
+    // Agora o padrão é 'Escuro' se não houver nada salvo
     const currentTheme = localStorage.getItem('theme') || 'Escuro';
 
-    // Se o tema salvo for 'dark', aplica o CSS escuro
-    if (currentTheme === 'Claro') {
+    // Se o tema salvo for 'Escuro', aplica o CSS escuro
+    if (currentTheme === 'Escuro') {
         themeLink.href = 'css/SidebarNav.min2.css';
         themeToggle.checked = true;
-        themeStatus.textContent = 'Escuro';
+        // O status indica a opção para o usuário (o que será ativado ao clicar)
+        themeStatus.textContent = 'Claro';
     } else {
         // Caso contrário, aplica o CSS claro
         themeLink.href = 'css/SidebarNav.min.css';
         themeToggle.checked = false;
-        themeStatus.textContent = 'Claro';
-
+        themeStatus.textContent = 'Escuro';
     }
 
     // Adiciona um "ouvinte" de evento para o interruptor
     themeToggle.addEventListener('change', function() {
-        // Se o interruptor for marcado, o novo tema é 'dark'
+        // Se o interruptor for marcado, o novo tema é 'Escuro'
         if (this.checked) {
             localStorage.setItem('theme', 'Escuro');
         } else {
-            // Caso contrário, o novo tema é 'light'
+            // Caso contrário, o novo tema é 'Claro'
             localStorage.setItem('theme', 'Claro');
         }
         // Recarrega a página para que o novo CSS seja carregado
