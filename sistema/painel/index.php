@@ -114,7 +114,8 @@ $plano = $res3['plano'];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 	<!-- side nav css file -->
-	<link href='css/SidebarNav.min2.css' media='all' rel='stylesheet' type='text/css'/>
+	<!-- <link href='css/SidebarNav.min2.css' media='all' rel='stylesheet' type='text/css'/> -->
+	<link href='css/SidebarNav.min.css' media='all' rel='stylesheet' type='text/css' id="theme-stylesheet"/>
 	<!-- //side nav css file -->
 
 	<link rel="stylesheet" href="css/monthly.css">
@@ -423,6 +424,80 @@ $plano = $res3['plano'];
 }
 .btn-primary:hover {
     background-color: #5a9bd4;
+}
+
+.theme-switcher-container {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Alinha os itens à esquerda */
+    font-size: 14px;
+    color: #f1f1f1;
+}
+
+.theme-label-text {
+    margin-right: 10px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+/* Arredonda os sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
 }
 
 
@@ -1163,6 +1238,17 @@ $plano = $res3['plano'];
 									<div class="notification_bottom" style="background: #d8d4fc">
 										<a href="comentarios">Ver Depoimentos</a>
 									</div> 
+								</li>
+
+								<li>
+									<div class="theme-switcher-container">
+										<span class="theme-label-text">Tema</span>
+										<label class="switch">
+											<input type="checkbox" id="theme-toggle">
+											<span class="slider round"></span>
+										</label>
+										<span id="theme-status" class="theme-label-text">Claro</span>
+									</div>
 								</li>
 							</ul>
 						</li>	
@@ -3164,6 +3250,42 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
     document.getElementById('qrcode-container').style.display = 'none';
     document.getElementById('qrcode').innerHTML = '';
 });
+</script>
+
+<script>
+    // Encontra os elementos do interruptor e do link do CSS
+    const themeLink = document.getElementById('theme-stylesheet');
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeStatus = document.getElementById('theme-status');
+
+    // Verifica a preferência de tema do usuário no localStorage
+    // Usa 'light' como padrão se nada for encontrado
+    const currentTheme = localStorage.getItem('theme') || 'light';
+
+    // Se o tema salvo for 'dark', aplica o CSS escuro
+    if (currentTheme === 'dark') {
+        themeLink.href = 'css/SidebarNav.min.css';
+        themeToggle.checked = true;
+        themeStatus.textContent = 'Escuro';
+    } else {
+        // Caso contrário, aplica o CSS claro
+        themeLink.href = 'css/SidebarNav.min2.css';
+        themeToggle.checked = false;
+        themeStatus.textContent = 'Claro';
+    }
+
+    // Adiciona um "ouvinte" de evento para o interruptor
+    themeToggle.addEventListener('change', function() {
+        // Se o interruptor for marcado, o novo tema é 'dark'
+        if (this.checked) {
+            localStorage.setItem('theme', 'dark');
+        } else {
+            // Caso contrário, o novo tema é 'light'
+            localStorage.setItem('theme', 'light');
+        }
+        // Recarrega a página para que o novo CSS seja carregado
+        location.reload();
+    });
 </script>
 
 
