@@ -1249,12 +1249,12 @@ input:checked + .slider:before {
 
 						<li class="dropdown head-dpdn">
 							<div class="theme-switcher-container">
-								<span class="theme-label-text">Dark</span>
+								<span class="theme-label-text">Escuro</span>
 								<label class="switch">
 									<input type="checkbox" id="theme-toggle">
 									<span class="slider round"></span>
 								</label>
-								<span id="theme-status" class="theme-label-text">Licht</span>
+								<span id="theme-status" class="theme-label-text">Claro</span>
 							</div>
 						</li>					
 
@@ -3256,10 +3256,10 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
 
     // Verifica a preferência de tema do usuário no localStorage
     // Usa 'light' como padrão se nada for encontrado
-    const currentTheme = localStorage.getItem('theme') || 'light';
+    const currentTheme = localStorage.getItem('theme') || 'Escuro';
 
     // Se o tema salvo for 'dark', aplica o CSS escuro
-    if (currentTheme !== 'dark') {
+    if (currentTheme !== 'Escuro') {
         themeLink.href = 'css/SidebarNav.min2.css';
         themeToggle.checked = true;
         themeStatus.textContent = 'Escuro';
