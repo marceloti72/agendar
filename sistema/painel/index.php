@@ -3268,17 +3268,17 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
         themeLink.href = 'css/SidebarNav.min.css';
         themeToggle.checked = false;
         themeStatus.textContent = 'Escuro';
-		
+
     }
 
     // Adiciona um "ouvinte" de evento para o interruptor
     themeToggle.addEventListener('change', function() {
         // Se o interruptor for marcado, o novo tema é 'dark'
         if (this.checked) {
-            localStorage.setItem('theme', 'dark');
+            localStorage.setItem('theme', 'Claro');
         } else {
             // Caso contrário, o novo tema é 'light'
-            localStorage.setItem('theme', 'light');
+            localStorage.setItem('theme', 'Escuro');
         }
         // Recarrega a página para que o novo CSS seja carregado
         location.reload();
