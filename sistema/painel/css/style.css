@@ -445,7 +445,7 @@ li.dropdown.head-dpdn {
 li.dropdown.head-dpdn:nth-child(3) {
     border-right: 1px solid transparent;
 }
-li.dropdown.head-dpdn a.dropdown-toggle {
+/* li.dropdown.head-dpdn a.dropdown-toggle {
     padding: 0.5em .7em;
     background: #111111;
     margin: 0 .5em;
@@ -454,7 +454,7 @@ li.dropdown.head-dpdn a.dropdown-toggle {
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
-}
+} */
 ul.dropdown-menu li {
     margin-left: 0;
     width: 100%;

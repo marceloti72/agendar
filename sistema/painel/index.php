@@ -503,7 +503,7 @@ $plano = $res3['plano'];
                         // DEFINANDO SE É ADMINISTRADOR
 							if(@$_SESSION['nivel_usuario'] == 'administrador'){
 							?>
-							<li class="header">MENU ADMINISTRATIVO</li>
+							<!-- <li class="header">MENU ADMINISTRATIVO</li> -->
 
 
 							<!-- <li class="treeview <?php echo @$home ?>">
