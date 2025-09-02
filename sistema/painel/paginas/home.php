@@ -111,11 +111,11 @@ try {
 
 <style>
     /* Estilos gerais */
-    .main-page {
+    /* .main-page {
         padding: 20px;
-        background-color: #ffffffff;
+        background-color: #b7b7b7;
         min-height: 100vh;
-    }
+    } */
     .widget, .stat, .content-top-2 {
         margin-bottom: 20px;
     }
