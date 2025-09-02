@@ -1245,18 +1245,12 @@ input:checked + .slider:before {
 					<?php }
 
 					?>
-					    <li class="dropdown head-dpdn">
-							
-								<a href="#" class="dropdown-toggle" title="Escolher thema" ><i class="fa fa-sun" style="color:#FFF" id="theme-icon"></i>
-								
-							
+					    <li class="dropdown head-dpdn">							
+								<a href="#" class="dropdown-toggle" title="Escolher tema do sistema" ><i class="fa fa-sun" style="color:#FFF" id="theme-icon"></i>						
 						</li>
 
                         <li class="dropdown head-dpdn" style="margin-left: 20px; color: <?php echo $cor?>" title='<?php echo $status?>'><small><i class="fab fa-whatsapp fa-2x"></i></small></li>
-
-										
-
-
+						
 					</ul>
 					<?php 
 				}
