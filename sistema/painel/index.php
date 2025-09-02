@@ -3275,10 +3275,10 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
     themeToggle.addEventListener('change', function() {
         // Se o interruptor for marcado, o novo tema é 'dark'
         if (this.checked) {
-            localStorage.setItem('theme', 'Claro');
+            localStorage.setItem('theme', 'Escuro');
         } else {
             // Caso contrário, o novo tema é 'light'
-            localStorage.setItem('theme', 'Escuro');
+            localStorage.setItem('theme', 'Claro');
         }
         // Recarrega a página para que o novo CSS seja carregado
         location.reload();
