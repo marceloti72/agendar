@@ -1249,11 +1249,7 @@ input:checked + .slider:before {
 
 						<li class="dropdown head-dpdn">
 							<div class="theme-switcher-container">
-								<span id="theme-status" class="theme-label-text"></span>
-								<label class="switch">
-									<input type="checkbox" id="theme-toggle">
-									<span class="slider round"></span>
-								</label>
+								<i id="theme-icon" class="fa fa-sun"></i>
 							</div>
 						</li>				
 
@@ -3248,37 +3244,33 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
 </script>
 
 <script>
-    // Encontra os elementos do interruptor e do link do CSS
+    // Encontra os elementos do ícone e do link do CSS
     const themeLink = document.getElementById('theme-stylesheet');
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeStatus = document.getElementById('theme-status');
+    const themeIcon = document.getElementById('theme-icon');
 
-    // Verifica a preferência de tema do usuário no localStorage
-    // Usa 'Escuro' como padrão se nada for encontrado
-    const currentTheme = localStorage.getItem('theme') || 'Escuro';
-
-    // APLICA O TEMA AO CARREGAR A PÁGINA
-    if (currentTheme === 'Escuro') {
-        themeLink.href = 'css/SidebarNav.min.css';
-        themeToggle.checked = true; // Marca o checkbox
-        themeStatus.textContent = 'Escuro';
-    } else {
-        themeLink.href = 'css/SidebarNav.min2.css';
-        themeToggle.checked = false; // Desmarca o checkbox
-        themeStatus.textContent = 'Claro';
+    // Função para aplicar o tema com base no nome
+    function applyTheme(themeName) {
+        if (themeName === 'Claro') {
+            themeLink.href = 'css/SidebarNav.min2.css';
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        } else { // Tema 'Escuro'
+            themeLink.href = 'css/SidebarNav.min.css';
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
     }
 
-    // OUVE A MUDANÇA NO INTERRUPTOR
-    themeToggle.addEventListener('change', function() {
-        // Se o interruptor for marcado, o novo tema é 'Escuro'
-        if (this.checked) {
-            localStorage.setItem('theme', 'Escuro');
-        } else {
-            // Caso contrário, o novo tema é 'Claro'
-            localStorage.setItem('theme', 'Claro');
-        }
-        // Recarrega a página para que o novo CSS seja carregado
-        location.reload();
+    // Verifica a preferência do usuário no localStorage
+    // Usa 'Escuro' como padrão se nada for encontrado
+    const currentTheme = localStorage.getItem('theme') || 'Escuro';
+    applyTheme(currentTheme);
+
+    // Adiciona um "ouvinte" de evento de clique para o ícone
+    themeIcon.addEventListener('click', function() {
+        const newTheme = (localStorage.getItem('theme') === 'Escuro') ? 'Claro' : 'Escuro';
+        localStorage.setItem('theme', newTheme);
+        location.reload(); // Recarrega a página para aplicar o novo CSS
     });
 </script>
 
