@@ -3259,15 +3259,16 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
     const currentTheme = localStorage.getItem('theme') || 'Escuro';
 
     // Se o tema salvo for 'dark', aplica o CSS escuro
-    if (currentTheme !== 'Escuro') {
+    if (currentTheme === 'Claro') {
         themeLink.href = 'css/SidebarNav.min2.css';
         themeToggle.checked = true;
-        themeStatus.textContent = 'Escuro';
+        themeStatus.textContent = 'Claro';
     } else {
         // Caso contrário, aplica o CSS claro
         themeLink.href = 'css/SidebarNav.min.css';
         themeToggle.checked = false;
-        themeStatus.textContent = 'Claro';
+        themeStatus.textContent = 'Escuro';
+		
     }
 
     // Adiciona um "ouvinte" de evento para o interruptor
