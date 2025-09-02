@@ -1246,7 +1246,7 @@ input:checked + .slider:before {
 
 					?>
 					    <li >
-							<div class="theme-switcher-container notification_bottom">
+							<div class="notification_bottom">
 								<i id="theme-icon" class="fa fa-sun"></i>
 							</div>
 						</li>
