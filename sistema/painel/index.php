@@ -3260,13 +3260,13 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
 
     // Se o tema salvo for 'Escuro', aplica o CSS escuro
     if (currentTheme === 'Escuro') {
-        themeLink.href = 'css/SidebarNav.min2.css';
+        themeLink.href = 'css/SidebarNav.min.css';
         themeToggle.checked = true;
         // O status indica a opção para o usuário (o que será ativado ao clicar)
         themeStatus.textContent = 'Claro';
     } else {
         // Caso contrário, aplica o CSS claro
-        themeLink.href = 'css/SidebarNav.min.css';
+        themeLink.href = 'css/SidebarNav.min2.css';
         themeToggle.checked = false;
         themeStatus.textContent = 'Escuro';
     }
