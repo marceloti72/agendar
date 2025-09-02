@@ -1247,14 +1247,14 @@ input:checked + .slider:before {
 					?>
                         <li class="dropdown head-dpdn" style="margin-left: 20px; color: <?php echo $cor?>" title='<?php echo $status?>'><small><i class="fab fa-whatsapp fa-2x"></i></small></li>
 
-						<li>
+						<li class="dropdown head-dpdn">
 							<div class="theme-switcher-container">
-								<span class="theme-label-text">Tema</span>
+								<span class="theme-label-text">Dark</span>
 								<label class="switch">
 									<input type="checkbox" id="theme-toggle">
 									<span class="slider round"></span>
 								</label>
-								<span id="theme-status" class="theme-label-text">Claro</span>
+								<span id="theme-status" class="theme-label-text">Licht</span>
 							</div>
 						</li>					
 
