@@ -1245,9 +1245,9 @@ input:checked + .slider:before {
 					<?php }
 
 					?>
-					    <li class="dropdown head-dpdn" id="theme-icon">
+					    <li class="dropdown head-dpdn">
 							
-								<a href="#" class="dropdown-toggle" title="Escolher thema" ><i class="fa fa-sun" style="color:#FFF"></i>
+								<a href="#" class="dropdown-toggle" title="Escolher thema" ><i class="fa fa-sun" style="color:#FFF" id="theme-icon"></i>
 								
 							
 						</li>
