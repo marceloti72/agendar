@@ -1247,7 +1247,7 @@ input:checked + .slider:before {
 					?>
 					    <li class="dropdown head-dpdn">
 							
-								<a href="#" class="dropdown-toggle" title="Escolher thema" id="theme-icon"><i class="fa fa-sun" style="color:#FFF"></i>
+								<a href="#" title="Escolher thema" id="theme-icon"><i class="fa fa-sun dropdown-toggle" style="color:#FFF"></i>
 								
 							
 						</li>
@@ -3255,12 +3255,12 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
     function applyTheme(themeName) {
         if (themeName === 'Claro') {
             themeLink.href = 'css/SidebarNav.min2.css';
-            themeIcon.classList.remove('fa-sun');
-            themeIcon.classList.add('fa-moon');
+            themeIcon.classList.remove('fa-sun dropdown-toggle');
+            themeIcon.classList.add('fa-moon dropdown-toggle');
         } else { // Tema 'Escuro'
             themeLink.href = 'css/SidebarNav.min.css';
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
+            themeIcon.classList.remove('fa-moon dropdown-toggle');
+            themeIcon.classList.add('fa-sun dropdown-toggle');
         }
     }
 
