@@ -1245,13 +1245,15 @@ input:checked + .slider:before {
 					<?php }
 
 					?>
-                        <li class="dropdown head-dpdn" style="margin-left: 20px; color: <?php echo $cor?>" title='<?php echo $status?>'><small><i class="fab fa-whatsapp fa-2x"></i></small></li>
-
-						<li class="dropdown head-dpdn">
-							<div class="theme-switcher-container">
+					    <li >
+							<div class="theme-switcher-container notification_bottom">
 								<i id="theme-icon" class="fa fa-sun"></i>
 							</div>
-						</li>				
+						</li>
+
+                        <li class="dropdown head-dpdn" style="margin-left: 20px; color: <?php echo $cor?>" title='<?php echo $status?>'><small><i class="fab fa-whatsapp fa-2x"></i></small></li>
+
+										
 
 
 					</ul>
