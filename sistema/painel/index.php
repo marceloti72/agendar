@@ -1239,19 +1239,17 @@ input:checked + .slider:before {
 										<a href="comentarios">Ver Depoimentos</a>
 									</div> 
 								</li>
-
-								<li >
-							<div class="dropdown head-dpdn">
-								<i id="theme-icon" class="fa fa-sun"></i>
-							</div>
-						</li>
 								
 							</ul>
 						</li>	
 					<?php }
 
 					?>
-					    
+					    <li class="dropdown head-dpdn">
+							<div >
+								<i id="theme-icon" class="fa fa-sun"></i>
+							</div>
+						</li>
 
                         <li class="dropdown head-dpdn" style="margin-left: 20px; color: <?php echo $cor?>" title='<?php echo $status?>'><small><i class="fab fa-whatsapp fa-2x"></i></small></li>
 
