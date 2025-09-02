@@ -3262,12 +3262,12 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
     if (currentTheme === 'Claro') {
         themeLink.href = 'css/SidebarNav.min2.css';
         themeToggle.checked = true;
-        themeStatus.textContent = 'Claro';
+        themeStatus.textContent = 'Escuro';
     } else {
         // Caso contrário, aplica o CSS claro
         themeLink.href = 'css/SidebarNav.min.css';
         themeToggle.checked = false;
-        themeStatus.textContent = 'Escuro';
+        themeStatus.textContent = 'Claro';
 
     }
 
