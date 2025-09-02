@@ -1246,7 +1246,7 @@ input:checked + .slider:before {
 
 					?>
 					    <li >
-							<div class="notification_bottom" style="background: #d8d4fc">
+							<div class="dropdown head-dpdn">
 								<i id="theme-icon" class="fa fa-sun"></i>
 							</div>
 						</li>
