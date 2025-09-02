@@ -5,7 +5,7 @@
 
 /* Estilização da barra lateral esquerda */
 .sidebar-left {
-    background-color: #567ebb; /* Cinza médio */
+    background-color: #e4ebfd;
     margin: 0;
     border: none;
     border-radius: 0;
@@ -20,7 +20,7 @@
 
 /* Estilização dos links do menu */
 .sidebar-menu a {
-    color: #f1f1f1; /* Cinza bem claro/quase branco */
+    color: #8b8b8b; /* Cinza bem claro/quase branco */
     text-decoration: none; /* Remove sublinhado dos links */
 }
 
