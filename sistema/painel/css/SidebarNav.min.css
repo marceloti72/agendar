@@ -1,1 +1,170 @@
-.wrapper{position:relative}.sidebar-left{background-color: #757575;margin:0;border:none;border-radius:0}.sidebar-menu{list-style:none;margin:0;padding:0}.sidebar-menu a{color:#f1f1f1;text-decoration:none}.sidebar-menu > li{position:relative;margin:0;padding:0}.sidebar-menu > li > a{padding:12px 5px 12px 15px;display:block;font-size:14px;border-left:3px solid transparent}.sidebar-menu > li > a > .fa{width:20px}.sidebar-menu > li:hover > a,.sidebar-menu > li.active > a{color:#000000;background-color: #eeeeee;border-left-color:#A9A9A9}.sidebar-menu > li > .treeview-menu{margin:0 1px;background-color: #eeeeee;}.sidebar-menu > li .label,.sidebar-menu > li .badge{margin-top:3px;margin-right:5px}.sidebar-menu li.header{padding:10px 25px 10px 15px;font-size:12px;color:#e2e2e2;background-color: #474747;}.sidebar-menu li > a > .fa-angle-left{width:auto;height:auto;padding:0;margin-right:10px;margin-top:3px}.sidebar-menu li.active > a > .fa-angle-left{transform:rotate(-90deg)}.sidebar-menu li.active > .treeview-menu{display:block}.sidebar-menu .treeview-menu{display:none;list-style:none;padding:0;margin:0;padding-left:5px}.sidebar-menu .treeview-menu .treeview-menu{padding-left:20px}.sidebar-menu .treeview-menu > li{margin:0}.sidebar-menu .treeview-menu > li > a{padding:5px 5px 5px 15px;display:block;font-size:14px;color:#a0a0a0}.sidebar-menu .treeview-menu > li > a > .fa{width:20px}.sidebar-menu .treeview-menu > li > a > .fa-angle-left,.sidebar-menu .treeview-menu > li > a > .fa-angle-down{width:auto}.sidebar-menu .treeview-menu > li.active > a,.sidebar-menu .treeview-menu > li > a:hover{color:#374b63}@media (min-width:768px){.sidebar-left{position:absolute;top:0;left:0;bottom:0;width:200px;height:100%;z-index:2016}.sidebar-left .navbar-header{float:none}.sidebar-left .navbar-collapse{padding:0}.content{position:relative;margin-left:200px;height:100%;min-height:100%}}
+/* Container principal do sidebar */
+.wrapper {
+    position: relative;
+}
+
+/* Estilização da barra lateral esquerda */
+.sidebar-left {
+    background-color: #757575; /* Cinza médio */
+    margin: 0;
+    border: none;
+    border-radius: 0;
+}
+
+/* Estilização da lista de menu (ul) */
+.sidebar-menu {
+    list-style: none; /* Remove os marcadores de lista */
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilização dos links do menu */
+.sidebar-menu a {
+    color: #f1f1f1; /* Cinza bem claro/quase branco */
+    text-decoration: none; /* Remove sublinhado dos links */
+}
+
+/* Estilização dos itens de menu (li) principais */
+.sidebar-menu > li {
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilização dos links dos itens de menu principais */
+.sidebar-menu > li > a {
+    padding: 12px 5px 12px 15px;
+    display: block; /* Ocupa a largura total para ser clicável */
+    font-size: 14px;
+    border-left: 3px solid transparent; /* Borda esquerda transparente para o efeito de hover */
+}
+
+/* Estilização dos ícones (fa) */
+.sidebar-menu > li > a > .fa {
+    width: 20px;
+}
+
+/* Efeito de hover e item ativo do menu principal */
+.sidebar-menu > li:hover > a,
+.sidebar-menu > li.active > a {
+    color: #000000; /* Preto */
+    background-color: #eeeeee; /* Cinza muito claro */
+    border-left-color: #A9A9A9; /* Cinza médio para a borda */
+}
+
+/* Estilização do menu aninhado (sub-menu) */
+.sidebar-menu > li > .treeview-menu {
+    margin: 0 1px;
+    background-color: #eeeeee; /* Cinza muito claro */
+}
+
+/* Estilização dos rótulos e badges */
+.sidebar-menu > li .label,
+.sidebar-menu > li .badge {
+    margin-top: 3px;
+    margin-right: 5px;
+}
+
+/* Estilização do cabeçalho do menu */
+.sidebar-menu li.header {
+    padding: 10px 25px 10px 15px;
+    font-size: 12px;
+    color: #e2e2e2; /* Cinza muito claro */
+    background-color: #474747; /* Cinza escuro */
+}
+
+/* Estilização da seta de expansão/colapso */
+.sidebar-menu li > a > .fa-angle-left {
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin-right: 10px;
+    margin-top: 3px;
+}
+
+/* Rotação da seta quando o item está ativo (expansão) */
+.sidebar-menu li.active > a > .fa-angle-left {
+    transform: rotate(-90deg);
+}
+
+/* Exibe o sub-menu quando o item principal está ativo */
+.sidebar-menu li.active > .treeview-menu {
+    display: block;
+}
+
+/* Estilização do sub-menu (esconde por padrão) */
+.sidebar-menu .treeview-menu {
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding-left: 5px;
+}
+
+/* Estilização de sub-menus aninhados */
+.sidebar-menu .treeview-menu .treeview-menu {
+    padding-left: 20px;
+}
+
+/* Estilização dos itens do sub-menu */
+.sidebar-menu .treeview-menu > li {
+    margin: 0;
+}
+
+/* Estilização dos links do sub-menu */
+.sidebar-menu .treeview-menu > li > a {
+    padding: 5px 5px 5px 15px;
+    display: block;
+    font-size: 14px;
+    color: #a0a0a0; /* Cinza claro */
+}
+
+/* Estilização dos ícones do sub-menu */
+.sidebar-menu .treeview-menu > li > a > .fa {
+    width: 20px;
+}
+
+/* Estilização das setas do sub-menu */
+.sidebar-menu .treeview-menu > li > a > .fa-angle-left,
+.sidebar-menu .treeview-menu > li > a > .fa-angle-down {
+    width: auto;
+}
+
+/* Efeito de hover e item ativo do sub-menu */
+.sidebar-menu .treeview-menu > li.active > a,
+.sidebar-menu .treeview-menu > li > a:hover {
+    color: #374b63; /* Azul acinzentado */
+}
+
+/* Mídia query para telas maiores que 768px (Desktop) */
+@media (min-width: 768px) {
+    /* Posicionamento do sidebar para telas maiores */
+    .sidebar-left {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 200px;
+        height: 100%;
+        min-height: 100%;
+        z-index: 2016; /* Garante que fique acima de outros elementos */
+    }
+
+    /* Oculta a barra de navegação no sidebar para desktop */
+    .sidebar-left .navbar-header {
+        float: none;
+    }
+
+    /* Remove o preenchimento da barra de navegação no sidebar para desktop */
+    .sidebar-left .navbar-collapse {
+        padding: 0;
+    }
+
+    /* Empurra o conteúdo principal para a direita para dar espaço ao sidebar */
+    .content {
+        position: relative;
+        margin-left: 200px;
+        height: 100%;
+        min-height: 100%;
+    }
+}
