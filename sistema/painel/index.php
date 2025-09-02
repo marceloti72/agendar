@@ -1246,10 +1246,10 @@ input:checked + .slider:before {
 
 					?>
 					    <li class="dropdown head-dpdn">
-							<div >
-								<a href="#" class="dropdown-toggle" title="Escolher thema" id="theme-icon"><i class="fa fa-sun <?php echo $icon5?>" style="color:#FFF"></i>
+							
+								<a href="#" class="dropdown-toggle" title="Escolher thema" id="theme-icon"><i class="fa fa-sun" style="color:#FFF"></i>
 								
-							</div>
+							
 						</li>
 
                         <li class="dropdown head-dpdn" style="margin-left: 20px; color: <?php echo $cor?>" title='<?php echo $status?>'><small><i class="fab fa-whatsapp fa-2x"></i></small></li>
