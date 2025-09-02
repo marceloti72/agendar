@@ -113,7 +113,7 @@ try {
     /* Estilos gerais */
     .main-page {
         padding: 20px;
-        background-color: #b7b7b7;
+        background-color: #ffffffff;
         min-height: 100vh;
     }
     .widget, .stat, .content-top-2 {
