@@ -3259,13 +3259,13 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
     const currentTheme = localStorage.getItem('theme') || 'light';
 
     // Se o tema salvo for 'dark', aplica o CSS escuro
-    if (currentTheme === 'dark') {
-        themeLink.href = 'css/SidebarNav.min.css';
+    if (currentTheme !== 'dark') {
+        themeLink.href = 'css/SidebarNav.min2.css';
         themeToggle.checked = true;
         themeStatus.textContent = 'Escuro';
     } else {
         // Caso contrário, aplica o CSS claro
-        themeLink.href = 'css/SidebarNav.min2.css';
+        themeLink.href = 'css/SidebarNav.min.css';
         themeToggle.checked = false;
         themeStatus.textContent = 'Claro';
     }
