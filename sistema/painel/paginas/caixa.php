@@ -43,8 +43,8 @@ $report_data = [];
 try {
     $sql = "SELECT c.id, u.nome as operador_nome, c.data_abertura, c.valor_abertura, u2.nome as usuario_abertura_nome, c.obs 
             FROM caixa c
-            JOIN usuarios u ON c.operador = u.id_usuario
-            JOIN usuarios u2 ON c.usuario_abertura = u2.id_usuario
+            JOIN usuarios u ON c.operador = u.id
+            JOIN usuarios u2 ON c.usuario_abertura = u2.id
             WHERE c.id_conta = :id_conta ORDER BY c.data_abertura DESC";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
