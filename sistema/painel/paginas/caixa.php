@@ -48,8 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_pdf']) && !$ca
         $stmt->execute();
         
         $pdo->commit();
-        $message = "Caixa aberto com sucesso! 🎉";
-        header("Location: caixa.php?message=" . urlencode($message));
+        //$message = "Caixa aberto com sucesso! 🎉";
+        header("Location: caixa.php");
         exit;
         
     } catch(PDOException $e) {
