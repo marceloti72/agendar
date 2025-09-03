@@ -607,6 +607,12 @@ input:checked + .slider:before {
 								</ul>
 							</li>
 
+							<li class="treeview">
+								<a href="caixa">
+								<i class="fas fa-cash-register me-2"></i> <span> Abrir Caixa</span>
+								</a>
+							</li>
+
 							<li class="treeview <?php echo @$menu_agendamentos ?>">
 								<a href="agendamentos">
 								<i class="fe fe-clock"></i> <span> Agendamentos</span>
