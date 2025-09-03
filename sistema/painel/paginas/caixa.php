@@ -41,6 +41,24 @@ if (isset($_GET['message'])) {
     $message = htmlspecialchars($_GET['message']);
 }
 
+// Lógica para buscar o último valor de fechamento
+$last_closing_value = null;
+$suggested_opening_value = null;
+try {
+    $sql_last_box = "SELECT valor_fechamento, sangrias FROM caixa WHERE id_conta = :id_conta AND valor_fechamento IS NOT NULL ORDER BY id DESC LIMIT 1";
+    $stmt_last_box = $pdo->prepare($sql_last_box);
+    $stmt_last_box->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+    $stmt_last_box->execute();
+    $last_box_data = $stmt_last_box->fetch(PDO::FETCH_ASSOC);
+
+    if ($last_box_data) {
+        $last_closing_value = $last_box_data['valor_fechamento'];
+        $sangrias = $last_box_data['sangrias'] ?? 0;
+        $suggested_opening_value = $last_closing_value - $sangrias;
+    }
+} catch(PDOException $e) {
+    $message = "Erro ao carregar o último valor de fechamento: " . $e->getMessage();
+}
 
 $report_data = [];
 try {
@@ -362,7 +380,13 @@ try {
                 <div class="form-field">
                     <label for="valor_abertura" class="form-label">Valor Inicial (R$)</label>
                     <input type="number" step="0.01" class="form-input" id="valor_abertura"
-                           name="valor_abertura" required placeholder="0.00">
+                           name="valor_abertura" required placeholder="0.00"
+                           value="<?php echo isset($suggested_opening_value) ? htmlspecialchars(number_format($suggested_opening_value, 2, '.', '')) : ''; ?>">
+                    <?php if (isset($last_closing_value)): ?>
+                        <p style="font-size: 0.8rem; color: #6c757d; margin-top: 0.5rem;">
+                            Valor do último fechamento: R$ <?php echo number_format($last_closing_value, 2, ',', '.'); ?>
+                        </p>
+                    <?php endif; ?>
                 </div>
                 <div class="form-field">
                     <label for="obs" class="form-label">Observações</label>
