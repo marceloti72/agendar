@@ -53,9 +53,9 @@ try {
                 u_fe.nome as usuario_fechamento_nome,
                 c.obs 
             FROM caixa c
-            JOIN usuarios u_op ON c.operador = u_op.id
-            JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id
-            LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id
+            JOIN usuarios u_op ON c.operador = u_op.id_usuario
+            JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id_usuario
+            LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id_usuario
             WHERE c.id_conta = :id_conta 
             ORDER BY c.data_abertura DESC";
     $stmt = $pdo->prepare($sql);
@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
     
-    // Updated Headers with "Total"
+    // Removi a coluna 'Total' e adicionei a 'Quebra (R$)' no final
     $sheet->setCellValue('A1', 'Data Abertura');
     $sheet->setCellValue('B1', 'Data Fechamento');
     $sheet->setCellValue('C1', 'Operador');
@@ -78,14 +78,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
     $sheet->setCellValue('E1', 'Usuário Fechamento');
     $sheet->setCellValue('F1', 'Valor Abertura (R$)');
     $sheet->setCellValue('G1', 'Valor Fechamento (R$)');
-    $sheet->setCellValue('H1', 'Quebra (R$)');
-    $sheet->setCellValue('I1', 'Sangrias (R$)');
-    $sheet->setCellValue('J1', 'Total (R$)');
-    $sheet->setCellValue('K1', 'Observações');
+    $sheet->setCellValue('H1', 'Sangrias (R$)');
+    $sheet->setCellValue('I1', 'Observações');
+    $sheet->setCellValue('J1', 'Quebra (R$)');
     
     $row = 2;
     foreach ($report_data as $item) {
-        $total = ($item['valor_fechamento'] !== null) ? ($item['valor_fechamento'] - ($item['quebra'] ?? 0) - ($item['sangrias'] ?? 0)) : null;
+        // Cálculo da quebra de acordo com a nova regra: fechamento - abertura - sangrias
+        $quebra = ($item['valor_fechamento'] !== null) ? ($item['valor_fechamento'] - $item['valor_abertura'] - ($item['sangrias'] ?? 0)) : null;
         
         $sheet->setCellValue('A' . $row, date('d/m/Y', strtotime($item['data_abertura'])));
         $sheet->setCellValue('B' . $row, $item['data_fechamento'] ? date('d/m/Y', strtotime($item['data_fechamento'])) : '-');
@@ -94,17 +94,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
         $sheet->setCellValue('E' . $row, $item['usuario_fechamento_nome'] ?? '-');
         $sheet->setCellValue('F' . $row, number_format($item['valor_abertura'], 2, ',', '.'));
         $sheet->setCellValue('G' . $row, $item['valor_fechamento'] ? number_format($item['valor_fechamento'], 2, ',', '.') : '-');
-        $sheet->setCellValue('H' . $row, $item['quebra'] ? number_format($item['quebra'], 2, ',', '.') : '-');
-        $sheet->setCellValue('I' . $row, $item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-');
-        $sheet->setCellValue('J' . $row, $total ? number_format($total, 2, ',', '.') : '-');
-        $sheet->setCellValue('K' . $row, $item['obs'] ?? '-');
+        $sheet->setCellValue('H' . $row, $item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-');
+        $sheet->setCellValue('I' . $row, $item['obs'] ?? '-');
+        $sheet->setCellValue('J' . $row, $quebra ? number_format($quebra, 2, ',', '.') : '-');
         $row++;
     }
     
-    $sheet->getStyle('A1:K1')->getFont()->setBold(true);
-    $sheet->getStyle('A1:K1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    $sheet->getStyle('A1:J1')->getFont()->setBold(true);
+    $sheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
-    foreach (range('A', 'K') as $col) {
+    foreach (range('A', 'J') as $col) {
         $sheet->getColumnDimension($col)->setAutoSize(true);
     }
     
@@ -449,15 +448,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
                                     <th>Usuário Fechamento</th>
                                     <th>Valor Abertura (R$)</th>
                                     <th>Valor Fechamento (R$)</th>
-                                    <th>Quebra (R$)</th>
                                     <th>Sangrias (R$)</th>
-                                    <th>Total (R$)</th>
                                     <th>Observações</th>
+                                    <th>Quebra (R$)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($report_data as $item): 
-                                    $total = ($item['valor_fechamento'] !== null) ? ($item['valor_fechamento'] - ($item['quebra'] ?? 0) - ($item['sangrias'] ?? 0)) : null;
+                                    $quebra = ($item['valor_fechamento'] !== null) ? ($item['valor_fechamento'] - $item['valor_abertura'] - ($item['sangrias'] ?? 0)) : null;
                                 ?>
                                     <tr>
                                         <td><?php echo date('d/m/Y', strtotime($item['data_abertura'])); ?></td>
@@ -467,10 +465,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
                                         <td><?php echo htmlspecialchars($item['usuario_fechamento_nome'] ?? '-'); ?></td>
                                         <td><?php echo number_format($item['valor_abertura'], 2, ',', '.'); ?></td>
                                         <td><?php echo $item['valor_fechamento'] ? number_format($item['valor_fechamento'], 2, ',', '.') : '-'; ?></td>
-                                        <td><?php echo $item['quebra'] ? number_format($item['quebra'], 2, ',', '.') : '-'; ?></td>
                                         <td><?php echo $item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-'; ?></td>
-                                        <td><?php echo $total ? number_format($total, 2, ',', '.') : '-'; ?></td>
                                         <td><?php echo htmlspecialchars($item['obs'] ?? '-'); ?></td>
+                                        <td><?php echo $quebra ? number_format($quebra, 2, ',', '.') : '-'; ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
