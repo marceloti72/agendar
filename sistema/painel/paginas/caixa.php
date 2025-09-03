@@ -1,4 +1,5 @@
 <?php
+ob_start(); // Inicia o buffer de saída
 session_start();
 require_once("../conexao.php"); 
 require_once '../../vendor/autoload.php';
@@ -77,6 +78,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
         }
         
         $writer = new Xlsx($spreadsheet);
+        
+        // Limpa o buffer de saída antes de enviar os cabeçalhos
+        ob_end_clean();
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="relatorio_caixa.xlsx"');
         header('Cache-Control: max-age=0');
