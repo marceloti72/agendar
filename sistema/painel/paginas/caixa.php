@@ -1,13 +1,13 @@
 <?php
-// O buffer de saída é iniciado na primeira linha para capturar qualquer saída indesejada
+// O buffer de saída é iniciado na primeira linha, antes de qualquer coisa, para evitar qualquer saída indesejada.
 ob_start();
 
 session_start();
 require_once("../conexao.php");
 require_once '../../vendor/autoload.php';
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 if (!isset($_SESSION['id_conta'])) {
     header('Location: login.php');
@@ -16,9 +16,8 @@ if (!isset($_SESSION['id_conta'])) {
 
 $id_conta = $_SESSION['id_conta'];
 
-// O bloco de exportação para Excel deve ser executado no início,
-// garantindo que não haja conteúdo HTML antes.
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
+// O bloco de exportação para PDF é executado no início, garantindo que não haja conteúdo HTML antes.
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_pdf'])) {
     try {
         $sql = "SELECT
                     c.data_abertura,
@@ -41,64 +40,74 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
         $stmt->execute();
         $report_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
+        // Cria o HTML para o PDF
+        $html = '<style>
+                    body { font-family: sans-serif; }
+                    h1 { color: #333; text-align: center; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+                    th { background-color: #f2f2f2; }
+                    tr:nth-child(even) { background-color: #f9f9f9; }
+                </style>';
+        $html .= '<h1>Relatório Histórico de Caixas</h1>';
+        $html .= '<table>
+                    <thead>
+                        <tr>
+                            <th>Data Abertura</th>
+                            <th>Data Fechamento</th>
+                            <th>Operador</th>
+                            <th>Usuário Abertura</th>
+                            <th>Usuário Fechamento</th>
+                            <th>Valor Abertura (R$)</th>
+                            <th>Valor Fechamento (R$)</th>
+                            <th>Sangrias (R$)</th>
+                            <th>Quebra (R$)</th>
+                            <th>Observações</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
 
-        // Define os cabeçalhos da planilha
-        $sheet->setCellValue('A1', 'Data Abertura');
-        $sheet->setCellValue('B1', 'Data Fechamento');
-        $sheet->setCellValue('C1', 'Operador');
-        $sheet->setCellValue('D1', 'Usuário Abertura');
-        $sheet->setCellValue('E1', 'Usuário Fechamento');
-        $sheet->setCellValue('F1', 'Valor Abertura (R$)');
-        $sheet->setCellValue('G1', 'Valor Fechamento (R$)');
-        $sheet->setCellValue('H1', 'Sangrias (R$)');
-        $sheet->setCellValue('I1', 'Quebra (R$)');
-        $sheet->setCellValue('J1', 'Observações');
-
-        $row = 2;
         foreach ($report_data as $item) {
             $quebra = ($item['valor_fechamento'] !== null) ? ($item['valor_fechamento'] - $item['valor_abertura'] - ($item['sangrias'] ?? 0)) : null;
 
-            $sheet->setCellValue('A' . $row, date('d/m/Y', strtotime($item['data_abertura'])));
-            $sheet->setCellValue('B' . $row, $item['data_fechamento'] ? date('d/m/Y', strtotime($item['data_fechamento'])) : '-');
-            $sheet->setCellValue('C' . $row, $item['operador_nome']);
-            $sheet->setCellValue('D' . $row, $item['usuario_abertura_nome']);
-            $sheet->setCellValue('E' . $row, $item['usuario_fechamento_nome'] ?? '-');
-            $sheet->setCellValue('F' . $row, number_format($item['valor_abertura'], 2, ',', '.'));
-            $sheet->setCellValue('G' . $row, $item['valor_fechamento'] ? number_format($item['valor_fechamento'], 2, ',', '.') : '-');
-            $sheet->setCellValue('H' . $row, $item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-');
-            $sheet->setCellValue('I' . $row, $quebra ? number_format($quebra, 2, ',', '.') : '-');
-            $sheet->setCellValue('J' . $row, $item['obs'] ?? '-');
-            $row++;
+            $html .= '<tr>
+                        <td>' . date('d/m/Y', strtotime($item['data_abertura'])) . '</td>
+                        <td>' . ($item['data_fechamento'] ? date('d/m/Y', strtotime($item['data_fechamento'])) : '-') . '</td>
+                        <td>' . htmlspecialchars($item['operador_nome']) . '</td>
+                        <td>' . htmlspecialchars($item['usuario_abertura_nome']) . '</td>
+                        <td>' . htmlspecialchars($item['usuario_fechamento_nome'] ?? '-') . '</td>
+                        <td>' . number_format($item['valor_abertura'], 2, ',', '.') . '</td>
+                        <td>' . ($item['valor_fechamento'] ? number_format($item['valor_fechamento'], 2, ',', '.') : '-') . '</td>
+                        <td>' . ($item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-') . '</td>
+                        <td>' . ($quebra ? number_format($quebra, 2, ',', '.') : '-') . '</td>
+                        <td>' . htmlspecialchars($item['obs'] ?? '-') . '</td>
+                    </tr>';
         }
 
-        $sheet->getStyle('A1:J1')->getFont()->setBold(true);
-        $sheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $html .= '</tbody></table>';
 
-        foreach (range('A', 'J') as $col) {
-            $sheet->getColumnDimension($col)->setAutoSize(true);
-        }
-
-        $writer = new Xlsx($spreadsheet);
+        // Configura e gera o PDF
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
 
         // Limpa o buffer de saída antes de enviar os cabeçalhos
         ob_end_clean();
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="relatorio_caixa.xlsx"');
-        header('Cache-Control: max-age=0');
-        $writer->save('php://output');
+        $dompdf->stream('relatorio_caixa.pdf', ['Attachment' => true]);
         exit;
 
     } catch(PDOException $e) {
-        // Redireciona de volta com uma mensagem de erro
         header('Location: ' . $_SERVER['PHP_SELF'] . '?message=' . urlencode('Erro ao carregar relatório para exportação: ' . $e->getMessage()));
         exit;
     }
 }
 
 $message = '';
-if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_excel'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_pdf'])) {
     $operator = $_SESSION['id_usuario'];
     $opening_date = date('Y-m-d');
     $opening_value = floatval($_POST['valor_abertura']);
@@ -122,7 +131,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_excel'])) {
     }
 }
 
-// Verifica se há uma mensagem de erro na URL após a exportação
 if (isset($_GET['message'])) {
     $message = htmlspecialchars($_GET['message']);
 }
@@ -518,9 +526,9 @@ try {
             </div>
             <div class="modal-footer">
                 <form method="POST">
-                    <input type="hidden" name="export_excel" value="1">
+                    <input type="hidden" name="export_pdf" value="1">
                     <button type="submit" class="btn btn-primary btn-icon">
-                        <i class="fas fa-file-excel"></i> Exportar para Excel
+                        <i class="fas fa-file-pdf"></i> Exportar para PDF
                     </button>
                 </form>
                 <button type="button" class="btn btn-secondary" onclick="closeModal('relatorioModal')">Fechar</button>
