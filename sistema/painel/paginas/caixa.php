@@ -384,7 +384,7 @@ try {
                            value="<?php echo isset($suggested_opening_value) ? htmlspecialchars(number_format($suggested_opening_value, 2, '.', '')) : ''; ?>">
                     <?php if (isset($last_closing_value)): ?>
                         <p style="font-size: 0.8rem; color: #6c757d; margin-top: 0.5rem;">
-                            Valor do último fechamento: R$ <?php echo number_format($last_closing_value, 2, ',', '.'); ?>
+                            Valor da última sessão: R$ <?php echo number_format($last_closing_value, 2, ',', '.'); ?>
                         </p>
                     <?php endif; ?>
                 </div>
