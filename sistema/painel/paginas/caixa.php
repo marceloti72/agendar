@@ -97,14 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abertura de Caixa</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
         body {
             background-color: #f8f9fa;
@@ -169,7 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
             margin-bottom: 0;
         }
     </style>
-</head>
+
 <body>
     <div class="container">
         <div class="form-header">
@@ -206,7 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
     </div>
 
     <!-- Modal de Relatórios -->
-    <div class="modal " id="relatorioModal" tabindex="-1" aria-labelledby="relatorioModalLabel" aria-hidden="true">
+    <div class="modal fade" id="relatorioModal" tabindex="-1" aria-labelledby="relatorioModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -256,6 +249,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
 </body>
-</html>
