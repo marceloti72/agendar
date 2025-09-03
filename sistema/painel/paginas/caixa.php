@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $sql = "INSERT INTO caixa (operador, data_abertura, valor_abertura, usuario_abertura, obs, id_conta) 
                 VALUES (:operador, :data_abertura, :valor_abertura, :usuario_abertura, :obs, :id_conta)";
-        $stmt = $conn->prepare($sql);
+        $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':operador', $operador, PDO::PARAM_INT);
         $stmt->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
         $stmt->bindParam(':data_abertura', $data_abertura);
