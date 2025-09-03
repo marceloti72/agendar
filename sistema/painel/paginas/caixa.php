@@ -1,7 +1,9 @@
 <?php
-ob_start(); // Inicia o buffer de saída
+// O buffer de saída é iniciado na primeira linha para capturar qualquer saída indesejada
+ob_start();
+
 session_start();
-require_once("../conexao.php"); 
+require_once("../conexao.php");
 require_once '../../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -14,24 +16,25 @@ if (!isset($_SESSION['id_conta'])) {
 
 $id_conta = $_SESSION['id_conta'];
 
-// O bloco de exportação para Excel deve ser executado antes de qualquer outra saída de HTML.
+// O bloco de exportação para Excel deve ser executado no início,
+// garantindo que não haja conteúdo HTML antes.
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
     try {
-        $sql = "SELECT 
-                    c.data_abertura, 
-                    c.data_fechamento, 
-                    c.valor_abertura, 
-                    c.valor_fechamento, 
+        $sql = "SELECT
+                    c.data_abertura,
+                    c.data_fechamento,
+                    c.valor_abertura,
+                    c.valor_fechamento,
                     c.sangrias,
-                    u_op.nome as operador_nome, 
+                    u_op.nome as operador_nome,
                     u_ab.nome as usuario_abertura_nome,
                     u_fe.nome as usuario_fechamento_nome,
-                    c.obs 
+                    c.obs
                 FROM caixa c
                 JOIN usuarios u_op ON c.operador = u_op.id
                 JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id
                 LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id
-                WHERE c.id_conta = :id_conta 
+                WHERE c.id_conta = :id_conta
                 ORDER BY c.data_abertura DESC";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
@@ -40,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        
+
         // Define os cabeçalhos da planilha
         $sheet->setCellValue('A1', 'Data Abertura');
         $sheet->setCellValue('B1', 'Data Fechamento');
@@ -52,11 +55,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
         $sheet->setCellValue('H1', 'Sangrias (R$)');
         $sheet->setCellValue('I1', 'Quebra (R$)');
         $sheet->setCellValue('J1', 'Observações');
-        
+
         $row = 2;
         foreach ($report_data as $item) {
             $quebra = ($item['valor_fechamento'] !== null) ? ($item['valor_fechamento'] - $item['valor_abertura'] - ($item['sangrias'] ?? 0)) : null;
-            
+
             $sheet->setCellValue('A' . $row, date('d/m/Y', strtotime($item['data_abertura'])));
             $sheet->setCellValue('B' . $row, $item['data_fechamento'] ? date('d/m/Y', strtotime($item['data_fechamento'])) : '-');
             $sheet->setCellValue('C' . $row, $item['operador_nome']);
@@ -69,16 +72,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
             $sheet->setCellValue('J' . $row, $item['obs'] ?? '-');
             $row++;
         }
-        
+
         $sheet->getStyle('A1:J1')->getFont()->setBold(true);
         $sheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        
+
         foreach (range('A', 'J') as $col) {
             $sheet->getColumnDimension($col)->setAutoSize(true);
         }
-        
+
         $writer = new Xlsx($spreadsheet);
-        
+
         // Limpa o buffer de saída antes de enviar os cabeçalhos
         ob_end_clean();
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -103,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_excel'])) {
     $obs = trim($_POST['obs']);
 
     try {
-        $sql = "INSERT INTO caixa (operador, data_abertura, valor_abertura, usuario_abertura, obs, id_conta) 
+        $sql = "INSERT INTO caixa (operador, data_abertura, valor_abertura, usuario_abertura, obs, id_conta)
                 VALUES (:operador, :data_abertura, :valor_abertura, :usuario_abertura, :obs, :id_conta)";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':operador', $operator, PDO::PARAM_INT);
@@ -127,22 +130,21 @@ if (isset($_GET['message'])) {
 
 $report_data = [];
 try {
-    // Corrigido para `u_op.id`
-    $sql = "SELECT 
-                c.data_abertura, 
-                c.data_fechamento, 
-                c.valor_abertura, 
-                c.valor_fechamento, 
+    $sql = "SELECT
+                c.data_abertura,
+                c.data_fechamento,
+                c.valor_abertura,
+                c.valor_fechamento,
                 c.sangrias,
-                u_op.nome as operador_nome, 
+                u_op.nome as operador_nome,
                 u_ab.nome as usuario_abertura_nome,
                 u_fe.nome as usuario_fechamento_nome,
-                c.obs 
+                c.obs
             FROM caixa c
             JOIN usuarios u_op ON c.operador = u_op.id
             JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id
             LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id
-            WHERE c.id_conta = :id_conta 
+            WHERE c.id_conta = :id_conta
             ORDER BY c.data_abertura DESC";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
@@ -186,13 +188,13 @@ try {
             align-items: center;
             min-height: 100vh;
         }
-        
+
         .container-app {
             width: 100%;
             max-width: 850px;
             padding: 1rem;
         }
-        
+
         .app-card {
             border: none;
             border-radius: 1rem;
@@ -200,36 +202,36 @@ try {
             background-color: var(--white-bg);
             padding: 2.5rem;
         }
-        
+
         .form-header {
             text-align: center;
             margin-bottom: 2.5rem;
         }
-        
+
         .form-header h2 {
             color: #212529;
             font-weight: 700;
             font-size: 2.25rem;
             margin: 0;
         }
-        
+
         .form-header p {
             color: #6c757d;
             font-size: 1rem;
             margin-top: 0.5rem;
         }
-        
+
         .form-field {
             margin-bottom: 1.5rem;
         }
-        
+
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
             color: #495057;
         }
-        
+
         .form-input, .form-textarea {
             display: block;
             width: 100%;
@@ -243,20 +245,20 @@ try {
             border-radius: 0.5rem;
             transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
-        
+
         .form-input:focus, .form-textarea:focus {
             border-color: #86b7fe;
             outline: 0;
             box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
         }
-        
+
         .button-group {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
             justify-content: center;
         }
-        
+
         .btn {
             padding: 0.75rem 1.5rem;
             font-size: 1rem;
@@ -269,37 +271,37 @@ try {
             font-weight: 600;
             transition: all 0.3s ease;
         }
-        
+
         .btn-primary {
             color: #fff;
             background-color: var(--primary-color);
             border-color: var(--primary-color);
         }
-        
+
         .btn-primary:hover {
             background-color: #0a58ca;
             border-color: #0a58ca;
             transform: translateY(-2px);
         }
-        
+
         .btn-success {
             color: #fff;
             background-color: var(--success-color);
             border-color: var(--success-color);
         }
-        
+
         .btn-success:hover {
             background-color: #146c43;
             border-color: #146c43;
             transform: translateY(-2px);
         }
-        
+
         .btn-secondary {
             color: #fff;
             background-color: var(--secondary-color);
             border-color: var(--secondary-color);
         }
-        
+
         .btn-secondary:hover {
             background-color: #5c636a;
             border-color: #5c636a;
@@ -311,26 +313,26 @@ try {
             justify-content: center;
             gap: 0.75rem;
         }
-        
+
         .alert {
             padding: 1rem 1.5rem;
             border-radius: 0.75rem;
             margin-bottom: 1.5rem;
             border: 1px solid transparent;
         }
-        
+
         .alert-success {
             background-color: var(--success-bg);
             color: var(--success-color-dark);
             border-color: #badbcc;
         }
-        
+
         .alert-danger {
             background-color: var(--danger-bg);
             color: var(--danger-color);
             border-color: #f5c2c7;
         }
-        
+
         /* Modal Styles */
         .modal {
             display: none;
@@ -343,32 +345,32 @@ try {
             overflow: hidden;
             background-color: rgba(0, 0, 0, 0.5);
         }
-        
+
         .modal-content {
             background-color: #fff;
             margin: auto;
             border-radius: 1rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 95%; 
-            max-width: 1000px; 
+            width: 95%;
+            max-width: 1000px;
             padding: 2rem;
             position: relative;
             top: 50%;
             transform: translateY(-50%);
         }
-        
+
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
         }
-        
+
         .modal-title {
             font-size: 1.5rem;
             font-weight: 600;
         }
-        
+
         .btn-close {
             background: none;
             border: none;
@@ -378,10 +380,10 @@ try {
         }
 
         .modal-body {
-            max-height: 500px; 
+            max-height: 500px;
             overflow-y: auto;
         }
-        
+
         .modal-footer {
             display: flex;
             justify-content: space-between;
@@ -390,23 +392,23 @@ try {
             border-top: 1px solid #dee2e6;
             padding-top: 1rem;
         }
-        
+
         .table-responsive {
             width: 100%;
             overflow-x: auto;
             border-radius: 0.75rem;
             border: 1px solid #dee2e6;
         }
-        
+
         .table-custom {
             width: 100%;
             margin-bottom: 0;
             color: #212529;
             border-collapse: collapse;
             background-color: var(--white-bg);
-            font-size: 0.85rem; 
+            font-size: 0.85rem;
         }
-        
+
         .table-custom thead {
             position: sticky;
             top: 0;
@@ -414,14 +416,14 @@ try {
             font-weight: 600;
             border-bottom: 2px solid #dee2e6;
         }
-        
+
         .table-custom th, .table-custom td {
-            padding: 0.75rem 1rem; 
+            padding: 0.75rem 1rem;
             vertical-align: top;
             border-top: 1px solid #dee2e6;
-            white-space: nowrap; 
+            white-space: nowrap;
         }
-        
+
         .table-custom tbody tr:hover {
             background-color: #f2f2f2;
         }
@@ -445,12 +447,12 @@ try {
             <form method="POST">
                 <div class="form-field">
                     <label for="valor_abertura" class="form-label">Valor Inicial (R$)</label>
-                    <input type="number" step="0.01" class="form-input" id="valor_abertura" 
+                    <input type="number" step="0.01" class="form-input" id="valor_abertura"
                            name="valor_abertura" required placeholder="0.00">
                 </div>
                 <div class="form-field">
                     <label for="obs" class="form-label">Observações</label>
-                    <textarea class="form-textarea" id="obs" name="obs" rows="3" 
+                    <textarea class="form-textarea" id="obs" name="obs" rows="3"
                               placeholder="Digite observações importantes (opcional)"></textarea>
                 </div>
                 <div class="button-group">
@@ -493,7 +495,7 @@ try {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($report_data as $item): 
+                                <?php foreach ($report_data as $item):
                                     $quebra = ($item['valor_fechamento'] !== null) ? ($item['valor_fechamento'] - $item['valor_abertura'] - ($item['sangrias'] ?? 0)) : null;
                                 ?>
                                     <tr>
@@ -529,7 +531,7 @@ try {
     <script>
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'block';
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal(modalId) {
