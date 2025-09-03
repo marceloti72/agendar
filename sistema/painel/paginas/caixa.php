@@ -9,12 +9,11 @@ if (!isset($_SESSION['id_conta'])) {
 }
 
 $id_conta = $_SESSION['id_conta'];
-echo $_SESSION['id_usuario'];
 
 // Processar formulário de abertura de caixa
 $mensagem = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $operador = intval($_POST['operador']);
+    $operador = $_SESSION['id_usuario'];
     $data_abertura = date('Y-m-d');
     $valor_abertura = floatval($_POST['valor_abertura']);
     $usuario_abertura = $_SESSION['id_usuario'];
