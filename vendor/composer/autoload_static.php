@@ -36,8 +36,10 @@ class ComposerStaticInitc094d1f598efd6af538f6ae8476601cc
             'Symfony\\Component\\String\\' => 25,
             'Symfony\\Component\\HttpClient\\' => 29,
             'Symfony\\Component\\Console\\' => 26,
+            'Svg\\' => 4,
             'Stripe\\' => 7,
             'SpomkyLabs\\Pki\\' => 15,
+            'Sabberworm\\CSS\\' => 15,
         ),
         'P' => 
         array (
@@ -57,6 +59,7 @@ class ComposerStaticInitc094d1f598efd6af538f6ae8476601cc
         array (
             'Minishlink\\WebPush\\' => 19,
             'Matrix\\' => 7,
+            'Masterminds\\' => 12,
         ),
         'J' => 
         array (
@@ -69,9 +72,14 @@ class ComposerStaticInitc094d1f598efd6af538f6ae8476601cc
             'GuzzleHttp\\' => 11,
             'GrahamCampbell\\ResultType\\' => 26,
         ),
+        'F' => 
+        array (
+            'FontLib\\' => 8,
+        ),
         'D' => 
         array (
             'Dotenv\\' => 7,
+            'Dompdf\\' => 7,
         ),
         'C' => 
         array (
@@ -130,6 +138,10 @@ class ComposerStaticInitc094d1f598efd6af538f6ae8476601cc
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
         ),
+        'Svg\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/php-svg-lib/src/Svg',
+        ),
         'Stripe\\' => 
         array (
             0 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
@@ -137,6 +149,10 @@ class ComposerStaticInitc094d1f598efd6af538f6ae8476601cc
         'SpomkyLabs\\Pki\\' => 
         array (
             0 => __DIR__ . '/..' . '/spomky-labs/pki-framework/src',
+        ),
+        'Sabberworm\\CSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/src',
         ),
         'Psr\\SimpleCache\\' => 
         array (
@@ -191,6 +207,10 @@ class ComposerStaticInitc094d1f598efd6af538f6ae8476601cc
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
         ),
+        'Masterminds\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/masterminds/html5/src',
+        ),
         'Jose\\Component\\' => 
         array (
             0 => __DIR__ . '/..' . '/web-token/jwt-library',
@@ -211,9 +231,17 @@ class ComposerStaticInitc094d1f598efd6af538f6ae8476601cc
         array (
             0 => __DIR__ . '/..' . '/graham-campbell/result-type/src',
         ),
+        'FontLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/php-font-lib/src/FontLib',
+        ),
         'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
+        ),
+        'Dompdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/dompdf/src',
         ),
         'Composer\\Pcre\\' => 
         array (
@@ -236,6 +264,7 @@ class ComposerStaticInitc094d1f598efd6af538f6ae8476601cc
     public static $classMap = array (
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Dompdf\\Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
