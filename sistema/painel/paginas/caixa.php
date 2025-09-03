@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once("../conexao.php"); // Adjust the path as needed
-require_once '../../vendor/autoload.php'; // Include PHPspreadsheet
+require_once("../conexao.php");
+require_once '../../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -98,126 +98,277 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abertura de Caixa</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
             --primary-color: #0d6efd;
             --success-color: #198754;
+            --secondary-color: #6c757d;
             --light-bg: #f8f9fa;
             --white-bg: #ffffff;
             --card-border: rgba(0, 0, 0, 0.125);
             --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+            --danger-bg: #f8d7da;
+            --danger-color: #842029;
+            --success-bg: #d1e7dd;
+            --success-color-dark: #0f5132;
         }
+
         body {
             background-color: var(--light-bg);
             font-family: 'Inter', sans-serif;
-            transition: background-color 0.3s ease;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
-        .container {
+        
+        .container-app {
+            width: 100%;
             max-width: 850px;
-            margin-top: 50px;
+            padding: 1rem;
         }
-        .card {
+        
+        .app-card {
             border: none;
             border-radius: 1rem;
             box-shadow: var(--shadow-md);
             background-color: var(--white-bg);
             padding: 2.5rem;
         }
+        
         .form-header {
             text-align: center;
             margin-bottom: 2.5rem;
         }
+        
         .form-header h2 {
             color: #212529;
             font-weight: 700;
             font-size: 2.25rem;
+            margin: 0;
         }
+        
         .form-header p {
             color: #6c757d;
             font-size: 1rem;
             margin-top: 0.5rem;
         }
-        .form-control, .form-select, .btn {
-            border-radius: 0.5rem;
+        
+        .form-field {
+            margin-bottom: 1.5rem;
         }
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .form-input, .form-textarea {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.5rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            border-color: #86b7fe;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: 0.5rem;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid transparent;
+            font-weight: 600;
             transition: all 0.3s ease;
         }
+        
+        .btn-primary {
+            color: #fff;
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
         .btn-primary:hover {
             background-color: #0a58ca;
             border-color: #0a58ca;
             transform: translateY(-2px);
         }
+        
         .btn-success {
+            color: #fff;
             background-color: var(--success-color);
             border-color: var(--success-color);
-            transition: all 0.3s ease;
         }
+        
         .btn-success:hover {
             background-color: #146c43;
             border-color: #146c43;
             transform: translateY(-2px);
         }
+        
+        .btn-secondary {
+            color: #fff;
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5c636a;
+            border-color: #5c636a;
+        }
+
         .btn-icon {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.75rem;
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
         }
+        
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid transparent;
+        }
+        
         .alert-success {
-            background-color: #d1e7dd;
-            color: #0f5132;
+            background-color: var(--success-bg);
+            color: var(--success-color-dark);
             border-color: #badbcc;
-            border-radius: 0.75rem;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1.5rem;
         }
+        
         .alert-danger {
-            background-color: #f8d7da;
-            color: #842029;
+            background-color: var(--danger-bg);
+            color: var(--danger-color);
             border-color: #f5c2c7;
-            border-radius: 0.75rem;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1.5rem;
         }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
         .modal-content {
+            background-color: #fff;
+            margin: auto;
             border-radius: 1rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 900px;
+            padding: 2rem;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
         }
-        .table-container {
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--secondary-color);
+        }
+
+        .modal-body {
             max-height: 400px;
             overflow-y: auto;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            border-top: 1px solid #dee2e6;
+            padding-top: 1rem;
+        }
+        
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
             border-radius: 0.75rem;
             border: 1px solid #dee2e6;
         }
-        .table {
+        
+        .table-custom {
+            width: 100%;
             margin-bottom: 0;
+            color: #212529;
+            border-collapse: collapse;
             background-color: var(--white-bg);
         }
-        .table thead {
+        
+        .table-custom thead {
             position: sticky;
             top: 0;
-            z-index: 10;
             background-color: var(--light-bg);
             font-weight: 600;
             border-bottom: 2px solid #dee2e6;
         }
-        .modal-header, .modal-footer {
-            border: none;
+        
+        .table-custom th, .table-custom td {
+            padding: 1rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
         }
+        
+        .table-custom tbody tr:hover {
+            background-color: #f2f2f2;
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="card">
+    <div class="container-app">
+        <div class="app-card">
             <div class="form-header">
-                <h2><i class="fas fa-cash-register me-2"></i>Abertura de Caixa</h2>
+                <h2><i class="fas fa-cash-register"></i> Abertura de Caixa</h2>
                 <p>Preencha os dados para iniciar o dia de trabalho.</p>
             </div>
 
@@ -228,21 +379,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
             <?php endif; ?>
 
             <form method="POST">
-                <div class="mb-4">
+                <div class="form-field">
                     <label for="valor_abertura" class="form-label">Valor Inicial (R$)</label>
-                    <input type="number" step="0.01" class="form-control form-control-lg" id="valor_abertura" 
+                    <input type="number" step="0.01" class="form-input" id="valor_abertura" 
                            name="valor_abertura" required placeholder="0.00">
                 </div>
-                <div class="mb-4">
+                <div class="form-field">
                     <label for="obs" class="form-label">Observações</label>
-                    <textarea class="form-control" id="obs" name="obs" rows="3" 
+                    <textarea class="form-textarea" id="obs" name="obs" rows="3" 
                               placeholder="Digite observações importantes (opcional)"></textarea>
                 </div>
-                <div class="d-grid gap-3 d-md-flex justify-content-md-center">
-                    <button type="submit" class="btn btn-primary btn-lg btn-icon">
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary btn-icon">
                         <i class="fas fa-box-open"></i> Abrir Caixa
                     </button>
-                    <button type="button" class="btn btn-success btn-lg btn-icon" data-bs-toggle="modal" data-bs-target="#relatorioModal">
+                    <button type="button" class="btn btn-success btn-icon" onclick="openModal('relatorioModal')">
                         <i class="fas fa-file-alt"></i> Visualizar Relatórios
                     </button>
                 </div>
@@ -250,58 +401,74 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
         </div>
     </div>
 
-    <div class="modal fade" id="relatorioModal" tabindex="-1" aria-labelledby="relatorioModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="relatorioModalLabel">Relatório Histórico de Caixas</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <?php if (empty($report_data)): ?>
-                        <p class="text-center text-muted">Nenhum registro de caixa encontrado.</p>
-                    <?php else: ?>
-                        <div class="table-responsive table-container">
-                            <table class="table table-hover">
-                                <thead>
+    <div id="relatorioModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Relatório Histórico de Caixas</h5>
+                <button type="button" class="btn-close" onclick="closeModal('relatorioModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <?php if (empty($report_data)): ?>
+                    <p class="text-center">Nenhum registro de caixa encontrado.</p>
+                <?php else: ?>
+                    <div class="table-responsive">
+                        <table class="table-custom">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Operador</th>
+                                    <th>Data Abertura</th>
+                                    <th>Valor Abertura (R$)</th>
+                                    <th>Usuário Abertura</th>
+                                    <th>Observações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($report_data as $item): ?>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Operador</th>
-                                        <th>Data Abertura</th>
-                                        <th>Valor Abertura (R$)</th>
-                                        <th>Usuário Abertura</th>
-                                        <th>Observações</th>
+                                        <td><?php echo htmlspecialchars($item['id']); ?></td>
+                                        <td><?php echo htmlspecialchars($item['operador_nome']); ?></td>
+                                        <td><?php echo date('d/m/Y', strtotime($item['data_abertura'])); ?></td>
+                                    <td><?php echo number_format($item['valor_abertura'], 2, ',', '.'); ?></td>
+                                        <td><?php echo htmlspecialchars($item['usuario_abertura_nome']); ?></td>
+                                        <td><?php echo htmlspecialchars($item['obs'] ?? ''); ?></td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($report_data as $item): ?>
-                                        <tr>
-                                            <td><?php echo htmlspecialchars($item['id']); ?></td>
-                                            <td><?php echo htmlspecialchars($item['operador_nome']); ?></td>
-                                            <td><?php echo date('d/m/Y', strtotime($item['data_abertura'])); ?></td>
-                                            <td><?php echo number_format($item['valor_abertura'], 2, ',', '.'); ?></td>
-                                            <td><?php echo htmlspecialchars($item['usuario_abertura_nome']); ?></td>
-                                            <td><?php echo htmlspecialchars($item['obs'] ?? ''); ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    <?php endif; ?>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <form method="POST">
-                        <input type="hidden" name="export_excel" value="1">
-                        <button type="submit" class="btn btn-success btn-icon">
-                            <i class="fas fa-file-excel"></i> Exportar para Excel
-                        </button>
-                    </form>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                </div>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="modal-footer">
+                <form method="POST">
+                    <input type="hidden" name="export_excel" value="1">
+                    <button type="submit" class="btn btn-primary btn-icon">
+                        <i class="fas fa-file-excel"></i> Exportar para Excel
+                    </button>
+                </form>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('relatorioModal')">Fechar</button>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevents scrolling on the main page
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('relatorioModal');
+            if (event.target == modal) {
+                closeModal('relatorioModal');
+            }
+        }
+    </script>
 </body>
 </html>
