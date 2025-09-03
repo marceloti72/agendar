@@ -13,6 +13,11 @@ if (!isset($_SESSION['id_conta'])) {
 $id_conta = $_SESSION['id_conta'];
 
 $message = '';
+$show_abertura_modal = false;
+$opening_value = 0;
+$entrada_value = 0;
+$total_value = 0;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_pdf'])) {
     $operator = $_SESSION['id_usuario'];
     $opening_date = date('Y-m-d');
@@ -21,6 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_pdf'])) {
     $obs = trim($_POST['obs']);
 
     try {
+        $pdo->beginTransaction();
+        
         $sql = "INSERT INTO caixa (operador, data_abertura, valor_abertura, usuario_abertura, obs, id_conta)
                 VALUES (:operador, :data_abertura, :valor_abertura, :usuario_abertura, :obs, :id_conta)";
         $stmt = $pdo->prepare($sql);
@@ -31,8 +38,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_pdf'])) {
         $stmt->bindParam(':usuario_abertura', $opening_user, PDO::PARAM_INT);
         $stmt->bindParam(':obs', $obs);
         $stmt->execute();
+        
+        // Calcular o valor de entrada (soma dos pagamentos em dinheiro do dia)
+        $sql_entrada = "SELECT SUM(valor) AS valor_entrada FROM receber WHERE data_pgto = CURDATE() AND pago = 'Sim' AND tipo = 'Comanda' AND pgto = 'Dinheiro' AND id_conta = :id_conta";
+        $stmt_entrada = $pdo->prepare($sql_entrada);
+        $stmt_entrada->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+        $stmt_entrada->execute();
+        $entrada_data = $stmt_entrada->fetch(PDO::FETCH_ASSOC);
+        $entrada_value = $entrada_data['valor_entrada'] ?? 0;
+        
+        $total_value = $opening_value + $entrada_value;
+        
+        $pdo->commit();
         $message = "Caixa aberto com sucesso! 🎉";
+        $show_abertura_modal = true;
+        
     } catch(PDOException $e) {
+        $pdo->rollBack();
         $message = "Erro ao abrir caixa: " . $e->getMessage();
     }
 }
@@ -238,6 +260,18 @@ try {
             background-color: #5c636a;
             border-color: #5c636a;
         }
+        
+        .btn-info {
+            color: #fff;
+            background-color: #0dcaf0;
+            border-color: #0dcaf0;
+        }
+
+        .btn-info:hover {
+            background-color: #31d2f2;
+            border-color: #31d2f2;
+        }
+
 
         .btn-icon {
             display: flex;
@@ -405,6 +439,34 @@ try {
         </div>
     </div>
 
+    <!-- Modal de Abertura de Caixa -->
+    <div id="aberturaModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h5 class="modal-title" style="font-size: 1.75rem;">Caixa Aberto!</h5>
+                <button type="button" class="btn-close" onclick="closeModal('aberturaModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Seu caixa foi aberto com sucesso para iniciar o dia de trabalho. Aqui está um resumo dos valores de entrada até agora.</p>
+                <div style="background-color: #e9ecef; padding: 1.5rem; border-radius: 0.75rem;">
+                    <p style="font-size: 1rem; margin-bottom: 0.5rem;"><strong>Valor de Abertura:</strong> R$ <?php echo number_format($opening_value, 2, ',', '.'); ?></p>
+                    <p style="font-size: 1rem; margin-bottom: 0.5rem;"><strong>Entradas do Dia (Dinheiro):</strong> R$ <?php echo number_format($entrada_value, 2, ',', '.'); ?></p>
+                    <p style="font-size: 1.25rem; font-weight: 700; margin-top: 1.5rem; border-top: 1px dashed #ced4da; padding-top: 1rem;">
+                        Total Previsto em Caixa: R$ <?php echo number_format($total_value, 2, ',', '.'); ?>
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content: flex-end;">
+                <a href="fechar_caixa.php" class="btn btn-primary btn-icon">
+                    <i class="fas fa-lock"></i> Fechar Caixa
+                </a>
+                <button type="button" class="btn btn-secondary btn-icon" onclick="openModal('relatorioModal')">
+                    <i class="fas fa-file-alt"></i> Relatório
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Modal de Relatórios -->
     <div id="relatorioModal" class="modal">
         <div class="modal-content">
@@ -523,6 +585,13 @@ try {
                 exportBtn.disabled = false;
             }
         });
+
+        // Open the 'aberturaModal' if the flag is set after form submission
+        <?php if ($show_abertura_modal): ?>
+            window.onload = function() {
+                openModal('aberturaModal');
+            };
+        <?php endif; ?>
     </script>
 </body>
 </html>
