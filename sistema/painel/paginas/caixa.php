@@ -13,6 +13,29 @@ echo $_SESSION['id_usuario'];
 
 // Processar formulário de abertura de caixa
 $mensagem = '';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $operador = intval($_POST['operador']);
+    $data_abertura = date('Y-m-d');
+    $valor_abertura = floatval($_POST['valor_abertura']);
+    $usuario_abertura = $_SESSION['id_usuario'];
+    $obs = trim($_POST['obs']);
+
+    try {
+        $sql = "INSERT INTO caixa (operador, data_abertura, valor_abertura, usuario_abertura, obs, id_conta) 
+                VALUES (:operador, :data_abertura, :valor_abertura, :usuario_abertura, :obs, :id_conta)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':operador', $operador, PDO::PARAM_INT);
+        $stmt->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+        $stmt->bindParam(':data_abertura', $data_abertura);
+        $stmt->bindParam(':valor_abertura', $valor_abertura);
+        $stmt->bindParam(':usuario_abertura', $usuario_abertura, PDO::PARAM_INT);
+        $stmt->bindParam(':obs', $obs);
+        $stmt->execute();
+        $mensagem = "Caixa aberto com sucesso!";
+    } catch(PDOException $e) {
+        $mensagem = "Erro ao abrir caixa: " . $e->getMessage();
+    }
+}
 
 ?>
 
@@ -77,17 +100,7 @@ $mensagem = '';
         <?php endif; ?>
 
         <form method="POST">
-            <div class="mb-3">
-                <label for="operador" class="form-label">Operador</label>
-                <select class="form-select" id="operador" name="operador" required>
-                    <option value="">Selecione um operador</option>
-                    <?php foreach ($operadores as $operador): ?>
-                        <option value="<?php echo $operador['id']; ?>">
-                            <?php echo htmlspecialchars($operador['nome']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+            
             <div class="mb-3">
                 <label for="valor_abertura" class="form-label">Valor Inicial (R$)</label>
                 <input type="number" step="0.01" class="form-control" id="valor_abertura" 
