@@ -9,42 +9,11 @@ if (!isset($_SESSION['id_conta'])) {
 }
 
 $id_conta = $_SESSION['id_conta'];
-
+echo $_SESSION['id_usuario'];
 
 // Processar formulário de abertura de caixa
 $mensagem = '';
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $operador = intval($_POST['operador']);
-    $data_abertura = date('Y-m-d');
-    $valor_abertura = floatval($_POST['valor_abertura']);
-    $usuario_abertura = $_SESSION['id_usuario'];
-    $obs = trim($_POST['obs']);
 
-    try {
-        $sql = "INSERT INTO caixa (operador, data_abertura, valor_abertura, usuario_abertura, obs) 
-                VALUES (:operador, :data_abertura, :valor_abertura, :usuario_abertura, :obs)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':operador', $operador, PDO::PARAM_INT);
-        $stmt->bindParam(':data_abertura', $data_abertura);
-        $stmt->bindParam(':valor_abertura', $valor_abertura);
-        $stmt->bindParam(':usuario_abertura', $usuario_abertura, PDO::PARAM_INT);
-        $stmt->bindParam(':obs', $obs);
-        $stmt->execute();
-        $mensagem = "Caixa aberto com sucesso!";
-    } catch(PDOException $e) {
-        $mensagem = "Erro ao abrir caixa: " . $e->getMessage();
-    }
-}
-
-// Buscar operadores disponíveis (simulação de tabela de operadores)
-$operadores = [];
-try {
-    $sql = "SELECT id, nome FROM usuarios where nivel = 'administrador' and id_conta = '$id_conta' "; // Supondo uma tabela operadores com id e nome
-    $stmt = $conn->query($sql);
-    $operadores = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    $mensagem = "Erro ao carregar operadores: " . $e->getMessage();
-}
 ?>
 
 
