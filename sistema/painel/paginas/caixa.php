@@ -53,9 +53,9 @@ try {
                 u_fe.nome as usuario_fechamento_nome,
                 c.obs 
             FROM caixa c
-            JOIN usuarios u_op ON c.operador = u_op.id_usuario
-            JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id_usuario
-            LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id_usuario
+            JOIN usuarios u_op ON c.operador = u_op.id
+            JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id
+            LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id
             WHERE c.id_conta = :id_conta 
             ORDER BY c.data_abertura DESC";
     $stmt = $pdo->prepare($sql);
