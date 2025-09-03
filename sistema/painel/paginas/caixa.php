@@ -14,7 +14,6 @@ if (!isset($_SESSION['id_conta'])) {
     exit;
 }
 
-
 $id_conta = $_SESSION['id_conta'];
 
 // O bloco de exportação para PDF é executado no início, garantindo que não haja conteúdo HTML antes.
