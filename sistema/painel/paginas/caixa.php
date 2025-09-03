@@ -25,44 +25,12 @@ try {
     $message = "Erro ao verificar o status do caixa: " . $e->getMessage();
 }
 
-// 2. Lógica para abrir o caixa, executada apenas se não houver um caixa aberto
-if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_pdf']) && !$caixa_aberto) {
-    $operator = $_SESSION['id_usuario'];
-    $opening_date = date('Y-m-d H:i:s');
-    $opening_value = floatval($_POST['valor_abertura']);
-    $opening_user = $_SESSION['id_usuario'];
-    $obs = trim($_POST['obs']);
-
-    try {
-        $pdo->beginTransaction();
-        
-        $sql = "INSERT INTO caixa (operador, data_abertura, valor_abertura, usuario_abertura, obs, id_conta)
-                VALUES (:operador, :data_abertura, :valor_abertura, :usuario_abertura, :obs, :id_conta)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':operador', $operator, PDO::PARAM_INT);
-        $stmt->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
-        $stmt->bindParam(':data_abertura', $opening_date);
-        $stmt->bindParam(':valor_abertura', $opening_value);
-        $stmt->bindParam(':usuario_abertura', $opening_user, PDO::PARAM_INT);
-        $stmt->bindParam(':obs', $obs);
-        $stmt->execute();
-        
-        $pdo->commit();
-        //$message = "Caixa aberto com sucesso! 🎉";
-        header("Location: caixa.php");
-        exit;
-        
-    } catch(PDOException $e) {
-        $pdo->rollBack();
-        $message = "Erro ao abrir caixa: " . $e->getMessage();
-    }
-}
-
-// 3. Lógica para carregar os dados do caixa aberto e do último fechado
+// 2. Lógica para carregar os dados do caixa aberto e do último fechado
 $opening_value_aberto = 0;
 $entrada_value_aberto = 0;
 $total_value_aberto = 0;
 $last_closing_value = null;
+$suggested_opening_value = 0;
 
 if ($caixa_aberto) {
     // Calcular o valor de entrada para o caixa atualmente aberto
@@ -76,7 +44,6 @@ if ($caixa_aberto) {
         
         $opening_value_aberto = $caixa_aberto['valor_abertura'];
         $total_value_aberto = $opening_value_aberto + $entrada_value_aberto;
-
     } catch(PDOException $e) {
         $message = "Erro ao calcular entradas do caixa: " . $e->getMessage();
     }
@@ -153,46 +120,29 @@ if (isset($_GET['message'])) {
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center py-8">
     <div class="container mx-auto p-4 md:p-8 max-w-4xl">
-        <div class="bg-white rounded-2xl shadow-lg p-6 md:p-10 mb-8">
-            <div class="text-center mb-8">
-                <?php if ($caixa_aberto): ?>
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-green-700">
-                        <i class="fas fa-cash-register mr-2"></i> Caixa Aberto
-                    </h2>
-                    <p class="text-gray-500 text-lg mt-2">Pronto para a jornada de trabalho!</p>
-                <?php else: ?>
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-blue-700">
-                        <i class="fas fa-box-open mr-2"></i> Abertura de Caixa
-                    </h2>
-                    <p class="text-gray-500 text-lg mt-2">Preencha os dados para iniciar o dia.</p>
-                <?php endif; ?>
-            </div>
-
-            <?php if ($message): ?>
-                <div class="p-4 rounded-xl border-2 mb-6 text-center <?php echo strpos($message, 'Erro') === false ? 'alert-success' : 'alert-danger'; ?>" role="alert">
-                    <?php echo htmlspecialchars($message); ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($caixa_aberto): ?>
-                <!-- Conteúdo para o CAIXA ABERTO -->
-                <div class="bg-gray-100 p-6 md:p-8 rounded-xl space-y-4 text-center">
+        <div id="status-container" class="bg-white rounded-2xl shadow-lg p-6 md:p-10 mb-8">
+            <div id="caixa-aberto-content" class="text-center" style="<?php echo $caixa_aberto ? 'display: block;' : 'display: none;'; ?>">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-green-700">
+                    <i class="fas fa-cash-register mr-2"></i> Caixa Aberto
+                </h2>
+                <p class="text-gray-500 text-lg mt-2">Pronto para a jornada de trabalho!</p>
+                <div class="bg-gray-100 p-6 md:p-8 rounded-xl space-y-4 text-center mt-6">
                     <p class="text-lg text-gray-700 font-semibold">
-                        Caixa aberto em <span class="text-green-600 font-bold"><?php echo date('d/m/Y', strtotime($caixa_aberto['data_abertura'])); ?></span>
+                        Caixa aberto em <span class="text-green-600 font-bold"><?php echo date('d/m/Y', strtotime($caixa_aberto['data_abertura'] ?? 'now')); ?></span>
                     </p>
                     <div class="bg-green-50 border border-green-200 rounded-xl p-6">
                         <p class="text-xl font-medium text-gray-800">
-                            Valor de Abertura: <span class="font-bold text-green-700">R$ <?php echo number_format($opening_value_aberto, 2, ',', '.'); ?></span>
+                            Valor de Abertura: <span class="font-bold text-green-700" id="valor-abertura-aberto">R$ <?php echo number_format($opening_value_aberto, 2, ',', '.'); ?></span>
                         </p>
                         <p class="text-xl font-medium text-gray-800 mt-2">
-                            Entradas do Dia: <span class="font-bold text-green-700">R$ <?php echo number_format($entrada_value_aberto, 2, ',', '.'); ?></span>
+                            Entradas do Dia: <span class="font-bold text-green-700" id="entradas-aberto">R$ <?php echo number_format($entrada_value_aberto, 2, ',', '.'); ?></span>
                         </p>
                         <p class="text-2xl md:text-3xl font-extrabold text-green-800 mt-4 pt-4 border-t-2 border-green-300">
-                            Total Previsto: <span class="text-green-900">R$ <?php echo number_format($total_value_aberto, 2, ',', '.'); ?></span>
+                            Total Previsto: <span class="text-green-900" id="total-previsto">R$ <?php echo number_format($total_value_aberto, 2, ',', '.'); ?></span>
                         </p>
                     </div>
                     <div class="flex flex-col md:flex-row gap-4 justify-center mt-6">
-                        <a href="fechar_caixa.php?id=<?php echo $caixa_aberto['id']; ?>" class="bg-red-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                        <a href="fechar_caixa.php?id=<?php echo $caixa_aberto['id'] ?? ''; ?>" class="bg-red-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
                             <i class="fas fa-lock mr-2"></i> Fechar Caixa
                         </a>
                         <button onclick="document.getElementById('reports-section').scrollIntoView({ behavior: 'smooth' });" class="bg-gray-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
@@ -200,27 +150,32 @@ if (isset($_GET['message'])) {
                         </button>
                     </div>
                 </div>
-            <?php else: ?>
-                <!-- Conteúdo para o CAIXA FECHADO (Formulário de Abertura) -->
-                <form method="POST" class="space-y-6">
+            </div>
+            
+            <div id="caixa-fechado-content" class="text-center" style="<?php echo !$caixa_aberto ? 'display: block;' : 'display: none;'; ?>">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-blue-700">
+                    <i class="fas fa-box-open mr-2"></i> Abertura de Caixa
+                </h2>
+                <p class="text-gray-500 text-lg mt-2">Preencha os dados para iniciar o dia.</p>
+                <form id="openCaixaForm" class="space-y-6 mt-6">
                     <div>
-                        <label for="valor_abertura" class="block text-gray-700 font-semibold mb-2">Valor Inicial (R$)</label>
+                        <label for="valor_abertura" class="block text-gray-700 font-semibold mb-2 text-left">Valor Inicial (R$)</label>
                         <input type="number" step="0.01" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
                                 name="valor_abertura" required placeholder="0.00"
-                                value="<?php echo isset($suggested_opening_value) ? htmlspecialchars(number_format($suggested_opening_value, 2, '.', '')) : ''; ?>">
-                        <?php if (isset($suggested_opening_value)): ?>
-                            <p class="text-sm text-gray-500 mt-2">
+                                value="<?php echo htmlspecialchars(number_format($suggested_opening_value, 2, '.', '')); ?>">
+                        <?php if (isset($suggested_opening_value) && $suggested_opening_value > 0): ?>
+                            <p class="text-sm text-gray-500 mt-2 text-left">
                                 Valor da última sessão: R$ <?php echo number_format($suggested_opening_value, 2, ',', '.'); ?>
                             </p>
                         <?php endif; ?>
                     </div>
                     <div>
-                        <label for="obs" class="block text-gray-700 font-semibold mb-2">Observações</label>
+                        <label for="obs" class="block text-gray-700 font-semibold mb-2 text-left">Observações</label>
                         <textarea class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" id="obs" name="obs" rows="3"
                                     placeholder="Digite observações importantes (opcional)"></textarea>
                     </div>
                     <div class="flex flex-col md:flex-row gap-4 justify-center mt-8">
-                        <button type="submit" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                        <button type="submit" id="submitBtn" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
                             <i class="fas fa-box-open mr-2"></i> Abrir Caixa
                         </button>
                         <button type="button" onclick="document.getElementById('reports-section').scrollIntoView({ behavior: 'smooth' });" class="bg-green-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-green-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
@@ -228,6 +183,14 @@ if (isset($_GET['message'])) {
                         </button>
                     </div>
                 </form>
+            </div>
+            
+             <?php if ($message): ?>
+                <div id="statusMessage" class="p-4 rounded-xl border-2 mb-6 text-center <?php echo strpos($message, 'Erro') === false ? 'alert-success' : 'alert-danger'; ?>" role="alert">
+                    <?php echo htmlspecialchars($message); ?>
+                </div>
+            <?php else: ?>
+                <div id="statusMessage" class="hidden"></div>
             <?php endif; ?>
         </div>
 
@@ -282,6 +245,57 @@ if (isset($_GET['message'])) {
     </div>
     
     <script>
+        document.getElementById('openCaixaForm').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Impede o envio padrão do formulário e o reload da página
+
+            const form = e.target;
+            const formData = new FormData(form);
+            const statusMessage = document.getElementById('statusMessage');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Abrindo...';
+            statusMessage.classList.add('hidden');
+
+            try {
+                const response = await fetch('abrir_caixa_api.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    statusMessage.textContent = result.message;
+                    statusMessage.classList.remove('hidden', 'alert-danger');
+                    statusMessage.classList.add('alert-success');
+                    
+                    // Oculta o formulário e mostra o conteúdo de caixa aberto
+                    document.getElementById('caixa-fechado-content').style.display = 'none';
+                    document.getElementById('caixa-aberto-content').style.display = 'block';
+                    
+                    // Atualiza os valores dinamicamente (se necessário, ou re-renderiza)
+                    document.getElementById('valor-abertura-aberto').textContent = 'R$ ' + parseFloat(formData.get('valor_abertura')).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    
+                    setTimeout(() => {
+                        statusMessage.classList.add('hidden');
+                    }, 5000); // Esconde a mensagem após 5 segundos
+
+                } else {
+                    statusMessage.textContent = result.message;
+                    statusMessage.classList.remove('hidden', 'alert-success');
+                    statusMessage.classList.add('alert-danger');
+                }
+            } catch (error) {
+                statusMessage.textContent = "Erro de rede ao comunicar com o servidor.";
+                statusMessage.classList.remove('hidden', 'alert-success');
+                statusMessage.classList.add('alert-danger');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-box-open mr-2"></i> Abrir Caixa';
+            }
+        });
+
         document.getElementById('exportPdfBtn').addEventListener('click', async () => {
             const exportBtn = document.getElementById('exportPdfBtn');
             const exportText = document.getElementById('exportText');
@@ -307,15 +321,12 @@ if (isset($_GET['message'])) {
                     a.click();
                     window.URL.revokeObjectURL(url);
                 } else {
-                    console.error('Erro ao gerar o PDF:', response.statusText);
-                    // Usar um modal customizado ou div para a mensagem
                     const errorDiv = document.createElement('div');
                     errorDiv.innerHTML = '<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"><div class="bg-red-500 text-white rounded-lg p-6 max-w-sm text-center shadow-xl"><h4 class="font-bold text-lg mb-2">Erro</h4><p>Erro ao gerar o PDF.</p></div></div>';
                     document.body.appendChild(errorDiv);
                     setTimeout(() => errorDiv.remove(), 3000);
                 }
             } catch (error) {
-                console.error('Erro de rede:', error);
                 const errorDiv = document.createElement('div');
                 errorDiv.innerHTML = '<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"><div class="bg-red-500 text-white rounded-lg p-6 max-w-sm text-center shadow-xl"><h4 class="font-bold text-lg mb-2">Erro</h4><p>Erro de rede ao gerar o PDF.</p></div></div>';
                 document.body.appendChild(errorDiv);
