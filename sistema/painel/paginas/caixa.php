@@ -13,8 +13,84 @@ if (!isset($_SESSION['id_conta'])) {
 
 $id_conta = $_SESSION['id_conta'];
 
-$message = '';
+// O bloco de exportação para Excel deve ser executado antes de qualquer outra saída de HTML.
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
+    try {
+        $sql = "SELECT 
+                    c.data_abertura, 
+                    c.data_fechamento, 
+                    c.valor_abertura, 
+                    c.valor_fechamento, 
+                    c.sangrias,
+                    u_op.nome as operador_nome, 
+                    u_ab.nome as usuario_abertura_nome,
+                    u_fe.nome as usuario_fechamento_nome,
+                    c.obs 
+                FROM caixa c
+                JOIN usuarios u_op ON c.operador = u_op.id
+                JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id
+                LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id
+                WHERE c.id_conta = :id_conta 
+                ORDER BY c.data_abertura DESC";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+        $stmt->execute();
+        $report_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        
+        // Define os cabeçalhos da planilha
+        $sheet->setCellValue('A1', 'Data Abertura');
+        $sheet->setCellValue('B1', 'Data Fechamento');
+        $sheet->setCellValue('C1', 'Operador');
+        $sheet->setCellValue('D1', 'Usuário Abertura');
+        $sheet->setCellValue('E1', 'Usuário Fechamento');
+        $sheet->setCellValue('F1', 'Valor Abertura (R$)');
+        $sheet->setCellValue('G1', 'Valor Fechamento (R$)');
+        $sheet->setCellValue('H1', 'Sangrias (R$)');
+        $sheet->setCellValue('I1', 'Quebra (R$)');
+        $sheet->setCellValue('J1', 'Observações');
+        
+        $row = 2;
+        foreach ($report_data as $item) {
+            $quebra = ($item['valor_fechamento'] !== null) ? ($item['valor_fechamento'] - $item['valor_abertura'] - ($item['sangrias'] ?? 0)) : null;
+            
+            $sheet->setCellValue('A' . $row, date('d/m/Y', strtotime($item['data_abertura'])));
+            $sheet->setCellValue('B' . $row, $item['data_fechamento'] ? date('d/m/Y', strtotime($item['data_fechamento'])) : '-');
+            $sheet->setCellValue('C' . $row, $item['operador_nome']);
+            $sheet->setCellValue('D' . $row, $item['usuario_abertura_nome']);
+            $sheet->setCellValue('E' . $row, $item['usuario_fechamento_nome'] ?? '-');
+            $sheet->setCellValue('F' . $row, number_format($item['valor_abertura'], 2, ',', '.'));
+            $sheet->setCellValue('G' . $row, $item['valor_fechamento'] ? number_format($item['valor_fechamento'], 2, ',', '.') : '-');
+            $sheet->setCellValue('H' . $row, $item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-');
+            $sheet->setCellValue('I' . $row, $quebra ? number_format($quebra, 2, ',', '.') : '-');
+            $sheet->setCellValue('J' . $row, $item['obs'] ?? '-');
+            $row++;
+        }
+        
+        $sheet->getStyle('A1:J1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        foreach (range('A', 'J') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+        
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="relatorio_caixa.xlsx"');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit;
+
+    } catch(PDOException $e) {
+        // Redireciona de volta com uma mensagem de erro
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?message=' . urlencode('Erro ao carregar relatório para exportação: ' . $e->getMessage()));
+        exit;
+    }
+}
+
+$message = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_excel'])) {
     $operator = $_SESSION['id_usuario'];
     $opening_date = date('Y-m-d');
@@ -39,14 +115,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_excel'])) {
     }
 }
 
+// Verifica se há uma mensagem de erro na URL após a exportação
+if (isset($_GET['message'])) {
+    $message = htmlspecialchars($_GET['message']);
+}
+
+
 $report_data = [];
 try {
+    // Corrigido para `u_op.id`
     $sql = "SELECT 
                 c.data_abertura, 
                 c.data_fechamento, 
                 c.valor_abertura, 
                 c.valor_fechamento, 
-                c.quebra, 
                 c.sangrias,
                 u_op.nome as operador_nome, 
                 u_ab.nome as usuario_abertura_nome,
@@ -66,54 +148,6 @@ try {
     $message = "Erro ao carregar relatório: " . $e->getMessage();
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
-    $spreadsheet = new Spreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
-    
-    // Removi a coluna 'Total' e adicionei a 'Quebra (R$)' no final
-    $sheet->setCellValue('A1', 'Data Abertura');
-    $sheet->setCellValue('B1', 'Data Fechamento');
-    $sheet->setCellValue('C1', 'Operador');
-    $sheet->setCellValue('D1', 'Usuário Abertura');
-    $sheet->setCellValue('E1', 'Usuário Fechamento');
-    $sheet->setCellValue('F1', 'Valor Abertura (R$)');
-    $sheet->setCellValue('G1', 'Valor Fechamento (R$)');
-    $sheet->setCellValue('H1', 'Sangrias (R$)');
-    $sheet->setCellValue('I1', 'Observações');
-    $sheet->setCellValue('J1', 'Quebra (R$)');
-    
-    $row = 2;
-    foreach ($report_data as $item) {
-        // Cálculo da quebra de acordo com a nova regra: fechamento - abertura - sangrias
-        $quebra = ($item['valor_fechamento'] !== null) ? ($item['valor_fechamento'] - $item['valor_abertura'] - ($item['sangrias'] ?? 0)) : null;
-        
-        $sheet->setCellValue('A' . $row, date('d/m/Y', strtotime($item['data_abertura'])));
-        $sheet->setCellValue('B' . $row, $item['data_fechamento'] ? date('d/m/Y', strtotime($item['data_fechamento'])) : '-');
-        $sheet->setCellValue('C' . $row, $item['operador_nome']);
-        $sheet->setCellValue('D' . $row, $item['usuario_abertura_nome']);
-        $sheet->setCellValue('E' . $row, $item['usuario_fechamento_nome'] ?? '-');
-        $sheet->setCellValue('F' . $row, number_format($item['valor_abertura'], 2, ',', '.'));
-        $sheet->setCellValue('G' . $row, $item['valor_fechamento'] ? number_format($item['valor_fechamento'], 2, ',', '.') : '-');
-        $sheet->setCellValue('H' . $row, $item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-');
-        $sheet->setCellValue('I' . $row, $item['obs'] ?? '-');
-        $sheet->setCellValue('J' . $row, $quebra ? number_format($quebra, 2, ',', '.') : '-');
-        $row++;
-    }
-    
-    $sheet->getStyle('A1:J1')->getFont()->setBold(true);
-    $sheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-    
-    foreach (range('A', 'J') as $col) {
-        $sheet->getColumnDimension($col)->setAutoSize(true);
-    }
-    
-    $writer = new Xlsx($spreadsheet);
-    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment;filename="relatorio_caixa.xlsx"');
-    header('Cache-Control: max-age=0');
-    $writer->save('php://output');
-    exit;
-}
 ?>
 
 <!DOCTYPE html>
@@ -427,6 +461,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
         </div>
     </div>
 
+    <!-- Modal de Relatórios -->
     <div id="relatorioModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -449,8 +484,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
                                     <th>Valor Abertura (R$)</th>
                                     <th>Valor Fechamento (R$)</th>
                                     <th>Sangrias (R$)</th>
-                                    <th>Observações</th>
                                     <th>Quebra (R$)</th>
+                                    <th>Observações</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -466,8 +501,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
                                         <td><?php echo number_format($item['valor_abertura'], 2, ',', '.'); ?></td>
                                         <td><?php echo $item['valor_fechamento'] ? number_format($item['valor_fechamento'], 2, ',', '.') : '-'; ?></td>
                                         <td><?php echo $item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-'; ?></td>
-                                        <td><?php echo htmlspecialchars($item['obs'] ?? '-'); ?></td>
                                         <td><?php echo $quebra ? number_format($quebra, 2, ',', '.') : '-'; ?></td>
+                                        <td><?php echo htmlspecialchars($item['obs'] ?? '-'); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
