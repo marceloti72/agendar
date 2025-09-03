@@ -609,7 +609,7 @@ input:checked + .slider:before {
 
 							<li class="treeview">
 								<a href="caixa">
-								<i class="fas fa-cash-register me-2"></i> <span> Abrir Caixa</span>
+								<i class="fas fa-cash-register me-2"></i> <span>  Abrir Caixa</span>
 								</a>
 							</li>
 
