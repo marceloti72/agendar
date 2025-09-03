@@ -33,7 +33,7 @@ $last_closing_value = null;
 $suggested_opening_value = 0;
 
 if ($caixa_aberto) {
-    // Calcular o valor de entrada para o caixa atualmente aberto
+    // Calcular o valor de entrada para o caixa atualmente aberto e sangrias
     try {
         $sql_entrada = "SELECT SUM(valor) AS valor_entrada FROM receber WHERE data_pgto = CURDATE() AND pago = 'Sim' AND tipo = 'Comanda' AND pgto = 'Dinheiro' AND id_conta = :id_conta";
         $stmt_entrada = $pdo->prepare($sql_entrada);
@@ -42,10 +42,18 @@ if ($caixa_aberto) {
         $entrada_data = $stmt_entrada->fetch(PDO::FETCH_ASSOC);
         $entrada_value_aberto = $entrada_data['valor_entrada'] ?? 0;
         
+        $sql_sangria = "SELECT SUM(sangrias) AS total_sangrias FROM caixa WHERE id = :id_caixa";
+        $stmt_sangria = $pdo->prepare($sql_sangria);
+        $stmt_sangria->bindParam(':id_caixa', $caixa_aberto['id'], PDO::PARAM_INT);
+        $stmt_sangria->execute();
+        $sangria_data = $stmt_sangria->fetch(PDO::FETCH_ASSOC);
+        $total_sangrias_aberto = $sangria_data['total_sangrias'] ?? 0;
+
         $opening_value_aberto = $caixa_aberto['valor_abertura'];
-        $total_value_aberto = $opening_value_aberto + $entrada_value_aberto;
+        $total_value_aberto = $opening_value_aberto + $entrada_value_aberto - $total_sangrias_aberto;
+
     } catch(PDOException $e) {
-        $message = "Erro ao calcular entradas do caixa: " . $e->getMessage();
+        $message = "Erro ao calcular entradas/sangrias do caixa: " . $e->getMessage();
     }
 } else {
     // Lógica para buscar o último valor de fechamento para sugerir no formulário de abertura
@@ -137,11 +145,17 @@ if (isset($_GET['message'])) {
                         <p class="text-xl font-medium text-gray-800 mt-2">
                             Entradas do Dia: <span class="font-bold text-green-700" id="entradas-aberto">R$ <?php echo number_format($entrada_value_aberto, 2, ',', '.'); ?></span>
                         </p>
+                         <p class="text-xl font-medium text-gray-800 mt-2">
+                            Sangrias: <span class="font-bold text-green-700" id="sangrias-aberto">R$ <?php echo number_format($total_sangrias_aberto, 2, ',', '.'); ?></span>
+                        </p>
                         <p class="text-2xl md:text-3xl font-extrabold text-green-800 mt-4 pt-4 border-t-2 border-green-300">
                             Total Previsto: <span class="text-green-900" id="total-previsto">R$ <?php echo number_format($total_value_aberto, 2, ',', '.'); ?></span>
                         </p>
                     </div>
                     <div class="flex flex-col md:flex-row gap-4 justify-center mt-6">
+                        <button id="sangriaBtn" class="bg-orange-500 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-orange-600 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-tint mr-2"></i> Sangria
+                        </button>
                         <a href="fechar_caixa.php?id=<?php echo $caixa_aberto['id'] ?? ''; ?>" class="bg-red-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
                             <i class="fas fa-lock mr-2"></i> Fechar Caixa
                         </a>
@@ -172,7 +186,7 @@ if (isset($_GET['message'])) {
                     <div>
                         <label for="obs" class="block text-gray-700 font-semibold mb-2 text-left">Observações</label>
                         <textarea class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" id="obs" name="obs" rows="3"
-                                    placeholder="Digite observações importantes (opcional)"></textarea>
+                                        placeholder="Digite observações importantes (opcional)"></textarea>
                     </div>
                     <div class="flex flex-col md:flex-row gap-4 justify-center mt-8">
                         <button type="submit" id="submitBtn" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
@@ -243,11 +257,46 @@ if (isset($_GET['message'])) {
             <?php endif; ?>
         </div>
     </div>
+
+    <!-- Modal para Sangria -->
+    <div id="sangriaModal" class="modal fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 w-full max-w-md">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">Realizar Sangria</h3>
+                <button id="closeSangriaModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <form id="sangriaForm" class="space-y-6">
+                <input type="hidden" name="caixa_id" value="<?php echo $caixa_aberto['id'] ?? ''; ?>">
+                <div>
+                    <label for="sangria_valor" class="block text-gray-700 font-semibold mb-2">Valor da Sangria (R$)</label>
+                    <input type="number" step="0.01" id="sangria_valor" name="sangria_valor" required 
+                           class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
+                           placeholder="0.00">
+                </div>
+                <div>
+                    <label for="sangria_obs" class="block text-gray-700 font-semibold mb-2">Observações (opcional)</label>
+                    <textarea id="sangria_obs" name="sangria_obs" rows="3" 
+                              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
+                              placeholder="Motivo da sangria"></textarea>
+                </div>
+                <div class="flex justify-end gap-4">
+                    <button type="button" id="cancelSangriaBtn" class="bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded-full hover:bg-gray-400 transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="submitSangriaBtn" class="bg-orange-500 text-white font-semibold py-2 px-6 rounded-full hover:bg-orange-600 transition-colors flex items-center justify-center">
+                        <i class="fas fa-tint mr-2"></i> Confirmar Sangria
+                    </button>
+                </div>
+            </form>
+            <div id="sangriaStatusMessage" class="hidden mt-4 p-3 rounded-lg text-center" role="alert"></div>
+        </div>
+    </div>
     
     <script>
         document.getElementById('openCaixaForm').addEventListener('submit', async (e) => {
-            e.preventDefault(); // Impede o envio padrão do formulário e o reload da página
-
+            e.preventDefault();
             const form = e.target;
             const formData = new FormData(form);
             const statusMessage = document.getElementById('statusMessage');
@@ -270,16 +319,14 @@ if (isset($_GET['message'])) {
                     statusMessage.classList.remove('hidden', 'alert-danger');
                     statusMessage.classList.add('alert-success');
                     
-                    // Oculta o formulário e mostra o conteúdo de caixa aberto
                     document.getElementById('caixa-fechado-content').style.display = 'none';
                     document.getElementById('caixa-aberto-content').style.display = 'block';
                     
-                    // Atualiza os valores dinamicamente (se necessário, ou re-renderiza)
                     document.getElementById('valor-abertura-aberto').textContent = 'R$ ' + parseFloat(formData.get('valor_abertura')).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                     
                     setTimeout(() => {
                         statusMessage.classList.add('hidden');
-                    }, 5000); // Esconde a mensagem após 5 segundos
+                    }, 5000);
 
                 } else {
                     statusMessage.textContent = result.message;
@@ -335,6 +382,83 @@ if (isset($_GET['message'])) {
                 exportText.classList.remove('hidden');
                 loadingSpinner.classList.add('hidden');
                 exportBtn.disabled = false;
+            }
+        });
+
+        // Lógica do Modal de Sangria
+        const sangriaBtn = document.getElementById('sangriaBtn');
+        const sangriaModal = document.getElementById('sangriaModal');
+        const sangriaForm = document.getElementById('sangriaForm');
+        const closeSangriaModal = document.getElementById('closeSangriaModal');
+        const cancelSangriaBtn = document.getElementById('cancelSangriaBtn');
+        const sangriaStatusMessage = document.getElementById('sangriaStatusMessage');
+
+        function showSangriaModal() {
+            sangriaModal.style.display = 'flex';
+        }
+
+        function hideSangriaModal() {
+            sangriaModal.style.display = 'none';
+            sangriaForm.reset();
+            sangriaStatusMessage.classList.add('hidden');
+        }
+        
+        sangriaBtn.addEventListener('click', showSangriaModal);
+        closeSangriaModal.addEventListener('click', hideSangriaModal);
+        cancelSangriaBtn.addEventListener('click', hideSangriaModal);
+        
+        sangriaForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const submitSangriaBtn = document.getElementById('submitSangriaBtn');
+
+            submitSangriaBtn.disabled = true;
+            submitSangriaBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processando...';
+            sangriaStatusMessage.classList.add('hidden');
+            
+            try {
+                const response = await fetch('paginas/caixa/sangria.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    sangriaStatusMessage.textContent = result.message;
+                    sangriaStatusMessage.classList.remove('hidden', 'alert-danger');
+                    sangriaStatusMessage.classList.add('alert-success');
+                    
+                    // Atualiza os valores na página principal
+                    const sangriaValor = parseFloat(formData.get('sangria_valor'));
+                    const sangriasAbertoElement = document.getElementById('sangrias-aberto');
+                    const totalPrevistoElement = document.getElementById('total-previsto');
+
+                    const currentSangrias = parseFloat(sangriasAbertoElement.textContent.replace('R$ ', '').replace('.', '').replace(',', '.'));
+                    const currentTotal = parseFloat(totalPrevistoElement.textContent.replace('R$ ', '').replace('.', '').replace(',', '.'));
+
+                    const newSangrias = currentSangrias + sangriaValor;
+                    const newTotal = currentTotal - sangriaValor;
+
+                    sangriasAbertoElement.textContent = 'R$ ' + newSangrias.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    totalPrevistoElement.textContent = 'R$ ' + newTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+                    setTimeout(() => {
+                        hideSangriaModal();
+                    }, 2000);
+
+                } else {
+                    sangriaStatusMessage.textContent = result.message;
+                    sangriaStatusMessage.classList.remove('hidden', 'alert-success');
+                    sangriaStatusMessage.classList.add('alert-danger');
+                }
+            } catch (error) {
+                sangriaStatusMessage.textContent = "Erro de rede ao comunicar com o servidor.";
+                sangriaStatusMessage.classList.remove('hidden', 'alert-success');
+                sangriaStatusMessage.classList.add('alert-danger');
+            } finally {
+                submitSangriaBtn.disabled = false;
+                submitSangriaBtn.innerHTML = '<i class="fas fa-tint mr-2"></i> Confirmar Sangria';
             }
         });
     </script>
