@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("../conexao.php");
+require_once("../conexao.php"); 
 require_once '../../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -41,11 +41,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_excel'])) {
 
 $report_data = [];
 try {
-    $sql = "SELECT c.id, u.nome as operador_nome, c.data_abertura, c.valor_abertura, u2.nome as usuario_abertura_nome, c.obs 
+    $sql = "SELECT 
+                c.data_abertura, 
+                c.data_fechamento, 
+                c.valor_abertura, 
+                c.valor_fechamento, 
+                c.quebra, 
+                c.sangrias,
+                u_op.nome as operador_nome, 
+                u_ab.nome as usuario_abertura_nome,
+                u_fe.nome as usuario_fechamento_nome,
+                c.obs 
             FROM caixa c
-            JOIN usuarios u ON c.operador = u.id
-            JOIN usuarios u2 ON c.usuario_abertura = u2.id
-            WHERE c.id_conta = :id_conta ORDER BY c.data_abertura DESC";
+            JOIN usuarios u_op ON c.operador = u_op.id_usuario
+            JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id
+            LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id
+            WHERE c.id_conta = :id_conta 
+            ORDER BY c.data_abertura DESC";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
     $stmt->execute();
@@ -58,28 +70,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
     
-    $sheet->setCellValue('A1', 'ID');
-    $sheet->setCellValue('B1', 'Operador');
-    $sheet->setCellValue('C1', 'Data Abertura');
-    $sheet->setCellValue('D1', 'Valor Abertura (R$)');
-    $sheet->setCellValue('E1', 'Usuário Abertura');
-    $sheet->setCellValue('F1', 'Observações');
+    // Updated Headers
+    $sheet->setCellValue('A1', 'Data Abertura');
+    $sheet->setCellValue('B1', 'Data Fechamento');
+    $sheet->setCellValue('C1', 'Operador');
+    $sheet->setCellValue('D1', 'Usuário Abertura');
+    $sheet->setCellValue('E1', 'Usuário Fechamento');
+    $sheet->setCellValue('F1', 'Valor Abertura (R$)');
+    $sheet->setCellValue('G1', 'Valor Fechamento (R$)');
+    $sheet->setCellValue('H1', 'Quebra (R$)');
+    $sheet->setCellValue('I1', 'Sangrias (R$)');
+    $sheet->setCellValue('J1', 'Observações');
     
     $row = 2;
     foreach ($report_data as $item) {
-        $sheet->setCellValue('A' . $row, $item['id']);
-        $sheet->setCellValue('B' . $row, $item['operador_nome']);
-        $sheet->setCellValue('C' . $row, date('d/m/Y', strtotime($item['data_abertura'])));
-        $sheet->setCellValue('D' . $row, number_format($item['valor_abertura'], 2, ',', '.'));
-        $sheet->setCellValue('E' . $row, $item['usuario_abertura_nome']);
-        $sheet->setCellValue('F' . $row, $item['obs']);
+        $sheet->setCellValue('A' . $row, date('d/m/Y', strtotime($item['data_abertura'])));
+        $sheet->setCellValue('B' . $row, $item['data_fechamento'] ? date('d/m/Y', strtotime($item['data_fechamento'])) : '-');
+        $sheet->setCellValue('C' . $row, $item['operador_nome']);
+        $sheet->setCellValue('D' . $row, $item['usuario_abertura_nome']);
+        $sheet->setCellValue('E' . $row, $item['usuario_fechamento_nome'] ?? '-');
+        $sheet->setCellValue('F' . $row, number_format($item['valor_abertura'], 2, ',', '.'));
+        $sheet->setCellValue('G' . $row, $item['valor_fechamento'] ? number_format($item['valor_fechamento'], 2, ',', '.') : '-');
+        $sheet->setCellValue('H' . $row, $item['quebra'] ? number_format($item['quebra'], 2, ',', '.') : '-');
+        $sheet->setCellValue('I' . $row, $item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-');
+        $sheet->setCellValue('J' . $row, $item['obs'] ?? '-');
         $row++;
     }
     
-    $sheet->getStyle('A1:F1')->getFont()->setBold(true);
-    $sheet->getStyle('A1:F1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    $sheet->getStyle('A1:J1')->getFont()->setBold(true);
+    $sheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
-    foreach (range('A', 'F') as $col) {
+    foreach (range('A', 'J') as $col) {
         $sheet->getColumnDimension($col)->setAutoSize(true);
     }
     
@@ -287,8 +308,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
             margin: auto;
             border-radius: 1rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 900px;
+            width: 95%; /* Increased width */
+            max-width: 1000px; /* Increased max-width */
             padding: 2rem;
             position: relative;
             top: 50%;
@@ -316,7 +337,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
         }
 
         .modal-body {
-            max-height: 400px;
+            max-height: 500px; /* Increased height */
             overflow-y: auto;
         }
         
@@ -342,6 +363,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
             color: #212529;
             border-collapse: collapse;
             background-color: var(--white-bg);
+            font-size: 0.85rem; /* Decreased font size */
         }
         
         .table-custom thead {
@@ -353,9 +375,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
         }
         
         .table-custom th, .table-custom td {
-            padding: 1rem;
+            padding: 0.75rem 1rem; /* Adjusted padding */
             vertical-align: top;
             border-top: 1px solid #dee2e6;
+            white-space: nowrap; /* Prevents wrapping on small columns */
         }
         
         .table-custom tbody tr:hover {
@@ -415,23 +438,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
                         <table class="table-custom">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Operador</th>
                                     <th>Data Abertura</th>
-                                    <th>Valor Abertura (R$)</th>
+                                    <th>Data Fechamento</th>
+                                    <th>Operador</th>
                                     <th>Usuário Abertura</th>
+                                    <th>Usuário Fechamento</th>
+                                    <th>Valor Abertura (R$)</th>
+                                    <th>Valor Fechamento (R$)</th>
+                                    <th>Quebra (R$)</th>
+                                    <th>Sangrias (R$)</th>
                                     <th>Observações</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($report_data as $item): ?>
                                     <tr>
-                                        <td><?php echo htmlspecialchars($item['id']); ?></td>
-                                        <td><?php echo htmlspecialchars($item['operador_nome']); ?></td>
                                         <td><?php echo date('d/m/Y', strtotime($item['data_abertura'])); ?></td>
-                                    <td><?php echo number_format($item['valor_abertura'], 2, ',', '.'); ?></td>
+                                        <td><?php echo $item['data_fechamento'] ? date('d/m/Y', strtotime($item['data_fechamento'])) : '-'; ?></td>
+                                        <td><?php echo htmlspecialchars($item['operador_nome']); ?></td>
                                         <td><?php echo htmlspecialchars($item['usuario_abertura_nome']); ?></td>
-                                        <td><?php echo htmlspecialchars($item['obs'] ?? ''); ?></td>
+                                        <td><?php echo htmlspecialchars($item['usuario_fechamento_nome'] ?? '-'); ?></td>
+                                        <td><?php echo number_format($item['valor_abertura'], 2, ',', '.'); ?></td>
+                                        <td><?php echo $item['valor_fechamento'] ? number_format($item['valor_fechamento'], 2, ',', '.') : '-'; ?></td>
+                                        <td><?php echo $item['quebra'] ? number_format($item['quebra'], 2, ',', '.') : '-'; ?></td>
+                                        <td><?php echo $item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-'; ?></td>
+                                        <td><?php echo htmlspecialchars($item['obs'] ?? '-'); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -454,7 +485,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
     <script>
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Prevents scrolling on the main page
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeModal(modalId) {
@@ -462,7 +493,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['export_excel'])) {
             document.body.style.overflow = '';
         }
 
-        // Close modal when clicking outside of it
         window.onclick = function(event) {
             const modal = document.getElementById('relatorioModal');
             if (event.target == modal) {
