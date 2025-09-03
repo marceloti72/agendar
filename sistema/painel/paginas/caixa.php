@@ -11,16 +11,24 @@ if (!isset($_SESSION['id_conta'])) {
 }
 
 $id_conta = $_SESSION['id_conta'];
-
 $message = '';
-$show_abertura_modal = false;
-$opening_value = 0;
-$entrada_value = 0;
-$total_value = 0;
+$caixa_aberto = null;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_pdf'])) {
+// 1. Lógica para verificar se já existe um caixa aberto
+try {
+    $sql_caixa_aberto = "SELECT id, valor_abertura, data_abertura FROM caixa WHERE id_conta = :id_conta AND data_fechamento IS NULL ORDER BY data_abertura DESC LIMIT 1";
+    $stmt_caixa_aberto = $pdo->prepare($sql_caixa_aberto);
+    $stmt_caixa_aberto->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+    $stmt_caixa_aberto->execute();
+    $caixa_aberto = $stmt_caixa_aberto->fetch(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    $message = "Erro ao verificar o status do caixa: " . $e->getMessage();
+}
+
+// 2. Lógica para abrir o caixa, executada apenas se não houver um caixa aberto
+if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_pdf']) && !$caixa_aberto) {
     $operator = $_SESSION['id_usuario'];
-    $opening_date = date('Y-m-d');
+    $opening_date = date('Y-m-d H:i:s');
     $opening_value = floatval($_POST['valor_abertura']);
     $opening_user = $_SESSION['id_usuario'];
     $obs = trim($_POST['obs']);
@@ -39,19 +47,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_pdf'])) {
         $stmt->bindParam(':obs', $obs);
         $stmt->execute();
         
-        // Calcular o valor de entrada (soma dos pagamentos em dinheiro do dia)
-        $sql_entrada = "SELECT SUM(valor) AS valor_entrada FROM receber WHERE data_pgto = CURDATE() AND pago = 'Sim' AND tipo = 'Comanda' AND pgto = 'Dinheiro' AND id_conta = :id_conta";
-        $stmt_entrada = $pdo->prepare($sql_entrada);
-        $stmt_entrada->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
-        $stmt_entrada->execute();
-        $entrada_data = $stmt_entrada->fetch(PDO::FETCH_ASSOC);
-        $entrada_value = $entrada_data['valor_entrada'] ?? 0;
-        
-        $total_value = $opening_value + $entrada_value;
-        
         $pdo->commit();
         $message = "Caixa aberto com sucesso! 🎉";
-        $show_abertura_modal = true;
+        header("Location: caixa.php?message=" . urlencode($message));
+        exit;
         
     } catch(PDOException $e) {
         $pdo->rollBack();
@@ -59,32 +58,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['export_pdf'])) {
     }
 }
 
-if (isset($_GET['message'])) {
-    $message = htmlspecialchars($_GET['message']);
-}
-
-// Lógica para buscar o último valor de fechamento
+// 3. Lógica para carregar os dados do caixa aberto e do último fechado
+$opening_value_aberto = 0;
+$entrada_value_aberto = 0;
+$total_value_aberto = 0;
 $last_closing_value = null;
-$suggested_opening_value = null;
-try {
-    $sql_last_box = "SELECT valor_fechamento, sangrias FROM caixa WHERE id_conta = :id_conta AND valor_fechamento IS NOT NULL ORDER BY id DESC LIMIT 1";
-    $stmt_last_box = $pdo->prepare($sql_last_box);
-    $stmt_last_box->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
-    $stmt_last_box->execute();
-    $last_box_data = $stmt_last_box->fetch(PDO::FETCH_ASSOC);
 
-    if ($last_box_data) {
-        $last_closing_value = $last_box_data['valor_fechamento'];
-        $sangrias = $last_box_data['sangrias'] ?? 0;
-        $suggested_opening_value = $last_closing_value - $sangrias;
+if ($caixa_aberto) {
+    // Calcular o valor de entrada para o caixa atualmente aberto
+    try {
+        $sql_entrada = "SELECT SUM(valor) AS valor_entrada FROM receber WHERE data_pgto = CURDATE() AND pago = 'Sim' AND tipo = 'Comanda' AND pgto = 'Dinheiro' AND id_conta = :id_conta";
+        $stmt_entrada = $pdo->prepare($sql_entrada);
+        $stmt_entrada->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+        $stmt_entrada->execute();
+        $entrada_data = $stmt_entrada->fetch(PDO::FETCH_ASSOC);
+        $entrada_value_aberto = $entrada_data['valor_entrada'] ?? 0;
+        
+        $opening_value_aberto = $caixa_aberto['valor_abertura'];
+        $total_value_aberto = $opening_value_aberto + $entrada_value_aberto;
+
+    } catch(PDOException $e) {
+        $message = "Erro ao calcular entradas do caixa: " . $e->getMessage();
     }
-} catch(PDOException $e) {
-    $message = "Erro ao carregar o último valor de fechamento: " . $e->getMessage();
+} else {
+    // Lógica para buscar o último valor de fechamento para sugerir no formulário de abertura
+    try {
+        $sql_last_box = "SELECT valor_fechamento, sangrias FROM caixa WHERE id_conta = :id_conta AND valor_fechamento IS NOT NULL ORDER BY id DESC LIMIT 1";
+        $stmt_last_box = $pdo->prepare($sql_last_box);
+        $stmt_last_box->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+        $stmt_last_box->execute();
+        $last_box_data = $stmt_last_box->fetch(PDO::FETCH_ASSOC);
+
+        if ($last_box_data) {
+            $last_closing_value = $last_box_data['valor_fechamento'];
+            $sangrias = $last_box_data['sangrias'] ?? 0;
+            $suggested_opening_value = $last_closing_value - $sangrias;
+        }
+    } catch(PDOException $e) {
+        $message = "Erro ao carregar o último valor de fechamento: " . $e->getMessage();
+    }
 }
 
+// Lógica para carregar os dados do relatório histórico
 $report_data = [];
 try {
-    $sql = "SELECT
+    $sql_report = "SELECT
                 c.data_abertura,
                 c.data_fechamento,
                 c.valor_abertura,
@@ -100,14 +118,17 @@ try {
             LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id
             WHERE c.id_conta = :id_conta
             ORDER BY c.data_abertura DESC";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
-    $stmt->execute();
-    $report_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt_report = $pdo->prepare($sql_report);
+    $stmt_report->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+    $stmt_report->execute();
+    $report_data = $stmt_report->fetchAll(PDO::FETCH_ASSOC);
 } catch(PDOException $e) {
     $message = "Erro ao carregar relatório: " . $e->getMessage();
 }
 
+if (isset($_GET['message'])) {
+    $message = htmlspecialchars($_GET['message']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -115,445 +136,159 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abertura de Caixa</title>
+    <title>Gestão de Caixa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #0d6efd;
-            --success-color: #198754;
-            --secondary-color: #6c757d;
-            --light-bg: #f8f9fa;
-            --white-bg: #ffffff;
-            --card-border: rgba(0, 0, 0, 0.125);
-            --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
-            --danger-bg: #f8d7da;
-            --danger-color: #842029;
-            --success-bg: #d1e7dd;
-            --success-color-dark: #0f5132;
-        }
-
         body {
-            background-color: var(--light-bg);
             font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
         }
-
-        .container-app {
-            width: 100%;
-            max-width: 850px;
-            padding: 1rem;
-        }
-
-        .app-card {
-            border: none;
-            border-radius: 1rem;
-            box-shadow: var(--shadow-md);
-            background-color: var(--white-bg);
-            padding: 2.5rem;
-        }
-
-        .form-header {
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
-
-        .form-header h2 {
-            color: #212529;
-            font-weight: 700;
-            font-size: 2.25rem;
-            margin: 0;
-        }
-
-        .form-header p {
-            color: #6c757d;
-            font-size: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        .form-field {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .form-input, .form-textarea {
-            display: block;
-            width: 100%;
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #495057;
-            background-color: #fff;
-            background-clip: padding-box;
-            border: 1px solid #ced4da;
-            border-radius: 0.5rem;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-
-        .form-input:focus, .form-textarea:focus {
-            border-color: #86b7fe;
-            outline: 0;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            border-radius: 0.5rem;
-            text-align: center;
-            vertical-align: middle;
-            cursor: pointer;
-            border: 1px solid transparent;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            color: #fff;
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-
-        .btn-primary:hover {
-            background-color: #0a58ca;
-            border-color: #0a58ca;
-            transform: translateY(-2px);
-        }
-
-        .btn-success {
-            color: #fff;
-            background-color: var(--success-color);
-            border-color: var(--success-color);
-        }
-
-        .btn-success:hover {
-            background-color: #146c43;
-            border-color: #146c43;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            color: #fff;
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-        }
-
-        .btn-secondary:hover {
-            background-color: #5c636a;
-            border-color: #5c636a;
-        }
-        
-        .btn-info {
-            color: #fff;
-            background-color: #0dcaf0;
-            border-color: #0dcaf0;
-        }
-
-        .btn-info:hover {
-            background-color: #31d2f2;
-            border-color: #31d2f2;
-        }
-
-
-        .btn-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-        }
-
-        .alert {
-            padding: 1rem 1.5rem;
-            border-radius: 0.75rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid transparent;
-        }
-
-        .alert-success {
-            background-color: var(--success-bg);
-            color: var(--success-color-dark);
-            border-color: #badbcc;
-        }
-
-        .alert-danger {
-            background-color: var(--danger-bg);
-            color: var(--danger-color);
-            border-color: #f5c2c7;
-        }
-
-        /* Modal Styles */
         .modal {
             display: none;
-            position: fixed;
-            z-index: 1050;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: rgba(0, 0, 0, 0.5);
         }
-
-        .modal-content {
-            background-color: #fff;
-            margin: auto;
-            border-radius: 1rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 95%;
-            max-width: 1000px;
-            padding: 2rem;
-            position: relative;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .btn-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--secondary-color);
-        }
-
-        .modal-body {
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        .modal-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1.5rem;
-            border-top: 1px solid #dee2e6;
-            padding-top: 1rem;
-        }
-
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            border-radius: 0.75rem;
-            border: 1px solid #dee2e6;
-        }
-
-        .table-custom {
-            width: 100%;
-            margin-bottom: 0;
-            color: #212529;
-            border-collapse: collapse;
-            background-color: var(--white-bg);
-            font-size: 0.85rem;
-        }
-
-        .table-custom thead {
-            position: sticky;
-            top: 0;
-            background-color: var(--light-bg);
-            font-weight: 600;
-            border-bottom: 2px solid #dee2e6;
-        }
-
-        .table-custom th, .table-custom td {
-            padding: 0.75rem 1rem;
-            vertical-align: top;
-            border-top: 1px solid #dee2e6;
-            white-space: nowrap;
-        }
-
-        .table-custom tbody tr:hover {
-            background-color: #f2f2f2;
-        }
-
+        .alert-success { background-color: #d1e7dd; color: #0f5132; }
+        .alert-danger { background-color: #f8d7da; color: #842029; }
     </style>
 </head>
-<body>
-    <div class="container-app">
-        <div class="app-card">
-            <div class="form-header">
-                <h2><i class="fas fa-cash-register"></i> Abertura de Caixa</h2>
-                <p>Preencha os dados para iniciar o dia de trabalho.</p>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center py-8">
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <div class="bg-white rounded-2xl shadow-lg p-6 md:p-10 mb-8">
+            <div class="text-center mb-8">
+                <?php if ($caixa_aberto): ?>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-green-700">
+                        <i class="fas fa-cash-register mr-2"></i> Caixa Aberto
+                    </h2>
+                    <p class="text-gray-500 text-lg mt-2">Pronto para a jornada de trabalho!</p>
+                <?php else: ?>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-blue-700">
+                        <i class="fas fa-box-open mr-2"></i> Abertura de Caixa
+                    </h2>
+                    <p class="text-gray-500 text-lg mt-2">Preencha os dados para iniciar o dia.</p>
+                <?php endif; ?>
             </div>
 
             <?php if ($message): ?>
-                <div class="alert alert-<?php echo strpos($message, 'Erro') === false ? 'success' : 'danger'; ?>" role="alert">
+                <div class="p-4 rounded-xl border-2 mb-6 text-center <?php echo strpos($message, 'Erro') === false ? 'alert-success' : 'alert-danger'; ?>" role="alert">
                     <?php echo htmlspecialchars($message); ?>
                 </div>
             <?php endif; ?>
 
-            <form method="POST">
-                <div class="form-field">
-                    <label for="valor_abertura" class="form-label">Valor Inicial (R$)</label>
-                    <input type="number" step="0.01" class="form-input" id="valor_abertura"
-                           name="valor_abertura" required placeholder="0.00"
-                           value="<?php echo isset($suggested_opening_value) ? htmlspecialchars(number_format($suggested_opening_value, 2, '.', '')) : ''; ?>">
-                    <?php if (isset($suggested_opening_value)): ?>
-                        <p style="font-size: 0.8rem; color: #6c757d; margin-top: 0.5rem;">
-                            Valor da última sessão: R$ <?php echo number_format($suggested_opening_value, 2, ',', '.'); ?>
-                        </p>
-                    <?php endif; ?>
-                </div>
-                <div class="form-field">
-                    <label for="obs" class="form-label">Observações</label>
-                    <textarea class="form-textarea" id="obs" name="obs" rows="3"
-                              placeholder="Digite observações importantes (opcional)"></textarea>
-                </div>
-                <div class="button-group">
-                    <button type="submit" class="btn btn-primary btn-icon">
-                        <i class="fas fa-box-open"></i> Abrir Caixa
-                    </button>
-                    <button type="button" class="btn btn-success btn-icon" onclick="openModal('relatorioModal')">
-                        <i class="fas fa-file-alt"></i> Visualizar Relatórios
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal de Abertura de Caixa -->
-    <div id="aberturaModal" class="modal">
-        <div class="modal-content" style="max-width: 500px;">
-            <div class="modal-header">
-                <h5 class="modal-title" style="font-size: 1.75rem;">Caixa Aberto!</h5>
-                <button type="button" class="btn-close" onclick="closeModal('aberturaModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Seu caixa foi aberto com sucesso para iniciar o dia de trabalho. Aqui está um resumo dos valores de entrada até agora.</p>
-                <div style="background-color: #e9ecef; padding: 1.5rem; border-radius: 0.75rem;">
-                    <p style="font-size: 1rem; margin-bottom: 0.5rem;"><strong>Valor de Abertura:</strong> R$ <?php echo number_format($opening_value, 2, ',', '.'); ?></p>
-                    <p style="font-size: 1rem; margin-bottom: 0.5rem;"><strong>Entradas do Dia (Dinheiro):</strong> R$ <?php echo number_format($entrada_value, 2, ',', '.'); ?></p>
-                    <p style="font-size: 1.25rem; font-weight: 700; margin-top: 1.5rem; border-top: 1px dashed #ced4da; padding-top: 1rem;">
-                        Total Previsto em Caixa: R$ <?php echo number_format($total_value, 2, ',', '.'); ?>
+            <?php if ($caixa_aberto): ?>
+                <!-- Conteúdo para o CAIXA ABERTO -->
+                <div class="bg-gray-100 p-6 md:p-8 rounded-xl space-y-4 text-center">
+                    <p class="text-lg text-gray-700 font-semibold">
+                        Caixa aberto em <span class="text-green-600 font-bold"><?php echo date('d/m/Y', strtotime($caixa_aberto['data_abertura'])); ?></span>
                     </p>
+                    <div class="bg-green-50 border border-green-200 rounded-xl p-6">
+                        <p class="text-xl font-medium text-gray-800">
+                            Valor de Abertura: <span class="font-bold text-green-700">R$ <?php echo number_format($opening_value_aberto, 2, ',', '.'); ?></span>
+                        </p>
+                        <p class="text-xl font-medium text-gray-800 mt-2">
+                            Entradas do Dia: <span class="font-bold text-green-700">R$ <?php echo number_format($entrada_value_aberto, 2, ',', '.'); ?></span>
+                        </p>
+                        <p class="text-2xl md:text-3xl font-extrabold text-green-800 mt-4 pt-4 border-t-2 border-green-300">
+                            Total Previsto: <span class="text-green-900">R$ <?php echo number_format($total_value_aberto, 2, ',', '.'); ?></span>
+                        </p>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-4 justify-center mt-6">
+                        <a href="fechar_caixa.php?id=<?php echo $caixa_aberto['id']; ?>" class="bg-red-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-lock mr-2"></i> Fechar Caixa
+                        </a>
+                        <button onclick="document.getElementById('reports-section').scrollIntoView({ behavior: 'smooth' });" class="bg-gray-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-file-alt mr-2"></i> Visualizar Relatórios
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer" style="justify-content: flex-end;">
-                <a href="fechar_caixa.php" class="btn btn-primary btn-icon">
-                    <i class="fas fa-lock"></i> Fechar Caixa
-                </a>
-                <button type="button" class="btn btn-secondary btn-icon" onclick="openModal('relatorioModal')">
-                    <i class="fas fa-file-alt"></i> Relatório
+            <?php else: ?>
+                <!-- Conteúdo para o CAIXA FECHADO (Formulário de Abertura) -->
+                <form method="POST" class="space-y-6">
+                    <div>
+                        <label for="valor_abertura" class="block text-gray-700 font-semibold mb-2">Valor Inicial (R$)</label>
+                        <input type="number" step="0.01" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                                name="valor_abertura" required placeholder="0.00"
+                                value="<?php echo isset($suggested_opening_value) ? htmlspecialchars(number_format($suggested_opening_value, 2, '.', '')) : ''; ?>">
+                        <?php if (isset($suggested_opening_value)): ?>
+                            <p class="text-sm text-gray-500 mt-2">
+                                Valor da última sessão: R$ <?php echo number_format($suggested_opening_value, 2, ',', '.'); ?>
+                            </p>
+                        <?php endif; ?>
+                    </div>
+                    <div>
+                        <label for="obs" class="block text-gray-700 font-semibold mb-2">Observações</label>
+                        <textarea class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" id="obs" name="obs" rows="3"
+                                    placeholder="Digite observações importantes (opcional)"></textarea>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-4 justify-center mt-8">
+                        <button type="submit" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-box-open mr-2"></i> Abrir Caixa
+                        </button>
+                        <button type="button" onclick="document.getElementById('reports-section').scrollIntoView({ behavior: 'smooth' });" class="bg-green-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-green-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-file-alt mr-2"></i> Visualizar Relatórios
+                        </button>
+                    </div>
+                </form>
+            <?php endif; ?>
+        </div>
+
+        <div id="reports-section" class="bg-white rounded-2xl shadow-lg p-6 md:p-10">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800">
+                    Relatório Histórico de Caixas
+                </h2>
+                <button id="exportPdfBtn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-full hover:bg-blue-600 transition-colors flex items-center">
+                    <span id="exportText"><i class="fas fa-file-pdf mr-2"></i> Exportar</span>
+                    <span id="loadingSpinner" class="hidden"><i class="fas fa-spinner fa-spin mr-2"></i> Gerando...</span>
                 </button>
             </div>
+            
+            <?php if (empty($report_data)): ?>
+                <p class="text-center text-gray-500 p-8">Nenhum registro de caixa encontrado.</p>
+            <?php else: ?>
+                <div class="overflow-x-auto rounded-xl border border-gray-200">
+                    <table class="w-full text-sm text-gray-600">
+                        <thead class="bg-gray-50 font-semibold uppercase text-gray-700 text-left sticky top-0">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Data Abertura</th>
+                                <th scope="col" class="px-6 py-3">Data Fechamento</th>
+                                <th scope="col" class="px-6 py-3">Operador</th>
+                                <th scope="col" class="px-6 py-3">Abertura</th>
+                                <th scope="col" class="px-6 py-3">Fechamento</th>
+                                <th scope="col" class="px-6 py-3">Sangrias</th>
+                                <th scope="col" class="px-6 py-3">Quebra</th>
+                                <th scope="col" class="px-6 py-3">Observações</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <?php foreach ($report_data as $item):
+                                $quebra = ($item['valor_fechamento'] !== null) ? ($item['valor_fechamento'] - $item['valor_abertura'] - ($item['sangrias'] ?? 0)) : null;
+                            ?>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap"><?php echo date('d/m/Y', strtotime($item['data_abertura'])); ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap"><?php echo $item['data_fechamento'] ? date('d/m/Y', strtotime($item['data_fechamento'])) : '-'; ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap"><?php echo htmlspecialchars($item['operador_nome']); ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo number_format($item['valor_abertura'], 2, ',', '.'); ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo $item['valor_fechamento'] ? number_format($item['valor_fechamento'], 2, ',', '.') : '-'; ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo $item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-'; ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo $quebra ? number_format($quebra, 2, ',', '.') : '-'; ?></td>
+                                    <td class="px-6 py-4 max-w-xs overflow-hidden text-ellipsis"><?php echo htmlspecialchars($item['obs'] ?? '-'); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
     
-    <!-- Modal de Relatórios -->
-    <div id="relatorioModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Relatório Histórico de Caixas</h5>
-                <button type="button" class="btn-close" onclick="closeModal('relatorioModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <?php if (empty($report_data)): ?>
-                    <p class="text-center">Nenhum registro de caixa encontrado.</p>
-                <?php else: ?>
-                    <div class="table-responsive">
-                        <table class="table-custom">
-                            <thead>
-                                <tr>
-                                    <th>Data Abertura</th>
-                                    <th>Data Fechamento</th>
-                                    <th>Operador</th>
-                                    <th>Usuário Abertura</th>
-                                    <th>Usuário Fechamento</th>
-                                    <th>Valor Abertura (R$)</th>
-                                    <th>Valor Fechamento (R$)</th>
-                                    <th>Sangrias (R$)</th>
-                                    <th>Quebra (R$)</th>
-                                    <th>Observações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($report_data as $item):
-                                    $quebra = ($item['valor_fechamento'] !== null) ? ($item['valor_fechamento'] - $item['valor_abertura'] - ($item['sangrias'] ?? 0)) : null;
-                                ?>
-                                    <tr>
-                                        <td><?php echo date('d/m/Y', strtotime($item['data_abertura'])); ?></td>
-                                        <td><?php echo $item['data_fechamento'] ? date('d/m/Y', strtotime($item['data_fechamento'])) : '-'; ?></td>
-                                        <td><?php echo htmlspecialchars($item['operador_nome']); ?></td>
-                                        <td><?php echo htmlspecialchars($item['usuario_abertura_nome']); ?></td>
-                                        <td><?php echo htmlspecialchars($item['usuario_fechamento_nome'] ?? '-'); ?></td>
-                                        <td><?php echo number_format($item['valor_abertura'], 2, ',', '.'); ?></td>
-                                        <td><?php echo $item['valor_fechamento'] ? number_format($item['valor_fechamento'], 2, ',', '.') : '-'; ?></td>
-                                        <td><?php echo $item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-'; ?></td>
-                                        <td><?php echo $quebra ? number_format($quebra, 2, ',', '.') : '-'; ?></td>
-                                        <td><?php echo htmlspecialchars($item['obs'] ?? '-'); ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-icon" id="exportPdfBtn">
-                    <span id="exportText"><i class="fas fa-file-pdf"></i> Exportar para PDF</span>
-                    <span id="loadingSpinner" style="display: none;">
-                        <i class="fas fa-spinner fa-spin"></i> Gerando...
-                    </span>
-                </button>
-                <button type="button" class="btn btn-secondary" onclick="closeModal('relatorioModal')">Fechar</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-            document.body.style.overflow = '';
-        }
-
-        window.onclick = function(event) {
-            const modal = document.getElementById('relatorioModal');
-            if (event.target == modal) {
-                closeModal('relatorioModal');
-            }
-        }
-
         document.getElementById('exportPdfBtn').addEventListener('click', async () => {
             const exportBtn = document.getElementById('exportPdfBtn');
             const exportText = document.getElementById('exportText');
             const loadingSpinner = document.getElementById('loadingSpinner');
 
-            // Show loading state
-            exportText.style.display = 'none';
-            loadingSpinner.style.display = 'inline';
+            exportText.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
             exportBtn.disabled = true;
 
             try {
@@ -573,25 +308,24 @@ try {
                     window.URL.revokeObjectURL(url);
                 } else {
                     console.error('Erro ao gerar o PDF:', response.statusText);
-                    alert('Erro ao gerar o PDF.');
+                    // Usar um modal customizado ou div para a mensagem
+                    const errorDiv = document.createElement('div');
+                    errorDiv.innerHTML = '<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"><div class="bg-red-500 text-white rounded-lg p-6 max-w-sm text-center shadow-xl"><h4 class="font-bold text-lg mb-2">Erro</h4><p>Erro ao gerar o PDF.</p></div></div>';
+                    document.body.appendChild(errorDiv);
+                    setTimeout(() => errorDiv.remove(), 3000);
                 }
             } catch (error) {
                 console.error('Erro de rede:', error);
-                alert('Erro de rede ao tentar gerar o PDF.');
+                const errorDiv = document.createElement('div');
+                errorDiv.innerHTML = '<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"><div class="bg-red-500 text-white rounded-lg p-6 max-w-sm text-center shadow-xl"><h4 class="font-bold text-lg mb-2">Erro</h4><p>Erro de rede ao gerar o PDF.</p></div></div>';
+                document.body.appendChild(errorDiv);
+                setTimeout(() => errorDiv.remove(), 3000);
             } finally {
-                // Hide loading state
-                exportText.style.display = 'inline';
-                loadingSpinner.style.display = 'none';
+                exportText.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden');
                 exportBtn.disabled = false;
             }
         });
-
-        // Open the 'aberturaModal' if the flag is set after form submission
-        <?php if ($show_abertura_modal): ?>
-            window.onload = function() {
-                openModal('aberturaModal');
-            };
-        <?php endif; ?>
     </script>
 </body>
 </html>
