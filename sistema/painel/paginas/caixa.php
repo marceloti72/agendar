@@ -258,7 +258,7 @@ if (isset($_GET['message'])) {
             statusMessage.classList.add('hidden');
 
             try {
-                const response = await fetch('abrir_caixa_api.php', {
+                const response = await fetch('paginas/caixa/abrir_caixa_api.php', {
                     method: 'POST',
                     body: formData
                 });
