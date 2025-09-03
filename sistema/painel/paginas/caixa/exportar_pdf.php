@@ -2,8 +2,8 @@
 ob_start();
 
 session_start();
-require_once("../conexao.php");
-require_once '../../vendor/autoload.php';
+require_once("../../../conexao.php");
+require_once '../../../../vendor/autoload.php';
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -43,7 +43,7 @@ try {
                 body { font-family: sans-serif; font-size: 10px; }
                 h1 { color: #333; text-align: center; }
                 table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                th, td { border: 1px solid #ccc; padding: 6px; text-align: left; font-size: 12px; }
+                th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
                 th { background-color: #f2f2f2; }
                 tr:nth-child(even) { background-color: #f9f9f9; }
             </style>';
