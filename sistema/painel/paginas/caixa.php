@@ -5,6 +5,9 @@ session_start();
 require_once("../conexao.php");
 require_once '../../vendor/autoload.php';
 
+// Define o fuso horário para garantir que CURDATE() funcione corretamente para o Brasil
+date_default_timezone_set('America/Sao_Paulo');
+
 if (!isset($_SESSION['id_conta'])) {
     header('Location: login.php');
     exit;
@@ -35,7 +38,7 @@ $suggested_opening_value = 0;
 if ($caixa_aberto) {
     // Calcular o valor de entrada para o caixa atualmente aberto e sangrias
     try {
-        $sql_entrada = "SELECT SUM(valor) AS valor_entrada FROM receber WHERE DATE(data_pgto) = CURDATE() AND pago = 'Sim' AND tipo = 'Comanda' AND pgto = 'Dinheiro' AND id_conta = :id_conta";
+        $sql_entrada = "SELECT SUM(valor) AS valor_entrada FROM receber WHERE data_pgto = CURDATE() AND pago = 'Sim' AND tipo = 'Comanda' AND pgto = 'Dinheiro' AND id_conta = :id_conta";
         $stmt_entrada = $pdo->prepare($sql_entrada);
         $stmt_entrada->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
         $stmt_entrada->execute();
