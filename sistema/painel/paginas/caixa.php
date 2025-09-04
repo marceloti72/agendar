@@ -144,7 +144,7 @@ if (isset($_GET['message'])) {
 <script>
     tailwind.config = {
         corePlugins: {
-            preflight: false,
+            preflight: true,
         },
         content: [
             { raw: '<div id="reports-section">...</div>' }
