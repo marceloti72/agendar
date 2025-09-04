@@ -284,12 +284,7 @@ if (isset($_GET['message'])) {
                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
                            placeholder="0.00">
                 </div>
-                <div>
-                    <label for="sangria_obs" class="block text-gray-700 font-semibold mb-2">Observações (opcional)</label>
-                    <textarea id="sangria_obs" name="sangria_obs" rows="3" 
-                              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
-                              placeholder="Motivo da sangria"></textarea>
-                </div>
+                
                 <div class="flex justify-end gap-4">
                     <button type="button" id="cancelSangriaBtn" class="bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded-full hover:bg-gray-400 transition-colors">
                         Cancelar
