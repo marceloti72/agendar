@@ -82,28 +82,50 @@ if ($caixa_aberto) {
     }
 }
 
-// Lógica para carregar os dados do relatório histórico
+// Lógica de Paginação e Relatório Histórico
+$items_per_page = 10;
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($current_page - 1) * $items_per_page;
+
+// 1. Contar o total de registros para calcular o total de páginas
+try {
+    $sql_count = "SELECT COUNT(*) FROM caixa WHERE id_conta = :id_conta";
+    $stmt_count = $pdo->prepare($sql_count);
+    $stmt_count->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+    $stmt_count->execute();
+    $total_items = $stmt_count->fetchColumn();
+    $total_pages = ceil($total_items / $items_per_page);
+} catch(PDOException $e) {
+    $message = "Erro ao contar registros: " . $e->getMessage();
+    $total_items = 0;
+    $total_pages = 1;
+}
+
+// 2. Carregar os dados do relatório com base na paginação
 $report_data = [];
 try {
     $sql_report = "SELECT
-                c.data_abertura,
-                c.data_fechamento,
-                c.valor_abertura,
-                c.valor_fechamento,
-                c.sangrias,
-                c.quebra,
-                u_op.nome as operador_nome,
-                u_ab.nome as usuario_abertura_nome,
-                u_fe.nome as usuario_fechamento_nome,
-                c.obs
-            FROM caixa c
-            JOIN usuarios u_op ON c.operador = u_op.id
-            JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id
-            LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id
-            WHERE c.id_conta = :id_conta
-            ORDER BY c.data_abertura DESC";
+                     c.data_abertura,
+                     c.data_fechamento,
+                     c.valor_abertura,
+                     c.valor_fechamento,
+                     c.sangrias,
+                     c.quebra,
+                     u_op.nome as operador_nome,
+                     u_ab.nome as usuario_abertura_nome,
+                     u_fe.nome as usuario_fechamento_nome,
+                     c.obs
+                   FROM caixa c
+                   JOIN usuarios u_op ON c.operador = u_op.id
+                   JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id
+                   LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id
+                   WHERE c.id_conta = :id_conta
+                   ORDER BY c.data_abertura DESC
+                   LIMIT :limit OFFSET :offset";
     $stmt_report = $pdo->prepare($sql_report);
     $stmt_report->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+    $stmt_report->bindParam(':limit', $items_per_page, PDO::PARAM_INT);
+    $stmt_report->bindParam(':offset', $offset, PDO::PARAM_INT);
     $stmt_report->execute();
     $report_data = $stmt_report->fetchAll(PDO::FETCH_ASSOC);
 } catch(PDOException $e) {
@@ -154,7 +176,7 @@ if (isset($_GET['message'])) {
                         <p class="text-xl font-medium text-gray-800 mt-2">
                             Entradas do Dia: <span class="font-bold text-green-700" id="entradas-aberto">R$ <?php echo number_format($entrada_value_aberto, 2, ',', '.'); ?></span>
                         </p>
-                           <p class="text-xl font-medium text-gray-800 mt-2">
+                            <p class="text-xl font-medium text-gray-800 mt-2">
                             Sangrias: <span class="font-bold text-green-700" id="sangrias-aberto">R$ <?php echo number_format($total_sangrias_aberto, 2, ',', '.'); ?></span>
                         </p>
                         <p class="text-2xl md:text-3xl font-extrabold text-green-800 mt-4 pt-4 border-t-2 border-green-300">
@@ -208,7 +230,7 @@ if (isset($_GET['message'])) {
                 </form>
             </div>
             
-             <?php if ($message): ?>
+            <?php if ($message): ?>
                 <div id="statusMessage" class="p-4 rounded-xl border-2 mb-6 text-center <?php echo strpos($message, 'Erro') === false ? 'alert-success' : 'alert-danger'; ?>" role="alert">
                     <?php echo htmlspecialchars($message); ?>
                 </div>
@@ -263,6 +285,23 @@ if (isset($_GET['message'])) {
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Controles de Paginação -->
+                <?php if ($total_pages > 1): ?>
+                    <nav class="flex justify-center items-center gap-2 mt-6">
+                        <?php if ($current_page > 1): ?>
+                            <a href="?page=<?php echo $current_page - 1; ?>" class="px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 hover:bg-gray-300 transition-colors">Anterior</a>
+                        <?php endif; ?>
+
+                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                            <a href="?page=<?php echo $i; ?>" class="px-4 py-2 text-sm font-semibold rounded-full <?php echo ($i === $current_page) ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'; ?>"><?php echo $i; ?></a>
+                        <?php endfor; ?>
+
+                        <?php if ($current_page < $total_pages): ?>
+                            <a href="?page=<?php echo $current_page + 1; ?>" class="px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 hover:bg-gray-300 transition-colors">Próxima</a>
+                        <?php endif; ?>
+                    </nav>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
@@ -319,8 +358,8 @@ if (isset($_GET['message'])) {
                 <div>
                     <label for="fechar_obs" class="block text-gray-700 font-semibold mb-2">Observações (opcional)</label>
                     <textarea id="fechar_obs" name="obs" rows="3"
-                              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors"
-                              placeholder="Motivo de quebra de caixa, etc."></textarea>
+                                     class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors"
+                                     placeholder="Motivo de quebra de caixa, etc."></textarea>
                 </div>
                 <div class="flex justify-end gap-4">
                     <button type="button" id="cancelFecharCaixaBtn" class="bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded-full hover:bg-gray-400 transition-colors">
