@@ -82,50 +82,28 @@ if ($caixa_aberto) {
     }
 }
 
-// Lógica de Paginação e Relatório Histórico
-$items_per_page = 10;
-$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$offset = ($current_page - 1) * $items_per_page;
-
-// 1. Contar o total de registros para calcular o total de páginas
-try {
-    $sql_count = "SELECT COUNT(*) FROM caixa WHERE id_conta = :id_conta";
-    $stmt_count = $pdo->prepare($sql_count);
-    $stmt_count->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
-    $stmt_count->execute();
-    $total_items = $stmt_count->fetchColumn();
-    $total_pages = ceil($total_items / $items_per_page);
-} catch(PDOException $e) {
-    $message = "Erro ao contar registros: " . $e->getMessage();
-    $total_items = 0;
-    $total_pages = 1;
-}
-
-// 2. Carregar os dados do relatório com base na paginação
+// Lógica para carregar os dados do relatório histórico
 $report_data = [];
 try {
     $sql_report = "SELECT
-                     c.data_abertura,
-                     c.data_fechamento,
-                     c.valor_abertura,
-                     c.valor_fechamento,
-                     c.sangrias,
-                     c.quebra,
-                     u_op.nome as operador_nome,
-                     u_ab.nome as usuario_abertura_nome,
-                     u_fe.nome as usuario_fechamento_nome,
-                     c.obs
-                   FROM caixa c
-                   JOIN usuarios u_op ON c.operador = u_op.id
-                   JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id
-                   LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id
-                   WHERE c.id_conta = :id_conta
-                   ORDER BY c.data_abertura DESC
-                   LIMIT :limit OFFSET :offset";
+                c.data_abertura,
+                c.data_fechamento,
+                c.valor_abertura,
+                c.valor_fechamento,
+                c.sangrias,
+                c.quebra,
+                u_op.nome as operador_nome,
+                u_ab.nome as usuario_abertura_nome,
+                u_fe.nome as usuario_fechamento_nome,
+                c.obs
+            FROM caixa c
+            JOIN usuarios u_op ON c.operador = u_op.id
+            JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id
+            LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id
+            WHERE c.id_conta = :id_conta
+            ORDER BY c.data_abertura DESC";
     $stmt_report = $pdo->prepare($sql_report);
     $stmt_report->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
-    $stmt_report->bindParam(':limit', $items_per_page, PDO::PARAM_INT);
-    $stmt_report->bindParam(':offset', $offset, PDO::PARAM_INT);
     $stmt_report->execute();
     $report_data = $stmt_report->fetchAll(PDO::FETCH_ASSOC);
 } catch(PDOException $e) {
@@ -176,7 +154,7 @@ if (isset($_GET['message'])) {
                         <p class="text-xl font-medium text-gray-800 mt-2">
                             Entradas do Dia: <span class="font-bold text-green-700" id="entradas-aberto">R$ <?php echo number_format($entrada_value_aberto, 2, ',', '.'); ?></span>
                         </p>
-                            <p class="text-xl font-medium text-gray-800 mt-2">
+                           <p class="text-xl font-medium text-gray-800 mt-2">
                             Sangrias: <span class="font-bold text-green-700" id="sangrias-aberto">R$ <?php echo number_format($total_sangrias_aberto, 2, ',', '.'); ?></span>
                         </p>
                         <p class="text-2xl md:text-3xl font-extrabold text-green-800 mt-4 pt-4 border-t-2 border-green-300">
@@ -230,7 +208,7 @@ if (isset($_GET['message'])) {
                 </form>
             </div>
             
-            <?php if ($message): ?>
+             <?php if ($message): ?>
                 <div id="statusMessage" class="p-4 rounded-xl border-2 mb-6 text-center <?php echo strpos($message, 'Erro') === false ? 'alert-success' : 'alert-danger'; ?>" role="alert">
                     <?php echo htmlspecialchars($message); ?>
                 </div>
@@ -250,30 +228,42 @@ if (isset($_GET['message'])) {
                 </button>
             </div>
             
-            <div class="overflow-x-auto rounded-xl border border-gray-200">
-                <table class="w-full text-sm text-gray-600">
-                    <thead class="bg-gray-50 font-semibold uppercase text-gray-700 text-left sticky top-0">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">Data Abertura</th>
-                            <th scope="col" class="px-6 py-3">Data Fechamento</th>
-                            <th scope="col" class="px-6 py-3">Operador</th>
-                            <th scope="col" class="px-6 py-3">Abertura</th>
-                            <th scope="col" class="px-6 py-3">Fechamento</th>
-                            <th scope="col" class="px-6 py-3">Sangrias</th>
-                            <th scope="col" class="px-6 py-3">Quebra</th>
-                            <th scope="col" class="px-6 py-3">Observações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="report-table-body" class="bg-white divide-y divide-gray-200">
-                        <!-- Conteúdo da tabela será injetado pelo JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Controles de Paginação -->
-            <div id="pagination-container" class="flex justify-center items-center gap-2 mt-6">
-                <!-- Links de paginação serão injetados pelo JavaScript -->
-            </div>
+            <?php if (empty($report_data)): ?>
+                <p class="text-center text-gray-500 p-8">Nenhum registro de caixa encontrado.</p>
+            <?php else: ?>
+                <div class="overflow-x-auto rounded-xl border border-gray-200">
+                    <table class="w-full text-sm text-gray-600">
+                        <thead class="bg-gray-50 font-semibold uppercase text-gray-700 text-left sticky top-0">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Data Abertura</th>
+                                <th scope="col" class="px-6 py-3">Data Fechamento</th>
+                                <th scope="col" class="px-6 py-3">Operador</th>
+                                <th scope="col" class="px-6 py-3">Abertura</th>
+                                <th scope="col" class="px-6 py-3">Fechamento</th>
+                                <th scope="col" class="px-6 py-3">Sangrias</th>
+                                <th scope="col" class="px-6 py-3">Quebra</th>
+                                <th scope="col" class="px-6 py-3">Observações</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <?php foreach ($report_data as $item):
+                                $quebra = ($item['quebra'] !== null) ? $item['quebra'] : null;
+                            ?>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap"><?php echo date('d/m/Y', strtotime($item['data_abertura'])); ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap"><?php echo $item['data_fechamento'] ? date('d/m/Y', strtotime($item['data_fechamento'])) : '-'; ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap"><?php echo htmlspecialchars($item['operador_nome']); ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo number_format($item['valor_abertura'], 2, ',', '.'); ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo $item['valor_fechamento'] ? number_format($item['valor_fechamento'], 2, ',', '.') : '-'; ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo $item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-'; ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo $quebra !== null ? number_format($quebra, 2, ',', '.') : '-'; ?></td>
+                                    <td class="px-6 py-4 max-w-xs overflow-hidden text-ellipsis"><?php echo htmlspecialchars($item['obs'] ?? '-'); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -329,8 +319,8 @@ if (isset($_GET['message'])) {
                 <div>
                     <label for="fechar_obs" class="block text-gray-700 font-semibold mb-2">Observações (opcional)</label>
                     <textarea id="fechar_obs" name="obs" rows="3"
-                                     class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors"
-                                     placeholder="Motivo de quebra de caixa, etc."></textarea>
+                              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors"
+                              placeholder="Motivo de quebra de caixa, etc."></textarea>
                 </div>
                 <div class="flex justify-end gap-4">
                     <button type="button" id="cancelFecharCaixaBtn" class="bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded-full hover:bg-gray-400 transition-colors">
@@ -544,53 +534,6 @@ if (isset($_GET['message'])) {
                 submitFecharCaixaBtn.innerHTML = '<i class="fas fa-lock mr-2"></i> Confirmar Fechamento';
             }
         });
-
-        // Função principal que atualiza a tabela e a paginação
-        const updateReport = (page) => {
-            const startIndex = (page - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const paginatedData = mockReportData.slice(startIndex, endIndex);
-            const totalPages = Math.ceil(mockReportData.length / itemsPerPage);
-
-            renderTable(paginatedData);
-            renderPagination(page, totalPages);
-        };
-
-        // Função para renderizar a paginação
-        const renderPagination = (currentPage, totalPages) => {
-            const paginationContainer = document.getElementById('pagination-container');
-            paginationContainer.innerHTML = '';
-            if (totalPages <= 1) return;
-
-            if (currentPage > 1) {
-                const prevLink = `<a href="#" data-page="${currentPage - 1}" class="pagination-link px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 hover:bg-gray-300 transition-colors">Anterior</a>`;
-                paginationContainer.innerHTML += prevLink;
-            }
-
-            for (let i = 1; i <= totalPages; i++) {
-                const activeClass = i === currentPage ? 'active' : '';
-                const pageLink = `<a href="#" data-page="${i}" class="pagination-link px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 text-gray-800 hover:bg-gray-300 ${activeClass}">${i}</a>`;
-                paginationContainer.innerHTML += pageLink;
-            }
-
-            if (currentPage < totalPages) {
-                const nextLink = `<a href="#" data-page="${currentPage + 1}" class="pagination-link px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 hover:bg-gray-300 transition-colors">Próxima</a>`;
-                paginationContainer.innerHTML += nextLink;
-            }
-
-            // Adiciona o listener de clique para os novos links
-            document.querySelectorAll('.pagination-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    // Encontra o link mais próximo que contém o atributo 'data-page'
-                    const clickedLink = e.target.closest('.pagination-link');
-                    if (clickedLink) {
-                        const page = parseInt(clickedLink.dataset.page);
-                        updateReport(page);
-                    }
-                });
-            });
-        };
     </script>
 </body>
 </html>
