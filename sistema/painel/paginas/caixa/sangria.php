@@ -53,7 +53,7 @@ try {
     $new_sangrias_total = $current_sangrias + $valor_sangria;
 
     // 2. Atualiza o valor de sangrias na tabela caixa
-    $sql_update = "UPDATE caixa SET sangrias = :new_sangrias, valor_abertura = :new_valor_abertura WHERE id = :id_caixa";
+    $sql_update = "UPDATE caixa SET sangrias = :new_sangrias WHERE id = :id_caixa";
     $stmt_update = $pdo->prepare($sql_update);
     $stmt_update->bindParam(':new_sangrias', $new_sangrias_total);
     $stmt_update->bindParam(':id_caixa', $id_caixa, PDO::PARAM_INT);

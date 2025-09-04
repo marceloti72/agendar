@@ -416,14 +416,6 @@ if (isset($_GET['message'])) {
             submitSangriaBtn.disabled = true;
             submitSangriaBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processando...';
             sangriaStatusMessage.classList.add('hidden');
-
-            var formDataString = '';
-
-for (var pair of formData.entries()) {
-    formDataString += pair[0] + ': ' + pair[1] + '\n';
-}
-
-alert(formDataString);
             
             try {
                 const response = await fetch('paginas/caixa/sangria.php', {
