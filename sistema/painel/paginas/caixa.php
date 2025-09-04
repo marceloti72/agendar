@@ -8,10 +8,17 @@ require_once '../../vendor/autoload.php';
 // Define o fuso horário para garantir que a data PHP funcione corretamente para o Brasil
 date_default_timezone_set('America/Sao_Paulo');
 
-// Adiciona cabeçalhos anti-cache
+// Cabeçalhos anti-cache
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
+header("Expires: 0");
+
+// Verificar se o script está sendo chamado via pag=caixa (compatível com .htaccess)
+if (!isset($_GET['pag']) || $_GET['pag'] !== 'caixa') {
+    header('Location: login.php');
+    exit;
+}
 
 if (!isset($_SESSION['id_conta'])) {
     header('Location: login.php');
@@ -32,6 +39,7 @@ try {
     $caixa_aberto = $stmt_caixa_aberto->fetch(PDO::FETCH_ASSOC);
 } catch(PDOException $e) {
     $message = "Erro ao verificar o status do caixa: " . $e->getMessage();
+    error_log("Erro caixa aberto: " . $e->getMessage());
 }
 
 // 2. Lógica para carregar os dados do caixa aberto e do último fechado
@@ -39,12 +47,11 @@ $opening_value_aberto = 0;
 $entrada_value_aberto = 0;
 $last_closing_value = null;
 $suggested_opening_value = 0;
+$total_sangrias_aberto = 0;
 
 if ($caixa_aberto) {
-    // Definimos a data atual em PHP, respeitando o fuso horário
     $current_date = date('Y-m-d');
     
-    // Calcular o valor de entrada para o caixa atualmente aberto e sangrias
     try {
         $sql_entrada = "SELECT SUM(valor) AS valor_entrada FROM receber WHERE data_pgto = :current_date AND pago = 'Sim' AND tipo = 'Comanda' AND pgto = 'Dinheiro' AND id_conta = :id_conta";
         $stmt_entrada = $pdo->prepare($sql_entrada);
@@ -66,9 +73,9 @@ if ($caixa_aberto) {
 
     } catch(PDOException $e) {
         $message = "Erro ao calcular entradas/sangrias do caixa: " . $e->getMessage();
+        error_log("Erro entradas/sangrias: " . $e->getMessage());
     }
 } else {
-    // Lógica para buscar o último valor de fechamento para sugerir no formulário de abertura
     try {
         $sql_last_box = "SELECT valor_fechamento, sangrias FROM caixa WHERE id_conta = :id_conta AND valor_fechamento IS NOT NULL ORDER BY id DESC LIMIT 1";
         $stmt_last_box = $pdo->prepare($sql_last_box);
@@ -83,38 +90,15 @@ if ($caixa_aberto) {
         }
     } catch(PDOException $e) {
         $message = "Erro ao carregar o último valor de fechamento: " . $e->getMessage();
+        error_log("Erro último fechamento: " . $e->getMessage());
     }
 }
 
-// Lógica de Paginação e Relatório Histórico
-$items_per_page = 10;
-$current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-if ($current_page < 1) {
-    $current_page = 1;
-}
-$offset = ($current_page - 1) * $items_per_page;
-
-// 1. Contar o total de registros para calcular o total de páginas
-try {
-    $sql_count = "SELECT COUNT(*) FROM caixa WHERE id_conta = :id_conta";
-    $stmt_count = $pdo->prepare($sql_count);
-    $stmt_count->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
-    $stmt_count->execute();
-    $total_items = $stmt_count->fetchColumn();
-    $total_pages = ceil($total_items / $items_per_page);
-
-    // Log para depuração
-    error_log("Total de itens: $total_items, Total de páginas: $total_pages, Página atual: $current_page, Offset: $offset");
-} catch(PDOException $e) {
-    $message = "Erro ao contar registros: " . $e->getMessage();
-    $total_items = 0;
-    $total_pages = 1;
-}
-
-// 2. Carregar os dados do relatório com base na paginação
+// Lógica para carregar os 30 últimos registros do relatório histórico
 $report_data = [];
 try {
     $sql_report = "SELECT
+                     c.id,
                      c.data_abertura,
                      c.data_fechamento,
                      c.valor_abertura,
@@ -130,19 +114,19 @@ try {
                    JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id
                    LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id
                    WHERE c.id_conta = :id_conta
-                   ORDER BY c.data_abertura DESC
-                   LIMIT :limit OFFSET :offset";
+                   ORDER BY c.id DESC
+                   LIMIT 30";
     $stmt_report = $pdo->prepare($sql_report);
     $stmt_report->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
-    $stmt_report->bindParam(':limit', $items_per_page, PDO::PARAM_INT);
-    $stmt_report->bindParam(':offset', $offset, PDO::PARAM_INT);
     $stmt_report->execute();
     $report_data = $stmt_report->fetchAll(PDO::FETCH_ASSOC);
 
-    // Log para depuração
-    error_log("Registros retornados: " . count($report_data));
+    // Log de depuração
+    $ids = array_column($report_data, 'id');
+    error_log("Registros retornados (IDs): " . implode(', ', $ids) . " (Total: " . count($report_data) . ")");
 } catch(PDOException $e) {
     $message = "Erro ao carregar relatório: " . $e->getMessage();
+    error_log("Erro relatório SQL: " . $e->getMessage());
 }
 
 if (isset($_GET['message'])) {
@@ -270,6 +254,7 @@ if (isset($_GET['message'])) {
                     <table class="w-full text-sm text-gray-600">
                         <thead class="bg-gray-50 font-semibold uppercase text-gray-700 text-left sticky top-0">
                             <tr>
+                                <th scope="col" class="px-6 py-3">ID</th>
                                 <th scope="col" class="px-6 py-3">Data Abertura</th>
                                 <th scope="col" class="px-6 py-3">Data Fechamento</th>
                                 <th scope="col" class="px-6 py-3">Operador</th>
@@ -285,6 +270,7 @@ if (isset($_GET['message'])) {
                                 $quebra = ($item['quebra'] !== null) ? $item['quebra'] : null;
                             ?>
                                 <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap"><?php echo htmlspecialchars($item['id']); ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap"><?php echo date('d/m/Y', strtotime($item['data_abertura'])); ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap"><?php echo $item['data_fechamento'] ? date('d/m/Y', strtotime($item['data_fechamento'])) : '-'; ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap"><?php echo htmlspecialchars($item['operador_nome']); ?></td>
@@ -298,23 +284,6 @@ if (isset($_GET['message'])) {
                         </tbody>
                     </table>
                 </div>
-
-                <!-- Controles de Paginação -->
-                <?php if ($total_pages > 1): ?>
-                    <nav class="flex justify-center items-center gap-2 mt-6">
-                        <?php if ($current_page > 1): ?>
-                            <a href="?page=<?php echo $current_page - 1; ?>&t=<?php echo time(); ?>" class="px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 hover:bg-gray-300 transition-colors">Anterior</a>
-                        <?php endif; ?>
-
-                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                            <a href="?page=<?php echo $i; ?>&t=<?php echo time(); ?>" class="px-4 py-2 text-sm font-semibold rounded-full <?php echo ($i === $current_page) ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'; ?>" onclick="console.log('Clicou na página <?php echo $i; ?>')"><?php echo $i; ?></a>
-                        <?php endfor; ?>
-
-                        <?php if ($current_page < $total_pages): ?>
-                            <a href="?page=<?php echo $current_page + 1; ?>&t=<?php echo time(); ?>" class="px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 hover:bg-gray-300 transition-colors">Próxima</a>
-                        <?php endif; ?>
-                    </nav>
-                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
