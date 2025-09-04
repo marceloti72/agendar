@@ -545,7 +545,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                     <label><small>Total Descontos</small></label>
                                     <input type="text" class="form-control text-right valor-display" id="valor_descontos" style="color: red" readonly>
                                 </div>
-                                
+                                <hr>
                                 <div class="form-group">
                                     <label><small>Total a Pagar</small></label>
                                     <input type="text" class="form-control text-right total-display" name="valor_total" id="valor_serv" readonly>
@@ -553,12 +553,13 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 <div class="form-group">
                                     <label><small>Forma de Pagamento</small></label>
                                     <select class="form-control sel2" id="forma_pgto" name="forma_pgto" style="width:100%;"> 
-									<option value="">Selecione</option>
-									<option value="Mercado Pago">Mercado Pago</option>
-									<option value="Credito">Cartão de Crédito</option>
-									<option value="Debito">Cartão de Débito</option>
-									<option value="Pix">Pix</option>
-									<option value="Dinheiro">Dinheiro</option>
+                                        <option value="">Selecione</option>
+                                        <option value="Mercado Pago">Mercado Pago</option>
+                                        <option value="Credito">Cartão de Crédito</option>
+                                        <option value="Debito">Cartão de Débito</option>
+                                        <option value="Pix">Pix</option>
+                                        <option value="Dinheiro">Dinheiro</option>
+                                    </select>
                                 </div>
 
                                 <div class="row mt-3">
