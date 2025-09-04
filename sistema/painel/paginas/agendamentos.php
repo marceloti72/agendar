@@ -1521,8 +1521,9 @@ function calcular() {
         var data_pgto = $("#data_pgto").val();
         var data_pgto_restante = $("#data_pgto_restante").val();
         var pgto_restante = $("#pgto_restante").val();
-        var pgto = $("#forma_pgto").val();
+        //var pgto = $("#forma_pgto").val();
         var id = $("#id").val();
+        const pgto = document.getElementById('forma_pgto');
 
         // Verifica se o valor selecionado é vazio
         if (pgto.value === "") {
