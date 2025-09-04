@@ -80,6 +80,15 @@ $query = $pdo->query("SELECT plano from config where id = '$id_conta'");
 $res3 = $query->fetch(PDO::FETCH_ASSOC);
 $plano = $res3['plano'];
 
+
+// VERIFICAR SE O CAIXA ESTÁ ABERTO
+$query_caixa = $pdo->query("SELECT * FROM caixa WHERE id_conta = '$id_conta' ORDER BY id DESC LIMIT 1");
+$res_caixa = $query_caixa->fetchAll(PDO::FETCH_ASSOC);
+$caixa_aberto = false;
+if (@count($res_caixa) > 0 && $res_caixa[0]['data_fechamento'] === NULL) {
+    $caixa_aberto = true;
+}
+
 ?>
 
 <!DOCTYPE HTML>
@@ -498,6 +507,32 @@ input:checked + .slider:before {
 
 .slider.round:before {
     border-radius: 50%;
+}
+
+.btn-floating {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    padding: 12px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-floating:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    background-color: #218838; /* Cor mais escura ao passar o mouse */
+}
+
+.btn-floating i {
+    font-size: 18px;
 }
 
 
@@ -1333,6 +1368,13 @@ input:checked + .slider:before {
 		<div id="page-wrapper">
 			<?php require_once("paginas/".$pag.'.php') ?>
 		</div>
+
+		<!-- Botão Flutuante Caixa Aberto -->
+		<?php if ($caixa_aberto): ?>
+			<a href="caixa" class="btn btn-success btn-floating" title="Caixa Aberto">
+				<i class="fas fa-cash-register"></i> Caixa Aberto
+			</a>
+		<?php endif; ?>
 
 
 
