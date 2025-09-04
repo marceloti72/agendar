@@ -608,7 +608,7 @@ input:checked + .slider:before {
 							</li>
 
 							<li class="treeview">
-								<a href="caixa">
+								<a href="paginas/caixa.php">
 								<i class="fas fa-cash-register me-2"></i> <span>  Abrir Caixa</span>
 								</a>
 							</li>
