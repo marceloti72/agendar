@@ -191,13 +191,13 @@ if (isset($_GET['message'])) {
                         </p>
                     </div>
                     <div class="flex flex-col md:flex-row gap-4 justify-center mt-6">
-                        <button id="sangriaBtn" class="bg-orange-500 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-orange-600 transition-all duration-300 transform hover:scale-105 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        <button id="sangriaBtn" class="bg-orange-500 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-orange-600 transition-all duration-300 transform hover:scale-105 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <i class="fas fa-tint mr-2"></i> Sangria
                         </button>
-                        <button id="fecharCaixaBtn" data-caixa-id="<?php echo $caixa_aberto['id'] ?? ''; ?>" data-total-previsto="<?php echo htmlspecialchars($total_value_aberto); ?>" class="bg-red-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        <button id="fecharCaixaBtn" data-caixa-id="<?php echo $caixa_aberto['id'] ?? ''; ?>" data-total-previsto="<?php echo htmlspecialchars($total_value_aberto); ?>" class="bg-red-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
                             <i class="fas fa-lock mr-2"></i> Fechar Caixa
                         </button>
-                        <button onclick="document.getElementById('reports-section').scrollIntoView({ behavior: 'smooth' });" class="bg-gray-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        <button onclick="document.getElementById('reports-section').scrollIntoView({ behavior: 'smooth' });" class="bg-gray-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
                             <i class="fas fa-file-alt mr-2"></i> Visualizar Relatórios
                         </button>
                     </div>
