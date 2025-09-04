@@ -1521,19 +1521,20 @@ function calcular() {
         var data_pgto = $("#data_pgto").val();
         var data_pgto_restante = $("#data_pgto_restante").val();
         var pgto_restante = $("#pgto_restante").val();
-        //var pgto = $("#forma_pgto").val();
+        var pgto = $("#forma_pgto").val();
         var id = $("#id").val();
-        const pgto = document.getElementById('forma_pgto');
 
         // Verifica se o valor selecionado é vazio
-        if (pgto.value === "") {
+        if (pgto === "") {
             // Se for vazio, exibe o SweetAlert de erro
             Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Por favor, selecione uma forma de pagamento!',
-            confirmButtonText: 'OK'
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Por favor, selecione uma forma de pagamento!',
+                confirmButtonText: 'OK'
             });
+            // É importante adicionar um "return" aqui para interromper a função
+            return;
         } 
 
         if (valor_restante > 0) {
