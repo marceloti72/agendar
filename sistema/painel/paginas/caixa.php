@@ -250,59 +250,30 @@ if (isset($_GET['message'])) {
                 </button>
             </div>
             
-            <?php if (empty($report_data)): ?>
-                <p class="text-center text-gray-500 p-8">Nenhum registro de caixa encontrado.</p>
-            <?php else: ?>
-                <div class="overflow-x-auto rounded-xl border border-gray-200">
-                    <table class="w-full text-sm text-gray-600">
-                        <thead class="bg-gray-50 font-semibold uppercase text-gray-700 text-left sticky top-0">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">Data Abertura</th>
-                                <th scope="col" class="px-6 py-3">Data Fechamento</th>
-                                <th scope="col" class="px-6 py-3">Operador</th>
-                                <th scope="col" class="px-6 py-3">Abertura</th>
-                                <th scope="col" class="px-6 py-3">Fechamento</th>
-                                <th scope="col" class="px-6 py-3">Sangrias</th>
-                                <th scope="col" class="px-6 py-3">Quebra</th>
-                                <th scope="col" class="px-6 py-3">Observações</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <?php foreach ($report_data as $item):
-                                $quebra = ($item['quebra'] !== null) ? $item['quebra'] : null;
-                            ?>
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap"><?php echo date('d/m/Y', strtotime($item['data_abertura'])); ?></td>
-                                    <td class="px-6 py-4 whitespace-nowrap"><?php echo $item['data_fechamento'] ? date('d/m/Y', strtotime($item['data_fechamento'])) : '-'; ?></td>
-                                    <td class="px-6 py-4 whitespace-nowrap"><?php echo htmlspecialchars($item['operador_nome']); ?></td>
-                                    <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo number_format($item['valor_abertura'], 2, ',', '.'); ?></td>
-                                    <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo $item['valor_fechamento'] ? number_format($item['valor_fechamento'], 2, ',', '.') : '-'; ?></td>
-                                    <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo $item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-'; ?></td>
-                                    <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo $quebra !== null ? number_format($quebra, 2, ',', '.') : '-'; ?></td>
-                                    <td class="px-6 py-4 max-w-xs overflow-hidden text-ellipsis"><?php echo htmlspecialchars($item['obs'] ?? '-'); ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="overflow-x-auto rounded-xl border border-gray-200">
+                <table class="w-full text-sm text-gray-600">
+                    <thead class="bg-gray-50 font-semibold uppercase text-gray-700 text-left sticky top-0">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Data Abertura</th>
+                            <th scope="col" class="px-6 py-3">Data Fechamento</th>
+                            <th scope="col" class="px-6 py-3">Operador</th>
+                            <th scope="col" class="px-6 py-3">Abertura</th>
+                            <th scope="col" class="px-6 py-3">Fechamento</th>
+                            <th scope="col" class="px-6 py-3">Sangrias</th>
+                            <th scope="col" class="px-6 py-3">Quebra</th>
+                            <th scope="col" class="px-6 py-3">Observações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="report-table-body" class="bg-white divide-y divide-gray-200">
+                        <!-- Conteúdo da tabela será injetado pelo JavaScript -->
+                    </tbody>
+                </table>
+            </div>
 
-                <!-- Controles de Paginação -->
-                <?php if ($total_pages > 1): ?>
-                    <nav class="flex justify-center items-center gap-2 mt-6">
-                        <?php if ($current_page > 1): ?>
-                            <a href="?page=<?php echo $current_page - 1; ?>" class="px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 hover:bg-gray-300 transition-colors">Anterior</a>
-                        <?php endif; ?>
-
-                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                            <a href="?page=<?php echo $i; ?>" class="px-4 py-2 text-sm font-semibold rounded-full <?php echo ($i === $current_page) ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'; ?>"><?php echo $i; ?></a>
-                        <?php endfor; ?>
-
-                        <?php if ($current_page < $total_pages): ?>
-                            <a href="?page=<?php echo $current_page + 1; ?>" class="px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 hover:bg-gray-300 transition-colors">Próxima</a>
-                        <?php endif; ?>
-                    </nav>
-                <?php endif; ?>
-            <?php endif; ?>
+            <!-- Controles de Paginação -->
+            <div id="pagination-container" class="flex justify-center items-center gap-2 mt-6">
+                <!-- Links de paginação serão injetados pelo JavaScript -->
+            </div>
         </div>
     </div>
 
@@ -573,6 +544,53 @@ if (isset($_GET['message'])) {
                 submitFecharCaixaBtn.innerHTML = '<i class="fas fa-lock mr-2"></i> Confirmar Fechamento';
             }
         });
+
+        // Função principal que atualiza a tabela e a paginação
+        const updateReport = (page) => {
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedData = mockReportData.slice(startIndex, endIndex);
+            const totalPages = Math.ceil(mockReportData.length / itemsPerPage);
+
+            renderTable(paginatedData);
+            renderPagination(page, totalPages);
+        };
+
+        // Função para renderizar a paginação
+        const renderPagination = (currentPage, totalPages) => {
+            const paginationContainer = document.getElementById('pagination-container');
+            paginationContainer.innerHTML = '';
+            if (totalPages <= 1) return;
+
+            if (currentPage > 1) {
+                const prevLink = `<a href="#" data-page="${currentPage - 1}" class="pagination-link px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 hover:bg-gray-300 transition-colors">Anterior</a>`;
+                paginationContainer.innerHTML += prevLink;
+            }
+
+            for (let i = 1; i <= totalPages; i++) {
+                const activeClass = i === currentPage ? 'active' : '';
+                const pageLink = `<a href="#" data-page="${i}" class="pagination-link px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 text-gray-800 hover:bg-gray-300 ${activeClass}">${i}</a>`;
+                paginationContainer.innerHTML += pageLink;
+            }
+
+            if (currentPage < totalPages) {
+                const nextLink = `<a href="#" data-page="${currentPage + 1}" class="pagination-link px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 hover:bg-gray-300 transition-colors">Próxima</a>`;
+                paginationContainer.innerHTML += nextLink;
+            }
+
+            // Adiciona o listener de clique para os novos links
+            document.querySelectorAll('.pagination-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Encontra o link mais próximo que contém o atributo 'data-page'
+                    const clickedLink = e.target.closest('.pagination-link');
+                    if (clickedLink) {
+                        const page = parseInt(clickedLink.dataset.page);
+                        updateReport(page);
+                    }
+                });
+            });
+        };
     </script>
 </body>
 </html>
