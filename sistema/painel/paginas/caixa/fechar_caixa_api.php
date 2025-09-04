@@ -32,7 +32,7 @@ try {
     }
 
     $valor_abertura = $caixa_aberto_data['valor_abertura'];
-    $valor_sangria = $caixa_aberto_data['sangria'];
+    $valor_sangria = $caixa_aberto_data['sangrias'];
     
     // Calcula a quebra
     // Quebra = Valor de Fechamento - Valor de Abertura
