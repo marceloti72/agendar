@@ -602,7 +602,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                             icon: "success"
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location = "login.php";
+                                window.location = "agradecimento.html";
                             }
                         });
                     } else {
