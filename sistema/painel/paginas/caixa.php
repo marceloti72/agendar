@@ -5,7 +5,7 @@ session_start();
 require_once("../conexao.php");
 require_once '../../vendor/autoload.php';
 
-// Define o fuso horário para garantir que CURDATE() funcione corretamente para o Brasil
+// Define o fuso horário para garantir que a data PHP funcione corretamente para o Brasil
 date_default_timezone_set('America/Sao_Paulo');
 
 if (!isset($_SESSION['id_conta'])) {
@@ -36,10 +36,15 @@ $last_closing_value = null;
 $suggested_opening_value = 0;
 
 if ($caixa_aberto) {
+    // Definimos a data atual em PHP, respeitando o fuso horário
+    $current_date = date('Y-m-d');
+    
     // Calcular o valor de entrada para o caixa atualmente aberto e sangrias
     try {
-        $sql_entrada = "SELECT SUM(valor) AS valor_entrada FROM receber WHERE data_pgto = CURDATE() AND pago = 'Sim' AND tipo = 'Comanda' AND pgto = 'Dinheiro' AND id_conta = :id_conta";
+        // CORRIGIDO: Passamos a data como um parâmetro para garantir a consistência
+        $sql_entrada = "SELECT SUM(valor) AS valor_entrada FROM receber WHERE data_pgto = :current_date AND pago = 'Sim' AND tipo = 'Comanda' AND pgto = 'Dinheiro' AND id_conta = :id_conta";
         $stmt_entrada = $pdo->prepare($sql_entrada);
+        $stmt_entrada->bindParam(':current_date', $current_date, PDO::PARAM_STR);
         $stmt_entrada->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
         $stmt_entrada->execute();
         $entrada_data = $stmt_entrada->fetch(PDO::FETCH_ASSOC);
@@ -148,7 +153,7 @@ if (isset($_GET['message'])) {
                         <p class="text-xl font-medium text-gray-800 mt-2">
                             Entradas do Dia: <span class="font-bold text-green-700" id="entradas-aberto">R$ <?php echo number_format($entrada_value_aberto, 2, ',', '.'); ?></span>
                         </p>
-                         <p class="text-xl font-medium text-gray-800 mt-2">
+                           <p class="text-xl font-medium text-gray-800 mt-2">
                             Sangrias: <span class="font-bold text-green-700" id="sangrias-aberto">R$ <?php echo number_format($total_sangrias_aberto, 2, ',', '.'); ?></span>
                         </p>
                         <p class="text-2xl md:text-3xl font-extrabold text-green-800 mt-4 pt-4 border-t-2 border-green-300">
@@ -189,7 +194,7 @@ if (isset($_GET['message'])) {
                     <div>
                         <label for="obs" class="block text-gray-700 font-semibold mb-2 text-left">Observações</label>
                         <textarea class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" id="obs" name="obs" rows="3"
-                                        placeholder="Digite observações importantes (opcional)"></textarea>
+                                     placeholder="Digite observações importantes (opcional)"></textarea>
                     </div>
                     <div class="flex flex-col md:flex-row gap-4 justify-center mt-8">
                         <button type="submit" id="submitBtn" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
