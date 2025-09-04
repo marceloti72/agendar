@@ -8,6 +8,11 @@ require_once '../../vendor/autoload.php';
 // Define o fuso horário para garantir que a data PHP funcione corretamente para o Brasil
 date_default_timezone_set('America/Sao_Paulo');
 
+// Adiciona cabeçalhos anti-cache
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 if (!isset($_SESSION['id_conta'])) {
     header('Location: login.php');
     exit;
@@ -41,7 +46,6 @@ if ($caixa_aberto) {
     
     // Calcular o valor de entrada para o caixa atualmente aberto e sangrias
     try {
-        // CORRIGIDO: Passamos a data como um parâmetro para garantir a consistência
         $sql_entrada = "SELECT SUM(valor) AS valor_entrada FROM receber WHERE data_pgto = :current_date AND pago = 'Sim' AND tipo = 'Comanda' AND pgto = 'Dinheiro' AND id_conta = :id_conta";
         $stmt_entrada = $pdo->prepare($sql_entrada);
         $stmt_entrada->bindParam(':current_date', $current_date, PDO::PARAM_STR);
@@ -82,30 +86,61 @@ if ($caixa_aberto) {
     }
 }
 
-// Lógica para carregar os dados do relatório histórico
+// Lógica de Paginação e Relatório Histórico
+$items_per_page = 10;
+$current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+if ($current_page < 1) {
+    $current_page = 1;
+}
+$offset = ($current_page - 1) * $items_per_page;
+
+// 1. Contar o total de registros para calcular o total de páginas
+try {
+    $sql_count = "SELECT COUNT(*) FROM caixa WHERE id_conta = :id_conta";
+    $stmt_count = $pdo->prepare($sql_count);
+    $stmt_count->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+    $stmt_count->execute();
+    $total_items = $stmt_count->fetchColumn();
+    $total_pages = ceil($total_items / $items_per_page);
+
+    // Log para depuração
+    error_log("Total de itens: $total_items, Total de páginas: $total_pages, Página atual: $current_page, Offset: $offset");
+} catch(PDOException $e) {
+    $message = "Erro ao contar registros: " . $e->getMessage();
+    $total_items = 0;
+    $total_pages = 1;
+}
+
+// 2. Carregar os dados do relatório com base na paginação
 $report_data = [];
 try {
     $sql_report = "SELECT
-                c.data_abertura,
-                c.data_fechamento,
-                c.valor_abertura,
-                c.valor_fechamento,
-                c.sangrias,
-                c.quebra,
-                u_op.nome as operador_nome,
-                u_ab.nome as usuario_abertura_nome,
-                u_fe.nome as usuario_fechamento_nome,
-                c.obs
-            FROM caixa c
-            JOIN usuarios u_op ON c.operador = u_op.id
-            JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id
-            LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id
-            WHERE c.id_conta = :id_conta
-            ORDER BY c.data_abertura DESC";
+                     c.data_abertura,
+                     c.data_fechamento,
+                     c.valor_abertura,
+                     c.valor_fechamento,
+                     c.sangrias,
+                     c.quebra,
+                     u_op.nome as operador_nome,
+                     u_ab.nome as usuario_abertura_nome,
+                     u_fe.nome as usuario_fechamento_nome,
+                     c.obs
+                   FROM caixa c
+                   JOIN usuarios u_op ON c.operador = u_op.id
+                   JOIN usuarios u_ab ON c.usuario_abertura = u_ab.id
+                   LEFT JOIN usuarios u_fe ON c.usuario_fechamento = u_fe.id
+                   WHERE c.id_conta = :id_conta
+                   ORDER BY c.data_abertura DESC
+                   LIMIT :limit OFFSET :offset";
     $stmt_report = $pdo->prepare($sql_report);
     $stmt_report->bindParam(':id_conta', $id_conta, PDO::PARAM_INT);
+    $stmt_report->bindParam(':limit', $items_per_page, PDO::PARAM_INT);
+    $stmt_report->bindParam(':offset', $offset, PDO::PARAM_INT);
     $stmt_report->execute();
     $report_data = $stmt_report->fetchAll(PDO::FETCH_ASSOC);
+
+    // Log para depuração
+    error_log("Registros retornados: " . count($report_data));
 } catch(PDOException $e) {
     $message = "Erro ao carregar relatório: " . $e->getMessage();
 }
@@ -154,7 +189,7 @@ if (isset($_GET['message'])) {
                         <p class="text-xl font-medium text-gray-800 mt-2">
                             Entradas do Dia: <span class="font-bold text-green-700" id="entradas-aberto">R$ <?php echo number_format($entrada_value_aberto, 2, ',', '.'); ?></span>
                         </p>
-                           <p class="text-xl font-medium text-gray-800 mt-2">
+                        <p class="text-xl font-medium text-gray-800 mt-2">
                             Sangrias: <span class="font-bold text-green-700" id="sangrias-aberto">R$ <?php echo number_format($total_sangrias_aberto, 2, ',', '.'); ?></span>
                         </p>
                         <p class="text-2xl md:text-3xl font-extrabold text-green-800 mt-4 pt-4 border-t-2 border-green-300">
@@ -184,8 +219,8 @@ if (isset($_GET['message'])) {
                     <div>
                         <label for="valor_abertura" class="block text-gray-700 font-semibold mb-2 text-left">Valor Inicial (R$)</label>
                         <input type="number" step="0.01" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-                                name="valor_abertura" required placeholder="0.00"
-                                value="<?php echo htmlspecialchars(number_format($suggested_opening_value, 2, '.', '')); ?>">
+                               name="valor_abertura" required placeholder="0.00"
+                               value="<?php echo htmlspecialchars(number_format($suggested_opening_value, 2, '.', '')); ?>">
                         <?php if (isset($suggested_opening_value) && $suggested_opening_value > 0): ?>
                             <p class="text-sm text-gray-500 mt-2 text-left">
                                 Valor do último fechamento: R$ <?php echo number_format($suggested_opening_value, 2, ',', '.'); ?>
@@ -195,7 +230,7 @@ if (isset($_GET['message'])) {
                     <div>
                         <label for="obs" class="block text-gray-700 font-semibold mb-2 text-left">Observações</label>
                         <textarea class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" id="obs" name="obs" rows="3"
-                                     placeholder="Digite observações importantes (opcional)"></textarea>
+                                  placeholder="Digite observações importantes (opcional)"></textarea>
                     </div>
                     <div class="flex flex-col md:flex-row gap-4 justify-center mt-8">
                         <button type="submit" id="submitBtn" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
@@ -208,7 +243,7 @@ if (isset($_GET['message'])) {
                 </form>
             </div>
             
-             <?php if ($message): ?>
+            <?php if ($message): ?>
                 <div id="statusMessage" class="p-4 rounded-xl border-2 mb-6 text-center <?php echo strpos($message, 'Erro') === false ? 'alert-success' : 'alert-danger'; ?>" role="alert">
                     <?php echo htmlspecialchars($message); ?>
                 </div>
@@ -263,6 +298,23 @@ if (isset($_GET['message'])) {
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Controles de Paginação -->
+                <?php if ($total_pages > 1): ?>
+                    <nav class="flex justify-center items-center gap-2 mt-6">
+                        <?php if ($current_page > 1): ?>
+                            <a href="?page=<?php echo $current_page - 1; ?>&t=<?php echo time(); ?>" class="px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 hover:bg-gray-300 transition-colors">Anterior</a>
+                        <?php endif; ?>
+
+                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                            <a href="?page=<?php echo $i; ?>&t=<?php echo time(); ?>" class="px-4 py-2 text-sm font-semibold rounded-full <?php echo ($i === $current_page) ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'; ?>" onclick="console.log('Clicou na página <?php echo $i; ?>')"><?php echo $i; ?></a>
+                        <?php endfor; ?>
+
+                        <?php if ($current_page < $total_pages): ?>
+                            <a href="?page=<?php echo $current_page + 1; ?>&t=<?php echo time(); ?>" class="px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 hover:bg-gray-300 transition-colors">Próxima</a>
+                        <?php endif; ?>
+                    </nav>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
@@ -298,7 +350,7 @@ if (isset($_GET['message'])) {
         </div>
     </div>
     
-    <!-- Novo Modal para Fechamento de Caixa -->
+    <!-- Modal para Fechamento de Caixa -->
     <div id="fecharCaixaModal" class="modal fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 w-full max-w-md">
             <div class="flex justify-between items-center mb-6">
@@ -483,7 +535,7 @@ if (isset($_GET['message'])) {
             const totalPrevisto = fecharCaixaBtn.getAttribute('data-total-previsto');
             
             document.getElementById('fechar_caixa_id').value = caixaId;
-            document.getElementById('valor_abertura_fechamento').value = totalPrevisto; // O valor de abertura é o valor previsto
+            document.getElementById('valor_abertura_fechamento').value = totalPrevisto;
             document.getElementById('valor_fechamento').value = totalPrevisto;
             
             fecharCaixaModal.style.display = 'flex';
