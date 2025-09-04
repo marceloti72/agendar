@@ -19,7 +19,7 @@ $data_fechamento = date('Y-m-d');
 
 try {
     // Busca o valor de abertura para calcular a quebra
-    $sql_abertura = "SELECT valor_abertura, sangria FROM caixa WHERE id = :caixa_id AND id_conta = :id_conta";
+    $sql_abertura = "SELECT valor_abertura, sangrias FROM caixa WHERE id = :caixa_id AND id_conta = :id_conta";
     $stmt_abertura = $pdo->prepare($sql_abertura);
     $stmt_abertura->bindParam(':caixa_id', $caixa_id, PDO::PARAM_INT);
     $stmt_abertura->bindParam(':id_conta', $_SESSION['id_conta'], PDO::PARAM_INT);
