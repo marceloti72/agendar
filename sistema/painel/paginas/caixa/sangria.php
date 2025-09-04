@@ -16,14 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-if (!isset($_POST['id_caixa']) || !isset($_POST['valor_sangria'])) {
+if (!isset($_POST['caixa_id']) || !isset($_POST['sangria_valor'])) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Dados incompletos. Por favor, forneça o ID do caixa e o valor da sangria.']);
     exit;
 }
 
-$id_caixa = intval($_POST['id_caixa']);
-$valor_sangria = floatval($_POST['valor_sangria']);
+$id_caixa = intval($_POST['caixa_id']);
+$valor_sangria = floatval($_POST['sangria_valor']);
 
 if ($valor_sangria <= 0) {
     http_response_code(400);
