@@ -19,7 +19,7 @@ $data_fechamento = date('Y-m-d');
 
 try {
     // Busca o valor de abertura para calcular a quebra
-    $sql_abertura = "SELECT valor_abertura FROM caixa WHERE id = :caixa_id AND id_conta = :id_conta";
+    $sql_abertura = "SELECT valor_abertura, sangria FROM caixa WHERE id = :caixa_id AND id_conta = :id_conta";
     $stmt_abertura = $pdo->prepare($sql_abertura);
     $stmt_abertura->bindParam(':caixa_id', $caixa_id, PDO::PARAM_INT);
     $stmt_abertura->bindParam(':id_conta', $_SESSION['id_conta'], PDO::PARAM_INT);
@@ -32,10 +32,11 @@ try {
     }
 
     $valor_abertura = $caixa_aberto_data['valor_abertura'];
+    $valor_sangria = $caixa_aberto_data['sangria'];
     
     // Calcula a quebra
     // Quebra = Valor de Fechamento - Valor de Abertura
-    $quebra = $valor_fechamento - $valor_abertura;
+    $quebra = ($valor_fechamento + $valor_sangria) - $valor_abertura;
 
     $sql_update = "UPDATE caixa 
                    SET data_fechamento = :data_fechamento, 

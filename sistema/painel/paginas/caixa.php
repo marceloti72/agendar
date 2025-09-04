@@ -75,7 +75,7 @@ if ($caixa_aberto) {
         if ($last_box_data) {
             $last_closing_value = $last_box_data['valor_fechamento'];
             $sangrias = $last_box_data['sangrias'] ?? 0;
-            $suggested_opening_value = $last_closing_value - $sangrias;
+            $suggested_opening_value = $last_closing_value;
         }
     } catch(PDOException $e) {
         $message = "Erro ao carregar o último valor de fechamento: " . $e->getMessage();
@@ -188,7 +188,7 @@ if (isset($_GET['message'])) {
                                 value="<?php echo htmlspecialchars(number_format($suggested_opening_value, 2, '.', '')); ?>">
                         <?php if (isset($suggested_opening_value) && $suggested_opening_value > 0): ?>
                             <p class="text-sm text-gray-500 mt-2 text-left">
-                                Valor da última sessão: R$ <?php echo number_format($suggested_opening_value, 2, ',', '.'); ?>
+                                Valor do último fechamento: R$ <?php echo number_format($suggested_opening_value, 2, ',', '.'); ?>
                             </p>
                         <?php endif; ?>
                     </div>
