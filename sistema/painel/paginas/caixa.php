@@ -191,7 +191,7 @@ if (isset($_GET['message'])) {
                         </p>
                     </div>
                     <div class="flex flex-col md:flex-row gap-4 justify-center mt-6">
-                        <button id="sangriaBtn" class="bg-orange-500 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-orange-600 transition-all duration-300 transform hover:scale-105 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-orange-500" style="outline: none;">
+                        <button id="sangriaBtn" class="bg-orange-500 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-orange-600 transition-all duration-300 transform hover:scale-105 flex items-center justify-center" style="outline: none;">
                             <i class="fas fa-tint mr-2"></i> Sangria
                         </button>
                         <button id="fecharCaixaBtn" data-caixa-id="<?php echo $caixa_aberto['id'] ?? ''; ?>" data-total-previsto="<?php echo htmlspecialchars($total_value_aberto); ?>" class="bg-red-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
