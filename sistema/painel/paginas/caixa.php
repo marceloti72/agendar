@@ -140,7 +140,17 @@ if (isset($_GET['message'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão de Caixa</title>
-    
+    <script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        corePlugins: {
+            preflight: false,
+        },
+        content: [
+            { raw: '<div id="reports-section">...</div>' }
+        ]
+    }
+</script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -154,7 +164,6 @@ if (isset($_GET['message'])) {
         .alert-danger { background-color: #f8d7da; color: #842029; }
     </style>
 </head>
-<script src="https://cdn.tailwindcss.com"></script>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center py-8">
     <div class="container mx-auto p-4 md:p-8 max-w-4xl">
         <div id="status-container" class="bg-white rounded-2xl shadow-lg p-6 md:p-10 mb-8">
