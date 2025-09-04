@@ -35,35 +35,35 @@ if (@$cliente == "") {
 }
 
 
-$query = $pdo->query("SELECT * FROM formas_pgto where nome = '$pgto' and id_conta = '$id_conta'");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$valor_taxa = $res[0]['taxa'];
+// $query = $pdo->query("SELECT * FROM formas_pgto where nome = '$pgto' and id_conta = '$id_conta'");
+// $res = $query->fetchAll(PDO::FETCH_ASSOC);
+// $valor_taxa = $res[0]['taxa'];
 
-if ($valor_taxa > 0 and strtotime($data_pgto) <=  strtotime($data_atual)) {
-	if ($taxa_sistema == 'Cliente') {
-		$valor_serv = $valor_serv + $valor_serv * ($valor_taxa / 100);
-	} else {
-		$valor_serv = $valor_serv - $valor_serv * ($valor_taxa / 100);
-	}
-}
-
-
+// if ($valor_taxa > 0 and strtotime($data_pgto) <=  strtotime($data_atual)) {
+// 	if ($taxa_sistema == 'Cliente') {
+// 		$valor_serv = $valor_serv + $valor_serv * ($valor_taxa / 100);
+// 	} else {
+// 		$valor_serv = $valor_serv - $valor_serv * ($valor_taxa / 100);
+// 	}
+// }
 
 
 
-$query = $pdo->query("SELECT * FROM formas_pgto where nome = '$pgto_restante' and id_conta = '$id_conta'");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$valor_taxa = @$res[0]['taxa'];
 
-if ($valor_serv_restante > 0) {
-	if ($valor_taxa > 0 and strtotime($data_pgto_restante) <=  strtotime($data_atual)) {
-		if ($taxa_sistema == 'Cliente') {
-			$valor_serv_restante = $valor_serv_restante + $valor_serv_restante * ($valor_taxa / 100);
-		} else {
-			$valor_serv_restante = $valor_serv_restante - $valor_serv_restante * ($valor_taxa / 100);
-		}
-	}
-}
+
+// $query = $pdo->query("SELECT * FROM formas_pgto where nome = '$pgto_restante' and id_conta = '$id_conta'");
+// $res = $query->fetchAll(PDO::FETCH_ASSOC);
+// $valor_taxa = @$res[0]['taxa'];
+
+// if ($valor_serv_restante > 0) {
+// 	if ($valor_taxa > 0 and strtotime($data_pgto_restante) <=  strtotime($data_atual)) {
+// 		if ($taxa_sistema == 'Cliente') {
+// 			$valor_serv_restante = $valor_serv_restante + $valor_serv_restante * ($valor_taxa / 100);
+// 		} else {
+// 			$valor_serv_restante = $valor_serv_restante - $valor_serv_restante * ($valor_taxa / 100);
+// 		}
+// 	}
+// }
 
 
 if (strtotime($data_pgto) <=  strtotime($data_atual)) {

@@ -19,7 +19,6 @@ $servico = $_POST['servico'];
 $cupom = $_POST['cupom'];
 $data_agd = $_POST['data'];
 $hora_do_agd = @$_POST['hora'];
-$forma_pgto = @$_POST['forma_pgto'];
 $hash = '';
 $quantidade_a_usar = 1;
 $response = [
@@ -290,7 +289,7 @@ try {
     $query->bindValue(":obs", $obs);
     $query->bindValue(":cupom", $cupom_id);
     $query->bindValue(":servico", $servico_id, PDO::PARAM_INT);
-    $query->bindValue(":hash", $hash);    
+    $query->bindValue(":hash", $hash);
     $query->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);
     $query->execute();
     error_log("Inserção em agendamentos: Linhas afetadas: " . $query->rowCount());
@@ -338,7 +337,7 @@ try {
     $pago_receber = 'Não';
     $tipo_receber = 'Serviço';
 
-    $query_receber = $pdo->prepare("INSERT INTO receber SET descricao = :desc, tipo = :tipo, valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), usuario_lanc = :user_lanc, foto = 'sem-foto.jpg', cliente = :cli, pessoa = :pessoa, pago = :pago, referencia = :referencia, id_agenda = :id_agenda, servico = :serv, funcionario = :func, func_comanda = :user_comanda, comanda = :comanda_id, id_conta = :id_conta, valor2 = :val, pgto = :pgto");
+    $query_receber = $pdo->prepare("INSERT INTO receber SET descricao = :desc, tipo = :tipo, valor = :val, data_lanc = CURDATE(), data_venc = CURDATE(), usuario_lanc = :user_lanc, foto = 'sem-foto.jpg', cliente = :cli, pessoa = :pessoa, pago = :pago, referencia = :referencia, id_agenda = :id_agenda, servico = :serv, funcionario = :func, func_comanda = :user_comanda, comanda = :comanda_id, id_conta = :id_conta, valor2 = :val");
     $query_receber->bindValue(':desc', $descricao_final_receber);
     $query_receber->bindValue(':tipo', $tipo_receber);
     $query_receber->bindValue(':val', $valor_final_receber);
@@ -348,7 +347,6 @@ try {
     $query_receber->bindValue(':pago', $pago_receber);
     $query_receber->bindValue(':referencia', $ult_id);
     $query_receber->bindValue(':id_agenda', $ult_id);
-    $query_receber->bindValue(":pgto", $forma_pgto);
     $query_receber->bindValue(':serv', $servico_id, PDO::PARAM_INT);
     $query_receber->bindValue(':func', $funcionario_id, PDO::PARAM_INT);
     $query_receber->bindValue(':user_comanda', $usuario_logado, PDO::PARAM_INT);

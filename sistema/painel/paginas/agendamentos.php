@@ -1521,8 +1521,19 @@ function calcular() {
         var data_pgto = $("#data_pgto").val();
         var data_pgto_restante = $("#data_pgto_restante").val();
         var pgto_restante = $("#pgto_restante").val();
-        var pgto = $("#pgto").val();
+        var pgto = $("#forma_pgto").val();
         var id = $("#id").val();
+
+        // Verifica se o valor selecionado é vazio
+        if (pgto.value === "") {
+            // Se for vazio, exibe o SweetAlert de erro
+            Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Por favor, selecione uma forma de pagamento!',
+            confirmButtonText: 'OK'
+            });
+        } 
 
         if (valor_restante > 0) {
             if (!data_pgto_restante || !pgto_restante) { //Verificação mais segura
@@ -1567,6 +1578,7 @@ function calcular() {
                     $('#data_pgto_restante').val('');
                     $('#valor_serv').val('');
                     $('#pgto_restante').val('').trigger('change'); //Limpa select2
+                    $('#forma_pgto').val('').trigger('change'); //Limpa select2
                     if (typeof listar === 'function') listar();
                     setTimeout(function() {                        
                         location.reload();
