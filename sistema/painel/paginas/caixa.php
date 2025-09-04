@@ -16,6 +16,7 @@ if (!isset($_SESSION['id_conta'])) {
 $id_conta = $_SESSION['id_conta'];
 $message = '';
 $caixa_aberto = null;
+$total_value_aberto = 0;
 
 // 1. Lógica para verificar se já existe um caixa aberto
 try {
@@ -31,7 +32,6 @@ try {
 // 2. Lógica para carregar os dados do caixa aberto e do último fechado
 $opening_value_aberto = 0;
 $entrada_value_aberto = 0;
-$total_value_aberto = 0;
 $last_closing_value = null;
 $suggested_opening_value = 0;
 
@@ -91,6 +91,7 @@ try {
                 c.valor_abertura,
                 c.valor_fechamento,
                 c.sangrias,
+                c.quebra,
                 u_op.nome as operador_nome,
                 u_ab.nome as usuario_abertura_nome,
                 u_fe.nome as usuario_fechamento_nome,
@@ -164,9 +165,9 @@ if (isset($_GET['message'])) {
                         <button id="sangriaBtn" class="bg-orange-500 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-orange-600 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
                             <i class="fas fa-tint mr-2"></i> Sangria
                         </button>
-                        <a href="fechar_caixa.php?id=<?php echo $caixa_aberto['id'] ?? ''; ?>" class="bg-red-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                        <button id="fecharCaixaBtn" data-caixa-id="<?php echo $caixa_aberto['id'] ?? ''; ?>" data-total-previsto="<?php echo htmlspecialchars($total_value_aberto); ?>" class="bg-red-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
                             <i class="fas fa-lock mr-2"></i> Fechar Caixa
-                        </a>
+                        </button>
                         <button onclick="document.getElementById('reports-section').scrollIntoView({ behavior: 'smooth' });" class="bg-gray-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
                             <i class="fas fa-file-alt mr-2"></i> Visualizar Relatórios
                         </button>
@@ -246,7 +247,7 @@ if (isset($_GET['message'])) {
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <?php foreach ($report_data as $item):
-                                $quebra = ($item['valor_fechamento'] !== null) ? ($item['valor_fechamento'] - $item['valor_abertura'] - ($item['sangrias'] ?? 0)) : null;
+                                $quebra = ($item['quebra'] !== null) ? $item['quebra'] : null;
                             ?>
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap"><?php echo date('d/m/Y', strtotime($item['data_abertura'])); ?></td>
@@ -255,7 +256,7 @@ if (isset($_GET['message'])) {
                                     <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo number_format($item['valor_abertura'], 2, ',', '.'); ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo $item['valor_fechamento'] ? number_format($item['valor_fechamento'], 2, ',', '.') : '-'; ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo $item['sangrias'] ? number_format($item['sangrias'], 2, ',', '.') : '-'; ?></td>
-                                    <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo $quebra ? number_format($quebra, 2, ',', '.') : '-'; ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">R$ <?php echo $quebra !== null ? number_format($quebra, 2, ',', '.') : '-'; ?></td>
                                     <td class="px-6 py-4 max-w-xs overflow-hidden text-ellipsis"><?php echo htmlspecialchars($item['obs'] ?? '-'); ?></td>
                                 </tr>
                             <?php endforeach; ?>
@@ -302,6 +303,43 @@ if (isset($_GET['message'])) {
         </div>
     </div>
     
+    <!-- Novo Modal para Fechamento de Caixa -->
+    <div id="fecharCaixaModal" class="modal fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 w-full max-w-md">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">Fechar Caixa</h3>
+                <button id="closeFecharCaixaModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <form id="fecharCaixaForm" class="space-y-6">
+                <input type="hidden" id="fechar_caixa_id" name="caixa_id">
+                <input type="hidden" id="valor_abertura_fechamento" name="valor_abertura">
+                <div>
+                    <label for="valor_fechamento" class="block text-gray-700 font-semibold mb-2">Valor no Caixa para Fechamento (R$)</label>
+                    <input type="number" step="0.01" id="valor_fechamento" name="valor_fechamento" required
+                           class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors"
+                           placeholder="0.00">
+                </div>
+                <div>
+                    <label for="fechar_obs" class="block text-gray-700 font-semibold mb-2">Observações (opcional)</label>
+                    <textarea id="fechar_obs" name="obs" rows="3"
+                              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors"
+                              placeholder="Motivo de quebra de caixa, etc."></textarea>
+                </div>
+                <div class="flex justify-end gap-4">
+                    <button type="button" id="cancelFecharCaixaBtn" class="bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded-full hover:bg-gray-400 transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="submitFecharCaixaBtn" class="bg-red-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-red-700 transition-colors flex items-center justify-center">
+                        <i class="fas fa-lock mr-2"></i> Confirmar Fechamento
+                    </button>
+                </div>
+            </form>
+            <div id="fecharStatusMessage" class="hidden mt-4 p-3 rounded-lg text-center" role="alert"></div>
+        </div>
+    </div>
+    
     <script>
         document.getElementById('openCaixaForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -323,19 +361,7 @@ if (isset($_GET['message'])) {
                 const result = await response.json();
 
                 if (result.success) {
-                    statusMessage.textContent = result.message;
-                    statusMessage.classList.remove('hidden', 'alert-danger');
-                    statusMessage.classList.add('alert-success');
-                    
-                    document.getElementById('caixa-fechado-content').style.display = 'none';
-                    document.getElementById('caixa-aberto-content').style.display = 'block';
-                    
-                    document.getElementById('valor-abertura-aberto').textContent = 'R$ ' + parseFloat(formData.get('valor_abertura')).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                    
-                    setTimeout(() => {
-                        statusMessage.classList.add('hidden');
-                    }, 5000);
-
+                    window.location.reload();
                 } else {
                     statusMessage.textContent = result.message;
                     statusMessage.classList.remove('hidden', 'alert-success');
@@ -433,28 +459,7 @@ if (isset($_GET['message'])) {
                 const result = await response.json();
 
                 if (result.success) {
-                    sangriaStatusMessage.textContent = result.message;
-                    sangriaStatusMessage.classList.remove('hidden', 'alert-danger');
-                    sangriaStatusMessage.classList.add('alert-success');
-                    
-                    // Atualiza os valores na página principal
-                    const sangriaValor = parseFloat(formData.get('sangria_valor'));
-                    const sangriasAbertoElement = document.getElementById('sangrias-aberto');
-                    const totalPrevistoElement = document.getElementById('total-previsto');
-
-                    const currentSangrias = parseFloat(sangriasAbertoElement.textContent.replace('R$ ', '').replace('.', '').replace(',', '.'));
-                    const currentTotal = parseFloat(totalPrevistoElement.textContent.replace('R$ ', '').replace('.', '').replace(',', '.'));
-
-                    const newSangrias = currentSangrias + sangriaValor;
-                    const newTotal = currentTotal - sangriaValor;
-
-                    sangriasAbertoElement.textContent = 'R$ ' + newSangrias.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                    totalPrevistoElement.textContent = 'R$ ' + newTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-                    setTimeout(() => {
-                        hideSangriaModal();
-                    }, 2000);
-
+                    window.location.reload();
                 } else {
                     sangriaStatusMessage.textContent = result.message;
                     sangriaStatusMessage.classList.remove('hidden', 'alert-success');
@@ -467,6 +472,71 @@ if (isset($_GET['message'])) {
             } finally {
                 submitSangriaBtn.disabled = false;
                 submitSangriaBtn.innerHTML = '<i class="fas fa-tint mr-2"></i> Confirmar Sangria';
+            }
+        });
+        
+        // Lógica do Modal de Fechamento de Caixa
+        const fecharCaixaBtn = document.getElementById('fecharCaixaBtn');
+        const fecharCaixaModal = document.getElementById('fecharCaixaModal');
+        const fecharCaixaForm = document.getElementById('fecharCaixaForm');
+        const closeFecharCaixaModal = document.getElementById('closeFecharCaixaModal');
+        const cancelFecharCaixaBtn = document.getElementById('cancelFecharCaixaBtn');
+        const fecharStatusMessage = document.getElementById('fecharStatusMessage');
+
+        function showFecharCaixaModal() {
+            const caixaId = fecharCaixaBtn.getAttribute('data-caixa-id');
+            const totalPrevisto = fecharCaixaBtn.getAttribute('data-total-previsto');
+            
+            document.getElementById('fechar_caixa_id').value = caixaId;
+            document.getElementById('valor_abertura_fechamento').value = totalPrevisto; // O valor de abertura é o valor previsto
+            document.getElementById('valor_fechamento').value = totalPrevisto;
+            
+            fecharCaixaModal.style.display = 'flex';
+        }
+
+        function hideFecharCaixaModal() {
+            fecharCaixaModal.style.display = 'none';
+            fecharCaixaForm.reset();
+            fecharStatusMessage.classList.add('hidden');
+        }
+
+        if (fecharCaixaBtn) {
+            fecharCaixaBtn.addEventListener('click', showFecharCaixaModal);
+        }
+        closeFecharCaixaModal.addEventListener('click', hideFecharCaixaModal);
+        cancelFecharCaixaBtn.addEventListener('click', hideFecharCaixaModal);
+
+        fecharCaixaForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const submitFecharCaixaBtn = document.getElementById('submitFecharCaixaBtn');
+
+            submitFecharCaixaBtn.disabled = true;
+            submitFecharCaixaBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processando...';
+            fecharStatusMessage.classList.add('hidden');
+
+            try {
+                const response = await fetch('paginas/caixa/fechar_caixa_api.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    window.location.reload();
+                } else {
+                    fecharStatusMessage.textContent = result.message;
+                    fecharStatusMessage.classList.remove('hidden', 'alert-success');
+                    fecharStatusMessage.classList.add('alert-danger');
+                }
+            } catch (error) {
+                fecharStatusMessage.textContent = "Erro de rede ao comunicar com o servidor.";
+                fecharStatusMessage.classList.remove('hidden', 'alert-success');
+                fecharStatusMessage.classList.add('alert-danger');
+            } finally {
+                submitFecharCaixaBtn.disabled = false;
+                submitFecharCaixaBtn.innerHTML = '<i class="fas fa-lock mr-2"></i> Confirmar Fechamento';
             }
         });
     </script>

@@ -2,6 +2,8 @@
 session_start();
 require_once("../../../conexao.php");
 
+date_default_timezone_set('America/Sao_Paulo');
+
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['id_conta'])) {
