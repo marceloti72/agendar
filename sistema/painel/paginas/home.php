@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Função para criar gráficos de barras horizontais para os rankings
-    function createRankingChart(chartId, seriesData, categories, color) {
+function createRankingChart(chartId, seriesData, categories, color) {
     if (!seriesData || seriesData.length === 0) {
         document.querySelector(chartId).innerHTML = `<div class="flex items-center justify-center h-full text-gray-500">Sem dados para o ranking.</div>`;
         return;
@@ -229,8 +229,13 @@ document.addEventListener("DOMContentLoaded", function() {
             labels: { 
                 show: true, 
                 style: { colors: '#333', fontSize: '12px' },
-                // ADICIONE ESTA FUNÇÃO PARA LIMITAR O TEXTO
+                
+                // ADIÇÕES DEFINITIVAS PARA CORRIGIR O ESTOURO
+                trim: true,      // 👈 Ativa o corte automático de texto da biblioteca
+                maxWidth: 110,   // 👈 Define uma largura MÁXIMA para a área dos nomes
+                
                 formatter: function (val) {
+                    // O formatter agora funciona em conjunto com o maxWidth
                     if (typeof val === 'string' && val.length > 15) {
                         return val.slice(0, 15) + '...';
                     }
@@ -240,11 +245,10 @@ document.addEventListener("DOMContentLoaded", function() {
         },
         grid: { show: false },
         colors: [color],
-        legend: { show: false }, // Legenda não é necessária com distributed: true
+        legend: { show: false },
         tooltip: { 
             y: { 
                 formatter: (val, { dataPointIndex, w }) => {
-                    // Mostra o nome completo no tooltip
                     const fullCategoryName = w.globals.labels[dataPointIndex];
                     return `${fullCategoryName}: ${val}`;
                 }
