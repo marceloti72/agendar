@@ -462,7 +462,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                         <button type="button" class="btn btn-success btn-add" onclick="inserirServico()"><i class="fa fa-plus"></i></button>
                                     </div>
                                 </div>
-                                
+                                <div class="item-list-container" id="listar_servicos"></div>
 
                                 <hr class="divider">
 
@@ -493,7 +493,6 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                         <button type="button" class="btn btn-success btn-add" onclick="inserirProduto()"><i class="fa fa-plus"></i></button>
                                     </div>
                                 </div>
-                                <div class="item-list-container" id="listar_servicos"></div>
                                 <div class="item-list-container" id="listar_produtos"></div>
 
                                 <hr class="divider">
