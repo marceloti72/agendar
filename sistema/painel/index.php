@@ -210,8 +210,8 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
                         <li><a href="receber" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Contas à Receber</a></li>
                         <li><a href="comissoes" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Comissões</a></li>                        
                     </ul>
-                </li>
-                
+                </li>          
+                      
                 <li x-data="{ open: false }">
                     <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
                         <span><i class="fa fa-pencil w-6 mr-2"></i> Relatórios</span>
