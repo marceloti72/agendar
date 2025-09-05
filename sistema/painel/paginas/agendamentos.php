@@ -513,7 +513,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 
 
-<div id="modalForm2" class="modal-overlay" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+<div id="modalForm2" class="modal fade modal-overlay" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-container bg-white rounded-xl shadow-2xl overflow-hidden md:flex">
             <!-- Modal Header -->
             <div class="w-full modal-header-custom flex justify-between items-center">
