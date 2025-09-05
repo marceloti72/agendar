@@ -292,7 +292,6 @@ if (@count($res_caixa) > 0 && $res_caixa[0]['data_fechamento'] === NULL) {
         margin: 0;
         padding: 0;
         flex-shrink: 1;
-		height: 20px;
     }
     #showLeftPush {
         font-size: 16px;
