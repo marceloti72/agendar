@@ -257,55 +257,131 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
         </nav>
     </div>
 
+    <!-- Main Content -->
     <div class="flex-1 flex flex-col transition-all duration-300" :class="{'lg:ml-64': sidebarOpen}">
-        <header class="bg-white shadow-sm sticky top-0 z-40 p-4 flex items-center justify-between">
-            <button @click="sidebarOpen = !sidebarOpen" class="p-2 text-gray-600 hover:bg-gray-200 rounded-lg lg:hidden">
+        <header class="bg-white dark:bg-slate-800 shadow-sm sticky top-0 z-40 p-4 flex items-center justify-between">
+            <button @click="sidebarOpen = !sidebarOpen" class="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 rounded-lg lg:hidden">
                 <i class="fa fa-bars text-xl"></i>
             </button>
-            <div class="hidden lg:block"></div> <div class="flex items-center space-x-5">
+            <div class="hidden lg:block"></div> <!-- Spacer -->
+
+            <div class="flex items-center space-x-5">
+                
+                <!-- Dropdown Agendamentos -->
+                <div class="relative" x-data="{ open: false }">
+                    <button @click="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Agendamentos hoje">
+                        <i class="fas fa-calendar-check text-xl"></i>
+                        <?php if ($total_agendamentos_hoje_usuario_pendentes > 0): ?>
+                            <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_agendamentos_hoje_usuario_pendentes ?></span>
+                        <?php endif; ?>
+                    </button>
+                    <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-700 rounded-lg shadow-lg z-20">
+                        <div class="p-3 border-b border-gray-200 dark:border-slate-600">
+                            <h3 class="font-semibold text-gray-800 dark:text-gray-200"><?= $total_agendamentos_hoje_usuario_pendentes ?> Agendamentos Pendentes</h3>
+                        </div>
+                        <div class="max-h-64 overflow-y-auto custom-scrollbar">
+                            <?php foreach($res_agendamentos as $agendamento): ?>
+                                <div class="p-3 border-b border-gray-100 dark:border-slate-600">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">
+                                        <span class="font-bold"><?= date("H:i", strtotime($agendamento['hora'])) ?></span> - <?= htmlspecialchars($agendamento['cliente_nome'] ?? 'Sem Cliente') ?>
+                                    </p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400"><?= htmlspecialchars($agendamento['servico_nome'] ?? 'Não Lançado') ?></p>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <a href="<?= $link_ag ?>" class="block text-center p-2 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-600 text-sm font-medium text-blue-600 dark:text-blue-400 rounded-b-lg">Ver Todos</a>
+                    </div>
+                </div>
+
+                <!-- Dropdown Encaixes -->
+                <div class="relative" x-data="{ open: false }">
+                    <button @click="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Encaixes hoje">
+                        <i class="fa fa-bell text-xl"></i>
+                        <?php if ($total_encaixes_hoje > 0): ?>
+                            <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_encaixes_hoje ?></span>
+                        <?php endif; ?>
+                    </button>
+                    <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-72 bg-white dark:bg-slate-700 rounded-lg shadow-lg z-20">
+                         <div class="p-3 border-b border-gray-200 dark:border-slate-600">
+                            <h3 class="font-semibold text-gray-800 dark:text-gray-200"><?= $total_encaixes_hoje ?> Encaixes Aguardando</h3>
+                        </div>
+                        <a href="index.php?pag=home#encaixes-hoje" @click="open = false" class="block text-center p-2 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-600 text-sm font-medium text-blue-600 dark:text-blue-400 rounded-b-lg">Ver na Dashboard</a>
+                    </div>
+                </div>
+
                 <?php if (@$_SESSION['nivel_usuario'] == 'administrador'): ?>
-                <a href="<?= $link_ag ?>" class="relative text-gray-600 hover:text-blue-600" title="Agendamentos hoje">
-                    <i class="fas fa-calendar-check text-xl"></i>
-                    <?php if ($total_agendamentos_hoje_usuario_pendentes > 0): ?>
-                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_agendamentos_hoje_usuario_pendentes ?></span>
-                    <?php endif; ?>
-                </a>
-                <a href="#" class="relative text-gray-600 hover:text-blue-600" title="Encaixes hoje">
-                    <i class="fa fa-bell text-xl"></i>
-                    <?php if ($total_encaixes_hoje > 0): ?>
-                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_encaixes_hoje ?></span>
-                    <?php endif; ?>
-                </a>
-                <a href="#" onclick="showModal('RelAniv')" class="relative text-gray-600 hover:text-blue-600" title="Aniversariantes de hoje">
-                    <i class="fa fa-birthday-cake text-xl"></i>
-                     <?php if ($total_aniversariantes_hoje > 0): ?>
-                    <span class="absolute -top-2 -right-2 bg-green-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_aniversariantes_hoje ?></span>
-                    <?php endif; ?>
-                </a>
-                <a href="comentarios" class="relative text-gray-600 hover:text-blue-600" title="Depoimentos pendentes">
-                    <i class="fa fa-comment text-xl"></i>
-                    <?php if ($total_comentarios > 0): ?>
-                    <span class="absolute -top-2 -right-2 bg-blue-700 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_comentarios ?></span>
-                    <?php endif; ?>
-                </a>
+                <!-- Dropdown Aniversariantes -->
+                <div class="relative" x-data="{ open: false }">
+                    <button @click="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Aniversariantes de hoje">
+                        <i class="fa fa-birthday-cake text-xl"></i>
+                         <?php if ($total_aniversariantes_hoje > 0): ?>
+                        <span class="absolute -top-2 -right-2 bg-green-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_aniversariantes_hoje ?></span>
+                        <?php endif; ?>
+                    </button>
+                     <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-700 rounded-lg shadow-lg z-20">
+                        <div class="p-3 border-b border-gray-200 dark:border-slate-600">
+                            <h3 class="font-semibold text-gray-800 dark:text-gray-200"><?= $total_aniversariantes_hoje ?> Aniversariando Hoje</h3>
+                        </div>
+                        <div class="max-h-64 overflow-y-auto custom-scrollbar">
+                            <?php foreach($res_aniversariantes as $aniv): ?>
+                                <div class="p-3 border-b border-gray-100 dark:border-slate-600">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 font-semibold"><?= htmlspecialchars($aniv['nome']) ?></p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400"><?= htmlspecialchars($aniv['telefone']) ?></p>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <div class="p-2 bg-gray-50 dark:bg-slate-800 rounded-b-lg">
+                           <?php if ($total_aniversariantes_hoje > 0): ?>
+                            <button onclick="showModal('birthdayModal')" class="w-full text-center p-2 bg-blue-500 text-white hover:bg-blue-600 text-sm font-medium rounded-md">Enviar Parabéns</button>
+                           <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dropdown Comentários -->
+                <div class="relative" x-data="{ open: false }">
+                    <button @click="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Depoimentos pendentes">
+                        <i class="fa fa-comment text-xl"></i>
+                        <?php if ($total_comentarios > 0): ?>
+                        <span class="absolute -top-2 -right-2 bg-blue-700 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_comentarios ?></span>
+                        <?php endif; ?>
+                    </button>
+                    <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-700 rounded-lg shadow-lg z-20">
+                        <div class="p-3 border-b border-gray-200 dark:border-slate-600">
+                            <h3 class="font-semibold text-gray-800 dark:text-gray-200"><?= $total_comentarios ?> Depoimentos Pendentes</h3>
+                        </div>
+                        <div class="max-h-64 overflow-y-auto custom-scrollbar">
+                             <?php foreach($res_comentarios as $coment): ?>
+                                <div class="p-3 border-b border-gray-100 dark:border-slate-600">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">Cliente: <span class="font-semibold"><?= htmlspecialchars($coment['nome']) ?></span></p>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <a href="comentarios" class="block text-center p-2 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-600 text-sm font-medium text-blue-600 dark:text-blue-400 rounded-b-lg">Ver Comentários</a>
+                    </div>
+                </div>
                 <?php endif; ?>
                 
+                <!-- Ícones de Status e Tema -->
+                <i class="fab fa-whatsapp text-2xl <?= $whatsapp_color ?>" title="Status WhatsApp: <?= $whatsapp_status ?>"></i>
+                
+                <!-- Perfil Dropdown -->
                 <div class="relative" x-data="{ open: false }" @click.away="open = false">
                     <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
                         <img src="img/perfil/<?= htmlspecialchars($foto_usuario) ?>" alt="Foto" class="w-10 h-10 rounded-full object-cover">
                         <div class="hidden md:flex flex-col items-start">
-                            <span class="text-sm font-semibold text-gray-800"><?= htmlspecialchars($nome_usuario) ?></span>
-                            <span class="text-xs text-gray-500"><?= htmlspecialchars($nivel_usuario) ?></span>
+                            <span class="text-sm font-semibold text-gray-800 dark:text-gray-200"><?= htmlspecialchars($nome_usuario) ?></span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400"><?= htmlspecialchars($nivel_usuario) ?></span>
                         </div>
                     </button>
-                    <div x-show="open" x-transition class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
-                        <a href="#" onclick="showModal('modalPerfil')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"><i class="fa fa-suitcase w-6 mr-2"></i>Editar Perfil</a>
+                    <div x-show="open" x-cloak x-transition class="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-700 rounded-lg shadow-lg py-2 z-20">
+                        <a href="#" onclick="showModal('modalPerfil')" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-suitcase w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Editar Perfil</a>
                         <?php if(@$_SESSION['nivel_usuario'] == 'administrador'): ?>
-                        <a href="configuracoes" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"><i class="fa fa-cog w-6 mr-2"></i>Config. Sistema</a>
+                        <a href="configuracoes" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-cog w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Config. Sistema</a>
                         <?php endif; ?>
-                        <a href="conf_site" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"><i class="fa fa-link w-6 mr-2"></i>Config. Site</a>
-                        <a href="#" onclick="showModal('assinaturaModal')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"><i class="fa fa-dollar w-6 mr-2"></i>Assinatura</a>
-                        <a href="logout.php" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"><i class="fa fa-sign-out w-6 mr-2"></i>Sair</a>
+                        <a href="conf_site" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-link w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Config. Site</a>
+                        <a href="#" onclick="showModal('assinaturaModal')" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-dollar-sign w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Assinatura</a>
+                        <div class="border-t border-gray-200 dark:border-slate-600 my-1"></div>
+                        <a href="logout.php" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-sign-out w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Sair</a>
                     </div>
                 </div>
             </div>

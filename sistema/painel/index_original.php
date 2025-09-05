@@ -1164,69 +1164,6 @@ input:checked + .slider:before {
 						</li>	
 					<?php } ?>
 
-					<!-- <?php if(@$clientes_retorno == ''){ 
-
-						//totalizando aniversariantes do dia
-						$query = $pdo->query("SELECT * FROM clientes where alertado != 'Sim' and data_retorno < curDate() and id_conta = '$id_conta' ORDER BY data_retorno asc");
-						$res = $query->fetchAll(PDO::FETCH_ASSOC);
-						$total_clientes_retorno = @count($res);
-
-						if($total_clientes_retorno != 0){
-							$icon4 = 'icon-wiggle-whatsapp';					
-						}else{
-							$icon4='';
-						}
-
-							?>
-						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Clientes com retorno pendente"><i class="fa fa-users <?php echo $icon4?>" style="color:#FFF"></i>
-								<?php 								
-								if($total_clientes_retorno != 0){?>
-                                    <span class="badge" style="background: #c93504"><?php echo $total_clientes_retorno ?></span><?php 
-								}?>
-							</a>
-							<ul class="dropdown-menu">
-								<li>
-									<div class="notification_header" align="center">
-										<h3><?php echo $total_clientes_retorno ?> Cliente com Retorno Pendente</h3>
-									</div>
-								</li>
-
-								<?php 
-								for($i=0; $i < @count($res); $i++){
-									foreach ($res[$i] as $key => $value){}
-								
-								$nome = $res[$i]['nome'];	
-								$telefone = $res[$i]['telefone'];														
-
-								 ?>
-								<li>									
-									<div class="notification_desc">
-										<p><b><?php echo $nome ?> </b> - <?php echo $telefone ?> </p>
-										<p><span></span></p>
-									</div>
-									<div class="clearfix"></div>	
-								</li>
-								<?php 
-							}
-								 ?>
-								
-								
-							
-								<li>
-									<div class="notification_bottom" style="background: #ffcdbd">
-										<a href="clientes_retorno">Ver Clientes</a>
-									</div> 
-								</li>
-							</ul>
-						</li>	
-					<?php } ?> -->
-
-
-
-
-
-
 					<?php if(@$comentarios == ''){ 
 
 						//totalizando aniversariantes do dia
