@@ -70,6 +70,19 @@ try {
     die("Erro de banco de dados: " . $e->getMessage());
 }
 ?>
+<style>
+/* Add this to your stylesheet */
+.chart-container {
+    max-height: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Ensure the card itself doesn't overflow */
+.bg-white {
+    overflow: hidden;
+}
+</style>
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
@@ -125,19 +138,19 @@ try {
 </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4"><i class="fa-solid fa-ranking-star mr-2 text-yellow-500"></i>Ranking de Profissionais</h3>
-            <div id="chart-ranking-profissionais" class="h-64"></div>
-        </div>
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4"><i class="fa-solid fa-star mr-2 text-blue-500"></i>Serviços Mais Usados</h3>
-            <div id="chart-ranking-servicos" class="h-64"></div>
-        </div>
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4"><i class="fa-solid fa-users mr-2 text-green-500"></i>Clientes Mais Ativos</h3>
-            <div id="chart-ranking-clientes" class="h-64"></div>
-        </div>
+    <div class="bg-white p-6 rounded-xl shadow-md">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4"><i class="fa-solid fa-ranking-star mr-2 text-yellow-500"></i>Ranking de Profissionais</h3>
+        <div id="chart-ranking-profissionais" class="h-64 chart-container"></div>
     </div>
+    <div class="bg-white p-6 rounded-xl shadow-md">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4"><i class="fa-solid fa-star mr-2 text-blue-500"></i>Serviços Mais Usados</h3>
+        <div id="chart-ranking-servicos" class="h-64 chart-container"></div>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-md">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4"><i class="fa-solid fa-users mr-2 text-green-500"></i>Clientes Mais Ativos</h3>
+        <div id="chart-ranking-clientes" class="h-64 chart-container"></div>
+    </div>
+</div>
 
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div class="lg:col-span-3 bg-white p-6 rounded-xl shadow-md">
