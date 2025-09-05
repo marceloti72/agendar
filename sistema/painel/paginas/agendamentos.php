@@ -363,7 +363,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
         .modal-container {
             width: 85%;
             max-width: 1200px;
-            height: 100vh;
+            height: 85vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
