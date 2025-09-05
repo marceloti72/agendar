@@ -213,18 +213,19 @@ document.addEventListener("DOMContentLoaded", function() {
         new ApexCharts(document.querySelector(chartId), options).render();
     }
 
-   // Função para criar gráficos de barras horizontais para os rankings (VERSÃO CORRIGIDA)
+   // Função para criar gráficos de barras horizontais para os rankings (VERSÃO FINAL CORRIGIDA)
 function createRankingChart(chartId, seriesData, categories, color) {
     if (!seriesData || seriesData.length === 0) {
         document.querySelector(chartId).innerHTML = `<div class="flex items-center justify-center h-full text-gray-500">Sem dados para o ranking.</div>`;
         return;
     }
-
     const options = {
         chart: {
             type: 'bar',
             height: '100%',
-            toolbar: { show: false }
+            toolbar: {
+                show: false
+            }
         },
         series: [{
             name: 'Total',
@@ -235,54 +236,51 @@ function createRankingChart(chartId, seriesData, categories, color) {
                 horizontal: true,
                 barHeight: '60%',
                 borderRadius: 4,
-                distributed: false // Usaremos uma cor única
+                distributed: true
             }
         },
-        // A MÁGICA ACONTECE AQUI: MOSTRAMOS OS DADOS DENTRO DAS BARRAS
         dataLabels: {
             enabled: true,
-            textAnchor: 'start', // Alinha o texto à esquerda (início da barra)
             style: {
-                colors: ['#fff'], // Cor do texto dentro da barra
-                fontSize: '12px',
-                fontWeight: 'bold',
+                colors: ['#fff']
             },
-            offsetX: 5, // Pequeno espaçamento da borda esquerda da barra
-            formatter: function(val, { dataPointIndex, w }) {
-                // Pega o nome da categoria (profissional, cliente, etc.)
-                let categoryName = w.globals.labels[dataPointIndex];
-                
-                // Corta o nome se for muito longo para caber na barra
-                if (typeof categoryName === 'string' && categoryName.length > 13) {
-                    categoryName = categoryName.slice(0, 13) + '...';
-                }
-                
-                // Retorna o nome formatado + o valor
-                return `${categoryName}: ${val}`;
-            }
+            offsetX: -25
         },
-        colors: [color],
-        grid: {
-            show: false // Removemos as linhas de grade para um visual mais limpo
-        },
-        // MANTEMOS AS CATEGORIAS APENAS PARA O TOOLTIP E O FORMATTER ACIMA
         xaxis: {
             categories: categories,
-            labels: { show: false },
-            axisBorder: { show: false },
-            axisTicks: { show: false }
-        },
-        // REMOVEMOS O EIXO Y COMPLETAMENTE - A CAUSA DO PROBLEMA
-        yaxis: {
             labels: {
                 show: false
             }
         },
+        yaxis: {
+            labels: {
+                show: true,
+                style: {
+                    colors: '#333',
+                    fontSize: '12px'
+                },
+                trim: true,
+                maxWidth: 100, // Mantemos um limite para a largura do texto
+                formatter: function(val) {
+                    if (typeof val === 'string' && val.length > 12) {
+                        return val.slice(0, 12) + '...';
+                    }
+                    return val;
+                }
+            }
+        },
+        // A SOLUÇÃO DEFINITIVA ESTÁ AQUI:
+        grid: {
+            show: false,
+            padding: {
+                left: 15 // 👈 FORÇA UM PADDING ESQUERDO PEQUENO E FIXO
+            }
+        },
+        colors: [color],
         legend: {
             show: false
         },
         tooltip: {
-            // O tooltip mostrará o nome completo, sem cortes
             y: {
                 formatter: (val, { dataPointIndex, w }) => {
                     const fullCategoryName = w.globals.labels[dataPointIndex];
@@ -291,7 +289,6 @@ function createRankingChart(chartId, seriesData, categories, color) {
             }
         }
     };
-
     new ApexCharts(document.querySelector(chartId), options).render();
 }
 
