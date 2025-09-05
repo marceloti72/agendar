@@ -514,8 +514,8 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 
 <div id="modalForm2" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <!-- <div class="modal-container bg-white rounded-xl shadow-2xl overflow-hidden md:flex"> -->
+    <!-- <div class="modal-dialog modal-lg modal-dialog-centered" role="document"> -->
+        <div class="modal-container bg-white rounded-xl shadow-2xl overflow-hidden md:flex modal-dialog-centered">
             <!-- Modal Header -->
             <div class="w-full modal-header-custom flex justify-between items-center">
                 <h4 class="text-xl font-bold" id="titulo_comanda">
