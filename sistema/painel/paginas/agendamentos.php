@@ -58,7 +58,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     }
     
     .modal-left-panel {
-        background-color: #fff;
+        background-color: #c4c4c4ff;
         padding-right: 0;
     }
 
@@ -533,7 +533,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
             <form id="form_salvar" class="w-full h-full flex flex-col md:flex-row">
                 <!-- Left Panel -->
-                <div class="md:w-3/4 modal-left-panel p-6 overflow-y-auto">
+                <div class="md:w-3/4 modal-left-panel p-5 overflow-y-auto">
                     <div class="mb-4">
                         <h3 id="nome_do_cliente_aqui" class="text-2xl font-bold text-gray-800">Cliente Exemplo</h3>
                     </div>
