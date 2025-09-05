@@ -1,94 +1,98 @@
 <?php
 @session_start();
+// Error reporting can be turned off in production
+// ini_set('display_errors', 0);
+// error_reporting(0);
+
 $id_conta = $_SESSION['id_conta'];
 
 require_once("verificar.php");
 require_once("../conexao.php");
 
 $pag_inicial = 'home';
-
 $id_usuario = $_SESSION['id_usuario'];
 
-//VERIFICA O STATUS DO WHATSAPP	
+// VERIFICA O STATUS DO WHATSAPP 
 require __DIR__ . '../../../ajax/status.php';
 
-// Fetch user data
-$query = $pdo->prepare("SELECT * FROM usuarios WHERE id = ? AND id_conta = ?");
-$query->execute([$id_usuario, $id_conta]);
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
+// Fetch user data securely
+$query = $pdo->prepare("SELECT * FROM usuarios WHERE id = :id_usuario AND id_conta = :id_conta");
+$query->execute([':id_usuario' => $id_usuario, ':id_conta' => $id_conta]);
+$user_data = $query->fetch(PDO::FETCH_ASSOC);
 
-$nome_usuario = $email_usuario = $cpf_usuario = $senha_usuario = $nivel_usuario = $telefone_usuario = $endereco_usuario = $foto_usuario = $atendimento = $intervalo_horarios = '';
-if (!empty($res)) {
-    $user_data = $res[0];
-    $nome_usuario = $user_data['nome'];
-    $email_usuario = $user_data['email'];
-    $cpf_usuario = $user_data['cpf'];
-    $senha_usuario = $user_data['senha'];
-    $nivel_usuario = $user_data['nivel'];
-    $telefone_usuario = $user_data['telefone'];
-    $endereco_usuario = $user_data['endereco'];
-    $foto_usuario = $user_data['foto'];
-    $atendimento = $user_data['atendimento'];
-    $intervalo_horarios = $user_data['intervalo'];
-}
+$nome_usuario = $user_data['nome'] ?? '';
+$email_usuario = $user_data['email'] ?? '';
+$cpf_usuario = $user_data['cpf'] ?? '';
+$nivel_usuario = $user_data['nivel'] ?? '';
+$telefone_usuario = $user_data['telefone'] ?? '';
+$endereco_usuario = $user_data['endereco'] ?? '';
+$foto_usuario = $user_data['foto'] ?? 'sem-foto.jpg';
+$atendimento = $user_data['atendimento'] ?? '';
+$intervalo_horarios = $user_data['intervalo'] ?? '';
 
-$pag = (isset($_GET['pag']) && $_GET['pag'] != "") ? $_GET['pag'] : $pag_inicial;
+
+// Determine the current page
+$pag = $_GET['pag'] ?? $pag_inicial;
 if (@$_SESSION['nivel_usuario'] != 'administrador') {
     $pag = 'agenda';
 }
 
+// Date variables
 $data_atual = date('Y-m-d');
 $mes_atual = date('m');
 $ano_atual = date('Y');
-$data_mes = $ano_atual . "-" . $mes_atual . "-01";
-$data_ano = $ano_atual . "-01-01";
-
-$partesInicial = explode('-', $data_atual);
-$dataDiaInicial = $partesInicial[2];
-$dataMesInicial = $partesInicial[1];
+$data_mes = "{$ano_atual}-{$mes_atual}-01";
+$data_ano = "{$ano_atual}-01-01";
+[$_, $dataMesInicial, $dataDiaInicial] = explode('-', $data_atual);
 
 // Fetch plano data
-$query = $pdo->prepare("SELECT plano FROM config WHERE id = ?");
-$query->execute([$id_conta]);
-$res3 = $query->fetch(PDO::FETCH_ASSOC);
-$plano = $res3['plano'];
+$query = $pdo->prepare("SELECT plano, assinaturas FROM config WHERE id = :id_conta");
+$query->execute([':id_conta' => $id_conta]);
+$config_data = $query->fetch(PDO::FETCH_ASSOC);
+$plano = $config_data['plano'] ?? '1';
+$assinaturas2 = $config_data['assinaturas'] ?? 'Não';
+
 
 // Check if caixa is open
-$query_caixa = $pdo->prepare("SELECT * FROM caixa WHERE id_conta = ? ORDER BY id DESC LIMIT 1");
-$query_caixa->execute([$id_conta]);
-$res_caixa = $query_caixa->fetchAll(PDO::FETCH_ASSOC);
-$caixa_aberto = !empty($res_caixa) && $res_caixa[0]['data_fechamento'] === NULL;
+$query_caixa = $pdo->prepare("SELECT data_fechamento FROM caixa WHERE id_conta = :id_conta ORDER BY id DESC LIMIT 1");
+$query_caixa->execute([':id_conta' => $id_conta]);
+$res_caixa = $query_caixa->fetch(PDO::FETCH_ASSOC);
+$caixa_aberto = $res_caixa && $res_caixa['data_fechamento'] === null;
 
-// Fetch notification data
+// Notification data
 $total_agendamentos_hoje_usuario_pendentes = 0;
 $total_encaixes_hoje = 0;
 $total_aniversariantes_hoje = 0;
 $total_comentarios = 0;
 
 if (@$_SESSION['nivel_usuario'] == 'administrador') {
-    $query = $pdo->prepare("SELECT * FROM agendamentos WHERE data = CURDATE() AND status = 'Agendado' AND id_conta = ?");
-    $query->execute([$id_conta]);
-    $total_agendamentos_hoje_usuario_pendentes = count($query->fetchAll());
-    $query = $pdo->prepare("SELECT * FROM encaixe WHERE data = CURDATE() AND id_conta = ?");
-    $query->execute([$id_conta]);
-    $total_encaixes_hoje = count($query->fetchAll());
-    $query = $pdo->prepare("SELECT * FROM clientes WHERE MONTH(data_nasc) = ? AND DAY(data_nasc) = ? AND id_conta = ?");
-    $query->execute([$dataMesInicial, $dataDiaInicial, $id_conta]);
-    $total_aniversariantes_hoje = count($query->fetchAll());
-    $query = $pdo->prepare("SELECT * FROM comentarios WHERE ativo != 'Sim' AND id_conta = ?");
-    $query->execute([$id_conta]);
-    $total_comentarios = count($query->fetchAll());
+    $stmt_agendamentos = $pdo->prepare("SELECT id FROM agendamentos WHERE data = CURDATE() AND status = 'Agendado' AND id_conta = :id_conta");
+    $stmt_agendamentos->execute([':id_conta' => $id_conta]);
+    $total_agendamentos_hoje_usuario_pendentes = $stmt_agendamentos->rowCount();
+
+    $stmt_encaixes = $pdo->prepare("SELECT id FROM encaixe WHERE data = CURDATE() AND id_conta = :id_conta");
+    $stmt_encaixes->execute([':id_conta' => $id_conta]);
+    $total_encaixes_hoje = $stmt_encaixes->rowCount();
+
+    $stmt_aniversariantes = $pdo->prepare("SELECT id FROM clientes WHERE MONTH(data_nasc) = :mes AND DAY(data_nasc) = :dia AND id_conta = :id_conta");
+    $stmt_aniversariantes->execute([':mes' => $dataMesInicial, ':dia' => $dataDiaInicial, ':id_conta' => $id_conta]);
+    $total_aniversariantes_hoje = $stmt_aniversariantes->rowCount();
+
+    $stmt_comentarios = $pdo->prepare("SELECT id FROM comentarios WHERE ativo != 'Sim' AND id_conta = :id_conta");
+    $stmt_comentarios->execute([':id_conta' => $id_conta]);
+    $total_comentarios = $stmt_comentarios->rowCount();
 } else {
-    $query = $pdo->prepare("SELECT * FROM agendamentos WHERE data = CURDATE() AND funcionario = ? AND status = 'Agendado' AND id_conta = ?");
-    $query->execute([$id_usuario, $id_conta]);
-    $total_agendamentos_hoje_usuario_pendentes = count($query->fetchAll());
-    $query = $pdo->prepare("SELECT * FROM encaixe WHERE data = CURDATE() AND profissional = ? AND id_conta = ?");
-    $query->execute([$id_usuario, $id_conta]);
-    $total_encaixes_hoje = count($query->fetchAll());
+    $stmt_agendamentos = $pdo->prepare("SELECT id FROM agendamentos WHERE data = CURDATE() AND funcionario = :id_usuario AND status = 'Agendado' AND id_conta = :id_conta");
+    $stmt_agendamentos->execute([':id_usuario' => $id_usuario, ':id_conta' => $id_conta]);
+    $total_agendamentos_hoje_usuario_pendentes = $stmt_agendamentos->rowCount();
+
+    $stmt_encaixes = $pdo->prepare("SELECT id FROM encaixe WHERE data = CURDATE() AND profissional = :id_usuario AND id_conta = :id_conta");
+    $stmt_encaixes->execute([':id_usuario' => $id_usuario, ':id_conta' => $id_conta]);
+    $total_encaixes_hoje = $stmt_encaixes->rowCount();
 }
 
 $link_ag = (@$_SESSION['nivel_usuario'] == 'administrador') ? 'agendamentos' : 'agenda';
-$username = strtolower(str_replace(' ', '', $nome_usuario));
+$username = strtolower(str_replace(' ', '', $nome_sistema));
 
 ?>
 <!DOCTYPE html>
@@ -100,50 +104,24 @@ $username = strtolower(str_replace(' ', '', $nome_usuario));
     <link rel="icon" type="image/png" href="../../images/favicon<?php echo $id_conta?>.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.css" rel="stylesheet">
 
     <style>
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background-color: transparent;
-        }
-        .modal-header-gradient {
-            background-image: linear-gradient(to right, #6a85b6, #bac8e0);
-        }
-        .modal-background {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        @keyframes pulse-once {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.7; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .animate-pulse-once { animation: pulse-once 1.5s ease-in-out; }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.3); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background-color: transparent; }
+        .modal-header-gradient { background-image: linear-gradient(to right, #6a85b6, #bac8e0); }
+        .modal-background { background-color: rgba(0, 0, 0, 0.6); }
 
         /* Estilos do Select2 para integração com o Tailwind */
-        .select2-container .select2-selection--single {
-            height: 42px !important;
-            border-radius: 0.5rem !important;
-            border: 1px solid #d1d5db !important;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 40px !important;
-            padding-left: 1rem !important;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 40px !important;
-            right: 0.5rem !important;
-        }
+        .select2-container .select2-selection--single { height: 42px !important; border-radius: 0.375rem !important; border: 1px solid #d1d5db !important; }
+        .select2-container--default .select2-selection--single .select2-selection__rendered { line-height: 40px !important; padding-left: 0.75rem !important; }
+        .select2-container--default .select2-selection--single .select2-selection__arrow { height: 40px !important; right: 0.5rem !important; }
+        .select2-dropdown { border-radius: 0.375rem !important; border: 1px solid #d1d5db !important; }
     </style>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -155,10 +133,9 @@ $username = strtolower(str_replace(' ', '', $nome_usuario));
 </head>
 <body class="bg-gray-100 flex min-h-screen" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
 
-    <div x-show="sidebarOpen" @click.away="sidebarOpen = false"
-         class="fixed inset-y-0 left-0 w-64 bg-slate-800 text-white flex flex-col z-50 transform lg:translate-x-0 transition-transform duration-300 ease-in-out">
-        <div class="flex items-center justify-center p-6 bg-slate-900">
-            <a href="index.php" class="flex items-center space-x-2">
+    <div x-show="sidebarOpen" @click.away="sidebarOpen = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full" class="fixed inset-y-0 left-0 w-64 bg-slate-800 text-white flex flex-col z-50 transform lg:translate-x-0">
+        <div class="flex items-center justify-center p-5 bg-slate-900">
+            <a href="index.php" class="flex items-center space-x-3">
                 <img src="../../images/icone_512.png" alt="Logo" class="w-10 h-10">
                 <div class="flex flex-col">
                     <span class="text-xl font-bold">Painel</span>
@@ -170,205 +147,99 @@ $username = strtolower(str_replace(' ', '', $nome_usuario));
         <nav class="flex-1 overflow-y-auto custom-scrollbar p-4">
             <ul class="space-y-2">
                 <?php if (@$_SESSION['nivel_usuario'] == 'administrador'): ?>
-                <li>
-                    <a href="index.php" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out">
-                        <i class="fa fa-dashboard w-5 mr-3"></i> Dashboards
-                    </a>
-                </li>
-                <li>
-                    <a href="caixa" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out">
-                        <i class="fas fa-cash-register w-5 mr-3"></i> Abrir Caixa
-                    </a>
-                </li>
-                <li>
-                    <a href="agendamentos" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out">
-                        <i class="fe fe-clock w-5 mr-3"></i> Agendamentos
-                    </a>
-                </li>
-                <li x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out w-full text-left">
-                        <i class="fa fa-pencil w-5 mr-3"></i> Cadastros
-                        <i class="fa fa-angle-left ml-auto transition-transform" :class="{ 'rotate-90': open }"></i>
+                <li><a href="index.php" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-dashboard w-6 mr-2"></i> Dashboards</a>
+			<ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
+									<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="index.php"><i class="fa fa-angle-right"></i>Financeiro</a></li>
+									<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="grafico_dias"><i class="fa fa-angle-right"></i>Agendamentos Mês</a></li>
+									<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="grafico_ano"><i class="fa fa-angle-right"></i>Agendamentos Ano</a></li>
+					
+
+								</ul>
+			</li>
+
+                <li><a href="caixa" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fas fa-cash-register w-6 mr-2"></i> Abrir Caixa</a></li>
+                <li><a href="agendamentos" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-clock w-6 mr-2"></i> Agendamentos</a></li>
+                
+                <li x-data="{ open: false }">
+                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
+                        <span><i class="fa fa-pencil w-6 mr-2"></i> Cadastros</span>
+                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
                     </button>
-                    <ul x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" class="pl-6 pt-2 space-y-1">
-                        <li><a href="clientes" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Clientes</a></li>
-                        <?php if($plano == '2'): ?>
-                        <li><a href="funcionarios" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Profissionais</a></li>
-                        <?php endif; ?>
-                        <li><a href="fornecedores" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Fornecedores</a></li>
-                        <li><a href="servicos" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Serviços</a></li>
-                        <li><a href="cupons" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Cupons de Desconto</a></li>
+                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
+                        <li><a href="clientes" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Clientes</a></li>
+                        <?php if($plano == '2'): ?><li><a href="funcionarios" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Profissionais</a></li><?php endif; ?>
+                        <li><a href="fornecedores" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Fornecedores</a></li>
+                        <li><a href="servicos" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Serviços</a></li>
+                        <li><a href="cupons" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Cupons</a></li>
                     </ul>
                 </li>
-                <li x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out w-full text-left">
-                        <i class="fa fa-tags w-5 mr-3"></i> Produtos
-                        <i class="fa fa-angle-left ml-auto transition-transform" :class="{ 'rotate-90': open }"></i>
-                    </button>
-                    <ul x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" class="pl-6 pt-2 space-y-1">
-                        <li><a href="produtos" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Produtos</a></li>
-                        <li><a href="vendas" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Vendas de Produtos</a></li>
-                        <li><a href="compras" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Compras de Produtos</a></li>
-                        <li><a href="estoque" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Estoque Baixo</a></li>
-                        <li><a href="saidas" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Saídas</a></li>
-                        <li><a href="entradas" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Entradas</a></li>
-                    </ul>
-                </li>
-                <?php if ($assinaturas2 == 'Sim'): ?>
-                <li x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out w-full text-left">
-                        <i class="fas fa-crown w-5 mr-3"></i> Clube do Assinante
-                        <i class="fa fa-angle-left ml-auto transition-transform" :class="{ 'rotate-90': open }"></i>
-                    </button>
-                    <ul x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" class="pl-6 pt-2 space-y-1">
-                        <li><a href="assinantes" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Assinantes</a></li>
-                        <li><a href="conf_planos" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Configuração</a></li>
-                    </ul>
-                </li>
-                <?php endif; ?>
-                <li x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out w-full text-left">
-                        <i class="fa fa-usd w-5 mr-3"></i> Financeiro
-                        <i class="fa fa-angle-left ml-auto transition-transform" :class="{ 'rotate-90': open }"></i>
-                    </button>
-                    <ul x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" class="pl-6 pt-2 space-y-1">
-                        <li><a href="pagar" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Contas à Pagar</a></li>
-                        <li><a href="receber" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Contas à Receber</a></li>
-                        <li><a href="comissoes" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Comissões</a></li>
-                    </ul>
-                </li>
-                <li x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out w-full text-left">
-                        <i class="fa fa-file-pdf-o w-5 mr-3"></i> Relatórios
-                        <i class="fa fa-angle-left ml-auto transition-transform" :class="{ 'rotate-90': open }"></i>
-                    </button>
-                    <ul x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" class="pl-6 pt-2 space-y-1">
-                        <li><a href="rel/rel_produtos_class.php" target="_blank" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Relatório de Produtos</a></li>
-                        <li><a href="#" onclick="showModal('RelEntradas')" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Entradas / Ganhos</a></li>
-                        <li><a href="#" onclick="showModal('RelSaidas')" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Saídas / Despesas</a></li>
-                        <li><a href="#" onclick="showModal('RelComissoes')" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Relatório de Comissões</a></li>
-                        <li><a href="#" onclick="showModal('RelCon')" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Relatório de Contas</a></li>
-                        <li><a href="#" onclick="showModal('RelServicos')" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Relatório de Serviços</a></li>
-                        <li><a href="#" onclick="showModal('RelAniv')" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Relatório de Aniversariantes</a></li>
-                        <li><a href="#" onclick="showModal('RelLucro')" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Demonstrativo de Lucro</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="campanhas" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out">
-                        <i class="fa fa-paper-plane w-5 mr-3"></i> Campanha de retorno
-                    </a>
-                </li>
-                <li>
-                    <a href="#" onclick="showModal('modalSeuLink')" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out">
-                        <i class="fa fa-link w-5 mr-3"></i> Seu Link
-                    </a>
-                </li>
-                <li>
-                    <a href="comentarios" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out">
-                        <i class="fa fa-comments w-5 mr-3"></i> Comentários
-                    </a>
-                </li>
+                <li><a href="campanhas" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-paper-plane w-6 mr-2"></i> Campanhas</a></li>
+                <li><a href="#" onclick="showModal('modalSeuLink')" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-link w-6 mr-2"></i> Seu Link</a></li>
+                <li><a href="comentarios" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-comments w-6 mr-2"></i> Comentários</a></li>
+
                 <?php endif; ?>
 
                 <?php if ($atendimento == 'Sim'): ?>
-                <li class="border-t border-slate-700 pt-2 mt-2">
-                    <div class="p-2 text-slate-400 text-sm font-semibold uppercase">Menu do Profissional</div>
+                <li class="pt-4 mt-2 border-t border-slate-700">
+                    <span class="px-2 text-xs font-bold text-slate-400 uppercase">Menu Profissional</span>
                 </li>
-                <li>
-                    <a href="agenda" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out">
-                        <i class="fa fa-calendar-o w-5 mr-3"></i> Minha Agenda
-                    </a>
-                </li>
-                <li>
-                    <a href="servicos_func" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out">
-                        <i class="fa fa-server w-5 mr-3"></i> Meus Serviços
-                    </a>
-                </li>
-                <li>
-                    <a href="minhas_comissoes" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out">
-                        <i class="fa fa-dollar-sign w-5 mr-3"></i> Minhas Comissões
-                    </a>
-                </li>
-                <li x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition duration-200 ease-in-out w-full text-left">
-                        <i class="fa fa-clock w-5 mr-3"></i> Meus Horários / Dias
-                        <i class="fa fa-angle-left ml-auto transition-transform" :class="{ 'rotate-90': open }"></i>
-                    </button>
-                    <ul x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" class="pl-6 pt-2 space-y-1">
-                        <li><a href="dias" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Horários / Dias</a></li>
-                        <li><a href="dias_bloqueio_func" class="block p-2 text-sm rounded-lg hover:bg-slate-700 transition">Bloqueio de Dias</a></li>
-                    </ul>
-                </li>
+                <li><a href="agenda" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-calendar-o w-6 mr-2"></i> Minha Agenda</a></li>
+                <li><a href="servicos_func" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-server w-6 mr-2"></i> Meus Serviços</a></li>
+                <li><a href="minhas_comissoes" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-dollar-sign w-6 mr-2"></i> Minhas Comissões</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
     </div>
 
-    <div class="flex-1 flex flex-col transition-all duration-300 ease-in-out lg:ml-64">
+    <div class="flex-1 flex flex-col transition-all duration-300" :class="{'lg:ml-64': sidebarOpen}">
         <header class="bg-white shadow-sm sticky top-0 z-40 p-4 flex items-center justify-between">
             <button @click="sidebarOpen = !sidebarOpen" class="p-2 text-gray-600 hover:bg-gray-200 rounded-lg lg:hidden">
                 <i class="fa fa-bars text-xl"></i>
             </button>
-            <div class="hidden lg:block"></div> <div class="flex items-center space-x-4">
+            <div class="hidden lg:block"></div> <div class="flex items-center space-x-5">
                 <?php if (@$_SESSION['nivel_usuario'] == 'administrador'): ?>
-                <a href="<?= $link_ag ?>" class="relative" title="Agendamentos hoje">
-                    <i class="fas fa-calendar-check text-xl text-gray-600"></i>
+                <a href="<?= $link_ag ?>" class="relative text-gray-600 hover:text-blue-600" title="Agendamentos hoje">
+                    <i class="fas fa-calendar-check text-xl"></i>
                     <?php if ($total_agendamentos_hoje_usuario_pendentes > 0): ?>
-                    <span class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1"><?= $total_agendamentos_hoje_usuario_pendentes ?></span>
+                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_agendamentos_hoje_usuario_pendentes ?></span>
                     <?php endif; ?>
                 </a>
-                <a href="#" class="relative" title="Encaixes hoje">
-                    <i class="fa fa-bell text-xl text-gray-600"></i>
+                <a href="#" class="relative text-gray-600 hover:text-blue-600" title="Encaixes hoje">
+                    <i class="fa fa-bell text-xl"></i>
                     <?php if ($total_encaixes_hoje > 0): ?>
-                    <span class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1"><?= $total_encaixes_hoje ?></span>
+                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_encaixes_hoje ?></span>
                     <?php endif; ?>
                 </a>
-                <a href="#" onclick="showModal('RelAniv')" class="relative" title="Aniversariantes de hoje">
-                    <i class="fa fa-birthday-cake text-xl text-gray-600"></i>
-                    <?php if ($total_aniversariantes_hoje > 0): ?>
-                    <span class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-green-600 text-white text-xs font-bold rounded-full px-2 py-1"><?= $total_aniversariantes_hoje ?></span>
+                <a href="#" onclick="showModal('RelAniv')" class="relative text-gray-600 hover:text-blue-600" title="Aniversariantes de hoje">
+                    <i class="fa fa-birthday-cake text-xl"></i>
+                     <?php if ($total_aniversariantes_hoje > 0): ?>
+                    <span class="absolute -top-2 -right-2 bg-green-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_aniversariantes_hoje ?></span>
                     <?php endif; ?>
                 </a>
-                <a href="comentarios" class="relative" title="Depoimentos pendentes">
-                    <i class="fa fa-comment text-xl text-gray-600"></i>
+                <a href="comentarios" class="relative text-gray-600 hover:text-blue-600" title="Depoimentos pendentes">
+                    <i class="fa fa-comment text-xl"></i>
                     <?php if ($total_comentarios > 0): ?>
-                    <span class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-blue-700 text-white text-xs font-bold rounded-full px-2 py-1"><?= $total_comentarios ?></span>
+                    <span class="absolute -top-2 -right-2 bg-blue-700 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_comentarios ?></span>
                     <?php endif; ?>
                 </a>
                 <?php endif; ?>
                 
                 <div class="relative" x-data="{ open: false }" @click.away="open = false">
                     <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
-                        <img src="img/perfil/<?= $foto_usuario ?: 'sem-foto.jpg' ?>" alt="Foto de Perfil" class="w-10 h-10 rounded-full object-cover">
+                        <img src="img/perfil/<?= htmlspecialchars($foto_usuario) ?>" alt="Foto" class="w-10 h-10 rounded-full object-cover">
                         <div class="hidden md:flex flex-col items-start">
-                            <span class="text-sm font-semibold text-gray-800"><?= $nome_usuario ?></span>
-                            <span class="text-xs text-gray-500"><?= $nivel_usuario ?></span>
+                            <span class="text-sm font-semibold text-gray-800"><?= htmlspecialchars($nome_usuario) ?></span>
+                            <span class="text-xs text-gray-500"><?= htmlspecialchars($nivel_usuario) ?></span>
                         </div>
                     </button>
-                    <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
-                        <a href="#" onclick="showModal('modalPerfil')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition">
-                            <i class="fa fa-suitcase mr-2"></i> Editar Perfil
-                        </a>
+                    <div x-show="open" x-transition class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
+                        <a href="#" onclick="showModal('modalPerfil')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"><i class="fa fa-suitcase w-6 mr-2"></i>Editar Perfil</a>
                         <?php if(@$_SESSION['nivel_usuario'] == 'administrador'): ?>
-                        <a href="configuracoes" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition">
-                            <i class="fa fa-cog mr-2"></i> Config. Sistema
-                        </a>
+                        <a href="configuracoes" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"><i class="fa fa-cog w-6 mr-2"></i>Config. Sistema</a>
                         <?php endif; ?>
-                        <a href="conf_site" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition">
-                            <i class="fa fa-link mr-2"></i> Config.Seu Site
-                        </a>
-                        <?php if (@$_SESSION['nivel_usuario'] == 'administrador' && $cliente_stripe == null): ?>
-                        <a href="#" onclick="showModal('assinaturaModal')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition">
-                            <i class="fa fa-dollar mr-2"></i> Minha Assinatura
-                        </a>
-                        <?php else: ?>
-                        <a href="../../portal.php" target="_blank" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition">
-                            <i class="fa fa-dollar mr-2"></i> Sua Assinatura
-                        </a>
-                        <?php endif; ?>
-                        <a href="logout.php" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition">
-                            <i class="fa fa-sign-out mr-2"></i> Sair
-                        </a>
+                        <a href="conf_site" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"><i class="fa fa-link w-6 mr-2"></i>Config. Site</a>
+                        <a href="#" onclick="showModal('assinaturaModal')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"><i class="fa fa-dollar w-6 mr-2"></i>Assinatura</a>
+                        <a href="logout.php" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"><i class="fa fa-sign-out w-6 mr-2"></i>Sair</a>
                     </div>
                 </div>
             </div>
@@ -379,107 +250,94 @@ $username = strtolower(str_replace(' ', '', $nome_usuario));
         </main>
         
         <?php if ($caixa_aberto): ?>
-        <a href="caixa" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300">
-            <i class="fas fa-cash-register mr-2"></i> Caixa Aberto
+        <a href="caixa" title="Caixa Aberto" class="fixed bottom-6 right-6 bg-green-500 text-white px-5 py-3 rounded-full shadow-lg hover:bg-green-600 transition flex items-center space-x-2">
+            <i class="fas fa-cash-register text-xl"></i>
+            <span class="font-semibold">Caixa Aberto</span>
         </a>
         <?php endif; ?>
     </div>
-
-    <div id="modalPerfil" class="fixed inset-0 hidden modal-background z-50 flex items-center justify-center">
-        <div class="bg-white rounded-xl shadow-2xl overflow-hidden max-w-lg w-full m-4">
-            <div class="modal-header-gradient text-white p-6 rounded-t-xl flex justify-between items-center">
+    
+    <div id="modalPerfil" class="fixed inset-0 hidden modal-background z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden max-w-2xl w-full">
+            <div class="modal-header-gradient text-white p-5 flex justify-between items-center">
                 <h4 class="text-xl font-bold">Editar Perfil</h4>
-                <button type="button" onclick="hideModal('modalPerfil')" class="text-white text-2xl">&times;</button>
+                <button onclick="hideModal('modalPerfil')" class="text-white text-2xl">&times;</button>
             </div>
-            <form id="form-perfil" class="p-6">
+            <form id="form-perfil" class="p-6 max-h-[80vh] overflow-y-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label for="nome-perfil" class="block text-sm font-medium text-gray-700">Nome</label>
-                        <input type="text" id="nome-perfil" name="nome" value="<?= $nome_usuario ?>" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <label class="block text-sm font-medium text-gray-700">Nome</label>
+                        <input type="text" name="nome" value="<?= htmlspecialchars($nome_usuario) ?>" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     </div>
                     <div>
-                        <label for="email-perfil" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" id="email-perfil" name="email" value="<?= $email_usuario ?>" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <label class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" name="email" value="<?= htmlspecialchars($email_usuario) ?>" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     </div>
                     <div>
-                        <label for="telefone-perfil" class="block text-sm font-medium text-gray-700">Telefone</label>
-                        <input type="text" id="telefone-perfil" name="telefone" value="<?= $telefone_usuario ?>"
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <label class="block text-sm font-medium text-gray-700">Telefone</label>
+                        <input type="text" id="telefone-perfil" name="telefone" value="<?= htmlspecialchars($telefone_usuario) ?>" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     </div>
-                    <div>
-                        <label for="cpf-perfil" class="block text-sm font-medium text-gray-700">CPF</label>
-                        <input type="text" id="cpf-perfil" name="cpf" value="<?= $cpf_usuario ?>"
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                     <div>
+                        <label class="block text-sm font-medium text-gray-700">CPF</label>
+                        <input type="text" id="cpf-perfil" name="cpf" value="<?= htmlspecialchars($cpf_usuario) ?>" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     </div>
                 </div>
-                <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                     <div>
-                        <label for="senha-perfil" class="block text-sm font-medium text-gray-700">Senha</label>
-                        <input type="password" id="senha-perfil" name="senha" autocomplete="new-password" oninput="validarConfirmacaoSenha()"
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <label class="block text-sm font-medium text-gray-700">Nova Senha</label>
+                        <input type="password" id="senha-perfil" name="senha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    </div>
+                     <div>
+                        <label class="block text-sm font-medium text-gray-700">Confirmar Senha</label>
+                        <input type="password" id="conf-senha-perfil" name="conf_senha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     </div>
                     <div>
-                        <label for="conf-senha-perfil" class="block text-sm font-medium text-gray-700">Confirmar Senha</label>
-                        <input type="password" id="conf-senha-perfil" name="conf_senha" oninput="validarConfirmacaoSenha()"
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                    </div>
-                    <div>
-                        <label for="atendimento-perfil" class="block text-sm font-medium text-gray-700">Atendimento</label>
-                        <select name="atendimento" id="atendimento-perfil"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                         <label class="block text-sm font-medium text-gray-700">Atendimento</label>
+                         <select name="atendimento" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                             <option value="Sim" <?= ($atendimento == 'Sim') ? 'selected' : '' ?>>Sim</option>
                             <option value="Não" <?= ($atendimento == 'Não') ? 'selected' : '' ?>>Não</option>
-                        </select>
+                         </select>
                     </div>
                 </div>
                 <div class="mt-4">
-                    <label for="endereco-perfil" class="block text-sm font-medium text-gray-700">Endereço</label>
-                    <input type="text" id="endereco-perfil" name="endereco" value="<?= $endereco_usuario ?>"
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                     <label class="block text-sm font-medium text-gray-700">Endereço</label>
+                     <input type="text" name="endereco" value="<?= htmlspecialchars($endereco_usuario) ?>" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                 </div>
-                <div class="mt-4 flex items-center justify-between">
+                 <div class="mt-4 flex items-center justify-between">
                     <div>
-                        <label for="foto-usu" class="block text-sm font-medium text-gray-700">Foto</label>
+                        <label class="block text-sm font-medium text-gray-700">Foto</label>
                         <input type="file" name="foto" id="foto-usu" onchange="carregarImgPerfil()" class="mt-1">
                     </div>
-                    <div id="divImg" class="flex-shrink-0">
-                        <img src="img/perfil/<?= $foto_usuario ?: 'sem-foto.jpg' ?>" width="80" id="target-usu" class="rounded-full">
-                    </div>
+                    <img src="img/perfil/<?= htmlspecialchars($foto_usuario) ?>" width="80" height="80" id="target-usu" class="rounded-full object-cover">
                 </div>
                 <input type="hidden" name="id" value="<?= $id_usuario ?>">
-                <div class="mt-4 text-center text-red-500" id="mensagem-perfil"></div>
+                <div id="mensagem-perfil" class="mt-4 text-center text-red-500"></div>
                 <div class="mt-6 flex justify-end">
-                    <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200">
-                        <i class="fa-regular fa-floppy-disk mr-2"></i> Salvar
-                    </button>
+                    <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-700 transition">Salvar</button>
                 </div>
             </form>
         </div>
     </div>
-
-    <div id="RelEntradas" class="fixed inset-0 hidden modal-background z-50 flex items-center justify-center">
-        <div class="bg-white rounded-xl shadow-2xl overflow-hidden max-w-xl w-full m-4">
-            <div class="modal-header-gradient text-white p-6 rounded-t-xl flex justify-between items-center">
+    
+    <div id="RelEntradas" class="fixed inset-0 hidden modal-background z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden max-w-xl w-full">
+            <div class="modal-header-gradient text-white p-5 flex justify-between items-center">
                 <h4 class="text-xl font-bold">Relatório de Ganhos</h4>
-                <button type="button" onclick="hideModal('RelEntradas')" class="text-white text-2xl">&times;</button>
+                <button onclick="hideModal('RelEntradas')" class="text-white text-2xl">&times;</button>
             </div>
             <form method="post" action="rel/rel_entradas_class.php" target="_blank" class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Data Inicial</label>
-                        <input type="date" name="dataInicial" id="dataInicialRel-Ent" value="<?= date('Y-m-d') ?>" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <label class="block text-sm font-medium">Data Inicial</label>
+                        <input type="date" name="dataInicial" value="<?= date('Y-m-d') ?>" required class="mt-1 block w-full rounded-md border-gray-300">
+                    </div>
+                     <div>
+                        <label class="block text-sm font-medium">Data Final</label>
+                        <input type="date" name="dataFinal" value="<?= date('Y-m-d') ?>" required class="mt-1 block w-full rounded-md border-gray-300">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Data Final</label>
-                        <input type="date" name="dataFinal" id="dataFinalRel-Ent" value="<?= date('Y-m-d') ?>" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Entradas / Ganhos</label>
-                        <select name="filtro" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <label class="block text-sm font-medium">Filtro</label>
+                        <select name="filtro" class="mt-1 block w-full rounded-md border-gray-300">
                             <option value="">Todas</option>
                             <option value="Produto">Produtos</option>
                             <option value="Serviço">Serviços</option>
@@ -487,86 +345,145 @@ $username = strtolower(str_replace(' ', '', $nome_usuario));
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Selecionar Cliente</label>
-                        <select name="cliente" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm selcli">
+                        <label class="block text-sm font-medium">Cliente</label>
+                        <select name="cliente" class="mt-1 block w-full rounded-md border-gray-300 selcli">
                             <option value="">Todos</option>
                             <?php
-                            $query = $pdo->prepare("SELECT * FROM clientes WHERE id_conta = ?");
-                            $query->execute([$id_conta]);
-                            while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                                echo '<option value="' . $row['id'] . '">' . $row['nome'] . '</option>';
+                            $q = $pdo->query("SELECT id, nome FROM clientes WHERE id_conta = '$id_conta' ORDER BY nome ASC");
+                            foreach($q->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                                echo '<option value="'.$row['id'].'">'.htmlspecialchars($row['nome']).'</option>';
                             }
                             ?>
                         </select>
                     </div>
                 </div>
-                <div class="mt-6 flex justify-end">
-                    <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200">
-                        <i class="fa-solid fa-file-lines mr-2"></i> Gerar Relatório
-                    </button>
+                 <div class="mt-6 flex justify-end">
+                    <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-700 transition">Gerar Relatório</button>
                 </div>
             </form>
         </div>
     </div>
+
+    <div id="modalSeuLink" class="fixed inset-0 hidden modal-background z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden max-w-md w-full">
+            <div class="modal-header-gradient text-white p-5 flex justify-between items-center">
+                <h5 class="text-xl font-bold">Compartilhe Seu Link</h5>
+                <button onclick="hideModal('modalSeuLink')" class="text-white text-2xl">&times;</button>
+            </div>
+            <div class="p-6 text-center">
+                 <p class="text-gray-600 mb-6">Escolha a melhor forma de compartilhar seu link com seus clientes.</p>
+                 <div class="space-y-3">
+                    <button onclick="copiarLink()" class="w-full bg-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-lg hover:bg-gray-300 transition flex items-center justify-center space-x-2">
+                        <i class="fas fa-copy"></i>
+                        <span>Copiar Link</span>
+                    </button>
+                    <button onclick="enviarLink()" class="w-full bg-green-500 text-white font-semibold py-3 px-4 rounded-lg hover:bg-green-600 transition flex items-center justify-center space-x-2">
+                         <i class="fab fa-whatsapp"></i>
+                        <span>Enviar por WhatsApp</span>
+                    </button>
+                     <button onclick="mostrarQRCode()" class="w-full bg-gray-800 text-white font-semibold py-3 px-4 rounded-lg hover:bg-gray-900 transition flex items-center justify-center space-x-2">
+                         <i class="fas fa-qrcode"></i>
+                        <span>Exibir QR Code</span>
+                    </button>
+                 </div>
+                 <div id="qrcode-container" class="mt-6 hidden">
+                     <div id="qrcode" class="p-2 bg-white inline-block rounded-lg shadow-md"></div>
+                 </div>
+            </div>
+        </div>
+    </div>
     
-    </body>
+</body>
 </html>
 
 <script>
-    // Função para mostrar modal
+    // Global Modal Functions
     function showModal(id) {
-        document.getElementById(id).classList.remove('hidden');
+        $('#' + id).removeClass('hidden').addClass('flex').find('> div').addClass('animate-pulse-once');
+        setTimeout(() => $('#' + id).find('> div').removeClass('animate-pulse-once'), 1500);
     }
-
-    // Função para esconder modal
     function hideModal(id) {
-        document.getElementById(id).classList.add('hidden');
+        $('#' + id).addClass('hidden').removeClass('flex');
     }
 
-    // Ações do perfil e formulários
+    // Initialize scripts
     $(document).ready(function() {
+        // Masking
+        $('#telefone-perfil').mask('(00) 00000-0000');
+        $('#cpf-perfil').mask('000.000.000-00', {reverse: true});
+        
+        // Select2
+        $('.selcli').select2({ dropdownParent: $('#RelEntradas') });
+        // Add other select2 initializations here for other report modals
+        // $('.sel15').select2({ dropdownParent: $('#RelComissoes') });
+
+        // Form Submissions
         $('#form-perfil').on('submit', function(e) {
             e.preventDefault();
             var formData = new FormData(this);
             $.ajax({
                 url: "editar-perfil.php",
-                type: 'POST',
-                data: formData,
+                type: 'POST', data: formData,
                 success: function(response) {
                     if (response.trim() === "Editado com Sucesso") {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Alterado com sucesso!',
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(() => {
-                            location.reload();
-                        });
+                        Swal.fire({ icon: 'success', title: 'Salvo!', showConfirmButton: false, timer: 1500 })
+                        .then(() => location.reload());
                     } else {
                         $('#mensagem-perfil').text(response);
                     }
                 },
-                cache: false,
-                contentType: false,
-                processData: false,
+                cache: false, contentType: false, processData: false
             });
-        });
-
-        // Toggle do menu lateral para mobile
-        $('#showLeftPush').on('click', function() {
-            $('body').toggleClass('sidebar-open');
         });
     });
 
+    // Image Preview
     function carregarImgPerfil() {
-        var target = document.getElementById('target-usu');
-        var file = document.querySelector("#foto-usu").files[0];
+        const target = document.getElementById('target-usu');
+        const file = document.querySelector("#foto-usu").files[0];
         if (file) {
-            var reader = new FileReader();
-            reader.onloadend = function() {
-                target.src = reader.result;
-            };
+            const reader = new FileReader();
+            reader.onloadend = () => { target.src = reader.result; };
             reader.readAsDataURL(file);
         }
+    }
+
+    // Password confirmation
+    function validarConfirmacaoSenha() {
+        const senha = $("#senha-perfil").val();
+        const confSenhaInput = document.getElementById("conf-senha-perfil");
+        if (senha) {
+            confSenhaInput.setAttribute("required", "required");
+            if (senha !== confSenhaInput.value) {
+                confSenhaInput.setCustomValidity("As senhas não conferem.");
+            } else {
+                confSenhaInput.setCustomValidity("");
+            }
+        } else {
+            confSenhaInput.removeAttribute("required");
+            confSenhaInput.setCustomValidity("");
+        }
+    }
+
+    // "Seu Link" Modal Logic
+    const seuLink = `https://markai.skysee.com.br/site.php?u=<?= urlencode($username) ?>`;
+    const mensagemWhatsApp = encodeURIComponent(`Confira nosso link para agendamentos: ${seuLink}`);
+
+    function copiarLink() {
+        navigator.clipboard.writeText(seuLink).then(() => {
+            Swal.fire({ icon: 'success', title: 'Link Copiado!', timer: 1500, showConfirmButton: false });
+        });
+    }
+
+    function enviarLink() {
+        window.open(`https://api.whatsapp.com/send?text=${mensagemWhatsApp}`, '_blank');
+    }
+
+    function mostrarQRCode() {
+        const container = $('#qrcode-container');
+        const qrcodeEl = $('#qrcode');
+        qrcodeEl.html('');
+        new QRCode(qrcodeEl[0], { text: seuLink, width: 200, height: 200 });
+        container.slideDown();
     }
 </script>
