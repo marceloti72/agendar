@@ -539,7 +539,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                     </div>
 
                     <!-- Services Card -->
-                    <div class="bg-white rounded-lg shadow-lg p-4 mb-6 border border-gray-200">
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-200 max-w-md">
                         <div class="section-header">
                             <i class="fas fa-cut section-icon"></i>
                             <h5 class="text-xl font-semibold text-gray-800">Serviços</h5>
