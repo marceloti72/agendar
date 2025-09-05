@@ -213,111 +213,43 @@ document.addEventListener("DOMContentLoaded", function() {
         new ApexCharts(document.querySelector(chartId), options).render();
     }
 
-    // Função para criar gráficos de barras horizontais para os rankings (COM AJUSTE RESPONSIVO)
+    // Função para criar gráficos de barras horizontais para os rankings
 function createRankingChart(chartId, seriesData, categories, color) {
     if (!seriesData || seriesData.length === 0) {
         document.querySelector(chartId).innerHTML = `<div class="flex items-center justify-center h-full text-gray-500">Sem dados para o ranking.</div>`;
         return;
     }
     const options = {
-        chart: {
-            type: 'bar',
-            height: '100%',
-            toolbar: {
-                show: false
-            }
-        },
-        series: [{
-            name: 'Total',
-            data: seriesData
-        }],
-        plotOptions: {
-            bar: {
-                horizontal: true,
-                barHeight: '60%',
-                borderRadius: 4,
-                distributed: true
-            }
-        },
-        dataLabels: {
-            enabled: true,
-            style: {
-                colors: ['#fff']
-            },
-            offsetX: -25
-        },
-        xaxis: {
-            categories: categories,
-            labels: {
-                show: false
-            }
-        },
-        yaxis: {
-            labels: {
-                show: true,
-                style: {
-                    colors: '#333',
-                    fontSize: '12px'
-                },
+        chart: { type: 'bar', height: '100%', toolbar: { show: false } },
+        series: [{ name: 'Total', data: seriesData }],
+        plotOptions: { bar: { horizontal: true, barHeight: '60%', borderRadius: 4, distributed: true } },
+        dataLabels: { enabled: true, style: { colors: ['#fff'] }, offsetX: -25 },
+        xaxis: { categories: categories, labels: { show: false } },
+        yaxis: { 
+            labels: { 
+                show: true, 
+                style: { colors: '#333', fontSize: '12px' },
                 trim: true,
                 maxWidth: 110,
-                formatter: function(val) {
+                formatter: function (val) {
                     if (typeof val === 'string' && val.length > 15) {
                         return val.slice(0, 15) + '...';
                     }
                     return val;
                 }
-            }
+            } 
         },
-        grid: {
-            show: false,
-            padding: {
-                left: 15
-            }
-        },
+        grid: { show: false, padding: { left: 15 } },
         colors: [color],
-        legend: {
-            show: false
-        },
-        tooltip: {
-            y: {
-                formatter: (val, {
-                    dataPointIndex,
-                    w
-                }) => {
+        legend: { show: false },
+        tooltip: { 
+            y: { 
+                formatter: (val, { dataPointIndex, w }) => {
                     const fullCategoryName = w.globals.labels[dataPointIndex];
                     return `${fullCategoryName}: ${val}`;
                 }
-            }
-        },
-        // A SOLUÇÃO ESTÁ AQUI: OPÇÕES RESPONSIVAS
-        responsive: [{
-            breakpoint: 992, // Quando a tela for menor que 992px (ex: menu aberto em telas médias)
-            options: {
-                // Reduzimos o espaço para os nomes
-                yaxis: {
-                    labels: {
-                        maxWidth: 70, // Menos espaço para os nomes
-                        formatter: function(val) { // Cortamos o texto mais cedo
-                            if (typeof val === 'string' && val.length > 8) {
-                                return val.slice(0, 8) + '...';
-                            }
-                            return val;
-                        }
-                    }
-                },
-                // Reduzimos o padding interno
-                grid: {
-                    padding: {
-                        left: 5
-                    }
-                },
-                // Reduzimos o recuo do texto dentro da barra
-                dataLabels: {
-                    offsetX: -10
-                }
-            }
-        }]
+            } 
+        }
     };
     new ApexCharts(document.querySelector(chartId), options).render();
 }
