@@ -435,7 +435,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
         }
         @media (min-width: 768px) {
             .modal-left-panel, .modal-right-panel {
-                height: 80vh;
+                height: 90vh;
                 overflow-y: auto;
             }
         }
