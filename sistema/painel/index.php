@@ -147,11 +147,15 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
         <nav class="flex-1 overflow-y-auto custom-scrollbar p-4">
             <ul class="space-y-2">
                 <?php if (@$_SESSION['nivel_usuario'] == 'administrador'): ?>
-                <li><a href="index.php" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-dashboard w-6 mr-2"></i> Dashboards</a>
+                <li x-data="{ open: false }">
+                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
+                        <span><i class="fa fa-pencil w-6 mr-2"></i> Dashboards</span>
+                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
+                    </button>
 			<ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-									<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="index.php"><i class="fa fa-angle-right"></i>Financeiro</a></li>
-									<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="grafico_dias"><i class="fa fa-angle-right"></i>Agendamentos Mês</a></li>
-									<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="grafico_ano"><i class="fa fa-angle-right"></i>Agendamentos Ano</a></li>
+									<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="index.php"></i>Financeiro</a></li>
+									<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="grafico_dias"></i>Agendamentos Mês</a></li>
+									<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="grafico_ano"></i>Agendamentos Ano</a></li>
 					
 
 								</ul>
