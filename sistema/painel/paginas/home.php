@@ -213,84 +213,51 @@ document.addEventListener("DOMContentLoaded", function() {
         new ApexCharts(document.querySelector(chartId), options).render();
     }
 
-   // Função para criar gráficos de barras horizontais para os rankings (VERSÃO FINAL CORRIGIDA)
+    // Função para criar gráficos de barras horizontais para os rankings
 function createRankingChart(chartId, seriesData, categories, color) {
     if (!seriesData || seriesData.length === 0) {
         document.querySelector(chartId).innerHTML = `<div class="flex items-center justify-center h-full text-gray-500">Sem dados para o ranking.</div>`;
         return;
     }
     const options = {
-        chart: {
-            type: 'bar',
-            height: '100%',
-            toolbar: {
-                show: false
-            }
-        },
-        series: [{
-            name: 'Total',
-            data: seriesData
-        }],
-        plotOptions: {
-            bar: {
-                horizontal: true,
-                barHeight: '60%',
-                borderRadius: 4,
-                distributed: true
-            }
-        },
-        dataLabels: {
-            enabled: true,
-            style: {
-                colors: ['#fff']
-            },
-            offsetX: -25
-        },
-        xaxis: {
-            categories: categories,
-            labels: {
-                show: false
-            }
-        },
-        yaxis: {
-            labels: {
-                show: true,
-                style: {
-                    colors: '#333',
-                    fontSize: '12px'
-                },
-                trim: true,
-                maxWidth: 100, // Mantemos um limite para a largura do texto
-                formatter: function(val) {
-                    if (typeof val === 'string' && val.length > 12) {
-                        return val.slice(0, 12) + '...';
+        chart: { type: 'bar', height: '100%', toolbar: { show: false } },
+        series: [{ name: 'Total', data: seriesData }],
+        plotOptions: { bar: { horizontal: true, barHeight: '60%', borderRadius: 4, distributed: true } },
+        dataLabels: { enabled: true, style: { colors: ['#fff'] }, offsetX: -25 },
+        xaxis: { categories: categories, labels: { show: false } },
+        yaxis: { 
+            labels: { 
+                show: true, 
+                style: { colors: '#333', fontSize: '12px' },
+                
+                // ADIÇÕES DEFINITIVAS PARA CORRIGIR O ESTOURO
+                trim: true,      // 👈 Ativa o corte automático de texto da biblioteca
+                maxWidth: 110,   // 👈 Define uma largura MÁXIMA para a área dos nomes
+                
+                formatter: function (val) {
+                    // O formatter agora funciona em conjunto com o maxWidth
+                    if (typeof val === 'string' && val.length > 15) {
+                        return val.slice(0, 15) + '...';
                     }
                     return val;
                 }
-            }
+            } 
         },
-        // A SOLUÇÃO DEFINITIVA ESTÁ AQUI:
-        grid: {
-            show: false,
-            padding: {
-                left: 15 // 👈 FORÇA UM PADDING ESQUERDO PEQUENO E FIXO
-            }
-        },
+        grid: { show: false },
         colors: [color],
-        legend: {
-            show: false
-        },
-        tooltip: {
-            y: {
+        legend: { show: false },
+        tooltip: { 
+            y: { 
                 formatter: (val, { dataPointIndex, w }) => {
                     const fullCategoryName = w.globals.labels[dataPointIndex];
                     return `${fullCategoryName}: ${val}`;
                 }
-            }
+            } 
         }
     };
     new ApexCharts(document.querySelector(chartId), options).render();
 }
+
 
     // Renderizar Gráficos Radiais
     createRadialChart('#chart-agendamentos', <?= round($porcentagemAgendamentos) ?>, '#3b82f6');
