@@ -215,23 +215,44 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Função para criar gráficos de barras horizontais para os rankings
     function createRankingChart(chartId, seriesData, categories, color) {
-         if (!seriesData || seriesData.length === 0) {
-            document.querySelector(chartId).innerHTML = `<div class="flex items-center justify-center h-full text-gray-500">Sem dados para o ranking.</div>`;
-            return;
-        }
-        const options = {
-            chart: { type: 'bar', height: '100%', toolbar: { show: false } },
-            series: [{ name: 'Total', data: seriesData }],
-            plotOptions: { bar: { horizontal: true, barHeight: '60%', borderRadius: 4 } },
-            dataLabels: { enabled: true, style: { colors: ['#fff'] }, offsetX: -25 },
-            xaxis: { categories: categories, labels: { show: false } },
-            yaxis: { labels: { show: true, style: { colors: '#333', fontSize: '12px' } } },
-            grid: { show: false },
-            colors: [color],
-            tooltip: { y: { formatter: (val) => val } }
-        };
-        new ApexCharts(document.querySelector(chartId), options).render();
+    if (!seriesData || seriesData.length === 0) {
+        document.querySelector(chartId).innerHTML = `<div class="flex items-center justify-center h-full text-gray-500">Sem dados para o ranking.</div>`;
+        return;
     }
+    const options = {
+        chart: { type: 'bar', height: '100%', toolbar: { show: false } },
+        series: [{ name: 'Total', data: seriesData }],
+        plotOptions: { bar: { horizontal: true, barHeight: '60%', borderRadius: 4, distributed: true } },
+        dataLabels: { enabled: true, style: { colors: ['#fff'] }, offsetX: -25 },
+        xaxis: { categories: categories, labels: { show: false } },
+        yaxis: { 
+            labels: { 
+                show: true, 
+                style: { colors: '#333', fontSize: '12px' },
+                // ADICIONE ESTA FUNÇÃO PARA LIMITAR O TEXTO
+                formatter: function (val) {
+                    if (typeof val === 'string' && val.length > 15) {
+                        return val.slice(0, 15) + '...';
+                    }
+                    return val;
+                }
+            } 
+        },
+        grid: { show: false },
+        colors: [color],
+        legend: { show: false }, // Legenda não é necessária com distributed: true
+        tooltip: { 
+            y: { 
+                formatter: (val, { dataPointIndex, w }) => {
+                    // Mostra o nome completo no tooltip
+                    const fullCategoryName = w.globals.labels[dataPointIndex];
+                    return `${fullCategoryName}: ${val}`;
+                }
+            } 
+        }
+    };
+    new ApexCharts(document.querySelector(chartId), options).render();
+}
 
     // Renderizar Gráficos Radiais
     createRadialChart('#chart-agendamentos', <?= round($porcentagemAgendamentos) ?>, '#3b82f6');
