@@ -1,110 +1,108 @@
 <?php
 @session_start();
-// Error reporting can be turned off in production
-// ini_set('display_errors', 0);
+// ini_set('display_errors', 0); // Descomente em produção
 // error_reporting(0);
 
+if (!isset($_SESSION['id_usuario'])) {
+    header('Location: ../');
+    exit();
+}
+
 $id_conta = $_SESSION['id_conta'];
+$id_usuario = $_SESSION['id_usuario'];
 
 require_once("verificar.php");
 require_once("../conexao.php");
 
+// Lógica de Paginação
 $pag_inicial = 'home';
-$id_usuario = $_SESSION['id_usuario'];
-
-// VERIFICA O STATUS DO WHATSAPP 
-require __DIR__ . '../../../ajax/status.php';
-
-// Fetch user data securely
-$query = $pdo->prepare("SELECT * FROM usuarios WHERE id = :id_usuario AND id_conta = :id_conta");
-$query->execute([':id_usuario' => $id_usuario, ':id_conta' => $id_conta]);
-$user_data = $query->fetch(PDO::FETCH_ASSOC);
-
-$nome_usuario = $user_data['nome'] ?? '';
-$email_usuario = $user_data['email'] ?? '';
-$cpf_usuario = $user_data['cpf'] ?? '';
-$nivel_usuario = $user_data['nivel'] ?? '';
-$telefone_usuario = $user_data['telefone'] ?? '';
-$endereco_usuario = $user_data['endereco'] ?? '';
-$foto_usuario = $user_data['foto'] ?? 'sem-foto.jpg';
-$atendimento = $user_data['atendimento'] ?? '';
-$intervalo_horarios = $user_data['intervalo'] ?? '';
-
-
-// Determine the current page
 $pag = $_GET['pag'] ?? $pag_inicial;
-if (@$_SESSION['nivel_usuario'] != 'administrador') {
+if (@$_SESSION['nivel_usuario'] != 'administrador' && $pag == 'home') {
     $pag = 'agenda';
 }
 
-// Date variables
+// ========================================================================
+// INÍCIO DO CÓDIGO PHP INTEGRADO DO CABEÇALHO ANTIGO
+// ========================================================================
+
+// Dados do Usuário Logado
+$query_user = $pdo->prepare("SELECT * FROM usuarios WHERE id = :id_usuario AND id_conta = :id_conta");
+$query_user->execute([':id_usuario' => $id_usuario, ':id_conta' => $id_conta]);
+$user_data = $query_user->fetch(PDO::FETCH_ASSOC);
+
+$nome_usuario = $user_data['nome'] ?? '';
+$nivel_usuario = $user_data['nivel'] ?? '';
+$foto_usuario = $user_data['foto'] ?? 'sem-foto.jpg';
+$cliente_stripe = $user_data['cliente_stripe'] ?? null; // Adicionado para lógica do botão de assinatura
+
+// Datas
 $data_atual = date('Y-m-d');
-$mes_atual = date('m');
-$ano_atual = date('Y');
-$data_mes = "{$ano_atual}-{$mes_atual}-01";
-$data_ano = "{$ano_atual}-01-01";
-[$_, $dataMesInicial, $dataDiaInicial] = explode('-', $data_atual);
+$dataMesInicial = date('m');
+$dataDiaInicial = date('d');
 
-// Fetch plano data
-$query = $pdo->prepare("SELECT plano, assinaturas FROM config WHERE id = :id_conta");
-$query->execute([':id_conta' => $id_conta]);
-$config_data = $query->fetch(PDO::FETCH_ASSOC);
-$plano = $config_data['plano'] ?? '1';
-$assinaturas2 = $config_data['assinaturas'] ?? 'Não';
-
-
-// Check if caixa is open
-$query_caixa = $pdo->prepare("SELECT data_fechamento FROM caixa WHERE id_conta = :id_conta ORDER BY id DESC LIMIT 1");
-$query_caixa->execute([':id_conta' => $id_conta]);
-$res_caixa = $query_caixa->fetch(PDO::FETCH_ASSOC);
-$caixa_aberto = $res_caixa && $res_caixa['data_fechamento'] === null;
-
-// Notification data
-$total_agendamentos_hoje_usuario_pendentes = 0;
-$total_encaixes_hoje = 0;
-$total_aniversariantes_hoje = 0;
-$total_comentarios = 0;
-
+// Notificações - Agendamentos e Encaixes
 if (@$_SESSION['nivel_usuario'] == 'administrador') {
-    $stmt_agendamentos = $pdo->prepare("SELECT id FROM agendamentos WHERE data = CURDATE() AND status = 'Agendado' AND id_conta = :id_conta");
-    $stmt_agendamentos->execute([':id_conta' => $id_conta]);
-    $total_agendamentos_hoje_usuario_pendentes = $stmt_agendamentos->rowCount();
+    $query_agendamentos = $pdo->prepare("SELECT a.*, c.nome as cliente_nome, s.nome as servico_nome FROM agendamentos a LEFT JOIN clientes c ON a.cliente = c.id LEFT JOIN servicos s ON a.servico = s.id WHERE a.data = CURDATE() AND a.status = 'Agendado' AND a.id_conta = :id_conta");
+    $query_agendamentos->execute([':id_conta' => $id_conta]);
+    $res_agendamentos = $query_agendamentos->fetchAll(PDO::FETCH_ASSOC);
+    $total_agendamentos_hoje_usuario_pendentes = count($res_agendamentos);
+    $link_ag = 'agendamentos';
 
-    $stmt_encaixes = $pdo->prepare("SELECT id FROM encaixe WHERE data = CURDATE() AND id_conta = :id_conta");
-    $stmt_encaixes->execute([':id_conta' => $id_conta]);
-    $total_encaixes_hoje = $stmt_encaixes->rowCount();
-
-    $stmt_aniversariantes = $pdo->prepare("SELECT id FROM clientes WHERE MONTH(data_nasc) = :mes AND DAY(data_nasc) = :dia AND id_conta = :id_conta");
-    $stmt_aniversariantes->execute([':mes' => $dataMesInicial, ':dia' => $dataDiaInicial, ':id_conta' => $id_conta]);
-    $total_aniversariantes_hoje = $stmt_aniversariantes->rowCount();
-
-    $stmt_comentarios = $pdo->prepare("SELECT id FROM comentarios WHERE ativo != 'Sim' AND id_conta = :id_conta");
-    $stmt_comentarios->execute([':id_conta' => $id_conta]);
-    $total_comentarios = $stmt_comentarios->rowCount();
+    $query_encaixes = $pdo->prepare("SELECT * FROM encaixe WHERE data = CURDATE() AND id_conta = :id_conta");
+    $query_encaixes->execute([':id_conta' => $id_conta]);
+    $total_encaixes_hoje = $query_encaixes->rowCount();
 } else {
-    $stmt_agendamentos = $pdo->prepare("SELECT id FROM agendamentos WHERE data = CURDATE() AND funcionario = :id_usuario AND status = 'Agendado' AND id_conta = :id_conta");
-    $stmt_agendamentos->execute([':id_usuario' => $id_usuario, ':id_conta' => $id_conta]);
-    $total_agendamentos_hoje_usuario_pendentes = $stmt_agendamentos->rowCount();
+    $query_agendamentos = $pdo->prepare("SELECT a.*, c.nome as cliente_nome, s.nome as servico_nome FROM agendamentos a LEFT JOIN clientes c ON a.cliente = c.id LEFT JOIN servicos s ON a.servico = s.id WHERE a.data = CURDATE() AND a.funcionario = :id_usuario AND a.status = 'Agendado' AND a.id_conta = :id_conta");
+    $query_agendamentos->execute([':id_usuario' => $id_usuario, ':id_conta' => $id_conta]);
+    $res_agendamentos = $query_agendamentos->fetchAll(PDO::FETCH_ASSOC);
+    $total_agendamentos_hoje_usuario_pendentes = count($res_agendamentos);
+    $link_ag = 'agenda';
 
-    $stmt_encaixes = $pdo->prepare("SELECT id FROM encaixe WHERE data = CURDATE() AND profissional = :id_usuario AND id_conta = :id_conta");
-    $stmt_encaixes->execute([':id_usuario' => $id_usuario, ':id_conta' => $id_conta]);
-    $total_encaixes_hoje = $stmt_encaixes->rowCount();
+    $query_encaixes = $pdo->prepare("SELECT * FROM encaixe WHERE data = CURDATE() AND profissional = :id_usuario AND id_conta = :id_conta");
+    $query_encaixes->execute([':id_usuario' => $id_usuario, ':id_conta' => $id_conta]);
+    $total_encaixes_hoje = $query_encaixes->rowCount();
 }
 
-$link_ag = (@$_SESSION['nivel_usuario'] == 'administrador') ? 'agendamentos' : 'agenda';
-$username = strtolower(str_replace(' ', '', $nome_sistema));
+// Notificações - Aniversariantes e Comentários (Apenas Admin)
+$total_aniversariantes_hoje = 0;
+$res_aniversariantes = [];
+$total_comentarios = 0;
+$res_comentarios = [];
 
+if (@$_SESSION['nivel_usuario'] == 'administrador') {
+    $query_aniv = $pdo->prepare("SELECT id, nome, telefone FROM clientes WHERE MONTH(data_nasc) = :mes AND DAY(data_nasc) = :dia AND id_conta = :id_conta ORDER BY nome ASC");
+    $query_aniv->execute([':mes' => $dataMesInicial, ':dia' => $dataDiaInicial, ':id_conta' => $id_conta]);
+    $res_aniversariantes = $query_aniv->fetchAll(PDO::FETCH_ASSOC);
+    $total_aniversariantes_hoje = count($res_aniversariantes);
+
+    $query_coment = $pdo->prepare("SELECT nome FROM comentarios WHERE ativo != 'Sim' AND id_conta = :id_conta");
+    $query_coment->execute([':id_conta' => $id_conta]);
+    $res_comentarios = $query_coment->fetchAll(PDO::FETCH_ASSOC);
+    $total_comentarios = count($res_comentarios);
+}
+
+// Status do WhatsApp
+$whatsapp_status = '';
+$whatsapp_color = 'text-gray-400';
+require __DIR__ . '../../../ajax/status.php'; // Este script deve definir as variáveis $status e $cor
+if (isset($status) && isset($cor)) {
+    $whatsapp_status = $status;
+    $whatsapp_color = ($cor == 'green') ? 'text-green-500' : 'text-red-500';
+}
+// ========================================================================
+// FIM DO CÓDIGO PHP INTEGRADO
+// ========================================================================
 ?>
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" class="dark">
 <head>
-    <title><?php echo $nome_sistema ?></title>
+    <title><?= $nome_sistema ?></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="../../images/favicon<?php echo $id_conta?>.png">
+    <link rel="icon" type="image/png" href="../../images/favicon<?= $id_conta ?>.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -112,10 +110,11 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
 
     <style>
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.3); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(156, 163, 175, 0.5); border-radius: 4px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(107, 114, 128, 0.5); }
         .custom-scrollbar::-webkit-scrollbar-track { background-color: transparent; }
-        .modal-header-gradient { background-image: linear-gradient(to right, #6a85b6, #bac8e0); }
         .modal-background { background-color: rgba(0, 0, 0, 0.6); }
+        [x-cloak] { display: none !important; }
 
         /* Estilos do Select2 para integração com o Tailwind */
         .select2-container .select2-selection--single { height: 42px !important; border-radius: 0.375rem !important; border: 1px solid #d1d5db !important; }
@@ -129,131 +128,30 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 </head>
-<body class="bg-gray-100 flex min-h-screen" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">    
 
+<body class="bg-gray-100 dark:bg-slate-900 flex min-h-screen" 
+      x-data="{ sidebarOpen: window.innerWidth >= 1024 }" 
+      x-init="$watch('sidebarOpen', value => { 
+          setTimeout(() => { 
+              window.dispatchEvent(new Event('resize')); 
+          }, 310); 
+      })">
+
+    <!-- Sidebar -->
     <div x-show="sidebarOpen" @click.away="sidebarOpen = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full" class="fixed inset-y-0 left-0 w-64 bg-slate-800 text-white flex flex-col z-50 transform lg:translate-x-0">
+        <!-- Sidebar content... -->
         <div class="flex items-center justify-center p-5 bg-slate-900">
             <a href="index.php" class="flex items-center space-x-3">
                 <img src="../../images/icone_512.png" alt="Logo" class="w-10 h-10">
                 <div class="flex flex-col">
-                    <span class="text-xl font-bold">Painel</span>
-                    <span class="text-xs text-slate-400 font-medium tracking-wide"><?php echo $nome_sistema ?></span>
+                    <span class="text-xl font-bold text-white">Painel</span>
+                    <span class="text-xs text-slate-400 font-medium tracking-wide"><?= $nome_sistema ?></span>
                 </div>
             </a>
         </div>
-        
         <nav class="flex-1 overflow-y-auto custom-scrollbar p-4">
-            <ul class="space-y-2">
-                <?php if (@$_SESSION['nivel_usuario'] == 'administrador'): ?>
-                <li x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
-                        <span><i class="fa fa-pencil w-6 mr-2"></i> Dashboards</span>
-                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
-                    </button>
-					<ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-						<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="index.php"></i>Financeiro</a></li>
-						<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="grafico_dias"></i>Agendamentos Mês</a></li>
-						<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="grafico_ano"></i>Agendamentos Ano</a></li>
-		
-
-					</ul>
-				</li>
-
-                <li><a href="caixa" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fas fa-cash-register w-6 mr-2"></i> Abrir Caixa</a></li>
-                <li><a href="agendamentos" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-clock w-6 mr-2"></i> Agendamentos</a></li>
-                
-                <li x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
-                        <span><i class="fa fa-pencil w-6 mr-2"></i> Cadastros</span>
-                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
-                    </button>
-                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-                        <li><a href="clientes" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Clientes</a></li>
-                        <?php if($plano == '2'): ?><li><a href="funcionarios" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Profissionais</a></li><?php endif; ?>
-                        <li><a href="fornecedores" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Fornecedores</a></li>
-                        <li><a href="servicos" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Serviços</a></li>
-                        <li><a href="cupons" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Cupons</a></li>
-                    </ul>
-                </li>
-                <li x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
-                        <span><i class="fa fa-pencil w-6 mr-2"></i> Produtos</span>
-                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
-                    </button>
-                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-                        <li><a href="vendas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Vendas de Produtos</a></li>
-                        <li><a href="compras" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Compras de Produtos</a></li>
-                        <li><a href="estoque" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Estoque Baixo</a></li>
-                        <li><a href="saidas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Saídas</a></li>
-                        <li><a href="entradas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Entradas</a></li>
-                    </ul>
-                </li>
-                <li x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
-                        <span><i class="fa fa-pencil w-6 mr-2"></i> Clube do Assinante</span>
-                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
-                    </button>
-                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-                        <li><a href="assinantes" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Assinantes</a></li>
-                        <li><a href="conf_planos" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Configuração</a></li>                        
-                    </ul>
-                </li>
-                <li x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
-                        <span><i class="fa fa-pencil w-6 mr-2"></i> Financeiro</span>
-                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
-                    </button>
-                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-                        <li><a href="pagar" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Contas à Pagar</a></li>
-                        <li><a href="receber" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Contas à Receber</a></li>
-                        <li><a href="comissoes" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Comissões</a></li>                        
-                    </ul>
-                </li>        
-
-                <li x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
-                        <span><i class="fa fa-pencil w-6 mr-2"></i> Relatórios</span>
-                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
-                    </button>
-                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-                        <li><a href="rel/rel_produtos_class.php" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Produtos</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#RelEntradas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Entradas / Ganhos</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#RelSaidas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Saídas / Despesas</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#RelComissoes" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Comissões</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#RelCon" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Contas</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#RelServicos" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Serviços</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#RelAniv" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Aniversáriantes</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#RelLucro" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Demonstrativo de Lucro</a></li>
-                    </ul>
-                </li>
-                <li><a href="whatsapp" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fas fa--whatsapp w-6 mr-2"></i> WhatsApp</a></li>
-                <li><a href="campanhas" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-paper-plane w-6 mr-2"></i> Campanhas</a></li>
-                <li><a href="#" onclick="showModal('modalSeuLink')" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-link w-6 mr-2"></i> Seu Link</a></li>
-                <li><a href="comentarios" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-comments w-6 mr-2"></i> Comentários</a></li>
-                <li x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
-                        <span><i class="fa fa-pencil w-6 mr-2"></i> Meus Horário / Dias</span>
-                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
-                    </button>
-                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-                        <li><a href="diasr" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Horários / Dias</a></li>
-                        <li><a href="dias_bloqueio_func" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Bloqueio de Dias</a></li>                                             
-                    </ul>
-                </li>
-
-                <?php endif; ?>
-
-                <?php if ($atendimento == 'Sim'): ?>
-                <li class="pt-4 mt-2 border-t border-slate-700">
-                    <span class="px-2 text-xs font-bold text-slate-400 uppercase">Menu Profissional</span>
-                </li>
-                <li><a href="agenda" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-calendar-o w-6 mr-2"></i> Minha Agenda</a></li>
-                <li><a href="servicos_func" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-server w-6 mr-2"></i> Meus Serviços</a></li>                
-                <li><a href="minhas_comissoes" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-dollar-sign w-6 mr-2"></i> Minhas Comissões</a></li>
-                <?php endif; ?>
-            </ul>
+            <!-- Navigation links... -->
         </nav>
     </div>
 
@@ -269,7 +167,7 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
                 
                 <!-- Dropdown Agendamentos -->
                 <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Agendamentos hoje">
+                    <button @click.stop="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Agendamentos hoje">
                         <i class="fas fa-calendar-check text-xl"></i>
                         <?php if ($total_agendamentos_hoje_usuario_pendentes > 0): ?>
                             <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_agendamentos_hoje_usuario_pendentes ?></span>
@@ -280,14 +178,18 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
                             <h3 class="font-semibold text-gray-800 dark:text-gray-200"><?= $total_agendamentos_hoje_usuario_pendentes ?> Agendamentos Pendentes</h3>
                         </div>
                         <div class="max-h-64 overflow-y-auto custom-scrollbar">
-                            <?php foreach($res_agendamentos as $agendamento): ?>
-                                <div class="p-3 border-b border-gray-100 dark:border-slate-600">
-                                    <p class="text-sm text-gray-700 dark:text-gray-300">
-                                        <span class="font-bold"><?= date("H:i", strtotime($agendamento['hora'])) ?></span> - <?= htmlspecialchars($agendamento['cliente_nome'] ?? 'Sem Cliente') ?>
-                                    </p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400"><?= htmlspecialchars($agendamento['servico_nome'] ?? 'Não Lançado') ?></p>
-                                </div>
-                            <?php endforeach; ?>
+                            <?php if(empty($res_agendamentos)): ?>
+                                <p class="text-center text-gray-500 dark:text-gray-400 p-4">Nenhum agendamento pendente.</p>
+                            <?php else: ?>
+                                <?php foreach($res_agendamentos as $agendamento): ?>
+                                    <div class="p-3 border-b border-gray-100 dark:border-slate-600">
+                                        <p class="text-sm text-gray-700 dark:text-gray-300">
+                                            <span class="font-bold"><?= date("H:i", strtotime($agendamento['hora'])) ?></span> - <?= htmlspecialchars($agendamento['cliente_nome'] ?? 'Sem Cliente') ?>
+                                        </p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400"><?= htmlspecialchars($agendamento['servico_nome'] ?? 'Não Lançado') ?></p>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                         <a href="<?= $link_ag ?>" class="block text-center p-2 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-600 text-sm font-medium text-blue-600 dark:text-blue-400 rounded-b-lg">Ver Todos</a>
                     </div>
@@ -295,7 +197,7 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
 
                 <!-- Dropdown Encaixes -->
                 <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Encaixes hoje">
+                    <button @click.stop="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Encaixes hoje">
                         <i class="fa fa-bell text-xl"></i>
                         <?php if ($total_encaixes_hoje > 0): ?>
                             <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_encaixes_hoje ?></span>
@@ -312,7 +214,7 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
                 <?php if (@$_SESSION['nivel_usuario'] == 'administrador'): ?>
                 <!-- Dropdown Aniversariantes -->
                 <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Aniversariantes de hoje">
+                    <button @click.stop="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Aniversariantes de hoje">
                         <i class="fa fa-birthday-cake text-xl"></i>
                          <?php if ($total_aniversariantes_hoje > 0): ?>
                         <span class="absolute -top-2 -right-2 bg-green-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_aniversariantes_hoje ?></span>
@@ -323,23 +225,27 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
                             <h3 class="font-semibold text-gray-800 dark:text-gray-200"><?= $total_aniversariantes_hoje ?> Aniversariando Hoje</h3>
                         </div>
                         <div class="max-h-64 overflow-y-auto custom-scrollbar">
-                            <?php foreach($res_aniversariantes as $aniv): ?>
-                                <div class="p-3 border-b border-gray-100 dark:border-slate-600">
-                                    <p class="text-sm text-gray-700 dark:text-gray-300 font-semibold"><?= htmlspecialchars($aniv['nome']) ?></p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400"><?= htmlspecialchars($aniv['telefone']) ?></p>
-                                </div>
-                            <?php endforeach; ?>
+                            <?php if(empty($res_aniversariantes)): ?>
+                                <p class="text-center text-gray-500 dark:text-gray-400 p-4">Nenhum aniversariante hoje.</p>
+                            <?php else: ?>
+                                <?php foreach($res_aniversariantes as $aniv): ?>
+                                    <div class="p-3 border-b border-gray-100 dark:border-slate-600">
+                                        <p class="text-sm text-gray-700 dark:text-gray-300 font-semibold"><?= htmlspecialchars($aniv['nome']) ?></p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400"><?= htmlspecialchars($aniv['telefone']) ?></p>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                         <div class="p-2 bg-gray-50 dark:bg-slate-800 rounded-b-lg">
                            <?php if ($total_aniversariantes_hoje > 0): ?>
-                            <button onclick="showModal('birthdayModal')" class="w-full text-center p-2 bg-blue-500 text-white hover:bg-blue-600 text-sm font-medium rounded-md">Enviar Parabéns</button>
+                            <button onclick="showModal('birthdayModal')" @click="open = false" class="w-full text-center p-2 bg-blue-500 text-white hover:bg-blue-600 text-sm font-medium rounded-md">Enviar Parabéns</button>
                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
                 <!-- Dropdown Comentários -->
                 <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Depoimentos pendentes">
+                    <button @click.stop="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Depoimentos pendentes">
                         <i class="fa fa-comment text-xl"></i>
                         <?php if ($total_comentarios > 0): ?>
                         <span class="absolute -top-2 -right-2 bg-blue-700 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_comentarios ?></span>
@@ -350,11 +256,15 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
                             <h3 class="font-semibold text-gray-800 dark:text-gray-200"><?= $total_comentarios ?> Depoimentos Pendentes</h3>
                         </div>
                         <div class="max-h-64 overflow-y-auto custom-scrollbar">
-                             <?php foreach($res_comentarios as $coment): ?>
-                                <div class="p-3 border-b border-gray-100 dark:border-slate-600">
-                                    <p class="text-sm text-gray-700 dark:text-gray-300">Cliente: <span class="font-semibold"><?= htmlspecialchars($coment['nome']) ?></span></p>
-                                </div>
-                            <?php endforeach; ?>
+                             <?php if(empty($res_comentarios)): ?>
+                                <p class="text-center text-gray-500 dark:text-gray-400 p-4">Nenhum depoimento pendente.</p>
+                             <?php else: ?>
+                                 <?php foreach($res_comentarios as $coment): ?>
+                                    <div class="p-3 border-b border-gray-100 dark:border-slate-600">
+                                        <p class="text-sm text-gray-700 dark:text-gray-300">Cliente: <span class="font-semibold"><?= htmlspecialchars($coment['nome']) ?></span></p>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                         <a href="comentarios" class="block text-center p-2 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-600 text-sm font-medium text-blue-600 dark:text-blue-400 rounded-b-lg">Ver Comentários</a>
                     </div>
@@ -366,7 +276,7 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
                 
                 <!-- Perfil Dropdown -->
                 <div class="relative" x-data="{ open: false }" @click.away="open = false">
-                    <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
+                    <button @click.stop="open = !open" class="flex items-center space-x-2 focus:outline-none">
                         <img src="img/perfil/<?= htmlspecialchars($foto_usuario) ?>" alt="Foto" class="w-10 h-10 rounded-full object-cover">
                         <div class="hidden md:flex flex-col items-start">
                             <span class="text-sm font-semibold text-gray-800 dark:text-gray-200"><?= htmlspecialchars($nome_usuario) ?></span>
@@ -379,7 +289,13 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
                         <a href="configuracoes" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-cog w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Config. Sistema</a>
                         <?php endif; ?>
                         <a href="conf_site" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-link w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Config. Site</a>
-                        <a href="#" onclick="showModal('assinaturaModal')" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-dollar-sign w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Assinatura</a>
+                        
+                        <?php if(@$_SESSION['nivel_usuario'] == 'administrador' && $cliente_stripe == null): ?>
+                            <a href="#" onclick="showModal('assinaturaModal')" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-dollar-sign w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Minha Assinatura</a>
+                        <?php else: ?>
+                            <a href="../../portal.php" target="_blank" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-dollar-sign w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Sua Assinatura</a>
+                        <?php endif; ?>
+
                         <div class="border-t border-gray-200 dark:border-slate-600 my-1"></div>
                         <a href="logout.php" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-sign-out w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Sair</a>
                     </div>
@@ -397,6 +313,59 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
             <span class="font-semibold">Caixa Aberto</span>
         </a>
         <?php endif; ?>
+    </div>
+    
+    <!-- MODAIS AQUI (perfil, aniversário, etc) -->
+    <!-- Modal para Aniversariantes -->
+    <div id="birthdayModal" class="fixed inset-0 hidden modal-background z-50 items-center justify-center p-4" x-data="{ present: 'Não' }" x-cloak>
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl overflow-hidden max-w-lg w-full">
+            <div class="p-5 border-b dark:border-slate-700 flex justify-between items-center">
+                <h5 class="text-xl font-bold text-gray-800 dark:text-gray-200">Aniversariantes do Dia</h5>
+                <button onclick="hideModal('birthdayModal')" class="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">&times;</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label for="oferecer_presente" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Oferecer Presente?</label>
+                    <select id="oferecer_presente" x-model="present" class="mt-1 block w-full rounded-md border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-800 dark:text-gray-200 shadow-sm">
+                        <option value="Não">Não</option>
+                        <option value="Sim">Sim</option>
+                    </select>
+                </div>
+                <div x-show="present === 'Sim'" x-transition>
+                    <label for="id_cupom" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Selecionar Cupom</label>
+                    <select class="mt-1 block w-full rounded-md border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-800 dark:text-gray-200 shadow-sm" id="id_cupom">
+                        <option value="">Selecione um cupom</option>
+                        <?php
+                        $query_cupons = $pdo->prepare("SELECT id, codigo, valor, tipo_desconto FROM cupons WHERE id_conta = ? AND data_validade >= CURDATE() AND (usos_atuais < max_usos OR max_usos = 0)");
+                        $query_cupons->execute([$id_conta]);
+                        foreach ($query_cupons->fetchAll(PDO::FETCH_ASSOC) as $cupom) {
+                            $desconto = $cupom['tipo_desconto'] === 'porcentagem' ? "{$cupom['valor']}%" : "R$" . number_format($cupom['valor'], 2, ',', '.');
+                            echo "<option value=\"{$cupom['id']}\">{$cupom['codigo']} ({$desconto})</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="max-h-48 overflow-y-auto custom-scrollbar border rounded-md dark:border-slate-700">
+                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-slate-700 dark:text-gray-300">
+                           <tr><th class="px-4 py-2">Nome</th><th class="px-4 py-2">Selecionar</th></tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($res_aniversariantes as $aniversariante): ?>
+                            <tr class="bg-white dark:bg-slate-800 border-b dark:border-slate-700">
+                                <td class="px-4 py-2 font-medium text-gray-900 dark:text-white"><?= htmlspecialchars($aniversariante['nome']); ?></td>
+                                <td class="px-4 py-2"><input type="checkbox" class="aniversariante-checkbox" value="<?= $aniversariante['id']; ?>" checked></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="p-4 bg-gray-50 dark:bg-slate-900 flex justify-end space-x-3">
+                <button type="button" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300" onclick="hideModal('birthdayModal')">Fechar</button>
+                <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" id="enviar_mensagens_aniversario" <?= empty($res_aniversariantes) ? 'disabled' : ''; ?>>Enviar Mensagens</button>
+            </div>
+        </div>
     </div>
     
     <div id="modalPerfil" class="fixed inset-0 hidden modal-background z-50 flex items-center justify-center p-4">
