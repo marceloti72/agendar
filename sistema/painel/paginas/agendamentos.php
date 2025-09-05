@@ -361,19 +361,14 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
             z-index: 1000;
         }
         .modal-container {
-            /* Fixa a posição do modal em relação à viewport */
-            position: fixed;
-            /* Centraliza a partir do topo e da esquerda */
+            width: 90%;
+            max-width: 1200px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
             top: 50%;
             left: 50%;
-            /* Usa translate para ajustar a posição, garantindo a centralização perfeita */
-            transform: translate(-50%, -50%);
-            /* Largura e altura */
-            width: 90%;
-            max-width: 500px;
-            /* Outras estilizações */
-            z-index: 50; /* Garante que ele fique acima de outros elementos */
-            
         }
         .modal-body-scroll {
             overflow-y: auto;
