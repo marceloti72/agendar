@@ -98,24 +98,24 @@ try {
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="bg-white p-5 rounded-xl shadow-md flex items-center space-x-4">
-        <div id="chart-agendamentos" class="flex-shrink-0"></div>
+    <div class="bg-white p-5 rounded-xl shadow-md flex items-center space-x-4 overflow-hidden">
+        <div id="chart-agendamentos" class="flex-shrink-0 w-24 h-24"></div>
         <div class="flex-grow">
             <h4 class="font-semibold text-gray-600">Agendamentos do Dia</h4>
             <p class="text-2xl font-bold text-gray-800"><?= $total_agendamentos_hoje ?></p>
             <p class="text-sm text-gray-500"><?= $total_agendamentos_concluido_hoje ?> concluídos</p>
         </div>
     </div>
-    <div class="bg-white p-5 rounded-xl shadow-md flex items-center space-x-4">
-        <div id="chart-servicos" class="flex-shrink-0"></div>
+    <div class="bg-white p-5 rounded-xl shadow-md flex items-center space-x-4 overflow-hidden">
+        <div id="chart-servicos" class="flex-shrink-0 w-24 h-24"></div>
         <div class="flex-grow">
             <h4 class="font-semibold text-gray-600">Serviços de Hoje</h4>
             <p class="text-2xl font-bold text-gray-800"><?= $total_servicos_hoje ?></p>
             <p class="text-sm text-gray-500"><?= $total_servicos_pago_hoje ?> pagos</p>
         </div>
     </div>
-    <div class="bg-white p-5 rounded-xl shadow-md flex items-center space-x-4">
-        <div id="chart-comissoes" class="flex-shrink-0"></div>
+    <div class="bg-white p-5 rounded-xl shadow-md flex items-center space-x-4 overflow-hidden">
+        <div id="chart-comissoes" class="flex-shrink-0 w-24 h-24"></div>
         <div class="flex-grow">
             <h4 class="font-semibold text-gray-600">Comissões do Mês</h4>
             <p class="text-2xl font-bold text-gray-800"><?= $total_comissoes_mes ?></p>
@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Função para criar os gráficos radiais de progresso
     function createRadialChart(chartId, seriesData, color) {
         const options = {
-            chart: { type: 'radialBar', height: 120, sparkline: { enabled: true } },
+            chart: { type: 'radialBar', sparkline: { enabled: true } }, // <--- ALTURA REMOVIDA
             series: [seriesData],
             plotOptions: {
                 radialBar: {
