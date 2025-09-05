@@ -521,7 +521,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                     <i class="fas fa-cash-register modal-icon"></i>
                     Nova Comanda
                 </h4>
-                <button type="button" id="btn-fechar" class="text-white text-3xl font-light leading-none hover:text-gray-200" onclick="hideModal()">
+                <button type="button" id="btn-fechar" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -542,21 +542,27 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
                             <div class="col-span-8">
                                 <label for="servico" class="block text-sm font-medium text-gray-700 mb-1">Serviço</label>
-                                <select class="form-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" id="servico" name="servico">
-                                    <option value="1">Corte de Cabelo</option>
-                                    <option value="2">Barba</option>
-                                    <option value="3">Coloração</option>
-                                    <option value="4">Penteado</option>
-                                    <!-- PHP was here, replaced with static options for demonstration -->
-                                </select>
+                                <select class="form-control sel2" id="servico" name="servico" style="width:100%;">
+                                                <?php
+                                                $query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta' ORDER BY nome asc");
+                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                                foreach ($res as $item) {
+                                                    echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
+                                                }
+                                                ?>
+                                            </select>
                             </div>
                             <div class="col-span-4">
                                 <label for="funcionario2" class="block text-sm font-medium text-gray-700 mb-1">Funcionário</label>
-                                <select class="form-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" id="funcionario2" name="funcionario">
-                                    <option value="1">João Silva</option>
-                                    <option value="2">Maria Souza</option>
-                                    <!-- PHP was here, replaced with static options for demonstration -->
-                                </select>
+                                <select class="form-control sel2" id="funcionario2" name="funcionario" style="width:100%;">
+                                                <?php
+                                                $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
+                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                                foreach ($res as $item) {
+                                                    echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
+                                                }
+                                                ?>
+                                            </select>
                             </div>
                             <div class="md:col-span-12">
                                 <button type="button" class="w-full btn-success bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md shadow transition duration-200" onclick="inserirServico()">
@@ -564,7 +570,8 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 </button>
                             </div>
                         </div>
-                        <div class="item-list-container space-y-2" id="listar_servicos"></div>
+                        <!-- <div class="item-list-container space-y-2" id="listar_servicos"></div> -->
+                        <div class="item-list-container" id="listar_servicos"></div>
                     </div>
 
                     <!-- Products Card -->
@@ -672,7 +679,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
             </form>
         </div>
     </div>
-    
+
 <!-- Modal -->
 <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
 	<div class="modal-dialog modal-lg" role="document">
