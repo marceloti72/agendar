@@ -373,9 +373,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
             max-width: 500px;
             /* Outras estilizações */
             z-index: 50; /* Garante que ele fique acima de outros elementos */
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            
         }
         .modal-body-scroll {
             overflow-y: auto;
