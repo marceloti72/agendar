@@ -513,7 +513,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 
 
-<div id="modalForm2" class="modal-overlay">
+<div id="modalForm2" class="modal-overlay" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-container bg-white rounded-xl shadow-2xl overflow-hidden md:flex">
             <!-- Modal Header -->
             <div class="w-full modal-header-custom flex justify-between items-center">
@@ -570,8 +570,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 </button>
                             </div>
                         </div>
-                        <!-- <div class="item-list-container space-y-2" id="listar_servicos"></div> -->
-                        <div class="item-list-container" id="listar_servicos"></div>
+                        <div class="item-list-container space-y-2" id="listar_servicos"></div>
                     </div>
 
                     <!-- Products Card -->
