@@ -396,188 +396,163 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 	</div>
 </div>
 
-<style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .modal-overlay {
-            display: none;
-            background-color: rgba(17, 24, 39, 0.75); /* bg-gray-900 bg-opacity-75 */
-        }
-        .modal-body-scroll {
-            max-height: 50vh; /* Altura máxima para permitir rolagem */
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #d1d5db #f3f4f6;
-        }
-        .modal-body-scroll::-webkit-scrollbar {
-            width: 8px;
-        }
-        .modal-body-scroll::-webkit-scrollbar-track {
-            background: #f3f4f6;
-            border-radius: 10px;
-        }
-        .modal-body-scroll::-webkit-scrollbar-thumb {
-            background-color: #d1d5db;
-            border-radius: 10px;
-            border: 2px solid #f3f4f6;
-        }
-        .section-header .section-icon {
-            color: #2563eb;
-        }
-        .item-list-container {
-            border: 1px solid #d1d5db;
-            padding: 0.5rem;
-            min-height: 80px;
-            background-color: #f9fafb;
-        }
-        .item-row {
-            padding: 0.5rem;
-            border-bottom: 1px dashed #e5e7eb;
-        }
-        .item-row:last-child {
-            border-bottom: none;
-        }
-        .valor-display, .total-display {
-            background-color: #e5e7eb;
-            color: #1f2937;
-            font-weight: 600;
-        }
-        .total-display {
-            background-color: #d1fae5;
-            color: #065f46;
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-    </style>
 
 
+<div class="modal fade" id="modalForm2" tabindex="-1" role="dialog" aria-labelledby="modalForm2Label" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
 
-<div id="modalForm2" class="modal-overlay fixed inset-0 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-5xl overflow-hidden animate-fade-in-up">
-            
-            <!-- Modal Header -->
-            <div class="bg-gray-50 px-6 py-4 flex justify-between items-center rounded-t-2xl border-b border-gray-200">
-                <h4 class="text-2xl font-bold text-gray-800">
-                    <i class="fas fa-cash-register mr-3 text-blue-600"></i>
-                    <span id="titulo_comanda">Nova Comanda</span>
+            <div class="modal-header modal-header-custom">
+                <h4 class="modal-title" id="titulo_comanda">
+                    <i class="fas fa-cash-register modal-icon"></i>
+                    Nova Comanda
                 </h4>
-                <button type="button" onclick="document.getElementById('modalForm2').style.display='none';" class="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none">
-                    <span aria-hidden="true" class="text-3xl">&times;</span>
+                <button type="button" id="btn-fechar" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            
+
             <form id="form_salvar">
-                <div class="flex flex-col md:flex-row">
-                    <!-- Left Panel -->
-                    <div class="md:w-3/5 p-6 md:p-8 border-b md:border-b-0 md:border-r border-gray-200">
-                        <div class="modal-body-scroll pr-2">
-                            <h3 id="nome_do_cliente_aqui" class="text-xl md:text-2xl font-bold text-gray-900 mb-6">Nome do Cliente</h3>
-                            
-                            <!-- Serviços -->
-                            <div class="flex items-center space-x-3 mb-4">
-                                <i class="fas fa-cut text-xl text-blue-600"></i>
-                                <h5 class="text-lg font-semibold text-gray-800">Serviços</h5>
-                            </div>
-                            <div class="flex flex-col md:flex-row gap-4 mb-4 items-end">
-                                <div class="w-full md:w-5/6">
-                                    <select class="form-select block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-colors focus:outline-none" id="servico" name="servico">
-                                        <!-- Opcões de exemplo, em produção seriam dinâmicas -->
-                                        <option value="1">Corte de Cabelo</option>
-                                        <option value="2">Barba</option>
-                                        <option value="3">Manicure</option>
-                                    </select>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8 modal-left-panel">
+                            <div class="modal-body-scroll p-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <h3 id="nome_do_cliente_aqui"></h3>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="w-full md:w-1/6">
-                                    <button type="button" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded-lg transition-colors flex items-center justify-center">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="item-list-container rounded-lg mb-6">
-                                <div class="item-row flex justify-between text-gray-600"><span>Corte de Cabelo</span><span>R$ 50,00</span></div>
-                                <div class="item-row flex justify-between text-gray-600"><span>Barba</span><span>R$ 30,00</span></div>
-                            </div>
-                            
-                            <!-- Produtos -->
-                            <div class="flex items-center space-x-3 mb-4 mt-6">
-                                <i class="fas fa-box text-xl text-blue-600"></i>
-                                <h5 class="text-lg font-semibold text-gray-800">Produtos</h5>
-                            </div>
-                            <div class="flex flex-col md:flex-row gap-4 mb-4 items-end">
-                                <div class="w-full md:w-5/6">
-                                    <select class="form-select block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-colors focus:outline-none" id="produto" name="produto">
-                                        <!-- Opcões de exemplo, em produção seriam dinâmicas -->
-                                        <option value="1">Shampoo</option>
-                                        <option value="2">Condicionador</option>
-                                        <option value="3">Gel Fixador</option>
-                                    </select>
-                                </div>
-                                <div class="w-full md:w-1/6">
-                                    <button type="button" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded-lg transition-colors flex items-center justify-center">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="item-list-container rounded-lg mb-6">
-                                <div class="item-row flex justify-between text-gray-600"><span>Shampoo</span><span>R$ 25,00</span></div>
-                                <div class="item-row flex justify-between text-gray-600"><span>Gel Fixador</span><span>R$ 15,00</span></div>
-                            </div>
-                            
-                            <!-- Descontos -->
-                            <div class="flex items-center space-x-3 mb-4 mt-6">
-                                <i class="fas fa-percentage text-xl text-blue-600"></i>
-                                <h5 class="text-lg font-semibold text-gray-800">Descontos e Observações</h5>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Sinal (Valor Pago)</label>
-                                    <input type="text" class="w-full px-3 py-2 text-right rounded-lg bg-red-100 text-red-600 border border-gray-300 font-semibold" id="valor_sinal" value="R$ 0,00" readonly>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Desconto Cupom</label>
-                                    <input type="text" class="w-full px-3 py-2 text-right rounded-lg bg-red-100 text-red-600 border border-gray-300 font-semibold" id="valor_cupom" value="R$ 0,00" readonly>
-                                </div>
-                            </div>
-                            <div class="mt-4">
-                                <label class="block text-sm font-medium text-gray-700">Observações</label>
-                                <input type="text" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none" value="" name="obs" id="obs2" maxlength="1000">
-                            </div>
 
-                            <div id="mensagem" class="hidden mt-4 text-center p-3 rounded-lg text-sm bg-red-100 text-red-600"></div>
+                                <hr class="divider">
 
+                                <div class="section-header">
+                                    <i class="fas fa-cut section-icon"></i>
+                                    <h5 class="section-title">Serviços</h5>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <select class="form-control sel2" id="servico" name="servico" style="width:100%;">
+                                                <?php
+                                                $query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta' ORDER BY nome asc");
+                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                                foreach ($res as $item) {
+                                                    echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <select class="form-control sel2" id="funcionario2" name="funcionario" style="width:100%;">
+                                                <?php
+                                                $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
+                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                                foreach ($res as $item) {
+                                                    echo '<option value="' . $item['id'] . '">' . htmlspecialchars($item['nome']) . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-success btn-add" onclick="inserirServico()"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="item-list-container" id="listar_servicos"></div>
+
+                                <hr class="divider">
+
+                                <div class="section-header">
+                                    <i class="fas fa-box section-icon"></i>
+                                    <h5 class="section-title">Produtos</h5>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <select class="form-control sel2" id="produto" name="produto" style="width:100%;" onchange="listarServicos2()">
+                                                <?php
+                                                $query = $pdo->query("SELECT * FROM produtos where estoque > 0 and id_conta = '$id_conta' ORDER BY nome asc");
+                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                                foreach($res as $item){
+                                                    echo '<option value="'.$item['id'].'">'.htmlspecialchars($item['nome']).'</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="number" class="form-control" name="quantidade" id="quantidade" value="1" min="1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-success btn-add" onclick="inserirProduto()"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="item-list-container" id="listar_produtos"></div>
+
+                                <hr class="divider">
+
+                                <div class="section-header">
+                                    <i class="fas fa-percentage section-icon"></i>
+                                    <h5 class="section-title">Descontos</h5>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Sinal (Valor Pago)</label>
+                                            <input type="text" class="form-control text-right valor-display" id="valor_sinal" style="color: red" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Desconto Cupom</label>
+                                            <input type="text" class="form-control text-right valor-display" id="valor_cupom" style="color: red" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="divider">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Observações</label>
+                                        <input type="text" class="form-control" value="" name="obs" id="obs2" maxlength="1000">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- Right Panel - Pagamento -->
-                    <div class="md:w-2/5 p-6 md:p-8 bg-gray-50 border-t md:border-t-0 border-gray-200">
-                        <div class="bg-gray-100 p-6 rounded-2xl shadow-inner">
-                            <div class="flex items-center justify-center mb-6">
-                                <img src="https://placehold.co/40x40/d1d5db/4b5563?text=R" alt="Ícone Pagamento" class="mr-3">
-                                <h4 class="text-xl font-bold text-gray-800">PAGAMENTO</h4>
-                            </div>
-                            
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-sm text-gray-600">Total Serviços</label>
-                                    <input type="text" class="form-control w-full px-3 py-2 text-right rounded-lg bg-gray-200 text-gray-800 font-semibold" id="valor_servicos" value="R$ 80,00" readonly>
+
+                        <div class="col-md-4 modal-right-panel">
+                            <div class="pagamento-container p-3">
+                                <div class="pagamento-header">
+                                    <img src="../../images/registradora.png" alt="Ícone Pagamento" class="pagamento-icon">
+                                    <h4>PAGAMENTO</h4>
                                 </div>
-                                <div>
-                                    <label class="block text-sm text-gray-600">Total Produtos</label>
-                                    <input type="text" class="form-control w-full px-3 py-2 text-right rounded-lg bg-gray-200 text-gray-800 font-semibold" id="valor_produtos" value="R$ 40,00" readonly>
+                                
+                                <div class="form-group">
+                                    <label><small>Total Serviços</small></label>
+                                    <input type="text" class="form-control text-right valor-display" id="valor_servicos" readonly>
                                 </div>
-                                <div>
-                                    <label class="block text-sm text-gray-600">Total Descontos</label>
-                                    <input type="text" class="form-control w-full px-3 py-2 text-right rounded-lg bg-red-100 text-red-600 font-semibold" id="valor_descontos" value="R$ 0,00" readonly>
+                                <div class="form-group">
+                                    <label><small>Total Produtos</small></label>
+                                    <input type="text" class="form-control text-right valor-display" id="valor_produtos" readonly>
                                 </div>
-                                <hr class="border-gray-300 my-4">
-                                <div>
-                                    <label class="block text-sm text-gray-600">Total a Pagar</label>
-                                    <input type="text" class="form-control w-full px-3 py-2 text-right rounded-lg bg-green-100 text-green-700 font-bold text-xl" name="valor_total" id="valor_serv" value="R$ 120,00" readonly>
+                                <div class="form-group">
+                                    <label><small>Total Descontos</small></label>
+                                    <input type="text" class="form-control text-right valor-display" id="valor_descontos" style="color: red" readonly>
                                 </div>
-                                <div>
-                                    <label class="block text-sm text-gray-600">Forma de Pagamento</label>
-                                    <select class="form-select block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-colors focus:outline-none" id="forma_pgto" name="forma_pgto">
+                                <hr>
+                                <div class="form-group">
+                                    <label><small>Total a Pagar</small></label>
+                                    <input type="text" class="form-control text-right total-display" name="valor_total" id="valor_serv" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label><small>Forma de Pagamento</small></label>
+                                    <select class="form-control sel2" id="forma_pgto" name="forma_pgto" style="width:100%;"> 
                                         <option value="">Selecione</option>
                                         <option value="Mercado Pago">Mercado Pago</option>
                                         <option value="Credito">Cartão de Crédito</option>
@@ -586,23 +561,32 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                         <option value="Dinheiro">Dinheiro</option>
                                     </select>
                                 </div>
-                            </div>
-                            
-                            <div class="mt-8 space-y-4">
-                                <button type="button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-full shadow-lg transition-colors flex items-center justify-center">
-                                    <i class="fas fa-check-circle mr-2"></i> Fechar Comanda
-                                </button>
-                                <button type="button" onclick="document.getElementById('modalForm2').style.display='none';" class="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 px-4 rounded-full transition-colors flex items-center justify-center">
-                                    <i class="fas fa-times-circle mr-2"></i> Sair
-                                </button>
+
+                                <div class="row mt-3">
+                                </div>
+
+                                <div class="d-flex flex-column gap-2 mt-4">
+                                    <a href="#" id="btn_fechar_comanda" class="btn btn-success btn-lg btn-block" onclick="fecharComanda()">
+                                        <i class="fas fa-check-circle"></i> Fechar Comanda
+                                    </a>
+                                    <button type="button" class="btn btn-outline-secondary btn-block" data-dismiss="modal">
+                                        <i class="fas fa-times-circle"></i> Sair
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="valor_servicos" id="valor_servicos_hidden">
+                    <input type="hidden" name="valor_produtos" id="valor_produtos_hidden">
+                    <input type="hidden" name="valor_descontos" id="valor_descontos_hidden">
+                    <small><div id="mensagem" align="center" class="mt-2"></div></small>
                 </div>
             </form>
-
         </div>
     </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
