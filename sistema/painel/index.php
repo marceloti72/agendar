@@ -152,14 +152,14 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
                         <span><i class="fa fa-pencil w-6 mr-2"></i> Dashboards</span>
                         <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
                     </button>
-			<ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-									<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="index.php"></i>Financeiro</a></li>
-									<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="grafico_dias"></i>Agendamentos Mês</a></li>
-									<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="grafico_ano"></i>Agendamentos Ano</a></li>
-					
+					<ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
+						<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="index.php"></i>Financeiro</a></li>
+						<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="grafico_dias"></i>Agendamentos Mês</a></li>
+						<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="grafico_ano"></i>Agendamentos Ano</a></li>
+		
 
-								</ul>
-			</li>
+					</ul>
+				</li>
 
                 <li><a href="caixa" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fas fa-cash-register w-6 mr-2"></i> Abrir Caixa</a></li>
                 <li><a href="agendamentos" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-clock w-6 mr-2"></i> Agendamentos</a></li>
@@ -177,9 +177,70 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
                         <li><a href="cupons" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Cupons</a></li>
                     </ul>
                 </li>
+                <li x-data="{ open: false }">
+                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
+                        <span><i class="fa fa-pencil w-6 mr-2"></i> Produtos</span>
+                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
+                    </button>
+                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
+                        <li><a href="vendas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Vendas de Produtos</a></li>
+                        <li><a href="compras" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Compras de Produtos</a></li>
+                        <li><a href="estoque" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Estoque Baixo</a></li>
+                        <li><a href="saidas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Saídas</a></li>
+                        <li><a href="entradas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Entradas</a></li>
+                    </ul>
+                </li>
+                <li x-data="{ open: false }">
+                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
+                        <span><i class="fa fa-pencil w-6 mr-2"></i> Clube do Assinante</span>
+                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
+                    </button>
+                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
+                        <li><a href="assinantes" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Assinantes</a></li>
+                        <li><a href="conf_planos" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Configuração</a></li>                        
+                    </ul>
+                </li>
+                <li x-data="{ open: false }">
+                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
+                        <span><i class="fa fa-pencil w-6 mr-2"></i> Financeiro</span>
+                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
+                    </button>
+                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
+                        <li><a href="pagar" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Contas à Pagar</a></li>
+                        <li><a href="receber" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Contas à Receber</a></li>
+                        <li><a href="comissoes" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Comissões</a></li>                        
+                    </ul>
+                </li>
+                <li x-data="{ open: false }">
+                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
+                        <span><i class="fa fa-pencil w-6 mr-2"></i> Relatórios</span>
+                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
+                    </button>
+                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
+                        <li><a href="rel/rel_produtos_class.php" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Produtos</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#RelEntradas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Entradas / Ganhos</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#RelSaidas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Saídas / Despesas</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#RelComissoes" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Comissões</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#RelCon" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Contas</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#RelServicos" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Serviços</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#RelAniv" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Aniversáriantes</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#RelLucro" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Demonstrativo de Lucro</a></li>
+                    </ul>
+                </li>
+                <li><a href="whatsapp" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fas fa--whatsapp w-6 mr-2"></i> WhatsApp</a></li>
                 <li><a href="campanhas" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-paper-plane w-6 mr-2"></i> Campanhas</a></li>
                 <li><a href="#" onclick="showModal('modalSeuLink')" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-link w-6 mr-2"></i> Seu Link</a></li>
                 <li><a href="comentarios" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-comments w-6 mr-2"></i> Comentários</a></li>
+                <li x-data="{ open: false }">
+                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
+                        <span><i class="fa fa-pencil w-6 mr-2"></i> Meus Horário / Dias</span>
+                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
+                    </button>
+                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
+                        <li><a href="diasr" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Horários / Dias</a></li>
+                        <li><a href="dias_bloqueio_func" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Bloqueio de Dias</a></li>                                             
+                    </ul>
+                </li>
 
                 <?php endif; ?>
 
@@ -188,7 +249,7 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
                     <span class="px-2 text-xs font-bold text-slate-400 uppercase">Menu Profissional</span>
                 </li>
                 <li><a href="agenda" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-calendar-o w-6 mr-2"></i> Minha Agenda</a></li>
-                <li><a href="servicos_func" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-server w-6 mr-2"></i> Meus Serviços</a></li>
+                <li><a href="servicos_func" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-server w-6 mr-2"></i> Meus Serviços</a></li>                
                 <li><a href="minhas_comissoes" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-dollar-sign w-6 mr-2"></i> Minhas Comissões</a></li>
                 <?php endif; ?>
             </ul>
