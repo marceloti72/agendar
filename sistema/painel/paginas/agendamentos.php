@@ -533,13 +533,13 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
             <form id="form_salvar" class="w-full h-full flex flex-col md:flex-row">
                 <!-- Left Panel -->
-                <div class="md:w-3/4 modal-left-panel p-5 overflow-y-auto">
+                <div class="md:w-3/4 modal-left-panel p-6 overflow-y-auto">
                     <div class="mb-4">
                         <h3 id="nome_do_cliente_aqui" class="text-2xl font-bold text-gray-800">Cliente Exemplo</h3>
                     </div>
 
                     <!-- Services Card -->
-                    <div class="bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-200">
+                    <div class="bg-white rounded-lg shadow-lg p-6 mb-6 border border-gray-200">
                         <div class="section-header">
                             <i class="fas fa-cut section-icon"></i>
                             <h5 class="text-xl font-semibold text-gray-800">Serviços</h5>
