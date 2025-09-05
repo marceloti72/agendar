@@ -68,7 +68,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     }
 
     .modal-right-panel {
-        width: 40%;
+        width: 35%;
         background-color: #e9ecef;
         border-left: 1px solid #e1e4e8;
         display: flex;
