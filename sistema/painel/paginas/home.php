@@ -124,7 +124,7 @@ try {
     </div>
 </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 min-w-0">
         <div class="bg-white p-6 rounded-xl shadow-md">
             <h3 class="text-lg font-semibold text-gray-800 mb-4"><i class="fa-solid fa-ranking-star mr-2 text-yellow-500"></i>Ranking de Profissionais</h3>
             <div id="chart-ranking-profissionais" class="h-64"></div>

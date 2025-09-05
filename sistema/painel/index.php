@@ -131,13 +131,7 @@ $username = strtolower(str_replace(' ', '', $nome_sistema));
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 </head>
-<body class="bg-gray-100 flex min-h-screen" 
-      x-data="{ sidebarOpen: window.innerWidth >= 1024 }" 
-      x-init="$watch('sidebarOpen', value => { 
-          setTimeout(() => { 
-              window.dispatchEvent(new Event('resize')); 
-          }, 310); 
-      })">
+<body class="bg-gray-100 flex min-h-screen" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
 
     <div x-show="sidebarOpen" @click.away="sidebarOpen = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full" class="fixed inset-y-0 left-0 w-64 bg-slate-800 text-white flex flex-col z-50 transform lg:translate-x-0">
         <div class="flex items-center justify-center p-5 bg-slate-900">
