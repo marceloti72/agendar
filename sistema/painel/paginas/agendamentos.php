@@ -455,7 +455,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 </div>
 
 
-<div id="modalForm2" class="modal-overlay fixed inset-0 flex items-center justify-center p-4 z-50">
+<div id="modalForm2" class="modal fade modal-overlay fixed inset-0 flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-5xl overflow-hidden animate-fade-in-up">
             
             <!-- Modal Header -->
