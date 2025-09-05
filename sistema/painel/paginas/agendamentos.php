@@ -339,62 +339,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 
 
-<div class="row">
-	<div class="col-md-3">
-		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" data-toggle="modal" data-target="#modalForm" type="button" class="btn novo" ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
-	</div>
 
-	<div class="col-md-3">
-		<div class="form-group">			
-			<select class="form-control sel2" id="funcionario" name="funcionario" style="width:100%;" onchange="mudarFuncionario()"> 
-				<option value="">Todos</option>
-				<?php 
-				$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY id desc");
-				$res = $query->fetchAll(PDO::FETCH_ASSOC);
-				$total_reg = @count($res);
-				if($total_reg > 0){
-					for($i=0; $i < $total_reg; $i++){
-						foreach ($res[$i] as $key => $value){}
-							echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
-					}
-				}
-				?>
-
-
-			</select>   
-		</div> 	
-	</div>
-
-</div>
-<input type="hidden" name="data_agenda" id="data_agenda" value="<?php echo date('Y-m-d') ?>"> 
-
-<div class="row" style="margin-top: 15px">
-
-	<div class="col-md-4 agile-calendar">
-		<div class="calendar-widget">
-
-			<!-- grids -->
-			<div class="agile-calendar-grid">
-				<div class="page">
-
-					<div class="w3l-calendar-left">
-						<div class="calendar-heading">
-
-						</div>
-						<div class="monthly" id="mycalendar"></div>
-					</div>
-
-					<div class="clearfix"> </div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-	<div class="col-xs-12 col-md-8 bs-example widget-shadow" style="padding:10px 5px; margin-top: 0px;" id="listar">
-
-	</div>
-</div>
 
 <style>
         body {
@@ -451,6 +396,63 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
         }
     </style>
 
+
+<div class="row">
+	<div class="col-md-3">
+		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" data-toggle="modal" data-target="#modalForm" type="button" class="btn novo" ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
+	</div>
+
+	<div class="col-md-3">
+		<div class="form-group">			
+			<select class="form-control sel2" id="funcionario" name="funcionario" style="width:100%;" onchange="mudarFuncionario()"> 
+				<option value="">Todos</option>
+				<?php 
+				$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY id desc");
+				$res = $query->fetchAll(PDO::FETCH_ASSOC);
+				$total_reg = @count($res);
+				if($total_reg > 0){
+					for($i=0; $i < $total_reg; $i++){
+						foreach ($res[$i] as $key => $value){}
+							echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
+					}
+				}
+				?>
+
+
+			</select>   
+		</div> 	
+	</div>
+
+</div>
+<input type="hidden" name="data_agenda" id="data_agenda" value="<?php echo date('Y-m-d') ?>"> 
+
+<div class="row" style="margin-top: 15px">
+
+	<div class="col-md-4 agile-calendar">
+		<div class="calendar-widget">
+
+			<!-- grids -->
+			<div class="agile-calendar-grid">
+				<div class="page">
+
+					<div class="w3l-calendar-left">
+						<div class="calendar-heading">
+
+						</div>
+						<div class="monthly" id="mycalendar"></div>
+					</div>
+
+					<div class="clearfix"> </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-xs-12 col-md-8 bs-example widget-shadow" style="padding:10px 5px; margin-top: 0px;" id="listar">
+
+	</div>
+</div>
 
 
 <div id="modalForm2" class="modal-overlay fixed inset-0 flex items-center justify-center p-4 z-50">
