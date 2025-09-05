@@ -635,7 +635,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                 </div>
 
                 <!-- Right Panel -->
-                <div class="md:w-1/4 bg-gray-50 p-6 modal-right-panel overflow-y-auto border-t md:border-t-0 md:border-l border-gray-200">
+                <div class="md:w-1/4 bg-gray-50 p-6 modal-right-panel overflow-y-auto border-t md:border-t-0 md:border-l border-gray-200 max-w-lg">
                     <div class="pagamento-container">
                         <div class="pagamento-header">
                             <img src="https://placehold.co/80x80/2563eb/ffffff?text=CASH" alt="Ícone Pagamento" class="pagamento-icon rounded-full p-2 bg-blue-500 mb-2">
