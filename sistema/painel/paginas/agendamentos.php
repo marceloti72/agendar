@@ -587,12 +587,15 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
                             <div class="col-span-8">
                                 <label for="produto" class="block text-sm font-medium text-gray-700 mb-1">Produto</label>
-                                <select class="form-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" id="produto" name="produto">
-                                    <option value="1">Shampoo</option>
-                                    <option value="2">Condicionador</option>
-                                    <option value="3">Creme para Barba</option>
-                                    <!-- PHP was here, replaced with static options for demonstration -->
-                                </select>
+                                 <select class="form-control sel2" id="produto" name="produto" style="width:100%;" onchange="listarServicos2()">
+                                                <?php
+                                                $query = $pdo->query("SELECT * FROM produtos where estoque > 0 and id_conta = '$id_conta' ORDER BY nome asc");
+                                                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                                                foreach($res as $item){
+                                                    echo '<option value="'.$item['id'].'">'.htmlspecialchars($item['nome']).'</option>';
+                                                }
+                                                ?>
+                                            </select>
                             </div>
                             <div class="col-span-4">
                                 <label for="quantidade" class="block text-sm font-medium text-gray-700 mb-1">Quantidade</label>
