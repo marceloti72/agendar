@@ -361,12 +361,21 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
             z-index: 1000;
         }
         .modal-container {
+            /* Fixa a posição do modal em relação à viewport */
+            position: fixed;
+            /* Centraliza a partir do topo e da esquerda */
+            top: 50%;
+            left: 50%;
+            /* Usa translate para ajustar a posição, garantindo a centralização perfeita */
+            transform: translate(-50%, -50%);
+            /* Largura e altura */
             width: 90%;
-            max-width: 1200px;
-            height: 90vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            max-width: 500px;
+            /* Outras estilizações */
+            z-index: 50; /* Garante que ele fique acima de outros elementos */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
         }
         .modal-body-scroll {
             overflow-y: auto;
@@ -515,7 +524,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 <div id="modalForm2" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <!-- <div class="modal-dialog modal-lg modal-dialog-centered" role="document"> -->
-        <div class="modal-container bg-white rounded-xl shadow-2xl overflow-hidden md:flex modal-dialog-centered">
+        <div class="modal-container bg-white rounded-xl shadow-2xl overflow-hidden md:flex">
             <!-- Modal Header -->
             <div class="w-full modal-header-custom flex justify-between items-center">
                 <h4 class="text-xl font-bold" id="titulo_comanda">
