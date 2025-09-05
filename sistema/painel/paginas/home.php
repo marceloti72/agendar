@@ -213,48 +213,85 @@ document.addEventListener("DOMContentLoaded", function() {
         new ApexCharts(document.querySelector(chartId), options).render();
     }
 
-    // Função para criar gráficos de barras horizontais para os rankings
+   // Função para criar gráficos de barras horizontais para os rankings (VERSÃO CORRIGIDA)
 function createRankingChart(chartId, seriesData, categories, color) {
     if (!seriesData || seriesData.length === 0) {
         document.querySelector(chartId).innerHTML = `<div class="flex items-center justify-center h-full text-gray-500">Sem dados para o ranking.</div>`;
         return;
     }
+
     const options = {
-        chart: { type: 'bar', height: '100%', toolbar: { show: false } },
-        series: [{ name: 'Total', data: seriesData }],
-        plotOptions: { bar: { horizontal: true, barHeight: '60%', borderRadius: 4, distributed: true } },
-        dataLabels: { enabled: true, style: { colors: ['#fff'] }, offsetX: -25 },
-        xaxis: { categories: categories, labels: { show: false } },
-        yaxis: { 
-            labels: { 
-                show: true, 
-                style: { colors: '#333', fontSize: '12px' },
-                
-                // ADIÇÕES DEFINITIVAS PARA CORRIGIR O ESTOURO
-                trim: true,      // 👈 Ativa o corte automático de texto da biblioteca
-                maxWidth: 110,   // 👈 Define uma largura MÁXIMA para a área dos nomes
-                
-                formatter: function (val) {
-                    // O formatter agora funciona em conjunto com o maxWidth
-                    if (typeof val === 'string' && val.length > 15) {
-                        return val.slice(0, 15) + '...';
-                    }
-                    return val;
-                }
-            } 
+        chart: {
+            type: 'bar',
+            height: '100%',
+            toolbar: { show: false }
         },
-        grid: { show: false },
+        series: [{
+            name: 'Total',
+            data: seriesData
+        }],
+        plotOptions: {
+            bar: {
+                horizontal: true,
+                barHeight: '60%',
+                borderRadius: 4,
+                distributed: false // Usaremos uma cor única
+            }
+        },
+        // A MÁGICA ACONTECE AQUI: MOSTRAMOS OS DADOS DENTRO DAS BARRAS
+        dataLabels: {
+            enabled: true,
+            textAnchor: 'start', // Alinha o texto à esquerda (início da barra)
+            style: {
+                colors: ['#fff'], // Cor do texto dentro da barra
+                fontSize: '12px',
+                fontWeight: 'bold',
+            },
+            offsetX: 5, // Pequeno espaçamento da borda esquerda da barra
+            formatter: function(val, { dataPointIndex, w }) {
+                // Pega o nome da categoria (profissional, cliente, etc.)
+                let categoryName = w.globals.labels[dataPointIndex];
+                
+                // Corta o nome se for muito longo para caber na barra
+                if (typeof categoryName === 'string' && categoryName.length > 13) {
+                    categoryName = categoryName.slice(0, 13) + '...';
+                }
+                
+                // Retorna o nome formatado + o valor
+                return `${categoryName}: ${val}`;
+            }
+        },
         colors: [color],
-        legend: { show: false },
-        tooltip: { 
-            y: { 
+        grid: {
+            show: false // Removemos as linhas de grade para um visual mais limpo
+        },
+        // MANTEMOS AS CATEGORIAS APENAS PARA O TOOLTIP E O FORMATTER ACIMA
+        xaxis: {
+            categories: categories,
+            labels: { show: false },
+            axisBorder: { show: false },
+            axisTicks: { show: false }
+        },
+        // REMOVEMOS O EIXO Y COMPLETAMENTE - A CAUSA DO PROBLEMA
+        yaxis: {
+            labels: {
+                show: false
+            }
+        },
+        legend: {
+            show: false
+        },
+        tooltip: {
+            // O tooltip mostrará o nome completo, sem cortes
+            y: {
                 formatter: (val, { dataPointIndex, w }) => {
                     const fullCategoryName = w.globals.labels[dataPointIndex];
                     return `${fullCategoryName}: ${val}`;
                 }
-            } 
+            }
         }
     };
+
     new ApexCharts(document.querySelector(chartId), options).render();
 }
 
