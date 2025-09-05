@@ -627,7 +627,8 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                                 <input type="text" class="form-input block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 text-right text-red-500 font-semibold" id="valor_cupom" value="R$ 5,00" readonly>
                             </div>
                         </div>
-                        <hr class="divider">
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-200 max-w-xl">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Observações</label>
                             <textarea class="form-textarea block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="obs" id="obs2" maxlength="1000" rows="3"></textarea>
