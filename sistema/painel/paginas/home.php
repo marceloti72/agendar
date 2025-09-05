@@ -124,18 +124,20 @@ try {
     </div>
 </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 min-w-0">
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4"><i class="fa-solid fa-ranking-star mr-2 text-yellow-500"></i>Ranking de Profissionais</h3>
-            <div id="chart-ranking-profissionais" class="h-64"></div>
-        </div>
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4"><i class="fa-solid fa-star mr-2 text-blue-500"></i>Serviços Mais Usados</h3>
-            <div id="chart-ranking-servicos" class="h-64"></div>
-        </div>
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4"><i class="fa-solid fa-users mr-2 text-green-500"></i>Clientes Mais Ativos</h3>
-            <div id="chart-ranking-clientes" class="h-64"></div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-md min-w-0">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4"><i class="fa-solid fa-ranking-star mr-2 text-yellow-500"></i>Ranking de Profissionais</h3>
+                <div id="chart-ranking-profissionais" class="h-64"></div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-md min-w-0">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4"><i class="fa-solid fa-star mr-2 text-blue-500"></i>Serviços Mais Usados</h3>
+                <div id="chart-ranking-servicos" class="h-64"></div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-md min-w-0">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4"><i class="fa-solid fa-users mr-2 text-green-500"></i>Clientes Mais Ativos</h3>
+                <div id="chart-ranking-clientes" class="h-64"></div>
+            </div>
         </div>
     </div>
 
@@ -175,6 +177,7 @@ try {
 </div>
 
 <script>
+    window.apexChartsInstances = {}; // Objeto para guardar as instâncias dos gráficos
 document.addEventListener("DOMContentLoaded", function() {
     // Função para criar os gráficos radiais de progresso
     function createRadialChart(chartId, seriesData, color) {
@@ -220,6 +223,7 @@ function createRankingChart(chartId, seriesData, categories, color) {
         return;
     }
     const options = {
+        // ... (todas as suas opções do gráfico continuam aqui, sem alterações)
         chart: { type: 'bar', height: '100%', toolbar: { show: false } },
         series: [{ name: 'Total', data: seriesData }],
         plotOptions: { bar: { horizontal: true, barHeight: '60%', borderRadius: 4, distributed: true } },
@@ -251,7 +255,24 @@ function createRankingChart(chartId, seriesData, categories, color) {
             } 
         }
     };
-    new ApexCharts(document.querySelector(chartId), options).render();
+    
+    // Destrói o gráfico anterior se ele existir, para evitar erros
+    if (window.apexChartsInstances[chartId]) {
+        window.apexChartsInstances[chartId].destroy();
+    }
+
+    // Cria e salva a nova instância do gráfico
+    const chart = new ApexCharts(document.querySelector(chartId), options);
+    window.apexChartsInstances[chartId] = chart;
+    chart.render();
+}
+
+function forceApexChartsResize() {
+    // Passa por todos os gráficos guardados e força a atualização das opções
+    // Isso recalcula o tamanho de cada um
+    for (const chartId in window.apexChartsInstances) {
+        window.apexChartsInstances[chartId].updateOptions({});
+    }
 }
 
 
