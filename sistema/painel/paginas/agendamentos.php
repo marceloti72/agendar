@@ -361,7 +361,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
             z-index: 1000;
         }
         .modal-container {
-            width: 85%;
+            width: 65%;
             max-width: 1200px;
             height: 95vh;
             display: flex;
@@ -579,7 +579,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                     </div>
 
                     <!-- Products Card -->
-                    <div class="bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-200">
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-200 max-w-xl" >
                         <div class="section-header">
                             <i class="fas fa-box section-icon"></i>
                             <h5 class="text-xl font-semibold text-gray-800">Produtos</h5>
@@ -611,7 +611,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                     </div>
 
                     <!-- Discounts & Observations Card -->
-                    <div class="bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-200">
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-200 max-w-xl">
                         <div class="section-header">
                             <i class="fas fa-percentage section-icon"></i>
                             <h5 class="section-title text-xl font-semibold text-gray-800">Descontos</h5>
