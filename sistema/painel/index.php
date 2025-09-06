@@ -634,9 +634,9 @@ input:checked + .slider:before {
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
 								<ul class="treeview-menu">
-									<li class="<?php echo @$home ?>"><a href="index.php"><i class="fa fa-angle-right"></i>Financeiro</a></li>
-									<li class="<?php echo @$home ?>"><a href="grafico_dias"><i class="fa fa-angle-right"></i>Agendamentos Mês</a></li>
-									<li class="<?php echo @$home ?>"><a href="grafico_ano"><i class="fa fa-angle-right"></i>Agendamentos Ano</a></li>
+									<li class="<?php echo @$home ?>"><a href="index.php"></i>Financeiro</a></li>
+									<li class="<?php echo @$home ?>"><a href="grafico_dias"></i>Agendamentos Mês</a></li>
+									<li class="<?php echo @$home ?>"><a href="grafico_ano"></i>Agendamentos Ano</a></li>
 					
 
 								</ul>
@@ -668,9 +668,9 @@ input:checked + .slider:before {
 								</a>
 								<ul class="treeview-menu">
 
-									<li class="<?php echo @$agendamentos ?>"><a href="agendamentos"><i class="fa fa-angle-right"></i>Agendamentos</a></li>
+									<li class="<?php echo @$agendamentos ?>"><a href="agendamentos"></i>Agendamentos</a></li>
 
-									<li class="<?php echo @$servicos_agenda ?>"><a href="servicos_agenda"><i class="fa fa-angle-right"></i>Serviços</a></li>
+									<li class="<?php echo @$servicos_agenda ?>"><a href="servicos_agenda"></i>Serviços</a></li>
 									
 																	
 								
@@ -685,13 +685,13 @@ input:checked + .slider:before {
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
 								<ul class="treeview-menu">
-									<li class="<?php echo @$usuarios ?>"><a href="usuarios"><i class="fa fa-angle-right"></i>Usuários</a></li>
-									<li class="<?php echo @$funcionarios ?>"><a href="funcionarios"><i class="fa fa-angle-right"></i>Funcionários</a></li>
-									<li class="<?php echo @$clientes ?>"><a href="clientes"><i class="fa fa-angle-right"></i>Clientes</a></li>
+									<li class="<?php echo @$usuarios ?>"><a href="usuarios"></i>Usuários</a></li>
+									<li class="<?php echo @$funcionarios ?>"><a href="funcionarios"></i>Funcionários</a></li>
+									<li class="<?php echo @$clientes ?>"><a href="clientes"></i>Clientes</a></li>
 
-									<li class="<?php echo @$clientes_retorno ?>"><a href="clientes_retorno"><i class="fa fa-angle-right"></i>Clientes Retornos</a></li>
+									<li class="<?php echo @$clientes_retorno ?>"><a href="clientes_retorno"></i>Clientes Retornos</a></li>
 
-									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"><i class="fa fa-angle-right"></i>Fornecedores</a></li>
+									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"></i>Fornecedores</a></li>
 
 								</ul>
 							</li> -->
@@ -705,38 +705,38 @@ input:checked + .slider:before {
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
 								<ul class="treeview-menu">
-								<li class="<?php echo @$clientes ?>"><a href="clientes"><i class="fa fa-angle-right"></i>Clientes</a></li>
+								<li class="<?php echo @$clientes ?>"><a href="clientes"></i>Clientes</a></li>
 
 								<?php 
 								if($plano == '2'){
 								?>
-								<!-- <li class="<?php echo @$cargos ?>"><a href="cargos"><i class="fa fa-angle-right"></i>Cargos</a></li> -->
-								<!-- <li class="<?php echo @$usuarios ?>"><a href="usuarios"><i class="fa fa-angle-right"></i>Usuários</a></li> -->								 
+								<!-- <li class="<?php echo @$cargos ?>"><a href="cargos"></i>Cargos</a></li> -->
+								<!-- <li class="<?php echo @$usuarios ?>"><a href="usuarios"></i>Usuários</a></li> -->								 
 
-								<li class="<?php echo @$funcionarios ?>"><a href="funcionarios"><i class="fa fa-angle-right"></i>Profissionais</a></li>								
+								<li class="<?php echo @$funcionarios ?>"><a href="funcionarios"></i>Profissionais</a></li>								
 								<?php 
 								}?>								
 								
-									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"><i class="fa fa-angle-right"></i>Fornecedores</a></li>	
+									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"></i>Fornecedores</a></li>	
 									
 									<!-- <?php 
 									if($id_conta == '1'){?>
-										<li class="<?php echo @$grupos ?>"><a href="grupos"><i class="fa fa-angle-right"></i>Grupo Acessos</a></li>
+										<li class="<?php echo @$grupos ?>"><a href="grupos"></i>Grupo Acessos</a></li>
 
-										<li class="<?php echo @$acessos ?>"><a href="acessos"><i class="fa fa-angle-right"></i>Acessos</a></li>
+										<li class="<?php echo @$acessos ?>"><a href="acessos"></i>Acessos</a></li>
 
 									<?php }
 									?>									 -->
 
-										<!-- <li class="<?php echo @$pgto ?>"><a href="pgto"><i class="fa fa-angle-right"></i>Formas de Pagamento</a></li> -->
+										<!-- <li class="<?php echo @$pgto ?>"><a href="pgto"></i>Formas de Pagamento</a></li> -->
 
-										<li class="<?php echo @$servicos ?>"><a href="servicos"><i class="fa fa-angle-right"></i>Serviços</a></li>
+										<li class="<?php echo @$servicos ?>"><a href="servicos"></i>Serviços</a></li>
 
-										<li class="<?php echo @$servicos ?>"><a href="cupons"><i class="fa fa-angle-right"></i>Cupons de Desconto</a></li>
+										<li class="<?php echo @$servicos ?>"><a href="cupons"></i>Cupons de Desconto</a></li>
 
-										<!-- <li><a href="dias"><i class="fa fa-angle-right"></i>Horários / Dias</a></li>
+										<!-- <li><a href="dias"></i>Horários / Dias</a></li>
 
-										<li class="<?php echo @$dias_bloqueio ?>"><a href="dias_bloqueio"><i class="fa fa-angle-right"></i>Bloqueio de Dias</a></li> -->
+										<li class="<?php echo @$dias_bloqueio ?>"><a href="dias_bloqueio"></i>Bloqueio de Dias</a></li> -->
 								
 								</ul>
 							</li>							
@@ -749,9 +749,9 @@ input:checked + .slider:before {
 								</a>
 								<ul class="treeview-menu">
 
-								   <li class="<?php echo @$servicos ?>"><a href="servicos"><i class="fa fa-angle-right"></i>Serviços</a></li>
+								   <li class="<?php echo @$servicos ?>"><a href="servicos"></i>Serviços</a></li>
 
-								   <li class="<?php echo @$cat_servicos ?>"><a href="cat_servicos"><i class="fa fa-angle-right"></i>Categoria Serviços</a></li>
+								   <li class="<?php echo @$cat_servicos ?>"><a href="cat_servicos"></i>Categoria Serviços</a></li>
 								</ul> -->
 
 								<li class="treeview <?php echo @$menu_produtos ?>">
@@ -762,18 +762,18 @@ input:checked + .slider:before {
 								</a>
 								<ul class="treeview-menu">
 
-									<li class="<?php echo @$produtos ?>"><a href="produtos"><i class="fa fa-angle-right"></i>Produtos</a></li>
+									<li class="<?php echo @$produtos ?>"><a href="produtos"></i>Produtos</a></li>
 
-									<!-- <li class="<?php echo @$cat_produtos ?>"><a href="cat_produtos"><i class="fa fa-angle-right"></i>Categorias</a></li> -->
-									 <li class="<?php echo @$vendas ?>"><a href="vendas"><i class="fa fa-angle-right"></i>Vendas de Produtos</a></li>
+									<!-- <li class="<?php echo @$cat_produtos ?>"><a href="cat_produtos"></i>Categorias</a></li> -->
+									 <li class="<?php echo @$vendas ?>"><a href="vendas"></i>Vendas de Produtos</a></li>
 
-									<li class="<?php echo @$compras ?>"><a href="compras"><i class="fa fa-angle-right"></i>Compras de Produtos</a></li>
+									<li class="<?php echo @$compras ?>"><a href="compras"></i>Compras de Produtos</a></li>
 									
-									<li class="<?php echo @$estoque ?>"><a href="estoque"><i class="fa fa-angle-right"></i>Estoque Baixo</a></li>
+									<li class="<?php echo @$estoque ?>"><a href="estoque"></i>Estoque Baixo</a></li>
 
-									<li class="<?php echo @$saidas ?>"><a href="saidas"><i class="fa fa-angle-right"></i>Saídas</a></li>
+									<li class="<?php echo @$saidas ?>"><a href="saidas"></i>Saídas</a></li>
 
-									<li class="<?php echo @$entradas ?>"><a href="entradas"><i class="fa fa-angle-right"></i>Entradas</a></li>
+									<li class="<?php echo @$entradas ?>"><a href="entradas"></i>Entradas</a></li>
 								
 								</ul>
 							</li>	
@@ -794,9 +794,9 @@ input:checked + .slider:before {
 									</a>
 									<ul class="treeview-menu">
 
-										<li class="<?php echo @$vendas ?>"><a href="assinantes"><i class="fa fa-angle-right"></i>Assinantes</a></li>
+										<li class="<?php echo @$vendas ?>"><a href="assinantes"></i>Assinantes</a></li>
 
-										<li class="<?php echo @$compras ?>"><a href="conf_planos"><i class="fa fa-angle-right"></i>Configuração</a></li>			
+										<li class="<?php echo @$compras ?>"><a href="conf_planos"></i>Configuração</a></li>			
 																		
 									
 									</ul>
@@ -814,11 +814,11 @@ input:checked + .slider:before {
 								</a>
 								<ul class="treeview-menu">									
 									
-									<li class="<?php echo @$pagar ?>"><a href="pagar"><i class="fa fa-angle-right"></i>Contas à Pagar</a></li>
+									<li class="<?php echo @$pagar ?>"><a href="pagar"></i>Contas à Pagar</a></li>
 
-									<li class="<?php echo @$receber ?>"><a href="receber"><i class="fa fa-angle-right"></i>Contas à Receber</a></li>	
+									<li class="<?php echo @$receber ?>"><a href="receber"></i>Contas à Receber</a></li>	
 
-									<li class="<?php echo @$comissoes ?>"><a href="comissoes"><i class="fa fa-angle-right"></i>Comissões</a></li>									
+									<li class="<?php echo @$comissoes ?>"><a href="comissoes"></i>Comissões</a></li>									
 								
 								</ul>
 							</li>
@@ -831,24 +831,24 @@ input:checked + .slider:before {
 								</a>
 								<ul class="treeview-menu">
 
-									<li class="<?php echo @$rel_produtos ?>"><a href="rel/rel_produtos_class.php" target="_blank"><i class="fa fa-angle-right"></i>Relatório de Produtos</a></li>
+									<li class="<?php echo @$rel_produtos ?>"><a href="rel/rel_produtos_class.php" target="_blank"></i>Relatório de Produtos</a></li>
 
-									<li class="<?php echo @$rel_entradas ?>"><a href="#" data-toggle="modal" data-target="#RelEntradas"><i class="fa fa-angle-right"></i>Entradas / Ganhos</a></li>
+									<li class="<?php echo @$rel_entradas ?>"><a href="#" data-toggle="modal" data-target="#RelEntradas"></i>Entradas / Ganhos</a></li>
 
-									<li class="<?php echo @$rel_saidas ?>"><a href="#" data-toggle="modal" data-target="#RelSaidas"><i class="fa fa-angle-right"></i>Saídas / Despesas</a></li>
+									<li class="<?php echo @$rel_saidas ?>"><a href="#" data-toggle="modal" data-target="#RelSaidas"></i>Saídas / Despesas</a></li>
 
-									<li class="<?php echo @$rel_comissoes ?>"><a href="#" data-toggle="modal" data-target="#RelComissoes"><i class="fa fa-angle-right"></i>Relatório de Comissões</a></li>
+									<li class="<?php echo @$rel_comissoes ?>"><a href="#" data-toggle="modal" data-target="#RelComissoes"></i>Relatório de Comissões</a></li>
 
-									<li class="<?php echo @$rel_contas ?>"><a href="#" data-toggle="modal" data-target="#RelCon"><i class="fa fa-angle-right"></i>Relatório de Contas</a></li>
-
-
-									<li class="<?php echo @$rel_servicos ?>"><a href="#" data-toggle="modal" data-target="#RelServicos"><i class="fa fa-angle-right"></i>Relatório de Serviços</a></li>
+									<li class="<?php echo @$rel_contas ?>"><a href="#" data-toggle="modal" data-target="#RelCon"></i>Relatório de Contas</a></li>
 
 
-									<li class="<?php echo @$rel_aniv ?>"><a href="#" data-toggle="modal" data-target="#RelAniv"><i class="fa fa-angle-right"></i>Relatório de Aniversáriantes</a></li>
+									<li class="<?php echo @$rel_servicos ?>"><a href="#" data-toggle="modal" data-target="#RelServicos"></i>Relatório de Serviços</a></li>
 
 
-									<li class="<?php echo @$rel_lucro ?>"><a href="#" data-toggle="modal" data-target="#RelLucro"><i class="fa fa-angle-right"></i>Demonstrativo de Lucro</a></li>	
+									<li class="<?php echo @$rel_aniv ?>"><a href="#" data-toggle="modal" data-target="#RelAniv"></i>Relatório de Aniversáriantes</a></li>
+
+
+									<li class="<?php echo @$rel_lucro ?>"><a href="#" data-toggle="modal" data-target="#RelLucro"></i>Demonstrativo de Lucro</a></li>	
 															
 								</ul>
 							</li>
@@ -922,10 +922,10 @@ input:checked + .slider:before {
 								</a>
 								<ul class="treeview-menu">
 							
-									<li><a href="meus_servicos"><i class="fa fa-angle-right"></i> <span>Serviços</span></a>
+									<li><a href="meus_servicos"></i> <span>Serviços</span></a>
 									</li>	
 
-									<li><a href="servicos_func"><i class="fa fa-angle-right"></i>Ativar Serviços</a></li>
+									<li><a href="servicos_func"></i>Ativar Serviços</a></li>
 									</ul>
 							</li>	 -->
 							<li class="treeview  <?php echo @$minhas_comissoes ?>">
@@ -950,9 +950,9 @@ input:checked + .slider:before {
 								</a>
 								<ul class="treeview-menu">
 
-									<li><a href="dias"><i class="fa fa-angle-right"></i>Horários / Dias</a></li>
+									<li><a href="dias"></i>Horários / Dias</a></li>
 
-									<li><a href="dias_bloqueio_func"><i class="fa fa-angle-right"></i>Bloqueio de Dias</a></li>
+									<li><a href="dias_bloqueio_func"></i>Bloqueio de Dias</a></li>
 																		
 								
 								</ul>
