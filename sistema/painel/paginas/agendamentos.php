@@ -25,24 +25,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 
 <style>
     /* FIX: Estilos para fazer os modais funcionarem sem Bootstrap CSS */
-    .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);
-        z-index: 1050;
-        overflow-y: auto;
-        /* Alinha o .modal-dialog no centro */
-        display: none; /* Começa escondido */
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-    }
-    .modal.fade {
-        transition: opacity 0.3s ease;
-    }
+    
 
     /* Adaptações visuais para o calendário */
     .monthly-header {
