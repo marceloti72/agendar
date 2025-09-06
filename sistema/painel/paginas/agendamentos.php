@@ -343,6 +343,16 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 
 <script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        corePlugins: {
+            preflight: false,
+        },
+        content: [
+            { raw: '<div id="reports-section">...</div>' }
+        ]
+    }
+</script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
