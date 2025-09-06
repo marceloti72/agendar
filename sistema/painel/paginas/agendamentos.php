@@ -607,7 +607,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 		// 	disablePast: true
 		// });
         // ===================================================================
-        // FIX: LÓGICA PARA CONTROLAR MODAIS SEM BOOTSTRAP.JS
+        // FIX: LÓGICA PARA CONTROLAR MODAIS SEM BOOTSTRAP.JS (CORRIGIDO)
         // ===================================================================
         function showModal(selector) {
             $(selector).css('display', 'flex').hide().fadeIn(200);
@@ -619,13 +619,15 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
             });
         }
         
-        // O jQuery agora só abre o modal se o Alpine não o fez. O botão principal usa @click.stop
+        // Listener para botões que usam data-toggle (legado)
         $('body').on('click', '[data-toggle="modal"]', function(e) {
-            if(!e.isDefaultPrevented()){ // Verifica se o Alpine já não tratou o evento
-                 e.preventDefault(); 
-                 var target = $(this).data('target');
-                 showModal(target);
+            // Verifica se o clique veio de um elemento com @click.stop
+            if (e.isDefaultPrevented()) {
+                return;
             }
+            e.preventDefault();
+            var target = $(this).data('target');
+            showModal(target);
         });
 
         $(document).on('click', '[data-dismiss="modal"]', function(e) {
