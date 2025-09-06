@@ -102,6 +102,47 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 
 <input type="hidden" name="data_agenda" id="data_agenda" value="<?= $data_atual ?>"> 
 
+<script>
+    function showModal(selector) {
+        alert('jljljklj')
+    console.log('showModal chamado com:', selector);
+    if (typeof selector !== 'string' || selector.trim() === '') {
+        console.error('Seletor inválido ou vazio fornecido para showModal:', selector);
+        return;
+    }
+    const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
+    console.log('Seletor limpo:', cleanSelector);
+    const $modal = jQuery(cleanSelector);
+    if ($modal.length === 0) {
+        console.error('Modal não encontrado para o seletor:', cleanSelector);
+        return;
+    }
+    $modal.css('display', 'flex').hide().fadeIn(200);
+}
+
+function hideModal(selector) {
+    console.log('hideModal chamado com:', selector);
+    if (typeof selector !== 'string') {
+        jQuery(selector).fadeOut(200, function() {
+            jQuery(this).css('display', 'none');
+        });
+        return;
+    }
+    if (selector.trim() === '') {
+        console.error('Seletor vazio fornecido para hideModal');
+        return;
+    }
+    const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
+    const $modal = jQuery(cleanSelector);
+    if ($modal.length === 0) {
+        console.error('Modal não encontrado para o seletor:', cleanSelector);
+        return;
+    }
+    $modal.fadeOut(200, function() {
+        jQuery(this).css('display', 'none');
+    });
+}
+</script>
 <!-- Layout Principal: Calendário e Lista -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Coluna do Calendário -->
@@ -555,45 +596,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
     // ===================================================================
     // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS (CORRIGIDAS)
     // ===================================================================    
-     function showModal(selector) {
-        alert('jljljklj')
-    console.log('showModal chamado com:', selector);
-    if (typeof selector !== 'string' || selector.trim() === '') {
-        console.error('Seletor inválido ou vazio fornecido para showModal:', selector);
-        return;
-    }
-    const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
-    console.log('Seletor limpo:', cleanSelector);
-    const $modal = jQuery(cleanSelector);
-    if ($modal.length === 0) {
-        console.error('Modal não encontrado para o seletor:', cleanSelector);
-        return;
-    }
-    $modal.css('display', 'flex').hide().fadeIn(200);
-}
-
-function hideModal(selector) {
-    console.log('hideModal chamado com:', selector);
-    if (typeof selector !== 'string') {
-        jQuery(selector).fadeOut(200, function() {
-            jQuery(this).css('display', 'none');
-        });
-        return;
-    }
-    if (selector.trim() === '') {
-        console.error('Seletor vazio fornecido para hideModal');
-        return;
-    }
-    const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
-    const $modal = jQuery(cleanSelector);
-    if ($modal.length === 0) {
-        console.error('Modal não encontrado para o seletor:', cleanSelector);
-        return;
-    }
-    $modal.fadeOut(200, function() {
-        jQuery(this).css('display', 'none');
-    });
-}
+     
 
 	$(document).ready(function() {
        
