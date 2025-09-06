@@ -555,9 +555,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
     // ===================================================================
     // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS (CORRIGIDAS)
     // ===================================================================    
-
-	$(document).ready(function() {
-        function showModal(selector) {
+     function showModal(selector) {
         alert('jljljklj')
     console.log('showModal chamado com:', selector);
     if (typeof selector !== 'string' || selector.trim() === '') {
@@ -596,6 +594,9 @@ function hideModal(selector) {
         jQuery(this).css('display', 'none');
     });
 }
+
+	$(document).ready(function() {
+       
 
 		// $('#mycalendar').monthly({
 		// 	mode: 'event',
