@@ -77,7 +77,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
                 ?>
             </select>
         </div>
-        <button @click.stop="showModal('modalForm')" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
+        <button @click.stop="showModal('#modalForm')" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
             <i class="fa fa-plus mr-2"></i> Novo Agendamento
         </button>
     </div>
@@ -558,6 +558,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
     // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS (CORRIGIDAS)
     // ===================================================================    
      window.showModal = function(selector) {
+        alert('kjkljkkjljk')
             console.log('showModal chamado com seletor:', selector);
             const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
             console.log('Seletor limpo:', cleanSelector);
