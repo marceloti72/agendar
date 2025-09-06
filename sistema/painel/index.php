@@ -1094,8 +1094,7 @@ input:checked + .slider:before {
 									</div> 
 								</li>
 							</ul>
-						</li>	
-					
+						</li>			
 
 
 
