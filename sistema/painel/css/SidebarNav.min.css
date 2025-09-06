@@ -189,8 +189,8 @@
 
     li.dropdown.head-dpdn a.dropdown-toggle {
     padding: 0.5em .7em;
-    background: #111111;
-    color: #ffffff;
+    background: #111111 !important;
+    color: #ffffff !important;
     margin: 0 .5em;
     border-radius: 50%;
     -webkit-border-radius: 50%;
