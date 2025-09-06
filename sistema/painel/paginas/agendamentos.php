@@ -554,10 +554,9 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 <script type="text/javascript">
     // ===================================================================
     // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS (CORRIGIDAS)
-    // ===================================================================
-    
+    // ===================================================================    
 
-	$(window).load( function() {
+	$(document).ready(function() {
         function showModal(selector) {
         alert('jljljklj')
     console.log('showModal chamado com:', selector);
