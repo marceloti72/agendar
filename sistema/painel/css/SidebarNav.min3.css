@@ -5,7 +5,7 @@
 
 /* Estilização da barra lateral esquerda */
 .sidebar-left {
-    background-color: #757575; /* Cinza médio */
+    background-color: #e4ebfd;
     margin: 0;
     border: none;
     border-radius: 0;
@@ -20,7 +20,7 @@
 
 /* Estilização dos links do menu */
 .sidebar-menu a {
-    color: #f1f1f1; /* Cinza bem claro/quase branco */
+    color: #464646; /* Cinza bem claro/quase branco */
     text-decoration: none; /* Remove sublinhado dos links */
 }
 
@@ -70,7 +70,7 @@
     padding: 10px 25px 10px 15px;
     font-size: 12px;
     color: #e2e2e2; /* Cinza muito claro */
-    background-color: #474747; /* Cinza escuro */
+    background-color: #4d6d96; /* Cinza escuro */
 }
 
 /* Estilização da seta de expansão/colapso */
@@ -170,17 +170,17 @@
 
     .main-page {
         padding: 20px;
-        background-color: #b7b7b7;
+        background-color: #ffffffff;
         min-height: 100vh;
     }
 
     #page-wrapper {
     padding:5em 2em 2.5em;
-	background-color: #e3e2e0;
+	background-color: #ffffff;
     }
 
     .header-section {
-    background:#111111;
+    background:#e4ebfd;
     box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
     -webkit-box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
     -moz-box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
@@ -189,12 +189,12 @@
 
     li.dropdown.head-dpdn a.dropdown-toggle {
     padding: 0.5em .7em;
-    background: #111111;
+    background: #4d6d96;
     margin: 0 .5em;
     border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
-    }
+}
 }

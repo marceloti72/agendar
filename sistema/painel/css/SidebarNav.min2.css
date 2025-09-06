@@ -5,7 +5,7 @@
 
 /* Estilização da barra lateral esquerda */
 .sidebar-left {
-    background-color: #e4ebfd;
+    background-color: #2563eb; /* Cinza médio */
     margin: 0;
     border: none;
     border-radius: 0;
@@ -20,7 +20,7 @@
 
 /* Estilização dos links do menu */
 .sidebar-menu a {
-    color: #464646; /* Cinza bem claro/quase branco */
+    color: #f1f1f1; /* Cinza bem claro/quase branco */
     text-decoration: none; /* Remove sublinhado dos links */
 }
 
@@ -47,15 +47,15 @@
 /* Efeito de hover e item ativo do menu principal */
 .sidebar-menu > li:hover > a,
 .sidebar-menu > li.active > a {
-    color: #000000; /* Preto */
-    background-color: #eeeeee; /* Cinza muito claro */
+    color: #ffffff; /* Preto */
+    background-color: #2563eb;; /* Cinza muito claro */
     border-left-color: #A9A9A9; /* Cinza médio para a borda */
 }
 
 /* Estilização do menu aninhado (sub-menu) */
 .sidebar-menu > li > .treeview-menu {
     margin: 0 1px;
-    background-color: #eeeeee; /* Cinza muito claro */
+    background-color: #2563eb; /* Cinza muito claro */
 }
 
 /* Estilização dos rótulos e badges */
@@ -70,7 +70,7 @@
     padding: 10px 25px 10px 15px;
     font-size: 12px;
     color: #e2e2e2; /* Cinza muito claro */
-    background-color: #4d6d96; /* Cinza escuro */
+    background-color: #2563eb; /* Cinza escuro */
 }
 
 /* Estilização da seta de expansão/colapso */
@@ -144,7 +144,7 @@
         top: 0;
         left: 0;
         bottom: 0;
-        width: 200px;
+        width: 220px;
         height: 100%;
         min-height: 100%;
         z-index: 2016; /* Garante que fique acima de outros elementos */
@@ -170,7 +170,7 @@
 
     .main-page {
         padding: 20px;
-        background-color: #ffffffff;
+        background-color: #ffffff;
         min-height: 100vh;
     }
 
@@ -180,7 +180,7 @@
     }
 
     .header-section {
-    background:#e4ebfd;
+    background:#ffffff;
     box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
     -webkit-box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
     -moz-box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
@@ -189,12 +189,12 @@
 
     li.dropdown.head-dpdn a.dropdown-toggle {
     padding: 0.5em .7em;
-    background: #4d6d96;
+    background: #111111;
     margin: 0 .5em;
     border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
-}
+    }
 }
