@@ -1,115 +1,536 @@
-<?php
+<?php 
 @session_start();
-if (!isset($_SESSION['id_usuario'])) {
-    // Redireciona se não estiver logado, idealmente para a página de login
-    echo "<script>window.location='../'</script>";
-    exit();
-}
-
 $id_conta = $_SESSION['id_conta'];
 require_once("verificar.php");
 require_once("../conexao.php");
-
 $pag = 'agendamentos';
 $data_atual = date('Y-m-d');
 
-// Garante que apenas administradores acessem esta página
-if (@$_SESSION['nivel_usuario'] != 'administrador') {
-    echo "<script>window.location='agenda'</script>";
-    exit();
-}
+//verificar se ele tem a permissão de estar nessa página
+// if(@$agendamentos == 'ocultar'){
+// 	echo "<script>window.location='../index.php'</script>";
+// 	exit();
+// }
+if(@$_SESSION['nivel_usuario'] != 'administrador'){
+	    echo "<script>window.location='agenda.php'</script>";
+    }
+
 ?>
 
-<!-- Estilos específicos para a biblioteca do calendário -->
-<link rel="stylesheet" type="text/css" href="css/monthly.css">
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-<style>
-    /* FIX: Estilos para fazer os modais funcionarem sem Bootstrap CSS */
-    .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);
-        z-index: 1050;
-        overflow-y: auto;
-        /* Alinha o .modal-dialog no centro */
-        display: flex; /* Começa escondido */
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-    }
-    .modal.fade {
-        transition: opacity 0.3s ease;
-    }
 
-    /* Adaptações visuais para a biblioteca do calendário se integrar ao tema */
-    .monthly-header {
-        background-color: #1e40af; /* Azul escuro para combinar com o tema */
-        color: white;
-    }
-    .monthly-day-header {
-        background-color: #f1f5f9; /* Cinza claro */
-    }
-    .monthly-day-cell.monthly-today .monthly-day-number {
-        background-color: #2563eb;
-        color: white;
-        border-radius: 50%;
-    }
-    .monthly-event-list {
-        background-color: #dbeafe;
-        border-left-color: #2563eb;
-    }
+<style>
+	.tooltip-inner {
+		background-color: #48D1CC; /* Amarelo */
+		color: #000; /* Cor do texto */
+	}    
+
 </style>
 
-<!-- Topo da Página: Ações e Filtros -->
-<div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-    <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Gerenciar Agendamentos</h1>
-    <div class="flex flex-wrap items-center gap-4">
-        <div class="w-full sm:w-56">
-            <select class="form-control sel2" id="funcionario" name="funcionario" style="width:100%;" onchange="mudarFuncionario()"> 
-                <option value="">Filtrar por Profissional</option>
-                <?php 
-                $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY nome asc");
-                foreach($query->fetchAll(PDO::FETCH_ASSOC) as $res) {
-                    echo '<option value="'.$res['id'].'">'.htmlspecialchars($res['nome']).'</option>';
-                }
-                ?>
-            </select>
-        </div>
-        <!-- BOTÃO CORRIGIDO: Usa Alpine.js para chamar a função global showModal e para a propagação do evento -->
-        <button @click.stop="console.log('Botão clicado'); showModal('modalForm')" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
-    <i class="fa fa-plus mr-2"></i> Novo Agendamento
-</button>
-    </div>
+<style>
+    .modal-content {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        border: none;
+    }
+
+    .modal-header-custom {
+        background-color: #f7f9fc;
+        border-bottom: 1px solid #e1e4e8;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        padding: 1.5rem;
+    }
+    
+    .modal-title {
+        color: #ffffffff;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .modal-icon {
+        color: #007bff;
+        font-size: 1.8rem;
+    }
+    
+    .modal-body {
+        padding: 0;
+    }
+    
+    .modal-left-panel {
+        background-color: #c4c4c4ff;
+        padding-right: 0;
+    }
+
+    .modal-body-scroll {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .modal-right-panel {
+        width: 35%;
+        background-color: #e9ecef;
+        border-left: 1px solid #e1e4e8;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .pagamento-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .pagamento-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+    
+    .pagamento-icon {
+        height: 40px;
+        filter: grayscale(100%) brightness(50%) sepia(100%) hue-rotate(180deg) saturate(200%);
+    }
+
+    .divider {
+        margin: 20px 0;
+        border-top: 1px dashed #929292ff;
+    }
+    
+    .section-header {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-title {
+        font-weight: 600;
+        color: #555;
+        border-left: 6px solid #007bff;
+        padding-left: 10px;
+    }
+
+	#nome_do_cliente_aqui{
+		font-weight: 600;
+		color: #555;
+	}
+    
+    .item-list-container {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        color: #495057;
+    }
+    
+    .form-control {
+        border-radius: 8px;
+    }
+    
+    .sel2 {
+        border-radius: 8px !important;
+    }
+
+    .btn-add {
+        border-radius: 8px;
+        height: 38px;
+        width: 100%;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn-add:hover {
+        transform: translateY(-2px);
+    }
+    
+    .valor-display, .total-display {
+        font-size: 1.1em;
+        font-weight: bold;
+        background-color: #fff;
+        border-color: #ced4da;
+    }
+    
+    .total-display {
+        color: #155724;
+        background-color: #d4edda;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+        transform: translateY(-2px);
+    }
+    
+    .btn-outline-secondary {
+        border-color: #6c757d;
+        color: #6c757d;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btn-lg {
+        padding: 12px 20px;
+    }
+
+
+    /* Container principal do calendário */
+.monthly-calendar {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Título e navegação */
+.monthly-header {
+    background-color: #f0f2f5;
+    color: #333;
+    padding: 15px;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Cor do texto do mês e ano */
+.monthly-header-title {
+    color: #444;
+}
+
+/* Usando !important para forçar a cor */
+.monthly-prev,
+.monthly-next {
+    color: #292929;
+}
+
+/* Dias da semana (cabeçalho) */
+.monthly-day-header {
+    background-color: #fafafa;
+    color: #555;
+    font-weight: bold;
+}
+
+/* Células dos dias */
+.monthly-day-cell {
+    background-color: #ffffff;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Células de dias inativos (outros meses) */
+.monthly-day-cell.monthly-day-unhighlighted {
+    background-color: #f8f8f8;
+    color: #b0b0b0;
+}
+
+/* Dia atual */
+.monthly-day-cell.monthly-today {
+    background-color: #e6f7ff;
+    border: 2px solid #a8e3ff;
+    border-radius: 5px;
+}
+
+/* Eventos */
+.monthly-event-list {
+    background-color: #f1f8ff;
+    border-left: 3px solid #007bff;
+    color: #333;
+    padding: 5px 10px;
+    margin: 2px 0;
+    border-radius: 4px;
+}
+
+/* Custom Modal Header */
+.modal-header-custom {
+    background-color: #3b82f6;
+    color: #fff;
+    border-bottom: none;
+    padding: 1rem 1.5rem;
+}
+
+.modal-header-custom .modal-title {
+    font-weight: 600;
+}
+
+.modal-header-custom .close {
+    color: #fff;
+    opacity: 0.9;
+    font-size: 1.5rem;
+    margin-top: -10px;
+}
+
+/* Modal Body Content */
+.modal-body {
+    padding: 1.5rem;
+    color: #4b5563;
+}
+
+.info-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.info-item {
+    flex-grow: 1;
+    min-width: 150px; /* Ensures items don't get too small on smaller screens */
+}
+
+.info-label {
+    font-weight: 700;
+    color: #1f2937;
+    margin-right: 0.25rem;
+}
+
+.info-value {
+    font-weight: 500;
+    color: #6b7280;
+}
+
+/* Section Divider */
+.section-divider {
+    border-bottom: 1px solid #e5e7eb;
+    margin: 1.5rem 0;
+}
+
+/* Details Sections */
+.details-section {
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+    border-bottom: 2px solid #3b82f6;
+    padding-bottom: 0.25rem;
+    display: inline-block;
+}
+
+.item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.item-list > div {
+    background-color: #f9fafb;
+    padding: 0.75rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+</style>
+
+
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-container {
+            width: 65%;
+            max-width: 1200px;
+            height: 95vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            position: fixed;
+        }
+        .modal-body-scroll {
+            overflow-y: auto;
+        }
+        .modal-header-custom {
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-top-left-radius: 0.75rem;
+            border-top-right-radius: 0.75rem;
+        }
+        .modal-icon {
+            margin-right: 0.5rem;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .section-icon {
+            color: #2563eb;
+            font-size: 1.5rem;
+            margin-right: 0.75rem;
+        }
+        .divider {
+            border-top: 1px solid #e5e7eb;
+            margin: 1.5rem 0;
+        }
+        .item-list-container {
+            min-height: 50px;
+        }
+        .item-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .valor-display {
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+        .total-display {
+            background-color: #d1fae5;
+            color: #047857;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+        .pagamento-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .pagamento-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 0.5rem;
+        }
+        @media (min-width: 768px) {
+            .modal-left-panel, .modal-right-panel {
+                height: 90vh;
+                overflow-y: auto;
+            }
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+
+
+
+<div class="row">
+	<div class="col-md-3">
+		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" data-toggle="modal" data-target="#modalForm" type="button" class="btn novo" ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
+	</div>
+
+	<div class="col-md-3">
+		<div class="form-group">			
+			<select class="form-control sel2" id="funcionario" name="funcionario" style="width:100%;" onchange="mudarFuncionario()"> 
+				<option value="">Todos</option>
+				<?php 
+				$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY id desc");
+				$res = $query->fetchAll(PDO::FETCH_ASSOC);
+				$total_reg = @count($res);
+				if($total_reg > 0){
+					for($i=0; $i < $total_reg; $i++){
+						foreach ($res[$i] as $key => $value){}
+							echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
+					}
+				}
+				?>
+
+
+			</select>   
+		</div> 	
+	</div>
+
+</div>
+<input type="hidden" name="data_agenda" id="data_agenda" value="<?php echo date('Y-m-d') ?>"> 
+
+<div class="row" style="margin-top: 15px">
+
+	<div class="col-md-4 agile-calendar">
+		<div class="calendar-widget">
+
+			<!-- grids -->
+			<div class="agile-calendar-grid">
+				<div class="page">
+
+					<div class="w3l-calendar-left">
+						<div class="calendar-heading">
+
+						</div>
+						<div class="monthly" id="mycalendar"></div>
+					</div>
+
+					<div class="clearfix"> </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-xs-12 col-md-8 bs-example widget-shadow" style="padding:10px 5px; margin-top: 0px;" id="listar">
+
+	</div>
 </div>
 
-<input type="hidden" name="data_agenda" id="data_agenda" value="<?= $data_atual ?>"> 
 
-<!-- Layout Principal: Calendário e Lista -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <!-- Coluna do Calendário -->
-    <div class="lg:col-span-1 bg-white dark:bg-slate-800 p-4 rounded-xl shadow-md">
-        <div class="monthly" id="mycalendar"></div>
-    </div>
 
-    <!-- Coluna da Lista de Agendamentos -->
-    <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-4 rounded-xl shadow-md min-w-0">
-        <div id="listar">
-            <!-- O conteúdo dos agendamentos será carregado aqui via AJAX -->
-        </div>
-    </div>
-</div>
-
-<!-- Modal Concluir Serviço/Comanda -->
-<div class="modal fade" id="modalForm2" tabindex="-1" role="dialog" data-backdrop="static">
-    <div class="modal-dialog modal-xl" role="document" style="max-width: 90%;">
-        <div class="modal-content">
-            <!-- Header do Modal -->
-            <div class="modal-header bg-blue-600 text-white flex justify-between items-center">
-                <h4 class="modal-title text-xl font-bold" id="titulo_comanda"><i class="fas fa-cash-register mr-2"></i> Nova Comanda</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+<div id="modalForm2" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <!-- <div class="modal-dialog modal-lg modal-dialog-centered" role="document"> -->
+        <div class="modal-container bg-white rounded-xl shadow-2xl overflow-hidden md:flex">
+            <!-- Modal Header -->
+            <div class="w-full modal-header-custom flex justify-between items-center">
+                <h4 class="text-xl font-bold" id="titulo_comanda">
+                    <i class="fas fa-cash-register modal-icon"></i>
+                    Nova Comanda
+                </h4>
+                <button type="button" id="btn-fechar" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
             <form id="form_salvar" class="w-full h-full flex flex-col md:flex-row">
@@ -269,18 +690,20 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
         </div>
     </div>
 
-<!-- Modal Novo Agendamento -->
-<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" data-backdrop="static">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-blue-600 text-white">
-                <h4 class="modal-title">Novo Agendamento</h4>
-                <button type="button" data-dismiss="modal" class="close" aria-label="Close">
+<!-- Modal -->
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header modal-header-custom">
+                <h4 class="modal-title" id="titulo_comanda">                    
+                    Novo Agendamento
+                </h4>
+                <button type="button" id="btn-fechar" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" id="form-text">
-                <div class="modal-body">
+			<form method="post" id="form-text">
+				<div class="modal-body">
 
 					<div class="row">
 						<div class="col-md-6">						
@@ -591,97 +1014,22 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 
 <script type="text/javascript" src="js/monthly.js"></script>
 <script type="text/javascript">
-    // ===================================================================
-    // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS (CORRIGIDAS)
-    // ===================================================================
-    function showModal(selector) {
-    console.log('showModal chamado com:', selector);
-    if (typeof selector !== 'string' || selector.trim() === '') {
-        console.error('Seletor inválido ou vazio fornecido para showModal:', selector);
-        return;
-    }
-    const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
-    console.log('Seletor limpo:', cleanSelector);
-    const $modal = jQuery(cleanSelector);
-    if ($modal.length === 0) {
-        console.error('Modal não encontrado para o seletor:', cleanSelector);
-        return;
-    }
-    $modal.css('display', 'flex').hide().fadeIn(200);
-}
-
-function hideModal(selector) {
-    console.log('hideModal chamado com:', selector);
-    if (typeof selector !== 'string') {
-        jQuery(selector).fadeOut(200, function() {
-            jQuery(this).css('display', 'none');
-        });
-        return;
-    }
-    if (selector.trim() === '') {
-        console.error('Seletor vazio fornecido para hideModal');
-        return;
-    }
-    const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
-    const $modal = jQuery(cleanSelector);
-    if ($modal.length === 0) {
-        console.error('Modal não encontrado para o seletor:', cleanSelector);
-        return;
-    }
-    $modal.fadeOut(200, function() {
-        jQuery(this).css('display', 'none');
-    });
-}
-
 	$(window).load( function() {
 
-		// $('#mycalendar').monthly({
-		// 	mode: 'event',
+		$('#mycalendar').monthly({
+			mode: 'event',
 
-		// });
+		});
 
-		// $('#mycalendar2').monthly({
-		// 	mode: 'picker',
-		// 	target: '#mytarget',
-		// 	setWidth: '150px',
-		// 	startHidden: true,
-		// 	showTrigger: '#mytarget',
-		// 	stylePast: true,
-		// 	disablePast: true
-		// });
-        // ===================================================================
-        // FIX: LÓGICA PARA CONTROLAR MODAIS SEM BOOTSTRAP.JS (CORRIGIDO)
-        // ===================================================================        
-                
-        // Listener para botões que AINDA usam data-toggle (para compatibilidade com código antigo/AJAX)
-        $('body').on('click', '[data-toggle="modal"]', function(e) {
-            // Se o clique foi originado de um botão com @click, o Alpine já o tratou.
-            if (e.isDefaultPrevented()) return; 
-            
-            e.preventDefault();
-            var target = $(this).data('target');
-            showModal(target);
-        });
-
-        // Listener para botões de fechar
-        $(document).on('click', '[data-dismiss="modal"]', function(e) {
-            e.preventDefault();
-            var modal = $(this).closest('.modal');
-            hideModal(modal);
-        });
-
-        // Listener para fechar clicando fora
-        $(document).on('click', '.modal', function(e) {
-            if ($(e.target).is('.modal') && $(this).data('backdrop') !== 'static') {
-                hideModal(this);
-            }
-        });
-        // ===================================================================
-        // FIM DO FIX
-        // ===================================================================
-
-        // Inicializa o calendário
-        $('#mycalendar').monthly({ mode: 'event' });
+		$('#mycalendar2').monthly({
+			mode: 'picker',
+			target: '#mytarget',
+			setWidth: '150px',
+			startHidden: true,
+			showTrigger: '#mytarget',
+			stylePast: true,
+			disablePast: true
+		});
 
 		switch(window.location.protocol) {
 			case 'http:':
