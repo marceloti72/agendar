@@ -616,28 +616,28 @@ function hideModal(selector) {
         // ===================================================================        
                 
         // Listener para botões que AINDA usam data-toggle (para compatibilidade com código antigo/AJAX)
-        $('body').on('click', '[data-toggle="modal"]', function(e) {
-            // Se o clique foi originado de um botão com @click, o Alpine já o tratou.
-            if (e.isDefaultPrevented()) return; 
+        // $('body').on('click', '[data-toggle="modal"]', function(e) {
+        //     // Se o clique foi originado de um botão com @click, o Alpine já o tratou.
+        //     if (e.isDefaultPrevented()) return; 
             
-            e.preventDefault();
-            var target = $(this).data('target');
-            showModal(target);
-        });
+        //     e.preventDefault();
+        //     var target = $(this).data('target');
+        //     showModal(target);
+        // });
 
-        // Listener para botões de fechar
-        $(document).on('click', '[data-dismiss="modal"]', function(e) {
-            e.preventDefault();
-            var modal = $(this).closest('.modal');
-            hideModal(modal);
-        });
+        // // Listener para botões de fechar
+        // $(document).on('click', '[data-dismiss="modal"]', function(e) {
+        //     e.preventDefault();
+        //     var modal = $(this).closest('.modal');
+        //     hideModal(modal);
+        // });
 
-        // Listener para fechar clicando fora
-        $(document).on('click', '.modal', function(e) {
-            if ($(e.target).is('.modal') && $(this).data('backdrop') !== 'static') {
-                hideModal(this);
-            }
-        });
+        // // Listener para fechar clicando fora
+        // $(document).on('click', '.modal', function(e) {
+        //     if ($(e.target).is('.modal') && $(this).data('backdrop') !== 'static') {
+        //         hideModal(this);
+        //     }
+        // });
         // ===================================================================
         // FIM DO FIX
         // ===================================================================
