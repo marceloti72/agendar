@@ -170,17 +170,17 @@
 
     .main-page {
         padding: 20px;
-        background-color: #b7b7b7;
+        background-color: #ffffff;
         min-height: 100vh;
     }
 
     #page-wrapper {
     padding:5em 2em 2.5em;
-	background-color: #e3e2e0;
+	background-color: #ffffff;
     }
 
     .header-section {
-    background:#111111;
+    background:#ffffff;
     box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
     -webkit-box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
     -moz-box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
