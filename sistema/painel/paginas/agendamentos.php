@@ -532,6 +532,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 <!-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
 <!-- INCLUSÃO DOS SCRIPTS DO BOOTSTRAP -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
 
 <script src="js/ajax.js"></script>
 
