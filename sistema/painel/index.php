@@ -1013,7 +1013,7 @@ input:checked + .slider:before {
 							<?php 								
 								if($total_agendamentos_hoje_usuario_pendentes != 0){							
 									?>
-                                    <span class="badge text-danger"><?php echo $total_agendamentos_hoje_usuario_pendentes ?></span><?php 
+                                    <span class="badge" style="background: #46c261ff"><?php echo $total_agendamentos_hoje_usuario_pendentes ?></span><?php 
 								}?>
 							</a>
 							<ul class="dropdown-menu">
@@ -1078,7 +1078,7 @@ input:checked + .slider:before {
 							<?php 								
 								if($total_encaixes_hoje != 0){							
 									?>
-                                    <span class="badge text-danger"><?php echo $total_encaixes_hoje ?></span><?php 
+                                    <span class="badge" style="background: #46c261ff"><?php echo $total_encaixes_hoje ?></span><?php 
 								}?>
 							</a>
 							<ul class="dropdown-menu">
@@ -1120,7 +1120,7 @@ input:checked + .slider:before {
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Aniversariantes de hoje"><i class="fas fa-birthday-cake <?php echo $icon3?>" ></i>
 							<?php 								
 								if($total_aniversariantes_hoje != 0){?>
-                                    <span class="badge" style="background: #2b6b39"><?php echo $total_aniversariantes_hoje ?></span><?php 
+                                    <span class="badge" style="background: #46c261ff"><?php echo $total_aniversariantes_hoje ?></span><?php 
 								}?>
 							</a>
 							<ul class="dropdown-menu">
@@ -1154,7 +1154,7 @@ input:checked + .slider:before {
 										<a href="#" data-toggle="modal" data-target="#RelAniv">Relatório Aniversáriantes</a>
 									</div> 
 									<?php if ($total_aniversariantes_hoje > 0): ?>
-										<a href="#" class="notification_bottom" style="background: #4970f3ff; color: white" data-toggle="modal" data-target="#birthdayModal">
+										<a href="#" class="notification_bottom" style="background: #46c261ff; color: white" data-toggle="modal" data-target="#birthdayModal">
 											Enviar Parabéns
 										</a>
 									<?php endif; ?>
@@ -1180,7 +1180,7 @@ input:checked + .slider:before {
 						<li class="dropdown head-dpdn">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Depoimentos pendentes"><i class="fa fa-comment <?php echo $icon5?>" ></i><?php 
 							if($total_comentarios != 0){?>
-                                    <span class="badge" style="background: #22168a"><?php echo $total_comentarios ?></span><?php 
+                                    <span class="badge" style="background: #46c261ff"><?php echo $total_comentarios ?></span><?php 
 								}?>
 							</a>
 							<ul class="dropdown-menu">
