@@ -594,6 +594,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
     // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS (CORRIGIDAS)
     // ===================================================================
     function showModal(selector) {
+        alert('jlkjlkj')
         if (typeof selector !== 'string' || selector.trim() === '') return;
         // CORREÇÃO DEFINITIVA: Garante que o seletor seja sempre válido.
         const cleanSelector = '#' + selector.replace(/^#+/, '');
