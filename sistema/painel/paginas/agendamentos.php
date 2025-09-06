@@ -25,23 +25,23 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 
 <style>
     /* FIX: Estilos para fazer os modais funcionarem */
-    #modalForm {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);
-        z-index: 1050;
-        overflow-y: auto;
-        display: none; /* Começa escondido */
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-    }
-    .modal.fade {
-        transition: opacity 0.3s ease;
-    }
+    .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 10000;
+            overflow-y: auto;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal.show {
+            display: flex !important;
+        }
 
     /* Adaptações visuais para o calendário */
     .monthly-header {
@@ -102,47 +102,6 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 
 <input type="hidden" name="data_agenda" id="data_agenda" value="<?= $data_atual ?>"> 
 
-<script>
-    function showModal(selector) {
-        alert('jljljklj')
-    console.log('showModal chamado com:', selector);
-    if (typeof selector !== 'string' || selector.trim() === '') {
-        console.error('Seletor inválido ou vazio fornecido para showModal:', selector);
-        return;
-    }
-    const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
-    console.log('Seletor limpo:', cleanSelector);
-    const $modal = jQuery(cleanSelector);
-    if ($modal.length === 0) {
-        console.error('Modal não encontrado para o seletor:', cleanSelector);
-        return;
-    }
-    $modal.css('display', 'flex').hide().fadeIn(200);
-}
-
-function hideModal(selector) {
-    console.log('hideModal chamado com:', selector);
-    if (typeof selector !== 'string') {
-        jQuery(selector).fadeOut(200, function() {
-            jQuery(this).css('display', 'none');
-        });
-        return;
-    }
-    if (selector.trim() === '') {
-        console.error('Seletor vazio fornecido para hideModal');
-        return;
-    }
-    const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
-    const $modal = jQuery(cleanSelector);
-    if ($modal.length === 0) {
-        console.error('Modal não encontrado para o seletor:', cleanSelector);
-        return;
-    }
-    $modal.fadeOut(200, function() {
-        jQuery(this).css('display', 'none');
-    });
-}
-</script>
 <!-- Layout Principal: Calendário e Lista -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Coluna do Calendário -->
@@ -584,6 +543,8 @@ function hideModal(selector) {
 
 
 <script type="text/javascript">var pag = "<?=$pag?>";</script>
+<!-- Alpine.js -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <script src="js/ajax.js"></script>
 
 
@@ -596,7 +557,33 @@ function hideModal(selector) {
     // ===================================================================
     // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS (CORRIGIDAS)
     // ===================================================================    
-     
+     window.showModal = function(selector) {
+            console.log('showModal chamado com seletor:', selector);
+            const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
+            console.log('Seletor limpo:', cleanSelector);
+            const $modal = jQuery(cleanSelector);
+            if ($modal.length === 0) {
+                console.error('Modal não encontrado no DOM para o seletor:', cleanSelector);
+                return;
+            }
+            console.log('Modal encontrado, estado inicial:', $modal.css('display'));
+            $modal.addClass('show').hide().fadeIn(200, function() {
+                console.log('Modal exibido, estado final:', $modal.css('display'));
+            });
+        };
+
+        window.hideModal = function(selector) {
+            console.log('hideModal chamado com:', selector);
+            const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
+            const $modal = jQuery(cleanSelector);
+            if ($modal.length === 0) {
+                console.error('Modal não encontrado para o seletor:', cleanSelector);
+                return;
+            }
+            $modal.removeClass('show').fadeOut(200, function() {
+                jQuery(this).css('display', 'none');
+            });
+        };
 
 	$(document).ready(function() {
        
