@@ -121,7 +121,7 @@ $plano = $res3['plano'];
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 	<!--//webfonts--> 
 
 	<!-- chart -->
@@ -135,7 +135,9 @@ $plano = $res3['plano'];
 	<!--//Metis Menu -->
 	<style>
 		body {
-    font-family: 'Inter', sans-serif;
+    body {
+    font-family: 'Poppins', sans-serif;
+}
 }
 		#chartdiv {
 			width: 100%;
