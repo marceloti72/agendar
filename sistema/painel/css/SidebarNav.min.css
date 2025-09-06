@@ -48,7 +48,7 @@
 .sidebar-menu > li:hover > a,
 .sidebar-menu > li.active > a {
     color: #ffffff; /* Preto */
-    background-color: #eeeeee; /* Cinza muito claro */
+    background-color: #2563eb;; /* Cinza muito claro */
     border-left-color: #A9A9A9; /* Cinza médio para a borda */
 }
 
@@ -70,7 +70,7 @@
     padding: 10px 25px 10px 15px;
     font-size: 12px;
     color: #e2e2e2; /* Cinza muito claro */
-    background-color: #474747; /* Cinza escuro */
+    background-color: #2563eb; /* Cinza escuro */
 }
 
 /* Estilização da seta de expansão/colapso */
