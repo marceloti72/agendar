@@ -5,7 +5,7 @@
 
 /* Estilização da barra lateral esquerda */
 .sidebar-left {
-    background-color: #757575; /* Cinza médio */
+    background-color: #2563eb; /* Cinza médio */
     margin: 0;
     border: none;
     border-radius: 0;
@@ -47,7 +47,7 @@
 /* Efeito de hover e item ativo do menu principal */
 .sidebar-menu > li:hover > a,
 .sidebar-menu > li.active > a {
-    color: #000000; /* Preto */
+    color: #ffffff; /* Preto */
     background-color: #eeeeee; /* Cinza muito claro */
     border-left-color: #A9A9A9; /* Cinza médio para a borda */
 }
@@ -55,7 +55,7 @@
 /* Estilização do menu aninhado (sub-menu) */
 .sidebar-menu > li > .treeview-menu {
     margin: 0 1px;
-    background-color: #eeeeee; /* Cinza muito claro */
+    background-color: #2563eb; /* Cinza muito claro */
 }
 
 /* Estilização dos rótulos e badges */
