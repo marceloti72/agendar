@@ -198,9 +198,8 @@
     -o-border-radius: 50%;
     }
 
-    .icones{
-        color: #f1f1f1;
-        padding: 15px;
-        font-size: 20px;
+    .dropdown-toggle{
+        color: #111111;
+               
     }
 }
