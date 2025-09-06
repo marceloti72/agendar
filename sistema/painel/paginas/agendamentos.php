@@ -100,7 +100,6 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
     </div>
 </div>
 
-
 <!-- Modal Concluir Serviço/Comanda -->
 <div class="modal fade" id="modalForm2" tabindex="-1" role="dialog" data-backdrop="static">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 90%;">
@@ -590,6 +589,21 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 
 <script type="text/javascript" src="js/monthly.js"></script>
 <script type="text/javascript">
+    // ===================================================================
+    // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS
+    // ===================================================================
+    function showModal(selector) {
+        // Limpa o seletor para garantir que seja válido (evita erros como ##)
+        const cleanSelector = selector.replace(/##/g, '#');
+        $(cleanSelector).css('display', 'flex').hide().fadeIn(200);
+    }
+
+    function hideModal(selector) {
+        const cleanSelector = typeof selector === 'string' ? selector.replace(/##/g, '#') : selector;
+        $(cleanSelector).fadeOut(200, function() {
+            $(this).css('display', 'none');
+        });
+    }
 	$(window).load( function() {
 
 		// $('#mycalendar').monthly({
@@ -608,43 +622,29 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 		// });
         // ===================================================================
         // FIX: LÓGICA PARA CONTROLAR MODAIS SEM BOOTSTRAP.JS (CORRIGIDO)
-        // ===================================================================
-        function showModal(selector) {
-            $(selector).css('display', 'flex').hide().fadeIn(200);
-        }
-
-        function hideModal(selector) {
-            $(selector).fadeOut(200, function() {
-                $(this).css('display', 'none');
-            });
-        }
+        // ===================================================================        
         
-        // Listener para botões que usam data-toggle (legado)
+        // Listener para botões que AINDA usam data-toggle (para compatibilidade com código antigo/AJAX)
         $('body').on('click', '[data-toggle="modal"]', function(e) {
-            // Verifica se o clique veio de um elemento com @click.stop
-            if (e.isDefaultPrevented()) {
-                return;
-            }
+            if (e.isDefaultPrevented()) return; // Se o Alpine já tratou, não faz nada
             e.preventDefault();
             var target = $(this).data('target');
             showModal(target);
         });
 
+        // Listener para botões de fechar
         $(document).on('click', '[data-dismiss="modal"]', function(e) {
             e.preventDefault();
             var modal = $(this).closest('.modal');
             hideModal(modal);
         });
 
+        // Listener para fechar clicando fora
         $(document).on('click', '.modal', function(e) {
             if ($(e.target).is('.modal') && $(this).data('backdrop') !== 'static') {
                 hideModal(this);
             }
         });
-        
-        // Tornando as funções globais para serem acessíveis pelo Alpine e HTML
-        window.showModal = showModal;
-        window.hideModal = hideModal;
         // ===================================================================
         // FIM DO FIX
         // ===================================================================
