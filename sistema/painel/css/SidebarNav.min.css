@@ -198,5 +198,9 @@
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
     }
+
+    #nome_usuario{
+        color: #f1f1f1;
+    }
    
 }

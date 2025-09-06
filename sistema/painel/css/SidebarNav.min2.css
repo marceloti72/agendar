@@ -70,7 +70,7 @@
     padding: 10px 25px 10px 15px;
     font-size: 12px;
     color: #e2e2e2; /* Cinza muito claro */
-    background-color: #2563eb; /* Cinza escuro */
+    background-color: #1b47a7; /* Cinza escuro */
 }
 
 /* Estilização da seta de expansão/colapso */
@@ -197,6 +197,10 @@
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
+    }
+
+    #nome_usuario{
+        color: #000000;
     }
     
 }
