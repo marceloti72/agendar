@@ -35,7 +35,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
         z-index: 1050;
         overflow-y: auto;
         /* Alinha o .modal-dialog no centro */
-        display: none; /* Começa escondido */
+        display: flex; /* Começa escondido */
         align-items: center;
         justify-content: center;
         padding: 1rem;
@@ -79,10 +79,9 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
             </select>
         </div>
         <!-- BOTÃO CORRIGIDO: Usa Alpine.js para chamar a função global showModal e para a propagação do evento -->
-        <button @click.stop="console.log('Botão clicado'); showModal('#modalForm')" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
-        <i class="fa fa-plus mr-2"></i> Novo Agendamento
-    </button>
-    <button onclick="showModal('modalForm')">Testar Modal</button>
+        <button @click.stop="console.log('Botão clicado'); showModal('modalForm')" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
+    <i class="fa fa-plus mr-2"></i> Novo Agendamento
+</button>
     </div>
 </div>
 
