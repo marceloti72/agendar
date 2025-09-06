@@ -80,8 +80,9 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
         </div>
         <!-- BOTÃO CORRIGIDO: Usa Alpine.js para chamar a função global showModal e para a propagação do evento -->
         <button @click.stop="console.log('Botão clicado'); showModal('modalForm')" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
-    <i class="fa fa-plus mr-2"></i> Novo Agendamento
-</button>
+        <i class="fa fa-plus mr-2"></i> Novo Agendamento
+    </button>
+    <button onclick="showModal('modalForm')">Testar Modal</button>
     </div>
 </div>
 
