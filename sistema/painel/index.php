@@ -1074,7 +1074,7 @@ input:checked + .slider:before {
 						</li>	
 
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell" title="Encaixes hoje"></i>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-bell" title="Encaixes hoje"></i>
 							<?php 								
 								if($total_encaixes_hoje != 0){							
 									?>
