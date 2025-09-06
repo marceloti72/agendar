@@ -587,6 +587,42 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 		// 	stylePast: true,
 		// 	disablePast: true
 		// });
+         // ===================================================================
+        // FIX: LÓGICA PARA CONTROLAR MODAIS SEM BOOTSTRAP.JS
+        // ===================================================================
+        function showModal(selector) {
+            $(selector).css('display', 'flex').hide().fadeIn(200);
+        }
+
+        function hideModal(selector) {
+            $(selector).fadeOut(200, function() {
+                $(this).css('display', 'none');
+            });
+        }
+        
+        $('[data-toggle="modal"]').on('click', function(e) {
+            e.preventDefault();
+            var target = $(this).data('target');
+            showModal(target);
+        });
+
+        $(document).on('click', '[data-dismiss="modal"]', function(e) {
+            e.preventDefault();
+            var modal = $(this).closest('.modal');
+            hideModal(modal);
+        });
+
+        $(document).on('click', '.modal', function(e) {
+            if ($(e.target).is('.modal') && $(this).data('backdrop') !== 'static') {
+                hideModal(this);
+            }
+        });
+        
+        window.showModal = showModal;
+        window.hideModal = hideModal;
+        // ===================================================================
+        // FIM DO FIX
+        // ===================================================================
 
         // Inicializa o calendário
         $('#mycalendar').monthly({ mode: 'event' });
