@@ -82,18 +82,14 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 
 
 
-<div id="modalForm2" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-    <!-- <div class="modal-dialog modal-lg modal-dialog-centered" role="document"> -->
-        <div class="modal-container bg-white rounded-xl shadow-2xl overflow-hidden md:flex">
-            <!-- Modal Header -->
-            <div class="w-full modal-header-custom flex justify-between items-center">
-                <h4 class="text-xl font-bold" id="titulo_comanda">
-                    <i class="fas fa-cash-register modal-icon"></i>
-                    Nova Comanda
-                </h4>
-                <button type="button" id="btn-fechar" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<!-- Modal Concluir Serviço/Comanda -->
+<div class="modal fade" id="modalForm2" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 90%;">
+        <div class="modal-content">
+            <!-- Header do Modal -->
+            <div class="modal-header bg-blue-600 text-white flex justify-between items-center">
+                <h4 class="modal-title text-xl font-bold" id="titulo_comanda"><i class="fas fa-cash-register mr-2"></i> Nova Comanda</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
 
             <form id="form_salvar" class="w-full h-full flex flex-col md:flex-row">
@@ -577,20 +573,23 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 <script type="text/javascript">
 	$(window).load( function() {
 
-		$('#mycalendar').monthly({
-			mode: 'event',
+		// $('#mycalendar').monthly({
+		// 	mode: 'event',
 
-		});
+		// });
 
-		$('#mycalendar2').monthly({
-			mode: 'picker',
-			target: '#mytarget',
-			setWidth: '150px',
-			startHidden: true,
-			showTrigger: '#mytarget',
-			stylePast: true,
-			disablePast: true
-		});
+		// $('#mycalendar2').monthly({
+		// 	mode: 'picker',
+		// 	target: '#mytarget',
+		// 	setWidth: '150px',
+		// 	startHidden: true,
+		// 	showTrigger: '#mytarget',
+		// 	stylePast: true,
+		// 	disablePast: true
+		// });
+
+        // Inicializa o calendário
+        $('#mycalendar').monthly({ mode: 'event' });
 
 		switch(window.location.protocol) {
 			case 'http:':
