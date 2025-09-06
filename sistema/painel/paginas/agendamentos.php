@@ -24,28 +24,29 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 <link rel="stylesheet" type="text/css" href="css/monthly.css">
 
 <style>
-    /* FIX: Estilos para fazer os modais funcionarem */
+    /* FIX: Estilos para fazer os modais funcionarem sem Bootstrap CSS */
     .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            z-index: 10000;
-            overflow-y: auto;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-        .modal.show {
-            display: flex !important;
-        }
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 1050;
+        overflow-y: auto;
+        /* Alinha o .modal-dialog no centro */
+        display: none; /* Começa escondido */
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+    .modal.fade {
+        transition: opacity 0.3s ease;
+    }
 
     /* Adaptações visuais para o calendário */
     .monthly-header {
-        background-color: #1e40af;
+        background-color: #1e40af; /* Azul escuro para combinar com o tema */
         color: white;
     }
     .monthly-day-header {
@@ -77,26 +78,10 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
                 ?>
             </select>
         </div>
-        <button onclick="showModal('modalForm')" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
+        <!-- BOTÃO CORRIGIDO: Usa os atributos padrão do Bootstrap para abrir o modal -->
+        <button data-toggle="modal" data-target="#modalForm" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
             <i class="fa fa-plus mr-2"></i> Novo Agendamento
         </button>
-    </div>
-</div>
-
-<input type="hidden" name="data_agenda" id="data_agenda" value="<?= $data_atual ?>"> 
-
-<!-- Layout Principal: Calendário e Lista -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <!-- Coluna do Calendário -->
-    <div class="lg:col-span-1 bg-white dark:bg-slate-800 p-4 rounded-xl shadow-md">
-        <div class="monthly" id="mycalendar"></div>
-    </div>
-
-    <!-- Coluna da Lista de Agendamentos -->
-    <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-4 rounded-xl shadow-md min-w-0">
-        <div id="listar">
-            <!-- O conteúdo dos agendamentos será carregado aqui via AJAX -->
-        </div>
     </div>
 </div>
 
@@ -544,7 +529,10 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 
 <script type="text/javascript">var pag = "<?=$pag?>";</script>
 <!-- Alpine.js -->
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<!-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
+<!-- INCLUSÃO DOS SCRIPTS DO BOOTSTRAP -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
 <script src="js/ajax.js"></script>
 
 
@@ -554,37 +542,37 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 
 <script type="text/javascript" src="js/monthly.js"></script>
 <script type="text/javascript">
-    // ===================================================================
-    // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS (CORRIGIDAS)
-    // ===================================================================    
-     window.showModal = function(selector) {
-        alert('kjkljkkjljk')
-            console.log('showModal chamado com seletor:', selector);
-            const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
-            console.log('Seletor limpo:', cleanSelector);
-            const $modal = jQuery(cleanSelector);
-            if ($modal.length === 0) {
-                console.error('Modal não encontrado no DOM para o seletor:', cleanSelector);
-                return;
-            }
-            console.log('Modal encontrado, estado inicial:', $modal.css('display'));
-            $modal.addClass('show').hide().fadeIn(200, function() {
-                console.log('Modal exibido, estado final:', $modal.css('display'));
-            });
-        };
+    // // ===================================================================
+    // // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS (CORRIGIDAS)
+    // // ===================================================================    
+    //  window.showModal = function(selector) {
+    //     alert('kjkljkkjljk')
+    //         console.log('showModal chamado com seletor:', selector);
+    //         const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
+    //         console.log('Seletor limpo:', cleanSelector);
+    //         const $modal = jQuery(cleanSelector);
+    //         if ($modal.length === 0) {
+    //             console.error('Modal não encontrado no DOM para o seletor:', cleanSelector);
+    //             return;
+    //         }
+    //         console.log('Modal encontrado, estado inicial:', $modal.css('display'));
+    //         $modal.addClass('show').hide().fadeIn(200, function() {
+    //             console.log('Modal exibido, estado final:', $modal.css('display'));
+    //         });
+    //     };
 
-        window.hideModal = function(selector) {
-            console.log('hideModal chamado com:', selector);
-            const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
-            const $modal = jQuery(cleanSelector);
-            if ($modal.length === 0) {
-                console.error('Modal não encontrado para o seletor:', cleanSelector);
-                return;
-            }
-            $modal.removeClass('show').fadeOut(200, function() {
-                jQuery(this).css('display', 'none');
-            });
-        };
+    //     window.hideModal = function(selector) {
+    //         console.log('hideModal chamado com:', selector);
+    //         const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
+    //         const $modal = jQuery(cleanSelector);
+    //         if ($modal.length === 0) {
+    //             console.error('Modal não encontrado para o seletor:', cleanSelector);
+    //             return;
+    //         }
+    //         $modal.removeClass('show').fadeOut(200, function() {
+    //             jQuery(this).css('display', 'none');
+    //         });
+    //     };
 
 	$(document).ready(function() {
        
