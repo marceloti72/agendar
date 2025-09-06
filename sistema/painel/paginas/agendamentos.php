@@ -590,16 +590,20 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 <script type="text/javascript" src="js/monthly.js"></script>
 <script type="text/javascript">
     // ===================================================================
-    // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS
+    // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS (CORRIGIDAS)
     // ===================================================================
     function showModal(selector) {
-        // Limpa o seletor para garantir que seja válido (evita erros como ##)
-        const cleanSelector = selector.replace(/##/g, '#');
+        if (typeof selector !== 'string' || selector.trim() === '') return;
+        // CORREÇÃO DEFINITIVA: Garante que o seletor seja sempre válido.
+        // 1. Remove todos os '#' do início da string.
+        // 2. Adiciona um único '#' no início.
+        const cleanSelector = '#' + selector.replace(/^#+/, '');
         $(cleanSelector).css('display', 'flex').hide().fadeIn(200);
     }
 
     function hideModal(selector) {
-        const cleanSelector = typeof selector === 'string' ? selector.replace(/##/g, '#') : selector;
+        if (typeof selector !== 'string' || selector.trim() === '') return;
+        const cleanSelector = '#' + selector.replace(/^#+/, '');
         $(cleanSelector).fadeOut(200, function() {
             $(this).css('display', 'none');
         });
