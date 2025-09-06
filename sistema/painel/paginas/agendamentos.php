@@ -25,7 +25,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 
 <style>
     /* FIX: Estilos para fazer os modais funcionarem */
-    .modal {
+    #modalForm {
         position: fixed;
         top: 0;
         left: 0;
@@ -34,7 +34,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
         background-color: rgba(0, 0, 0, 0.6);
         z-index: 1050;
         overflow-y: auto;
-        display: flex; /* Começa escondido */
+        display: none; /* Começa escondido */
         align-items: center;
         justify-content: center;
         padding: 1rem;
