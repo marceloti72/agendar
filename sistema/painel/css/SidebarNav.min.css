@@ -116,7 +116,7 @@
     padding: 5px 5px 5px 15px;
     display: block;
     font-size: 14px;
-    color: #ffffff; /* Cinza claro */
+    color: #000000; /* Cinza claro */
 }
 
 /* Estilização dos ícones do sub-menu */
@@ -133,7 +133,7 @@
 /* Efeito de hover e item ativo do sub-menu */
 .sidebar-menu .treeview-menu > li.active > a,
 .sidebar-menu .treeview-menu > li > a:hover {
-    color: #d89400; /* Azul acinzentado */
+    color: #96928a; /* Azul acinzentado */
 }
 
 /* Mídia query para telas maiores que 768px (Desktop) */
