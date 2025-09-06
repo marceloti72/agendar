@@ -1,708 +1,3257 @@
-<?php
+<?php 
 @session_start();
-// ini_set('display_errors', 0); // Descomente em produção
-// error_reporting(0);
-
-if (!isset($_SESSION['id_usuario'])) {
-    header('Location: ../');
-    exit();
-}
-
 $id_conta = $_SESSION['id_conta'];
-$id_usuario = $_SESSION['id_usuario'];
 
 require_once("verificar.php");
 require_once("../conexao.php");
 
-// Lógica de Paginação
 $pag_inicial = 'home';
-$pag = $_GET['pag'] ?? $pag_inicial;
-if (@$_SESSION['nivel_usuario'] != 'administrador' && $pag == 'home') {
-    $pag = 'agenda';
-}
 
-// ========================================================================
-// INÍCIO DO CÓDIGO PHP INTEGRADO DO CABEÇALHO ANTIGO
-// ========================================================================
+$id_usuario = $_SESSION['id_usuario'];
 
-// Dados do Usuário Logado
-$query_user = $pdo->prepare("SELECT * FROM usuarios WHERE id = :id_usuario AND id_conta = :id_conta");
-$query_user->execute([':id_usuario' => $id_usuario, ':id_conta' => $id_conta]);
-$user_data = $query_user->fetch(PDO::FETCH_ASSOC);
+//VERIFICA O STATUS DO WHATSAPP	
+require __DIR__ . '../../../ajax/status.php'; 
 
-$nome_usuario = $user_data['nome'] ?? '';
-$nivel_usuario = $user_data['nivel'] ?? '';
-$foto_usuario = $user_data['foto'] ?? 'sem-foto.jpg';
-$cliente_stripe = $user_data['cliente_stripe'] ?? null; // Adicionado para lógica do botão de assinatura
-
-// Datas
-$data_atual = date('Y-m-d');
-$dataMesInicial = date('m');
-$dataDiaInicial = date('d');
-
-// Notificações - Agendamentos e Encaixes
-if (@$_SESSION['nivel_usuario'] == 'administrador') {
-    $query_agendamentos = $pdo->prepare("SELECT a.*, c.nome as cliente_nome, s.nome as servico_nome FROM agendamentos a LEFT JOIN clientes c ON a.cliente = c.id LEFT JOIN servicos s ON a.servico = s.id WHERE a.data = CURDATE() AND a.status = 'Agendado' AND a.id_conta = :id_conta");
-    $query_agendamentos->execute([':id_conta' => $id_conta]);
-    $res_agendamentos = $query_agendamentos->fetchAll(PDO::FETCH_ASSOC);
-    $total_agendamentos_hoje_usuario_pendentes = count($res_agendamentos);
-    $link_ag = 'agendamentos';
-
-    $query_encaixes = $pdo->prepare("SELECT * FROM encaixe WHERE data = CURDATE() AND id_conta = :id_conta");
-    $query_encaixes->execute([':id_conta' => $id_conta]);
-    $total_encaixes_hoje = $query_encaixes->rowCount();
-} else {
-    $query_agendamentos = $pdo->prepare("SELECT a.*, c.nome as cliente_nome, s.nome as servico_nome FROM agendamentos a LEFT JOIN clientes c ON a.cliente = c.id LEFT JOIN servicos s ON a.servico = s.id WHERE a.data = CURDATE() AND a.funcionario = :id_usuario AND a.status = 'Agendado' AND a.id_conta = :id_conta");
-    $query_agendamentos->execute([':id_usuario' => $id_usuario, ':id_conta' => $id_conta]);
-    $res_agendamentos = $query_agendamentos->fetchAll(PDO::FETCH_ASSOC);
-    $total_agendamentos_hoje_usuario_pendentes = count($res_agendamentos);
-    $link_ag = 'agenda';
-
-    $query_encaixes = $pdo->prepare("SELECT * FROM encaixe WHERE data = CURDATE() AND profissional = :id_usuario AND id_conta = :id_conta");
-    $query_encaixes->execute([':id_usuario' => $id_usuario, ':id_conta' => $id_conta]);
-    $total_encaixes_hoje = $query_encaixes->rowCount();
-}
-
-// Notificações - Aniversariantes e Comentários (Apenas Admin)
-$total_aniversariantes_hoje = 0;
-$res_aniversariantes = [];
-$total_comentarios = 0;
-$res_comentarios = [];
-
-if (@$_SESSION['nivel_usuario'] == 'administrador') {
-    $query_aniv = $pdo->prepare("SELECT id, nome, telefone FROM clientes WHERE MONTH(data_nasc) = :mes AND DAY(data_nasc) = :dia AND id_conta = :id_conta ORDER BY nome ASC");
-    $query_aniv->execute([':mes' => $dataMesInicial, ':dia' => $dataDiaInicial, ':id_conta' => $id_conta]);
-    $res_aniversariantes = $query_aniv->fetchAll(PDO::FETCH_ASSOC);
-    $total_aniversariantes_hoje = count($res_aniversariantes);
-
-    $query_coment = $pdo->prepare("SELECT nome FROM comentarios WHERE ativo != 'Sim' AND id_conta = :id_conta");
-    $query_coment->execute([':id_conta' => $id_conta]);
-    $res_comentarios = $query_coment->fetchAll(PDO::FETCH_ASSOC);
-    $total_comentarios = count($res_comentarios);
-}
-
-// Status do WhatsApp
-$whatsapp_status = '';
-$whatsapp_color = 'text-gray-400';
-require __DIR__ . '../../../ajax/status.php'; // Este script deve definir as variáveis $status e $cor
-if (isset($status) && isset($cor)) {
-    $whatsapp_status = $status;
-    $whatsapp_color = ($cor == 'green') ? 'text-green-500' : 'text-red-500';
-}
-// ========================================================================
-// FIM DO CÓDIGO PHP INTEGRADO
-// ========================================================================
 ?>
-<!DOCTYPE html>
-<html lang="pt-br" class="dark">
+<style>
+	@media (max-width: 768px) {
+	.relatorio {
+		display: flex;
+		width: 100%;
+		height: 30px;
+		margin-bottom: 10px;
+		font-size: 14px;
+		align-items: center;
+		justify-content: center;
+			
+        }
+	}
+</style>
+<?php 
+
+$query = $pdo->query("SELECT * from usuarios where id = '$id_usuario' and id_conta = '$id_conta'");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$total_reg = @count($res);
+if($total_reg > 0){
+	$nome_usuario = $res[0]['nome'];
+	$email_usuario = $res[0]['email'];
+	$cpf_usuario = $res[0]['cpf'];
+	$senha_usuario = $res[0]['senha'];
+	$nivel_usuario = $res[0]['nivel'];
+	$telefone_usuario = $res[0]['telefone'];
+	$endereco_usuario = $res[0]['endereco'];
+	$foto_usuario = $res[0]['foto'];
+	$atendimento = $res[0]['atendimento'];
+	$intervalo_horarios = $res[0]['intervalo'];
+}
+
+// if(@$_SESSION['nivel_usuario'] != 'administrador'){
+// 	require_once("verificar-permissoes.php");
+// }
+
+
+if(@$_GET['pag'] == ""){
+	$pag = $pag_inicial;
+
+	if(@$_SESSION['nivel_usuario'] != 'administrador'){
+	    $pag = 'agenda';
+    }
+}else{
+	$pag = $_GET['pag'];
+}
+
+
+
+
+$data_atual = date('Y-m-d');
+$mes_atual = Date('m');
+$ano_atual = Date('Y');
+$data_mes = $ano_atual."-".$mes_atual."-01";
+$data_ano = $ano_atual."-01-01";
+
+
+$partesInicial = explode('-', $data_atual);
+$dataDiaInicial = $partesInicial[2];
+$dataMesInicial = $partesInicial[1];
+
+
+
+$query = $pdo->query("SELECT plano from config where id = '$id_conta'");
+$res3 = $query->fetch(PDO::FETCH_ASSOC);
+$plano = $res3['plano'];
+
+
+// VERIFICAR SE O CAIXA ESTÁ ABERTO
+$query_caixa = $pdo->query("SELECT * FROM caixa WHERE id_conta = '$id_conta' ORDER BY id DESC LIMIT 1");
+$res_caixa = $query_caixa->fetchAll(PDO::FETCH_ASSOC);
+$caixa_aberto = false;
+if (@count($res_caixa) > 0 && $res_caixa[0]['data_fechamento'] === NULL) {
+    $caixa_aberto = true;
+}
+
+?>
+
+<!DOCTYPE HTML>
+<html lang="pt-br">
 <head>
-    <title><?= $nome_sistema ?></title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="../../images/favicon<?= $id_conta ?>.png">
+	<title><?php echo $nome_sistema ?></title>
+	<link rel="icon" type="image/png" href="../../images/favicon<?php echo $id_conta?>.png">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.css" rel="stylesheet">
 
-    <style>
-        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(156, 163, 175, 0.5); border-radius: 4px; }
-        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(107, 114, 128, 0.5); }
-        .custom-scrollbar::-webkit-scrollbar-track { background-color: transparent; }
-        .modal-background { background-color: rgba(0, 0, 0, 0.6); }
-        [x-cloak] { display: none !important; }
 
-        /* Estilos do Select2 para integração com o Tailwind */
-        .select2-container .select2-selection--single { height: 42px !important; border-radius: 0.375rem !important; border: 1px solid #d1d5db !important; }
-        .select2-container--default .select2-selection--single .select2-selection__rendered { line-height: 40px !important; padding-left: 0.75rem !important; }
-        .select2-container--default .select2-selection--single .select2-selection__arrow { height: 40px !important; right: 0.5rem !important; }
-        .select2-dropdown { border-radius: 0.375rem !important; border: 1px solid #d1d5db !important; }
-    </style>
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-</head>
+	<!-- Bootstrap Core CSS -->
+	<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
 
-<body class="bg-gray-100 dark:bg-slate-900 flex min-h-screen" 
-      x-data="{ sidebarOpen: window.innerWidth >= 1024 }" 
-      x-init="$watch('sidebarOpen', value => { 
-          setTimeout(() => { 
-              window.dispatchEvent(new Event('resize')); 
-          }, 310); 
-      })">
+	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
 
-    <!-- Sidebar -->
-    <div x-show="sidebarOpen" @click.away="sidebarOpen = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full" class="fixed inset-y-0 left-0 w-64 bg-slate-800 text-white flex flex-col z-50 transform lg:translate-x-0">
-        <!-- Sidebar content... -->
-        <div class="flex items-center justify-center p-5 bg-slate-900">
-            <a href="index.php" class="flex items-center space-x-3">
-                <img src="../../images/icone_512.png" alt="Logo" class="w-10 h-10">
-                <div class="flex flex-col">
-                    <span class="text-xl font-bold text-white">Painel</span>
-                    <span class="text-xs text-slate-400 font-medium tracking-wide"><?= $nome_sistema ?></span>
-                </div>
-            </a>
-        </div>
-        <nav class="flex-1 overflow-y-auto custom-scrollbar p-4">
-            <ul class="space-y-2">
-                <?php if (@$_SESSION['nivel_usuario'] == 'administrador'): ?>
-                <li x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
-                        <span><i class="fa fa-pencil w-6 mr-2"></i> Dashboards</span>
-                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
-                    </button>
-					<ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-						<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="index.php"></i>Financeiro</a></li>
-						<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="grafico_dias"></i>Agendamentos Mês</a></li>
-						<li class="block p-2 text-sm rounded-lg hover:bg-slate-600"><a href="grafico_ano"></i>Agendamentos Ano</a></li>
+	
+	<!-- Custom CSS -->
+	<link href="css/style.css" rel='stylesheet' type='text/css' />
+
+	<!-- font-awesome icons CSS -->
+	<link href="css/font-awesome.css" rel="stylesheet"> 
+
+	<link href="../../css/icons.css" rel="stylesheet">
+	<!-- //font-awesome icons CSS-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+
+	<!-- Incluindo Font Awesome via CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+	<!-- side nav css file -->
+	<!-- <link href='css/SidebarNav.min2.css' media='all' rel='stylesheet' type='text/css'/> -->
+	<link href='css/SidebarNav.min.css' media='all' rel='stylesheet' type='text/css' id="theme-stylesheet"/>
+	<!-- //side nav css file -->
+
+	<link rel="stylesheet" href="css/monthly.css">
+
+	<!-- js-->
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/modernizr.custom.js"></script>
+
+	<!--webfonts-->
+	<link href="//fonts.googleapis.com/css?family=PT+Sans:400,400i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
+	<!--//webfonts--> 
+
+	<!-- chart -->
+	<script src="js/Chart.js"></script>
+	<!-- //chart -->
+
+	<!-- Metis Menu -->
+	<script src="js/metisMenu.min.js"></script>
+	<script src="js/custom.js"></script>
+	<link href="css/custom.css" rel="stylesheet">
+	<!--//Metis Menu -->
+	<style>
+		#chartdiv {
+			width: 100%;
+			height: 295px;
+		}
+
 		
+        .hovv:hover { transform: scale(3); transition: .5s;}
+        .hovv{cursor: pointer; border-radius: 50px;object-fit: cover;} 
 
-					</ul>
-				</li>
+		.hovv{
+    width: 50px;
+    height: 50px;
+  }
 
-                <li><a href="caixa" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fas fa-cash-register w-6 mr-2"></i> Abrir Caixa</a></li>
-                <li><a href="agendamentos" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-clock w-6 mr-2"></i> Agendamentos</a></li>
-                
-                <li x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
-                        <span><i class="fa fa-pencil w-6 mr-2"></i> Cadastros</span>
-                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
-                    </button>
-                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-                        <li><a href="clientes" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Clientes</a></li>
-                        <?php if($plano == '2'): ?><li><a href="funcionarios" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Profissionais</a></li><?php endif; ?>
-                        <li><a href="fornecedores" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Fornecedores</a></li>
-                        <li><a href="servicos" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Serviços</a></li>
-                        <li><a href="cupons" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Cupons</a></li>
-                    </ul>
-                </li>
-                <li x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
-                        <span><i class="fa fa-pencil w-6 mr-2"></i> Produtos</span>
-                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
-                    </button>
-                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-                        <li><a href="vendas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Vendas de Produtos</a></li>
-                        <li><a href="compras" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Compras de Produtos</a></li>
-                        <li><a href="estoque" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Estoque Baixo</a></li>
-                        <li><a href="saidas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Saídas</a></li>
-                        <li><a href="entradas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Entradas</a></li>
-                    </ul>
-                </li>
-                <li x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
-                        <span><i class="fa fa-pencil w-6 mr-2"></i> Clube do Assinante</span>
-                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
-                    </button>
-                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-                        <li><a href="assinantes" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Assinantes</a></li>
-                        <li><a href="conf_planos" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Configuração</a></li>                        
-                    </ul>
-                </li>
-                <li x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
-                        <span><i class="fa fa-pencil w-6 mr-2"></i> Financeiro</span>
-                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
-                    </button>
-                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-                        <li><a href="pagar" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Contas à Pagar</a></li>
-                        <li><a href="receber" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Contas à Receber</a></li>
-                        <li><a href="comissoes" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Comissões</a></li>                        
-                    </ul>
-                </li>        
+  .novo {
+		background-color: #e99f35;
+		color: white;
+		font-weight: bold;
+	}
 
-                <li x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
-                        <span><i class="fa fa-pencil w-6 mr-2"></i> Relatórios</span>
-                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
-                    </button>
-                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-                        <li><a href="rel/rel_produtos_class.php" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Produtos</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#RelEntradas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Entradas / Ganhos</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#RelSaidas" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Saídas / Despesas</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#RelComissoes" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Comissões</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#RelCon" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Contas</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#RelServicos" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Serviços</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#RelAniv" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Relatório de Aniversáriantes</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#RelLucro" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Demonstrativo de Lucro</a></li>
-                    </ul>
-                </li>
-                <li><a href="whatsapp" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fas fa--whatsapp w-6 mr-2"></i> WhatsApp</a></li>
-                <li><a href="campanhas" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-paper-plane w-6 mr-2"></i> Campanhas</a></li>
-                <li><a href="#" onclick="showModal('modalSeuLink')" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-link w-6 mr-2"></i> Seu Link</a></li>
-                <li><a href="comentarios" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-comments w-6 mr-2"></i> Comentários</a></li>
-                <li x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center justify-between w-full p-2 rounded-lg hover:bg-slate-700 transition">
-                        <span><i class="fa fa-pencil w-6 mr-2"></i> Meus Horário / Dias</span>
-                        <i class="fa fa-chevron-down transition-transform" :class="{'rotate-180': open}"></i>
-                    </button>
-                    <ul x-show="open" x-transition class="pl-8 mt-1 space-y-1">
-                        <li><a href="diasr" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Horários / Dias</a></li>
-                        <li><a href="dias_bloqueio_func" class="block p-2 text-sm rounded-lg hover:bg-slate-600">Bloqueio de Dias</a></li>                                             
-                    </ul>
-                </li>
+	html {
+    scroll-behavior: smooth;
+}
 
-                <?php endif; ?>
+	@media (max-width: 768px) {
+	.novo {
+		display: flex;
+		width: 100%;
+		height: 30px;
+		margin-bottom: 10px;
+		font-size: 14px;
+		align-items: center;
+		justify-content: center;
+			
+        }
+	}
 
-                <?php if ($atendimento == 'Sim'): ?>
-                <li class="pt-4 mt-2 border-t border-slate-700">
-                    <span class="px-2 text-xs font-bold text-slate-400 uppercase">Menu Profissional</span>
-                </li>
-                <li><a href="agenda" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-calendar-o w-6 mr-2"></i> Minha Agenda</a></li>
-                <li><a href="servicos_func" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-server w-6 mr-2"></i> Meus Serviços</a></li>                
-                <li><a href="minhas_comissoes" class="flex items-center p-2 rounded-lg hover:bg-slate-700 transition"><i class="fa fa-dollar-sign w-6 mr-2"></i> Minhas Comissões</a></li>
-                <?php endif; ?>
-            </ul>       
-        </nav>
-    </div>
+  .modal-header{	
+	/* background-image: linear-gradient(to bottom, #d4a0e9, #a0d4e9);
+	background-image: linear-gradient(to right, #6a85b6, #bac8e0);
+	background-image: linear-gradient(to right, #ff9966, #ff5e62);
+	background-image: linear-gradient(to right, #434371, #9669a0); */
+	background-image: linear-gradient(to right, #6a85b6, #bac8e0);
+	color: white;
+	text-transform: uppercase;
+  }
 
-    <!-- Main Content -->
-    <div class="flex-1 flex flex-col transition-all duration-300" :class="{'lg:ml-64': sidebarOpen}">
-        <header class="bg-white dark:bg-slate-800 shadow-sm sticky top-0 z-40 p-4 flex items-center justify-between">
-            <button @click="sidebarOpen = !sidebarOpen" class="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 rounded-lg lg:hidden">
-                <i class="fa fa-bars text-xl"></i>
-            </button>
-            <div class="hidden lg:block"></div> <!-- Spacer -->
+  @keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(2); /* Aumenta o tamanho */
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
 
-            <div class="flex items-center space-x-5">
-                
-                <!-- Dropdown Agendamentos -->
-                <div class="relative" x-data="{ open: false }">
-                    <button @click.stop="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Agendamentos hoje">
-                        <i class="fas fa-calendar-check text-xl"></i>
-                        <?php if ($total_agendamentos_hoje_usuario_pendentes > 0): ?>
-                            <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_agendamentos_hoje_usuario_pendentes ?></span>
-                        <?php endif; ?>
-                    </button>
-                    <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-700 rounded-lg shadow-lg z-20">
-                        <div class="p-3 border-b border-gray-200 dark:border-slate-600">
-                            <h3 class="font-semibold text-gray-800 dark:text-gray-200"><?= $total_agendamentos_hoje_usuario_pendentes ?> Agendamentos Pendentes</h3>
-                        </div>
-                        <div class="max-h-64 overflow-y-auto custom-scrollbar">
-                            <?php if(empty($res_agendamentos)): ?>
-                                <p class="text-center text-gray-500 dark:text-gray-400 p-4">Nenhum agendamento pendente.</p>
-                            <?php else: ?>
-                                <?php foreach($res_agendamentos as $agendamento): ?>
-                                    <div class="p-3 border-b border-gray-100 dark:border-slate-600">
-                                        <p class="text-sm text-gray-700 dark:text-gray-300">
-                                            <span class="font-bold"><?= date("H:i", strtotime($agendamento['hora'])) ?></span> - <?= htmlspecialchars($agendamento['cliente_nome'] ?? 'Sem Cliente') ?>
-                                        </p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400"><?= htmlspecialchars($agendamento['servico_nome'] ?? 'Não Lançado') ?></p>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </div>
-                        <a href="<?= $link_ag ?>" class="block text-center p-2 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-600 text-sm font-medium text-blue-600 dark:text-blue-400 rounded-b-lg">Ver Todos</a>
-                    </div>
-                </div>
+.icon-pulse {
+    display: inline-block; /* Necessário para transform funcionar bem */
+    animation: pulse 1.5s infinite ease-in-out; /* Aplica a animação */
+    /* Ajuste a duração (1.5s) e o timing (ease-in-out) como desejar */
+}
 
-                <!-- Dropdown Encaixes -->
-                <div class="relative" x-data="{ open: false }">
-                    <button @click.stop="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Encaixes hoje">
-                        <i class="fa fa-bell text-xl"></i>
-                        <?php if ($total_encaixes_hoje > 0): ?>
-                            <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_encaixes_hoje ?></span>
-                        <?php endif; ?>
-                    </button>
-                    <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-72 bg-white dark:bg-slate-700 rounded-lg shadow-lg z-20">
-                         <div class="p-3 border-b border-gray-200 dark:border-slate-600">
-                            <h3 class="font-semibold text-gray-800 dark:text-gray-200"><?= $total_encaixes_hoje ?> Encaixes Aguardando</h3>
-                        </div>
-                        <a href="index.php?pag=home#encaixes-hoje" @click="open = false" class="block text-center p-2 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-600 text-sm font-medium text-blue-600 dark:text-blue-400 rounded-b-lg">Ver na Dashboard</a>
-                    </div>
-                </div>
+@keyframes wiggle-whatsapp {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }  /* Inclina para a direita */
+    75% { transform: rotate(-5deg); } /* Inclina para a esquerda */
+}
 
-                <?php if (@$_SESSION['nivel_usuario'] == 'administrador'): ?>
-                <!-- Dropdown Aniversariantes -->
-                <div class="relative" x-data="{ open: false }">
-                    <button @click.stop="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Aniversariantes de hoje">
-                        <i class="fa fa-birthday-cake text-xl"></i>
-                         <?php if ($total_aniversariantes_hoje > 0): ?>
-                        <span class="absolute -top-2 -right-2 bg-green-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_aniversariantes_hoje ?></span>
-                        <?php endif; ?>
-                    </button>
-                     <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-700 rounded-lg shadow-lg z-20">
-                        <div class="p-3 border-b border-gray-200 dark:border-slate-600">
-                            <h3 class="font-semibold text-gray-800 dark:text-gray-200"><?= $total_aniversariantes_hoje ?> Aniversariando Hoje</h3>
-                        </div>
-                        <div class="max-h-64 overflow-y-auto custom-scrollbar">
-                            <?php if(empty($res_aniversariantes)): ?>
-                                <p class="text-center text-gray-500 dark:text-gray-400 p-4">Nenhum aniversariante hoje.</p>
-                            <?php else: ?>
-                                <?php foreach($res_aniversariantes as $aniv): ?>
-                                    <div class="p-3 border-b border-gray-100 dark:border-slate-600">
-                                        <p class="text-sm text-gray-700 dark:text-gray-300 font-semibold"><?= htmlspecialchars($aniv['nome']) ?></p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400"><?= htmlspecialchars($aniv['telefone']) ?></p>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </div>
-                        <div class="p-2 bg-gray-50 dark:bg-slate-800 rounded-b-lg">
-                           <?php if ($total_aniversariantes_hoje > 0): ?>
-                            <button onclick="showModal('birthdayModal')" @click="open = false" class="w-full text-center p-2 bg-blue-500 text-white hover:bg-blue-600 text-sm font-medium rounded-md">Enviar Parabéns</button>
-                           <?php endif; ?>
-                        </div>
-                    </div>
-                </div>
-                <!-- Dropdown Comentários -->
-                <div class="relative" x-data="{ open: false }">
-                    <button @click.stop="open = !open" class="relative text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" title="Depoimentos pendentes">
-                        <i class="fa fa-comment text-xl"></i>
-                        <?php if ($total_comentarios > 0): ?>
-                        <span class="absolute -top-2 -right-2 bg-blue-700 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"><?= $total_comentarios ?></span>
-                        <?php endif; ?>
-                    </button>
-                    <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-700 rounded-lg shadow-lg z-20">
-                        <div class="p-3 border-b border-gray-200 dark:border-slate-600">
-                            <h3 class="font-semibold text-gray-800 dark:text-gray-200"><?= $total_comentarios ?> Depoimentos Pendentes</h3>
-                        </div>
-                        <div class="max-h-64 overflow-y-auto custom-scrollbar">
-                             <?php if(empty($res_comentarios)): ?>
-                                <p class="text-center text-gray-500 dark:text-gray-400 p-4">Nenhum depoimento pendente.</p>
-                             <?php else: ?>
-                                 <?php foreach($res_comentarios as $coment): ?>
-                                    <div class="p-3 border-b border-gray-100 dark:border-slate-600">
-                                        <p class="text-sm text-gray-700 dark:text-gray-300">Cliente: <span class="font-semibold"><?= htmlspecialchars($coment['nome']) ?></span></p>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </div>
-                        <a href="comentarios" class="block text-center p-2 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-600 text-sm font-medium text-blue-600 dark:text-blue-400 rounded-b-lg">Ver Comentários</a>
-                    </div>
-                </div>
-                <?php endif; ?>
-                
-                <!-- Ícones de Status e Tema -->
-                <i class="fab fa-whatsapp text-2xl <?= $whatsapp_color ?>" title="Status WhatsApp: <?= $whatsapp_status ?>"></i>
-                
-                <!-- Perfil Dropdown -->
-                <div class="relative" x-data="{ open: false }" @click.away="open = false">
-                    <button @click.stop="open = !open" class="flex items-center space-x-2 focus:outline-none">
-                        <img src="img/perfil/<?= htmlspecialchars($foto_usuario) ?>" alt="Foto" class="w-10 h-10 rounded-full object-cover">
-                        <div class="hidden md:flex flex-col items-start">
-                            <span class="text-sm font-semibold text-gray-800 dark:text-gray-200"><?= htmlspecialchars($nome_usuario) ?></span>
-                            <span class="text-xs text-gray-500 dark:text-gray-400"><?= htmlspecialchars($nivel_usuario) ?></span>
-                        </div>
-                    </button>
-                    <div x-show="open" x-cloak x-transition class="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-700 rounded-lg shadow-lg py-2 z-20">
-                        <a href="#" onclick="showModal('modalPerfil')" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-suitcase w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Editar Perfil</a>
-                        <?php if(@$_SESSION['nivel_usuario'] == 'administrador'): ?>
-                        <a href="configuracoes" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-cog w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Config. Sistema</a>
-                        <?php endif; ?>
-                        <a href="conf_site" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-link w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Config. Site</a>
-                        
-                        <?php if(@$_SESSION['nivel_usuario'] == 'administrador' && $cliente_stripe == null): ?>
-                            <a href="#" onclick="showModal('assinaturaModal')" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-dollar-sign w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Minha Assinatura</a>
-                        <?php else: ?>
-                            <a href="../../portal.php" target="_blank" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-dollar-sign w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Sua Assinatura</a>
-                        <?php endif; ?>
+.icon-wiggle-whatsapp {
+    display: inline-block;
+    animation: wiggle-whatsapp 1s infinite ease-in-out;
+    transform-origin: bottom center; /* Define o ponto de rotação */
+}
 
-                        <div class="border-t border-gray-200 dark:border-slate-600 my-1"></div>
-                        <a href="logout.php" class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"><i class="fa fa-sign-out w-6 mr-2 text-gray-500 dark:text-gray-400"></i>Sair</a>
-                    </div>
-                </div>
-            </div>
-        </header>
+.navbar-header {
+    /* Cor de fundo opcional como fallback */
+    background-color: #516a88;
+    /* Imagem de fundo */
+    background-image: url('../../images/icone_512.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Centraliza o conteúdo verticalmente */
+    display: flex;
+    align-items: center;
+    padding: 3px 15px;	
+}
 
-        <main class="flex-1 p-6 overflow-y-auto">
-            <?php require_once("paginas/" . $pag . '.php'); ?>
-        </main>
+.navbar-brand {
+    /* Garante que o link não tenha sublinhado e ocupa o espaço necessário */
+    padding: 0;
+    height: auto;
+    display: block;
+}
+
+.brand-container {
+    /* Alinha o logo e o texto um ao lado do outro */
+    display: flex;
+    align-items: center;
+}
+
+
+.brand-text {
+    /* Estilo para o texto */
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    line-height: 1.2;
+	margin-top: 38px;
+}
+
+.system-name {
+    /* Estilo para o nome do sistema */
+    font-size: 0.4em;
+    font-style: italic;
+    color: #e0e0e0;
+}
+
+/* Estilo para os ícones da barra de navegação */
+.navbar-toggle .icon-bar {
+    background-color: white; /* Cor dos ícones para contraste */
+}
+
+
+  
+  @media (max-width: 768px) {
+    .sticky-header {
+        padding: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    .header-left, .header-right {
+        margin: 0;
+        padding: 0;
+        flex-shrink: 1;
+    }
+    #showLeftPush {
+        font-size: 16px;
+        padding: 4px;
+        margin-right: 5px;
+        line-height: 1;
+        width: 24px; /* Simétrico */
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .nofitications-dropdown {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+    }
+    .nofitications-dropdown li {
+        margin-right: 5px;
+        padding: 0;
+        width: 30px; /* Largura fixa igual à altura */
+        height: 30px; /* Altura fixa igual à largura */
+        display: flex; /* Garante que o conteúdo interno se ajuste */
+        align-items: center;
+        justify-content: center;
         
-        <?php if ($caixa_aberto): ?>
-        <a href="caixa" title="Caixa Aberto" class="fixed bottom-6 right-6 bg-green-500 text-white px-5 py-3 rounded-full shadow-lg hover:bg-green-600 transition flex items-center space-x-2">
-            <i class="fas fa-cash-register text-xl"></i>
-            <span class="font-semibold">Caixa Aberto</span>
-        </a>
-        <?php endif; ?>
-    </div>
-    
-    <!-- MODAIS AQUI (perfil, aniversário, etc) -->
-    <!-- Modal para Aniversariantes -->
-    <div id="birthdayModal" class="fixed inset-0 hidden modal-background z-50 items-center justify-center p-4" x-data="{ present: 'Não' }" x-cloak>
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl overflow-hidden max-w-lg w-full">
-            <div class="p-5 border-b dark:border-slate-700 flex justify-between items-center">
-                <h5 class="text-xl font-bold text-gray-800 dark:text-gray-200">Aniversariantes do Dia</h5>
-                <button onclick="hideModal('birthdayModal')" class="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">&times;</button>
-            </div>
-            <div class="p-6 space-y-4">
-                <div>
-                    <label for="oferecer_presente" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Oferecer Presente?</label>
-                    <select id="oferecer_presente" x-model="present" class="mt-1 block w-full rounded-md border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-800 dark:text-gray-200 shadow-sm">
-                        <option value="Não">Não</option>
-                        <option value="Sim">Sim</option>
-                    </select>
-                </div>
-                <div x-show="present === 'Sim'" x-transition>
-                    <label for="id_cupom" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Selecionar Cupom</label>
-                    <select class="mt-1 block w-full rounded-md border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-800 dark:text-gray-200 shadow-sm" id="id_cupom">
-                        <option value="">Selecione um cupom</option>
-                        <?php
-                        $query_cupons = $pdo->prepare("SELECT id, codigo, valor, tipo_desconto FROM cupons WHERE id_conta = ? AND data_validade >= CURDATE() AND (usos_atuais < max_usos OR max_usos = 0)");
-                        $query_cupons->execute([$id_conta]);
-                        foreach ($query_cupons->fetchAll(PDO::FETCH_ASSOC) as $cupom) {
-                            $desconto = $cupom['tipo_desconto'] === 'porcentagem' ? "{$cupom['valor']}%" : "R$" . number_format($cupom['valor'], 2, ',', '.');
-                            echo "<option value=\"{$cupom['id']}\">{$cupom['codigo']} ({$desconto})</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="max-h-48 overflow-y-auto custom-scrollbar border rounded-md dark:border-slate-700">
-                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-slate-700 dark:text-gray-300">
-                           <tr><th class="px-4 py-2">Nome</th><th class="px-4 py-2">Selecionar</th></tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($res_aniversariantes as $aniversariante): ?>
-                            <tr class="bg-white dark:bg-slate-800 border-b dark:border-slate-700">
-                                <td class="px-4 py-2 font-medium text-gray-900 dark:text-white"><?= htmlspecialchars($aniversariante['nome']); ?></td>
-                                <td class="px-4 py-2"><input type="checkbox" class="aniversariante-checkbox" value="<?= $aniversariante['id']; ?>" checked></td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="p-4 bg-gray-50 dark:bg-slate-900 flex justify-end space-x-3">
-                <button type="button" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300" onclick="hideModal('birthdayModal')">Fechar</button>
-                <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" id="enviar_mensagens_aniversario" <?= empty($res_aniversariantes) ? 'disabled' : ''; ?>>Enviar Mensagens</button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="modalPerfil" class="fixed inset-0 hidden modal-background z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl shadow-2xl overflow-hidden max-w-2xl w-full">
-            <div class="modal-header-gradient text-white p-5 flex justify-between items-center">
-                <h4 class="text-xl font-bold">Editar Perfil</h4>
-                <button onclick="hideModal('modalPerfil')" class="text-white text-2xl">&times;</button>
-            </div>
-            <form id="form-perfil" class="p-6 max-h-[80vh] overflow-y-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Nome</label>
-                        <input type="text" name="nome" value="<?= htmlspecialchars($nome_usuario) ?>" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" name="email" value="<?= htmlspecialchars($email_usuario) ?>" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Telefone</label>
-                        <input type="text" id="telefone-perfil" name="telefone" value="<?= htmlspecialchars($telefone_usuario) ?>" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                     <div>
-                        <label class="block text-sm font-medium text-gray-700">CPF</label>
-                        <input type="text" id="cpf-perfil" name="cpf" value="<?= htmlspecialchars($cpf_usuario) ?>" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Nova Senha</label>
-                        <input type="password" id="senha-perfil" name="senha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Confirmar Senha</label>
-                        <input type="password" id="conf-senha-perfil" name="conf_senha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                    <div>
-                         <label class="block text-sm font-medium text-gray-700">Atendimento</label>
-                         <select name="atendimento" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            <option value="Sim" <?= ($atendimento == 'Sim') ? 'selected' : '' ?>>Sim</option>
-                            <option value="Não" <?= ($atendimento == 'Não') ? 'selected' : '' ?>>Não</option>
-                         </select>
-                    </div>
-                </div>
-                <div class="mt-4">
-                     <label class="block text-sm font-medium text-gray-700">Endereço</label>
-                     <input type="text" name="endereco" value="<?= htmlspecialchars($endereco_usuario) ?>" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                </div>
-                 <div class="mt-4 flex items-center justify-between">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Foto</label>
-                        <input type="file" name="foto" id="foto-usu" onchange="carregarImgPerfil()" class="mt-1">
-                    </div>
-                    <img src="img/perfil/<?= htmlspecialchars($foto_usuario) ?>" width="80" height="80" id="target-usu" class="rounded-full object-cover">
-                </div>
-                <input type="hidden" name="id" value="<?= $id_usuario ?>">
-                <div id="mensagem-perfil" class="mt-4 text-center text-red-500"></div>
-                <div class="mt-6 flex justify-end">
-                    <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-700 transition">Salvar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    
-    <div id="RelEntradas" class="fixed inset-0 hidden modal-background z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl shadow-2xl overflow-hidden max-w-xl w-full">
-            <div class="modal-header-gradient text-white p-5 flex justify-between items-center">
-                <h4 class="text-xl font-bold">Relatório de Ganhos</h4>
-                <button onclick="hideModal('RelEntradas')" class="text-white text-2xl">&times;</button>
-            </div>
-            <form method="post" action="rel/rel_entradas_class.php" target="_blank" class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium">Data Inicial</label>
-                        <input type="date" name="dataInicial" value="<?= date('Y-m-d') ?>" required class="mt-1 block w-full rounded-md border-gray-300">
-                    </div>
-                     <div>
-                        <label class="block text-sm font-medium">Data Final</label>
-                        <input type="date" name="dataFinal" value="<?= date('Y-m-d') ?>" required class="mt-1 block w-full rounded-md border-gray-300">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium">Filtro</label>
-                        <select name="filtro" class="mt-1 block w-full rounded-md border-gray-300">
-                            <option value="">Todas</option>
-                            <option value="Produto">Produtos</option>
-                            <option value="Serviço">Serviços</option>
-                            <option value="Conta">Demais Ganhos</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium">Cliente</label>
-                        <select name="cliente" class="mt-1 block w-full rounded-md border-gray-300 selcli">
-                            <option value="">Todos</option>
-                            <?php
-                            $q = $pdo->query("SELECT id, nome FROM clientes WHERE id_conta = '$id_conta' ORDER BY nome ASC");
-                            foreach($q->fetchAll(PDO::FETCH_ASSOC) as $row) {
-                                echo '<option value="'.$row['id'].'">'.htmlspecialchars($row['nome']).'</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                </div>
-                 <div class="mt-6 flex justify-end">
-                    <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-700 transition">Gerar Relatório</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    }
+    .nofitications-dropdown li a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 0; /* Remove padding para controle total */
+    }
+    .nofitications-dropdown li a i {
+        font-size: 16px; /* Tamanho do ícone */
+        width: 16px; /* Largura fixa */
+        height: 16px; /* Altura fixa */
+        line-height: 16px;
+        text-align: center;
+    }
+    .badge {
+        font-size: 8px;
+        padding: 2px 4px;
+        top: -8px;
+        right: -4px; /* Ajusta posição para não interferir na simetria */
+        position: absolute;
+        border-radius: 50%;
+        min-width: 12px;
+        height: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .dropdown-menu {
+        font-size: 10px;
+        max-width: 120px;
+        padding: 2px;
+    }
+    .profile_details {
+        margin-left: 110px;
+        flex-shrink: 1;
+		
+    }
 
-    <div id="modalSeuLink" class="fixed inset-0 hidden modal-background z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl shadow-2xl overflow-hidden max-w-md w-full">
-            <div class="modal-header-gradient text-white p-5 flex justify-between items-center">
-                <h5 class="text-xl font-bold">Compartilhe Seu Link</h5>
-                <button onclick="hideModal('modalSeuLink')" class="text-white text-2xl">&times;</button>
-            </div>
-            <div class="p-6 text-center">
-                 <p class="text-gray-600 mb-6">Escolha a melhor forma de compartilhar seu link com seus clientes.</p>
-                 <div class="space-y-3">
-                    <button onclick="copiarLink()" class="w-full bg-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-lg hover:bg-gray-300 transition flex items-center justify-center space-x-2">
-                        <i class="fas fa-copy"></i>
-                        <span>Copiar Link</span>
-                    </button>
-                    <button onclick="enviarLink()" class="w-full bg-green-500 text-white font-semibold py-3 px-4 rounded-lg hover:bg-green-600 transition flex items-center justify-center space-x-2">
-                         <i class="fab fa-whatsapp"></i>
-                        <span>Enviar por WhatsApp</span>
-                    </button>
-                     <button onclick="mostrarQRCode()" class="w-full bg-gray-800 text-white font-semibold py-3 px-4 rounded-lg hover:bg-gray-900 transition flex items-center justify-center space-x-2">
-                         <i class="fas fa-qrcode"></i>
-                        <span>Exibir QR Code</span>
-                    </button>
-                 </div>
-                 <div id="qrcode-container" class="mt-6 hidden">
-                     <div id="qrcode" class="p-2 bg-white inline-block rounded-lg shadow-md"></div>
-                 </div>
-            </div>
-        </div>
-    </div>
-    
+	
+    .prfil-img img {
+        width: 40px;
+        height: 40px;
+        margin-left: -50px;
+        border-radius: 50%;
+		
+    }
+    .user-name {
+        display: none;
+    }
+    .fa-angle-down, .fa-angle-up {
+        font-size: 12px;
+        margin-left: 2px;
+        width: 12px;
+        height: 12px;
+        line-height: 12px;
+        text-align: center;
+    }
+    .dropdown-menu.drp-mnu {
+        font-size: 10px;
+        min-width: 80px;
+        padding: 2px;
+		margin-left: -110px !important;
+    }
+    .profile_details_drop a {
+        display: flex;
+        align-items: center;
+        padding: 0;
+    }
+    /* Sobrescreve conflitos */
+    .header-left, .header-right, .nofitications-dropdown, .profile_details {
+        float: none !important;
+        display: inline-flex !important;
+    }
+
+	.dropdown-toggle {
+        width: 34px !important; /* Largura igual à altura para ser redondo */
+        height: 34px !important;
+        border-radius: 50%; /* Forma redonda */       
+        
+        text-decoration: none;
+        
+    }
+	.foto_user {        
+		margin-right: -30px;        
+        
+    }
+	
+}
+
+.list-group-item-action {
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.list-group-item-action:hover {
+    background-color: #e9ecef;
+}
+.list-group-item-action i {
+    color: #4682B4;
+}
+#qrcode-container {
+    display: none;
+}
+#qrcode {
+    margin: 0 auto;
+}
+.btn-primary {
+    background-color: #4682B4;
+    border: none;
+    transition: all 0.3s;
+}
+.btn-primary:hover {
+    background-color: #5a9bd4;
+}
+
+.theme-switcher-container {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Alinha os itens à esquerda */
+    font-size: 14px;
+    color: #f1f1f1;
+}
+
+.theme-label-text {
+    margin-right: 10px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+/* Arredonda os sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.btn-floating {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    padding: 12px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-floating:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    background-color: #218838; /* Cor mais escura ao passar o mouse */
+}
+
+.btn-floating i {
+    font-size: 18px;
+}
+
+
+	</style>
+	<!--pie-chart --><!-- index page sales reviews visitors pie chart -->
+	<script src="js/pie-chart.js" type="text/javascript"></script>
+	<script type="text/javascript">
+
+		$(document).ready(function () {
+			$('#demo-pie-1').pieChart({
+				barColor: '#2dde98',
+				trackColor: '#eee',
+				lineCap: 'round',
+				lineWidth: 8,
+				onStep: function (from, to, percent) {
+					$(this.element).find('.pie-value').text(Math.round(percent) + '%');
+				}
+			});
+
+			$('#demo-pie-2').pieChart({
+				barColor: '#8e43e7',
+				trackColor: '#eee',
+				lineCap: 'butt',
+				lineWidth: 8,
+				onStep: function (from, to, percent) {
+					$(this.element).find('.pie-value').text(Math.round(percent) + '%');
+				}
+			});
+
+			$('#demo-pie-3').pieChart({
+				barColor: '#e32424',
+				trackColor: '#eee',
+				lineCap: 'square',
+				lineWidth: 8,
+				onStep: function (from, to, percent) {
+					$(this.element).find('.pie-value').text(Math.round(percent) + '%');
+				}
+			});
+
+
+		});
+
+	</script>
+	<!-- //pie-chart --><!-- index page sales reviews visitors pie chart -->
+
+
+	<link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
+ 	<script type="text/javascript" src="DataTables/datatables.min.js"></script>
+
+ 	
+
+
+	
+</head> 
+<body class="cbp-spmenu-push" >
+	<div class="main-content">
+		<div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left"  id="cbp-spmenu-s1" >
+			<!--left-fixed -navigation-->
+			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
+				<nav class="navbar navbar-inverse" >
+					<div class="navbar-header">						
+						<a class="navbar-brand" href="index.php">
+							<div class="brand-container">
+								
+								<div class="brand-text">
+									
+									<span class="system-name"><?php echo $nome_sistema ?></span>
+								</div>
+							</div>
+						</a>
+					</div>
+					
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						
+						<ul class="sidebar-menu">	
+
+							<?php 
+                        // DEFINANDO SE É ADMINISTRADOR
+							if(@$_SESSION['nivel_usuario'] == 'administrador'){
+							?>
+							<!-- <li class="header">MENU ADMINISTRATIVO</li> -->
+
+
+							<!-- <li class="treeview <?php echo @$home ?>">
+								<a href="painel">
+									<i class="fa fa-home"></i> <span>Painel</span>
+								</a>
+							</li> -->
+
+							<!-- <li class="treeview <?php echo @$home ?>">
+								<a href="index.php">
+									<i class="fa fa-dashboard"></i> <span>Dashboards</span>
+								</a>
+							</li> -->
+							<li class="treeview <?php echo @$home ?>">
+								<a href="#">
+									<i class="fa fa-dashboard"></i>
+									<span>Dashboards</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+									<li class="<?php echo @$home ?>"><a href="index.php"><i class="fa fa-angle-right"></i>Financeiro</a></li>
+									<li class="<?php echo @$home ?>"><a href="grafico_dias"><i class="fa fa-angle-right"></i>Agendamentos Mês</a></li>
+									<li class="<?php echo @$home ?>"><a href="grafico_ano"><i class="fa fa-angle-right"></i>Agendamentos Ano</a></li>
+					
+
+								</ul>
+							</li>
+
+							<li class="treeview">
+								<a href="caixa">
+								<i class="fas fa-cash-register me-2"></i> <span>  Abrir Caixa</span>
+								</a>
+							</li>
+
+							<li class="treeview <?php echo @$menu_agendamentos ?>">
+								<a href="agendamentos">
+								<i class="fe fe-clock"></i> <span> Agendamentos</span>
+								</a>
+							</li>
+
+							<!-- <li class="treeview <?php echo @$comanda ?>">
+								<a href="comanda">
+								<i class="fa fa-clipboard"></i> <span>Comandas</span>
+								</a>
+							</li> -->
+
+							<!-- <li class="treeview <?php echo @$menu_agendamentos ?>">
+								<a href="#">
+									<i class="fe fe-clock"></i>&nbsp;
+									<span>Agendamento / Serviço</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+
+									<li class="<?php echo @$agendamentos ?>"><a href="agendamentos"><i class="fa fa-angle-right"></i>Agendamentos</a></li>
+
+									<li class="<?php echo @$servicos_agenda ?>"><a href="servicos_agenda"><i class="fa fa-angle-right"></i>Serviços</a></li>
+									
+																	
+								
+								</ul>
+							</li> -->
+
+
+							<!-- <li class="treeview <?php echo @$menu_pessoas ?>">
+								<a href="#">
+									<i class="fa fa-users"></i>
+									<span>Pessoas</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+									<li class="<?php echo @$usuarios ?>"><a href="usuarios"><i class="fa fa-angle-right"></i>Usuários</a></li>
+									<li class="<?php echo @$funcionarios ?>"><a href="funcionarios"><i class="fa fa-angle-right"></i>Funcionários</a></li>
+									<li class="<?php echo @$clientes ?>"><a href="clientes"><i class="fa fa-angle-right"></i>Clientes</a></li>
+
+									<li class="<?php echo @$clientes_retorno ?>"><a href="clientes_retorno"><i class="fa fa-angle-right"></i>Clientes Retornos</a></li>
+
+									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"><i class="fa fa-angle-right"></i>Fornecedores</a></li>
+
+								</ul>
+							</li> -->
+
+
+
+							<li class="treeview <?php echo @$menu_cadastros ?>" >
+								<a href="#">
+									<i class="fa fa-pencil"></i>
+									<span>Cadastros</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+								<li class="<?php echo @$clientes ?>"><a href="clientes"><i class="fa fa-angle-right"></i>Clientes</a></li>
+
+								<?php 
+								if($plano == '2'){
+								?>
+								<!-- <li class="<?php echo @$cargos ?>"><a href="cargos"><i class="fa fa-angle-right"></i>Cargos</a></li> -->
+								<!-- <li class="<?php echo @$usuarios ?>"><a href="usuarios"><i class="fa fa-angle-right"></i>Usuários</a></li> -->								 
+
+								<li class="<?php echo @$funcionarios ?>"><a href="funcionarios"><i class="fa fa-angle-right"></i>Profissionais</a></li>								
+								<?php 
+								}?>								
+								
+									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"><i class="fa fa-angle-right"></i>Fornecedores</a></li>	
+									
+									<!-- <?php 
+									if($id_conta == '1'){?>
+										<li class="<?php echo @$grupos ?>"><a href="grupos"><i class="fa fa-angle-right"></i>Grupo Acessos</a></li>
+
+										<li class="<?php echo @$acessos ?>"><a href="acessos"><i class="fa fa-angle-right"></i>Acessos</a></li>
+
+									<?php }
+									?>									 -->
+
+										<!-- <li class="<?php echo @$pgto ?>"><a href="pgto"><i class="fa fa-angle-right"></i>Formas de Pagamento</a></li> -->
+
+										<li class="<?php echo @$servicos ?>"><a href="servicos"><i class="fa fa-angle-right"></i>Serviços</a></li>
+
+										<li class="<?php echo @$servicos ?>"><a href="cupons"><i class="fa fa-angle-right"></i>Cupons de Desconto</a></li>
+
+										<!-- <li><a href="dias"><i class="fa fa-angle-right"></i>Horários / Dias</a></li>
+
+										<li class="<?php echo @$dias_bloqueio ?>"><a href="dias_bloqueio"><i class="fa fa-angle-right"></i>Bloqueio de Dias</a></li> -->
+								
+								</ul>
+							</li>							
+
+							<li class="treeview <?php echo @$menu_servicos ?>">
+								<!-- <a href="#">
+								<i class="fa fa-briefcase"></i>
+									<span>Serviços</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+
+								   <li class="<?php echo @$servicos ?>"><a href="servicos"><i class="fa fa-angle-right"></i>Serviços</a></li>
+
+								   <li class="<?php echo @$cat_servicos ?>"><a href="cat_servicos"><i class="fa fa-angle-right"></i>Categoria Serviços</a></li>
+								</ul> -->
+
+								<li class="treeview <?php echo @$menu_produtos ?>">
+								<a href="#">
+								    <i class="fa fa-tags"></i>
+									<span>Produtos</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+
+									<li class="<?php echo @$produtos ?>"><a href="produtos"><i class="fa fa-angle-right"></i>Produtos</a></li>
+
+									<!-- <li class="<?php echo @$cat_produtos ?>"><a href="cat_produtos"><i class="fa fa-angle-right"></i>Categorias</a></li> -->
+									 <li class="<?php echo @$vendas ?>"><a href="vendas"><i class="fa fa-angle-right"></i>Vendas de Produtos</a></li>
+
+									<li class="<?php echo @$compras ?>"><a href="compras"><i class="fa fa-angle-right"></i>Compras de Produtos</a></li>
+									
+									<li class="<?php echo @$estoque ?>"><a href="estoque"><i class="fa fa-angle-right"></i>Estoque Baixo</a></li>
+
+									<li class="<?php echo @$saidas ?>"><a href="saidas"><i class="fa fa-angle-right"></i>Saídas</a></li>
+
+									<li class="<?php echo @$entradas ?>"><a href="entradas"><i class="fa fa-angle-right"></i>Entradas</a></li>
+								
+								</ul>
+							</li>	
+							
+							<!-- <li class="treeview <?= @$marketing ?>">
+                                <a href="#" data-toggle="modal" data-target="#modalAssinaturas">
+                                    <i class="fa fa-paper-plane"></i><span>Assinaturas</span>
+                                </a>
+                             </li>	 -->
+
+							 <?php 
+							 if($assinaturas2 == 'Sim'){?>
+								<li class="treeview <?php echo @$assinaturas3 ?>" >
+									<a href="#">
+									<i class="fas fa-crown"></i>
+										<span>Clube do Assinante</span>
+										<i class="fa fa-angle-left pull-right"></i>
+									</a>
+									<ul class="treeview-menu">
+
+										<li class="<?php echo @$vendas ?>"><a href="assinantes"><i class="fa fa-angle-right"></i>Assinantes</a></li>
+
+										<li class="<?php echo @$compras ?>"><a href="conf_planos"><i class="fa fa-angle-right"></i>Configuração</a></li>			
+																		
+									
+									</ul>
+								</li>
+							<?php 
+							 }?>
+
+
+
+							<li class="treeview <?php echo @$menu_financeiro ?>" >
+								<a href="#">
+									<i class="fa fa-usd"></i>
+									<span>Financeiro</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">									
+									
+									<li class="<?php echo @$pagar ?>"><a href="pagar"><i class="fa fa-angle-right"></i>Contas à Pagar</a></li>
+
+									<li class="<?php echo @$receber ?>"><a href="receber"><i class="fa fa-angle-right"></i>Contas à Receber</a></li>	
+
+									<li class="<?php echo @$comissoes ?>"><a href="comissoes"><i class="fa fa-angle-right"></i>Comissões</a></li>									
+								
+								</ul>
+							</li>
+
+							<li class="treeview <?php echo @$menu_relatorio ?>" >
+								<a href="#">
+									<i class="fa fa-file-pdf-o"></i>
+									<span>Relatórios</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+
+									<li class="<?php echo @$rel_produtos ?>"><a href="rel/rel_produtos_class.php" target="_blank"><i class="fa fa-angle-right"></i>Relatório de Produtos</a></li>
+
+									<li class="<?php echo @$rel_entradas ?>"><a href="#" data-toggle="modal" data-target="#RelEntradas"><i class="fa fa-angle-right"></i>Entradas / Ganhos</a></li>
+
+									<li class="<?php echo @$rel_saidas ?>"><a href="#" data-toggle="modal" data-target="#RelSaidas"><i class="fa fa-angle-right"></i>Saídas / Despesas</a></li>
+
+									<li class="<?php echo @$rel_comissoes ?>"><a href="#" data-toggle="modal" data-target="#RelComissoes"><i class="fa fa-angle-right"></i>Relatório de Comissões</a></li>
+
+									<li class="<?php echo @$rel_contas ?>"><a href="#" data-toggle="modal" data-target="#RelCon"><i class="fa fa-angle-right"></i>Relatório de Contas</a></li>
+
+
+									<li class="<?php echo @$rel_servicos ?>"><a href="#" data-toggle="modal" data-target="#RelServicos"><i class="fa fa-angle-right"></i>Relatório de Serviços</a></li>
+
+
+									<li class="<?php echo @$rel_aniv ?>"><a href="#" data-toggle="modal" data-target="#RelAniv"><i class="fa fa-angle-right"></i>Relatório de Aniversáriantes</a></li>
+
+
+									<li class="<?php echo @$rel_lucro ?>"><a href="#" data-toggle="modal" data-target="#RelLucro"><i class="fa fa-angle-right"></i>Demonstrativo de Lucro</a></li>	
+															
+								</ul>
+							</li>
+
+							<!-- <li class="treeview <?php echo @$clientes_retorno ?>">
+                                <a href="clientes_retorno">
+                                    <i class="fa fa-bell"></i><span>Clientes Retornos</span>
+                                </a>
+                             </li>	 -->
+
+
+							<li class="treeview <?= @$whatsapp?>">
+								<a href="#">
+									<i class="fab fa-whatsapp"></i>
+									<span> Whatsapp</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+
+									<li class="treeview"><a href="whatsapp"><i class="fa fa-cog"></i>Configurações</a></li>								
+								
+									
+																		
+								
+								</ul>
+							</li>
+                         
+
+                            <li class="treeview <?= @$marketing ?>">
+                                <a href="campanhas">
+                                    <i class="fa fa-paper-plane"></i><span>Campanha de retorno</span>
+                                </a>
+                             </li> 
+
+                            <li class="treeview">
+								<a href="#" data-toggle="modal" data-target="#modalSeuLink">
+									<i class="fa fa-link"></i><span> Seu Link</span>
+								</a>
+							</li>					
+                            
+								<!-- <li class="treeview <?php echo @$calendario ?>">
+								<a href="calendario">
+									<i class="fa fa-calendar-o"></i> <span>Calendário</span>
+								</a>
+							</li> -->
+
+							
+                            <li class="treeview <?= @$menu_site ?>">
+                                <a href="comentarios">
+                                    <i class="fa fa-comments"></i><span> Comentários</span>
+                                </a>
+                             </li>							                      
+							<?php 
+					        }
+							?>
+
+							<?php if(@$atendimento == 'Sim'){?>
+
+								<li class="header">MENU DO PROFISSIONAL</li>
+							<li class="treeview <?php echo @$minha_agenda ?>">
+								<a href="agenda">
+									<i class="fa fa-calendar-o"></i> <span>Minha Agenda</span>
+								</a>
+							</li>	
+							
+							<!-- <li class="treeview  <?php echo @$meus_servicos ?>">
+								<a href="#">
+									<i class="fa fa-server"></i>
+									<span>Meus Serviços</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+							
+									<li><a href="meus_servicos"><i class="fa fa-angle-right"></i> <span>Serviços</span></a>
+									</li>	
+
+									<li><a href="servicos_func"><i class="fa fa-angle-right"></i>Ativar Serviços</a></li>
+									</ul>
+							</li>	 -->
+							<li class="treeview  <?php echo @$minhas_comissoes ?>">
+								<a href="servicos_func">
+								<i class="fa fa-server"></i> <span>Meus Serviços</span>
+								</a>
+							</li>	
+
+
+							<li class="treeview  <?php echo @$minhas_comissoes ?>">
+								<a href="minhas_comissoes">
+								<i class="fa fa-dollar-sign"></i> <span>Minhas Comissões</span>
+								</a>
+							</li>						
+
+
+							<li class="treeview  <?php echo @$meus_dias ?>">
+								<a href="#">
+									<i class="fa fa-clock"></i>
+									<span>Meus Horário / Dias</span>
+									
+								</a>
+								<ul class="treeview-menu">
+
+									<li><a href="dias"><i class="fa fa-angle-right"></i>Horários / Dias</a></li>
+
+									<li><a href="dias_bloqueio_func"><i class="fa fa-angle-right"></i>Bloqueio de Dias</a></li>
+																		
+								
+								</ul>
+							</li>							
+
+							<?php } ?>						
+
+
+						</ul>
+					</div>
+					<!-- /.navbar-collapse -->
+				</nav>
+			</aside>
+		</div>
+		<!--left-fixed -navigation-->
+		
+		<!-- header-starts -->
+		<div class="sticky-header header-section ">
+			<div class="header-left">
+				<!--toggle button start-->
+				<button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>
+				<!--toggle button end-->
+				<div class="profile_details_left"><!--notifications of menu start -->
+					<ul class="nofitications-dropdown">						
+
+						<?php
+						$id_conta = $_SESSION['id_conta'];
+						if(@$_SESSION['nivel_usuario'] == 'administrador'){ 
+							$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and status = 'Agendado' and id_conta = '$id_conta'");
+							$res = $query->fetchAll(PDO::FETCH_ASSOC);
+							$total_agendamentos_hoje_usuario_pendentes = @count($res);
+							$link_ag = 'agendamentos';
+
+							$query = $pdo->query("SELECT * FROM encaixe where data = curDate() and id_conta = '$id_conta'");
+							$res_encaixes = $query->fetchAll(PDO::FETCH_ASSOC);
+							$total_encaixes_hoje = @count($res_encaixes);
+							
+						}else{
+							$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and funcionario = '$id_usuario' and status = 'Agendado' and id_conta = '$id_conta'");
+							$res = $query->fetchAll(PDO::FETCH_ASSOC);
+							$total_agendamentos_hoje_usuario_pendentes = @count($res);
+							$link_ag = 'agenda';
+
+							$query = $pdo->query("SELECT * FROM encaixe where data = curDate() and profissional = '$id_usuario' and id_conta = '$id_conta'");
+							$res_encaixes = $query->fetchAll(PDO::FETCH_ASSOC);
+							$total_encaixes_hoje = @count($res_encaixes);
+
+						}
+						if($total_agendamentos_hoje_usuario_pendentes != 0){
+							$icon2 = 'icon-wiggle-whatsapp';					
+						}else{
+							$icon2='';
+						}
+						?>
+
+						<li class="dropdown head-dpdn">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-calendar-check" style="color: white;" title="Agendamentos hoje"></i>
+							<?php 								
+								if($total_agendamentos_hoje_usuario_pendentes != 0){							
+									?>
+                                    <span class="badge text-danger"><?php echo $total_agendamentos_hoje_usuario_pendentes ?></span><?php 
+								}?>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="notification_header" align="center">
+										<h3><?php echo $total_agendamentos_hoje_usuario_pendentes ?> Agendamento Pendente Hoje</h3>
+									</div>
+								</li>
+
+								<?php 
+								for($i=0; $i < @count($res); $i++){
+									foreach ($res[$i] as $key => $value){}
+								$id = $res[$i]['id'];								
+								$cliente = $res[$i]['cliente'];
+								$hora = $res[$i]['hora'];
+								$servico = $res[$i]['servico'];
+								$horaF = date("H:i", strtotime($hora));
+
+
+									$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
+									$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+									if(@count($res2) > 0){
+										$nome_serv = $res2[0]['nome'];
+										$valor_serv = $res2[0]['valor'];
+									}else{
+										$nome_serv = 'Não Lançado';
+										$valor_serv = '';
+									}
+
+
+									$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
+									$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+									if(@count($res2) > 0){
+										$nome_cliente = $res2[0]['nome'];
+									}else{
+										$nome_cliente = 'Sem Cliente';
+									}
+								 ?>
+								<li>									
+									<div class="notification_desc">
+										<p><b><?php echo $horaF ?> </b> - <?php echo $nome_cliente ?> / <?php echo $nome_serv ?></p>
+										<p><span></span></p>
+									</div>
+									<div class="clearfix"></div>	
+								</li>
+								<?php 
+							}
+								 ?>
+								
+								
+							
+								<li>
+									<div class="notification_bottom" style="background: #ffe8e6">
+										<a href="<?php echo $link_ag?>">Ver Agendamentos</a>
+									</div> 
+								</li>
+							</ul>
+						</li>	
+
+						<li class="dropdown head-dpdn">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell" title="Encaixes hoje"></i>
+							<?php 								
+								if($total_encaixes_hoje != 0){							
+									?>
+                                    <span class="badge text-danger"><?php echo $total_encaixes_hoje ?></span><?php 
+								}?>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="notification_header" align="center">					
+											<h3><?php echo $total_encaixes_hoje ?> Encaixes Hoje Aguardando</h3>
+									</div>
+								</li>				
+							
+								<li>
+									<div class="notification_bottom" style="background: #ffe8e6">
+										<a href="#encaixes-hoje">Ver Encaixes</a>
+									</div> 
+								</li>
+							</ul>
+						</li>	
+					
+
+
+
+
+                <?php 
+                // DEFINANDO SE É ADMINISTRADOR
+				if(@$_SESSION['nivel_usuario'] == 'administrador'){
+				?>
+				 	<?php if(@$rel_aniv == ''){ 
+
+						//totalizando aniversariantes do dia
+						$query = $pdo->query("SELECT * FROM clientes where month(data_nasc) = '$dataMesInicial' and day(data_nasc) = '$dataDiaInicial' and id_conta = '$id_conta' order by data_nasc asc, id asc");
+						$res = $query->fetchAll(PDO::FETCH_ASSOC);
+						$total_aniversariantes_hoje = @count($res);
+
+						if($total_aniversariantes_hoje != 0){
+							$icon3 = 'icon-wiggle-whatsapp';					
+						}else{
+							$icon3='';
+						}?>
+
+						<li class="dropdown head-dpdn">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Aniversariantes de hoje"><i class="fa fa-birthday-cake <?php echo $icon3?>" style="color: #FFF"></i>
+							<?php 								
+								if($total_aniversariantes_hoje != 0){?>
+                                    <span class="badge" style="background: #2b6b39"><?php echo $total_aniversariantes_hoje ?></span><?php 
+								}?>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="notification_header" align="center">
+										<h3><?php echo $total_aniversariantes_hoje ?> Aniversariando Hoje</h3>
+									</div>
+								</li>
+
+								<?php 
+								for($i=0; $i < @count($res); $i++){
+									foreach ($res[$i] as $key => $value){}
+								
+								$nome = $res[$i]['nome'];	
+								$telefone = $res[$i]['telefone'];														
+
+								 ?>
+								<li>									
+									<div class="notification_desc">
+										<p><b><?php echo $nome ?> </b> - <?php echo $telefone ?> </p>
+										<p><span></span></p>
+									</div>
+									<div class="clearfix"></div>	
+								</li>
+								<?php 
+							}
+								 ?>							
+							
+								<li>
+									<div class="notification_bottom" style="background: #d9ffe1">
+										<a href="#" data-toggle="modal" data-target="#RelAniv">Relatório Aniversáriantes</a>
+									</div> 
+									<?php if ($total_aniversariantes_hoje > 0): ?>
+										<a href="#" class="notification_bottom" style="background: #4970f3ff; color: white" data-toggle="modal" data-target="#birthdayModal">
+											Enviar Parabéns
+										</a>
+									<?php endif; ?>
+								</li>
+							</ul>
+						</li>	
+					<?php } ?>
+
+					<?php if(@$comentarios == ''){ 
+
+						//totalizando aniversariantes do dia
+						$query = $pdo->query("SELECT * FROM comentarios where ativo != 'Sim' and id_conta = '$id_conta'");
+						$res = $query->fetchAll(PDO::FETCH_ASSOC);
+						$total_comentarios = @count($res);
+
+						if($total_comentarios != 0){
+							$icon5 = 'icon-wiggle-whatsapp';					
+						}else{
+							$icon5='';
+						}
+
+							?>
+						<li class="dropdown head-dpdn">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Depoimentos pendentes"><i class="fa fa-comment <?php echo $icon5?>" style="color:#FFF"></i><?php 
+							if($total_comentarios != 0){?>
+                                    <span class="badge" style="background: #22168a"><?php echo $total_comentarios ?></span><?php 
+								}?>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="notification_header" align="center">
+										<h3><?php echo $total_comentarios ?> Depoimentos Pendente</h3>
+									</div>
+								</li>
+
+								<?php 
+								for($i=0; $i < @count($res); $i++){
+									foreach ($res[$i] as $key => $value){}
+								
+								$nome = $res[$i]['nome'];
+																					
+
+								 ?>
+								<li>									
+									<div class="notification_desc">
+										<p><b>Cliente: <?php echo $nome ?> </b> </p>
+										<p><span></span></p>
+									</div>
+									<div class="clearfix"></div>	
+								</li>
+								<?php 
+							}
+								 ?>
+								
+								
+							
+								<li>
+									<div class="notification_bottom" style="background: #d8d4fc">
+										<a href="comentarios">Ver Depoimentos</a>
+									</div> 
+								</li>
+								
+							</ul>
+						</li>	
+					<?php }
+
+					?>
+					    <li class="dropdown head-dpdn">							
+								<a href="#" class="dropdown-toggle" title="Escolher tema do sistema" ><i class="fa fa-sun" style="color:#FFF" id="theme-icon"></i>						
+						</li>
+
+                        <li class="dropdown head-dpdn" style="margin-left: 20px; color: <?php echo $cor?>" title='<?php echo $status?>'><small><i class="fab fa-whatsapp fa-2x"></i></small></li>
+						
+					</ul>
+					<?php 
+				}
+				?>
+					<div class="clearfix"> </div>
+				</div>
+				
+				
+			</div>
+			<div class="header-right">
+				
+				
+				
+				
+				<div class="profile_details">		
+					<ul>
+						<li class="dropdown profile_details_drop">
+							<a href="#" class="dropdown-toggle foto_user" data-toggle="dropdown" aria-expanded="false">
+								<div class="profile_img">	
+									<span class="prfil-img"><img src="img/perfil/<?php if(!empty($foto_usuario)){ echo $foto_usuario;}else{?>sem-foto.jpg<?php }?>" alt="" width="50" height="50"> </span> 
+									<div class="user-name esc">
+										<p><?php echo $nome_usuario ?></p>
+										<span style="color: white;"><?php echo $nivel_usuario ?></span>
+									</div>
+									<i class="fa fa-angle-down lnr"></i>
+									<i class="fa fa-angle-up lnr"></i>
+									<div class="clearfix"></div>	
+								</div>	
+							</a>
+						
+							<ul class="dropdown-menu drp-mnu">
+						<?php 
+						// DEFINANDO SE É ADMINISTRADOR
+						if(@$_SESSION['nivel_usuario'] == 'administrador'){
+						?>
+								<?php if(@$configuracoes == ''){ ?>
+								<li> <a href="configuracoes" ><i class="fa fa-cog"></i> Config. Sistema</a> </li> 	
+								<?php } }?>
+								<li> <a href="conf_site" ><i class="fa fa-link"></i></i> Config.Seu Site</a> </li>
+								
+
+								<li> <a href="" data-toggle="modal" data-target="#modalPerfil"><i class="fa fa-suitcase"></i> Editar Perfil</a> </li> 
+						<?php 
+						// DEFINANDO SE É ADMINISTRADOR
+						if(@$_SESSION['nivel_usuario'] == 'administrador' && $cliente_stripe == null){
+						?>
+								<li> <a href="" data-toggle="modal" data-target="#assinaturaModal"><i class="fa fa-dollar"></i> Minha Assinatura</a> </li> 
+								<!-- <li> <a href="" data-toggle="modal" data-target="#tutoriaisModal"><i class="fa fa-question" style="color: #15b283;"></i> Vídeos Tutoriais</a> </li>  -->
+						<?php }else{?>
+							<li> <a href="../../portal.php" target="_blank" ><i class="fa fa-dollar"></i> Sua Assinatura</a> </li><?php 
+						}
+						
+						?>
+						
+								<li> <a href="logout.php"><i class="fa fa-sign-out"></i> Sair</a> </li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="clearfix"> </div>				
+			</div>
+			<div class="clearfix"> </div>	
+		</div>
+		<!-- //header-ends -->
+
+
+
+
+
+
+
+
+		<!-- main content start-->
+		<div id="page-wrapper">
+			<?php require_once("paginas/".$pag.'.php') ?>
+		</div>
+
+		<!-- Botão Flutuante Caixa Aberto -->
+		<?php if ($caixa_aberto): ?>
+			<a href="caixa" class="btn btn-success btn-floating" title="Caixa Aberto">
+				<i class="fas fa-cash-register"></i> Caixa Aberto
+			</a>
+		<?php endif; ?>
+
+
+
+
+
+
+
+
+
+		<!--footer-->
+		<div class="footer">
+			<p> Desenvolvidor Por Skysee Soluções em TI <a href="https://www.skysee.com.br/" target="_blank">www.skysee.com.br.com.br</a></p>		
+		</div>
+		<!--//footer-->
+	</div>
+
+
+
+
+	<!-- Classie --><!-- for toggle left push menu script -->
+		<script src="js/classie.js"></script>
+		<script>
+			var menuLeft = document.getElementById( 'cbp-spmenu-s1' ),
+				showLeftPush = document.getElementById( 'showLeftPush' ),
+				body = document.body;
+				
+			showLeftPush.onclick = function() {
+				classie.toggle( this, 'active' );
+				classie.toggle( body, 'cbp-spmenu-push-toright' );
+				classie.toggle( menuLeft, 'cbp-spmenu-open' );
+				disableOther( 'showLeftPush' );
+			};
+			
+
+			function disableOther( button ) {
+				if( button !== 'showLeftPush' ) {
+					classie.toggle( showLeftPush, 'disabled' );
+				}
+			}
+
+
+		showLeftPush2 = document.getElementById( 'showLeftPush2' ),
+		
+		showLeftPush2.onclick = function() {
+			classie.toggle( this, 'active' );
+			classie.toggle( body, 'cbp-spmenu-push-toright' );
+			classie.toggle( menuLeft, 'cbp-spmenu-open' );
+			disableOther2( 'showLeftPush2' );
+		};
+
+
+		function disableOther2( button ) {
+			if( button !== 'showLeftPush2' ) {
+				classie.toggle( showLeftPush2, 'disabled' );
+			}
+		}
+
+		</script>
+	<!-- //Classie --><!-- //for toggle left push menu script -->
+
+
+	<!--scrolling js-->
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script> -->
+	<!-- <script src="js/jquery.nicescroll.js"></script> -->
+	<script src="js/scripts.js"></script>
+	<!--//scrolling js-->
+	
+	<!-- side nav js -->
+	<script src='js/SidebarNav.min.js' type='text/javascript'></script>
+	<script>
+		$('.sidebar-menu').SidebarNav()
+	</script>
+	<!-- //side nav js -->
+	
+	
+	
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/bootstrap.js"> </script>
+	<!-- //Bootstrap Core JavaScript -->
+	
 </body>
 </html>
 
-<script>
-    // Global Modal Functions
-    function showModal(id) {
-        $('#' + id).removeClass('hidden').addClass('flex').find('> div').addClass('animate-pulse-once');
-        setTimeout(() => $('#' + id).find('> div').removeClass('animate-pulse-once'), 1500);
-    }
-    function hideModal(id) {
-        $('#' + id).addClass('hidden').removeClass('flex');
-    }
 
-    // Initialize scripts
-    $(document).ready(function() {
-        // Masking
-        $('#telefone-perfil').mask('(00) 00000-0000');
-        $('#cpf-perfil').mask('000.000.000-00', {reverse: true});
-        
-        // Select2
-        $('.selcli').select2({ dropdownParent: $('#RelEntradas') });
-        // Add other select2 initializations here for other report modals
-        // $('.sel15').select2({ dropdownParent: $('#RelComissoes') });
 
-        // Form Submissions
-        $('#form-perfil').on('submit', function(e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            $.ajax({
-                url: "editar-perfil.php",
-                type: 'POST', data: formData,
-                success: function(response) {
-                    if (response.trim() === "Editado com Sucesso") {
-                        Swal.fire({ icon: 'success', title: 'Salvo!', showConfirmButton: false, timer: 1500 })
-                        .then(() => location.reload());
-                    } else {
-                        $('#mensagem-perfil').text(response);
+
+
+<!-- Mascaras JS -->
+<script type="text/javascript" src="js/mascaras.js"></script>
+
+<!-- Ajax para funcionar Mascaras JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script> 
+
+
+
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+
+<style type="text/css">
+		.select2-selection__rendered {
+			line-height: 36px !important;
+			font-size:16px !important;
+			color:#666666 !important;
+
+		}
+
+		.select2-selection {
+			height: 36px !important;
+			font-size:16px !important;
+			color:#666666 !important;
+
+		}
+	</style>  
+
+
+<!-- Modal Perfil-->
+<div class="modal fade" id="modalPerfil" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-white" style="background-color: #4682B4;">
+				<h4 class="modal-title" id="exampleModalLabel">Editar Perfil</h4>
+				<button id="btn-fechar-perfil" type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
+					<span aria-hidden="true" >&times;</span>
+				</button>
+			</div>
+			<form method="post" id="form-perfil">
+				<div class="modal-body">
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="exampleInputEmail1">Nome</label>
+								<input type="text" class="form-control" id="nome-perfil" name="nome" placeholder="Nome" value="<?php echo $nome_usuario ?>" required>    
+							</div> 	
+						</div>
+						<div class="col-md-6">
+
+							<div class="form-group">
+								<label for="exampleInputEmail1">Email</label>
+								<input type="email" class="form-control" id="email-perfil" name="email" placeholder="Email" value="<?php echo $email_usuario ?>" required>    
+							</div> 	
+						</div>
+					</div>
+
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="exampleInputEmail1">Telefone</label>
+								<input type="text" class="form-control" id="telefone-perfil" name="telefone" placeholder="Telefone" value="<?php echo $telefone_usuario ?>" >    
+							</div> 	
+						</div>
+						<div class="col-md-6">
+							
+							<div class="form-group">
+								<label for="exampleInputEmail1">CPF</label>
+								<input type="text" class="form-control" id="cpf-perfil" name="cpf" placeholder="CPF" value="<?php echo $cpf_usuario ?>">    
+							</div> 	
+						</div>
+					</div>
+
+
+					<div class="row">
+					    <div class="col-md-4">
+							<div class="form-group">
+								<label for="senha-perfil">Senha</label>
+								<input type="password" class="form-control" id="senha-perfil" name="senha" placeholder="Senha" autocomplete="new-password" oninput="validarConfirmacaoSenha()">
+							</div>
+							</div>
+							<div class="col-md-4">
+							<div class="form-group">
+								<label for="conf-senha-perfil">Confirmar Senha</label>
+								<input type="password" class="form-control" id="conf-senha-perfil" name="conf_senha" placeholder="Confirmar Senha" oninput="validarConfirmacaoSenha()">
+							</div>
+							</div>					
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="exampleInputEmail1">Atendimento</label>
+								<select class="form-control" name="atendimento" id="atendimento-perfil">
+									<option <?php if($atendimento == 'Sim'){ ?> selected <?php } ?> value="Sim">Sim</option>
+									<option <?php if($atendimento == 'Não'){ ?> selected <?php } ?> value="Não">Não</option>
+								</select>  
+							</div> 	
+						</div>						
+
+					</div>
+
+
+					<div class="row">
+						<div class="col-md-8">
+							<div class="form-group">
+								<label for="exampleInputEmail1">Endereço</label>
+								<input type="text" class="form-control" id="endereco-perfil" name="endereco" placeholder="Rua X Número 1 Bairro xxx" value="<?php echo $endereco_usuario ?>" >    
+							</div> 	
+						</div>
+
+							<div class="col-md-4">
+							<div class="form-group">
+								<label for="exampleInputEmail1">Intervalo Minutos</label>
+								<input type="number" class="form-control" id="intervalo_perfil" name="intervalo" placeholder="Intervalo Horários" value="<?php echo $intervalo_horarios ?>" required>    
+							</div> 	
+						</div>
+						
+					</div>
+
+
+
+
+
+						<div class="row">
+							<div class="col-md-8">						
+								<div class="form-group"> 
+									<label>Foto</label> 
+									<input class="form-control" type="file" name="foto" onChange="carregarImgPerfil();" id="foto-usu">
+								</div>						
+							</div>
+							<div class="col-md-4">
+								<div id="divImg">
+									<img src="img/perfil/<?php if(!empty($foto_usuario)){ echo $foto_usuario;}else{?>sem-foto.jpg<?php }?>"  width="80px" id="target-usu">									
+								</div>
+							</div>
+
+						</div>
+
+
+					
+						<input type="hidden" name="id" value="<?php echo $id_usuario ?>">
+
+					<br>
+					<small><div id="mensagem-perfil" align="center"></div></small>
+				</div>
+				<div class="modal-footer">      
+					<button type="submit" class="btn btn-primary"><i class="fa-regular fa-floppy-disk"></i> Salvar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Modal Config-->
+<div class="modal fade" id="modalConfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-white" style="background-color: #4682B4;">
+				<h4 class="modal-title" id="exampleModalLabel">Editar Configurações</h4>
+				<button id="btn-fechar-config" type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
+					<span aria-hidden="true" >&times;</span>
+				</button>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal Principal -->
+<?php
+// Forçar codificação UTF-8
+mb_internal_encoding('UTF-8');
+mb_http_output('UTF-8');
+ini_set('default_charset', 'UTF-8');
+?>
+
+<!-- Modal Principal -->
+<div class="modal fade" id="assinaturaModal" tabindex="-1" aria-labelledby="assinaturaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+            <div class="modal-header text-white" style="background: linear-gradient(135deg, #4682B4, #3a75a7); border-bottom: none; border-top-left-radius: 15px; border-top-right-radius: 15px; padding: 20px 30px;">
+                <h5 class="modal-title" id="assinaturaModalLabel" style="font-size: 1.5rem; font-weight: bold;">Gerenciar Assinatura</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 1;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <?php 
+            // Configurações Iniciais e Conexões
+            $url_sistema = explode("//", $url);
+            $host = ($url_sistema[1] == 'localhost/markai/') ? 'localhost' : 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
+            $usuario = ($url_sistema[1] == 'localhost/markai/') ? 'root' : 'skysee';
+            $senha = ($url_sistema[1] == 'localhost/markai/') ? '' : '9vtYvJly8PK6zHahjPUg';
+            $banco = 'gestao_sistemas';
+
+            try {
+                $pdo2 = new PDO("mysql:dbname=$banco;host=$host;charset=utf8", "$usuario", "$senha");
+                $pdo2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (Exception $e) {
+                error_log("Erro ao conectar ao banco de dados: " . $e->getMessage());
+                echo 'Erro ao conectar ao banco de dados!';
+            }
+
+            // Busca informações do cliente
+            $query8 = $pdo2->prepare("SELECT * FROM clientes WHERE banco = :banco and id_conta = :id_conta");
+            $query8->bindValue(':id_conta', $id_conta, PDO::PARAM_INT);
+            $query8->bindValue(':banco', 'barbearia');
+            $query8->execute();
+            $res8 = $query8->fetchAll(PDO::FETCH_ASSOC);
+            $id_cliente = $res8[0]['id'];
+            $instituicao = $res8[0]['instituicao'];
+            if($res8[0]['plano'] === '1'){
+                $plano = 'Individual';
+            } else {
+                $plano = 'Empresa';
+            } 
+
+            // Busca informações da fatura
+            $query9 = $pdo2->prepare("SELECT id, vencimento, taxa, valor, subtotal, frequencia FROM receber WHERE pago = 'Não' AND cliente =:cliente"); 
+            $query9->bindValue(':cliente', $id_cliente, PDO::PARAM_INT);
+            $query9->execute();
+            $res9 = $query9->fetch(PDO::FETCH_ASSOC);
+
+            $data_venc = null;
+            $valorMensal = null;
+            $frequencia = null;
+            $id_pg = null;
+            $dias_atraso = 0;
+
+            if ($res9) {
+                $data_venc = $res9['vencimento'];
+                $id_pg = $res9['id'];
+                $valorMensal = $res9['valor'];
+                if($res9['frequencia'] == '30'){
+                    $frequencia = 'Mensal';
+                } else {
+                    $frequencia = 'Anual';
+                }
+                
+                // Calcula os dias em atraso
+                $data_atual = date('Y-m-d');
+                $data_venc_obj = new DateTime($data_venc);
+                $data_atual_obj = new DateTime($data_atual);
+                if ($data_venc_obj < $data_atual_obj) {
+                    $interval = $data_atual_obj->diff($data_venc_obj);
+                    $dias_atraso = $interval->days;
+                }
+            }
+            ?>
+
+            <div class="modal-body" style="background-color: #fcfcfc; padding: 30px;">
+                <div class="card border-0 shadow-sm" style="border-radius: 10px;">
+                    <div class="card-body" style="padding: 25px;">
+                        <div class="text-center mb-4">
+                            <h3 class="card-text" style="color: #333; font-weight: 700; font-size: 1.75rem;"><?php echo mb_strtoupper($instituicao, 'UTF-8'); ?></h3>                            
+                        </div>
+                        <hr style="border-top: 1px solid #e0e0e0; margin: 20px 0;">
+                        
+                        <?php if(isset($ativo_sistema) && $ativo_sistema == 'teste'): ?>
+                            <div class="alert alert-info text-center" role="alert" style="font-size: 12px; margin-bottom: 20px; padding: 10px; border-radius: 5px;">
+                                *Em teste grátis
+                            </div>
+                        <?php endif; ?>
+                        
+                        <p class="card-text" style="font-weight: 600; color: #444; font-size: 1.1rem;">Detalhes da Cobrança:</p>
+                        <ul class="list-group list-group-flush mb-4" style="border: 1px solid #E9ECEF; border-radius: 8px;">
+                            <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #fff; padding: 12px 15px;"><b>Valor:</b> <span>R$ <?php echo $valorMensal?></span></li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #fff; padding: 12px 15px;"><b>Plano:</b> <span><?php echo $plano?></span></li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center" style="background: #fff; padding: 12px 15px;"><b>Frequência:</b> <span><?php echo $frequencia ?></span></li>
+                            
+                        </ul>
+
+                        <?php 
+                        if ($dias_atraso > 0) {
+                            ?>
+                            <div class="alert alert-danger text-center" role="alert" style="font-size: 1rem; font-weight: 500; border-radius: 8px;">
+                                <strong>Vencida há:</strong> <?php echo $dias_atraso; ?> dias
+                            </div>
+                            <?php
+                        } elseif ($data_venc) {
+                            ?>
+                            <div class="alert alert-success text-center" role="alert" style="font-size: 1rem; font-weight: 500; border-radius: 8px;">
+                                <strong>Próximo Vencimento:</strong> <?php echo date('d/m/Y', strtotime($data_venc)); ?>
+                            </div>
+                            <?php
+                        }
+                        ?>
+
+                        <div class="d-flex gap-2 mt-4">
+                            <a href="https://www.gestao.skysee.com.br/pagar/<?php echo $id_pg?>" target="_blank" class="btn btn-primary w-100" style="background: #4682B4; border: none; font-weight: bold; padding: 12px; border-radius: 8px; transition: background-color 0.3s; box-shadow: 0 4px 10px rgba(70, 130, 180, 0.3);">Pagar Agora</a>
+                            <button type="button" class="btn btn-outline-secondary w-100" data-toggle="modal" data-target="#trocarPlanoModal" style="font-weight: bold; padding: 12px; border-radius: 8px; transition: all 0.3s;">Trocar Plano</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none; padding: 15px 30px;">
+                <button type="button" class="btn btn-secondary" id="btn-fechar2" data-dismiss="modal" style="border-radius: 8px; padding: 10px 25px;">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Trocar Plano -->
+<div class="modal fade" id="trocarPlanoModal" tabindex="-1" aria-labelledby="trocarPlanoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+      <div class="modal-header" style="background: linear-gradient(45deg, #4682B4, #87CEEB); border-bottom: none;">
+        <h5 class="modal-title text-white" id="trocarPlanoModalLabel" style="font-size: 25px;">Trocar Plano</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9;margin-top: -30px">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+	  <form id="form-troca" method="POST">
+		<div class="modal-body" style="background-color: #F8F9FA; padding: 25px;">
+			<div class="card border-0 shadow-sm">
+			<div class="card-body" style="padding: 20px;">
+				<p class="text-center mb-4" style="color: #444; font-weight: 500;">Escolha o novo plano:</p>
+				<div class="form-group">
+				<select class="form-control" id="novoPlano" name="novoPlano" style="border-radius: 5px;">
+					<option value="individual_mensal">Individual Mensal - R$ 49,90</option>
+					<option value="individual_anual">Individual Anual - R$ 526,94 12% off</option>
+					<option value="empresa_mensal">Empresa Mensal - R$ 79,90</option>
+					<option value="empresa_anual">Empresa Anual - R$ 786,21 18% off</option>
+				</select>
+				</div>
+				<button type="submit" class="btn btn-success w-100 mt-3" style="background: #28A745; border: none; padding: 10px; transition: all 0.3s;">Confirmar Troca</button>
+			</div>
+			</div>
+		</div>
+		<small><div id="mensagem-troca" align="center" class="mt-3"></div></small>
+		<div class="modal-footer" style="border-top: none; padding: 15px 25px;">
+			<button type="button" class="btn btn-secondary" id="btn-fechar" data-dismiss="modal" style="border-radius: 5px; padding: 8px 20px;">Cancelar</button>
+		</div>
+		
+	  </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="modalAssinaturas">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">...</div>
+            <div class="modal-body">
+
+                <div class="text-center btn-inserir-depoimento mb-4">
+                    <a href="/caminho/para/minha_assinatura.php" class="btn btn-outline-secondary btn-minha-assinatura">
+                       <i class="fas fa-user-check"></i> Minha Assinatura Atual
+                    </a>
+                    <hr>
+                </div>
+
+                <div class="row justify-content-center">
+                    <?php
+                    try {
+                        // Busca os planos ativos para a conta atual, ordenados
+                        $query_planos = $pdo->prepare("SELECT * FROM planos WHERE ativo = 1 AND id_conta = :id_conta ORDER BY ordem ASC, id ASC");
+                        $query_planos->execute([':id_conta' => $id_conta]);
+                        $planos = $query_planos->fetchAll(PDO::FETCH_ASSOC);
+
+                        if (count($planos) > 0) {
+                            foreach ($planos as $plano) {
+                                $id_plano_atual = $plano['id'];
+                                $nome_plano = htmlspecialchars($plano['nome']);
+                                $preco_mensal_plano = number_format($plano['preco_mensal'], 2, ',', '.');
+                                $imagem_plano = htmlspecialchars($plano['imagem'] ?: 'default-plano.jpg'); // Imagem padrão
+                                $caminho_imagem_plano = '../../images/' . $imagem_plano; // AJUSTE O CAMINHO
+
+                                // Busca os serviços associados a este plano
+                                $query_servicos_plano = $pdo->prepare("
+                                    SELECT ps.quantidade, s.nome
+                                    FROM planos_servicos ps
+                                    JOIN servicos s ON ps.id_servico = s.id
+                                    WHERE ps.id_plano = :id_plano AND ps.id_conta = :id_conta
+                                    ORDER BY s.nome ASC
+                                ");
+                                $query_servicos_plano->execute([':id_plano' => $id_plano_atual, ':id_conta' => $id_conta]);
+                                $servicos_incluidos = $query_servicos_plano->fetchAll(PDO::FETCH_ASSOC);
+
+                                // Determina a classe do botão (exemplo)
+                                $btn_class = 'btn-primary';
+                                if (strtolower($plano['nome']) == 'ouro') $btn_class = 'btn-warning';
+                                if (strtolower($plano['nome']) == 'diamante') $btn_class = 'btn-dark';
+                                if (strtolower($plano['nome']) == 'bronze') $btn_class = 'btn-outline-primary';
+
+
+                    ?>
+                                <div class="col-md-6 col-lg-5 mb-4">
+                                    <div class="plano-item card h-100 shadow-sm">
+                                        <img src="<?php echo $caminho_imagem_plano; ?>" class="card-img-top plano-img" style='width: 80px;' alt="Plano <?php echo $nome_plano; ?>" onerror="this.onerror=null; this.src='images/planos/default-plano.jpg';">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title text-center plano-titulo"><?php echo $nome_plano; ?></h5>
+                                            <p class="plano-preco text-center text-muted">R$ <?php echo $preco_mensal_plano; ?> / mês</p>
+                                            <ul class="list-unstyled mt-3 mb-4 plano-beneficios">
+                                                <?php if (count($servicos_incluidos) > 0): ?>
+                                                    <?php foreach ($servicos_incluidos as $servico):
+                                                        $qtd_texto = '';
+                                                        if ($servico['quantidade'] == 0) {
+                                                            $qtd_texto = 'Ilimitado - '; // Ou só o nome do serviço
+                                                        } elseif ($servico['quantidade'] > 1) {
+                                                            $qtd_texto = $servico['quantidade'] . 'x ';
+                                                        }
+                                                    ?>
+                                                        <li><i class="fas fa-check text-success mr-2"></i><?php echo $qtd_texto . htmlspecialchars($servico['nome']); ?></li>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <li><small>Nenhum serviço principal incluído neste plano.</small></li>
+                                                <?php endif; ?>
+                                                 </ul>
+                                            <button type="button" class="btn btn-lg btn-block <?php echo $btn_class; ?> btn-assinar mt-auto" data-plano="<?php echo $id_plano_atual; ?>">Assinar <?php echo $nome_plano; ?></button>
+                                        </div>
+                                    </div>
+                                </div>
+                    <?php
+                            } // Fim foreach $planos
+                        } else {
+                            echo '<div class="col-12"><p class="text-center text-muted">Nenhum plano de assinatura disponível no momento.</p></div>';
+                        }
+                    } catch (PDOException $e) {
+                         error_log("Erro ao buscar planos/serviços: " . $e->getMessage());
+                         echo '<div class="col-12"><p class="text-center text-danger">Erro ao carregar os planos. Tente novamente mais tarde.</p></div>';
                     }
-                },
-                cache: false, contentType: false, processData: false
+                    ?>
+                </div> </div> 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.list-group-item {
+  padding: 10px 15px;
+  color: #555;
+}
+
+.modal-content {
+  transition: all 0.3s ease;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+	<!-- Modal Rel Entradas / Ganhos -->
+	<div class="modal fade" id="RelEntradas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-white" style="background-color: #4682B4;">
+					<h4 class="modal-title" id="exampleModalLabel">Relatório de Ganhos
+						<small style="color: black;">(
+							<a href="#" onclick="datas('1980-01-01', 'tudo-Ent', 'Ent')">
+								<span style="color:#000" id="tudo-Ent">Tudo</span>
+							</a> / 
+							<a href="#" onclick="datas('<?php echo $data_atual ?>', 'hoje-Ent', 'Ent')">
+								<span id="hoje-Ent">Hoje</span>
+							</a> /
+							<a href="#" onclick="datas('<?php echo $data_mes ?>', 'mes-Ent', 'Ent')">
+								<span style="color:#000" id="mes-Ent">Mês</span>
+							</a> /
+							<a href="#" onclick="datas('<?php echo $data_ano ?>', 'ano-Ent', 'Ent')">
+								<span style="color:#000" id="ano-Ent">Ano</span>
+							</a> 
+						)</small>
+
+
+
+					</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form method="post" action="rel/rel_entradas_class.php" target="_blank">
+					<div class="modal-body">
+
+						<div class="row">
+							<div class="col-md-6">						
+								<div class="form-group"> 
+									<label>Data Inicial</label> 
+									<input type="date" class="form-control" name="dataInicial" id="dataInicialRel-Ent" value="<?php echo date('Y-m-d') ?>" required> 
+								</div>						
+							</div>
+							<div class="col-md-6">
+								<div class="form-group"> 
+									<label>Data Final</label> 
+									<input type="date" class="form-control" name="dataFinal" id="dataFinalRel-Ent" value="<?php echo date('Y-m-d') ?>" required> 
+								</div>
+							</div>
+
+							<div class="col-md-6">						
+								<div class="form-group"> 
+									<label>Entradas / Ganhos</label> 
+									<select class="form-control sel13" name="filtro" style="width:100%;">
+										<option value="">Todas</option>
+										<option value="Produto">Produtos</option>
+										<option value="Serviço">Serviços</option>
+										<option value="Conta">Demais Ganhos</option>
+										
+									</select> 
+								</div>						
+							</div>
+
+
+							<div class="col-md-6">						
+								<div class="form-group"> 
+									<label>Selecionar Cliente</label> 
+									<select class="form-control selcli" name="cliente" style="width:100%;" > 
+									<option value="">Todos</option>
+									<?php 
+									$query = $pdo->query("SELECT * FROM clientes where id_conta = '$id_conta'");
+									$res = $query->fetchAll(PDO::FETCH_ASSOC);
+									$total_reg = @count($res);
+									if($total_reg > 0){
+										for($i=0; $i < $total_reg; $i++){
+											foreach ($res[$i] as $key => $value){}
+												echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
+										}
+									}
+									?>
+
+
+								</select>    
+								</div>						
+							</div>
+
+
+						</div>
+
+
+						
+
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary relatorio"><i class="fa-solid fa-file-lines"></i> Gerar Relatório</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+	<!-- Modal Rel Saidas / Despesas -->
+	<div class="modal fade" id="RelSaidas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-white" style="background-color: #4682B4;">
+					<h4 class="modal-title" id="exampleModalLabel">Relatório de Saídas
+						<small style="color: black;">(
+							<a href="#" onclick="datas('1980-01-01', 'tudo-Saida', 'Saida')">
+								<span style="color:#000" id="tudo-Saida">Tudo</span>
+							</a> / 
+							<a href="#" onclick="datas('<?php echo $data_atual ?>', 'hoje-Saida', 'Saida')">
+								<span id="hoje-Saida">Hoje</span>
+							</a> /
+							<a href="#" onclick="datas('<?php echo $data_mes ?>', 'mes-Saida', 'Saida')">
+								<span style="color:#000" id="mes-Saida">Mês</span>
+							</a> /
+							<a href="#" onclick="datas('<?php echo $data_ano ?>', 'ano-Saida', 'Saida')">
+								<span style="color:#000" id="ano-Saida">Ano</span>
+							</a> 
+						)</small>
+
+
+
+					</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form method="post" action="rel/rel_saidas_class.php" target="_blank">
+					<div class="modal-body">
+
+						<div class="row">
+							<div class="col-md-4">						
+								<div class="form-group"> 
+									<label>Data Inicial</label> 
+									<input type="date" class="form-control" name="dataInicial" id="dataInicialRel-Saida" value="<?php echo date('Y-m-d') ?>" required> 
+								</div>						
+							</div>
+							<div class="col-md-4">
+								<div class="form-group"> 
+									<label>Data Final</label> 
+									<input type="date" class="form-control" name="dataFinal" id="dataFinalRel-Saida" value="<?php echo date('Y-m-d') ?>" required> 
+								</div>
+							</div>
+
+							<div class="col-md-4">						
+								<div class="form-group"> 
+									<label>Saídas / Despesas</label> 
+									<select class="form-control sel13" name="filtro" style="width:100%;">
+										<option value="">Todas</option>
+										<option value="Conta">Despesas</option>
+										<option value="Comissao">Comissões</option>
+										<option value="Compra">Compras</option>
+										
+									</select> 
+								</div>						
+							</div>
+
+						</div>
+
+
+						
+
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary relatorio"><i class="fa-solid fa-file-lines"></i> Gerar Relatório</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+
+	<!-- Modal Rel Comissoes -->
+	<div class="modal fade" id="RelComissoes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-white" style="background-color: #4682B4;">
+					<h4 class="modal-title" id="exampleModalLabel">Relatório de Comissões
+						<small style="color: black;">(
+							<a href="#" onclick="datas('1980-01-01', 'tudo-Com', 'Com')">
+								<span style="color:#000" id="tudo-Com">Tudo</span>
+							</a> / 
+							<a href="#" onclick="datas('<?php echo $data_atual ?>', 'hoje-Com', 'Com')">
+								<span id="hoje-Com">Hoje</span>
+							</a> /
+							<a href="#" onclick="datas('<?php echo $data_mes ?>', 'mes-Com', 'Com')">
+								<span style="color:#000" id="mes-Com">Mês</span>
+							</a> /
+							<a href="#" onclick="datas('<?php echo $data_ano ?>', 'ano-Com', 'Com')">
+								<span style="color:#000" id="ano-Com">Ano</span>
+							</a> 
+						)</small>
+
+
+
+					</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form method="post" action="rel/rel_comissoes_class.php" target="_blank">
+					<div class="modal-body">
+
+						<div class="row">
+							<div class="col-md-4">						
+								<div class="form-group"> 
+									<label>Data Inicial</label> 
+									<input type="date" class="form-control" name="dataInicial" id="dataInicialRel-Com" value="<?php echo date('Y-m-d') ?>" required> 
+								</div>						
+							</div>
+							<div class="col-md-4">
+								<div class="form-group"> 
+									<label>Data Final</label> 
+									<input type="date" class="form-control" name="dataFinal" id="dataFinalRel-Com" value="<?php echo date('Y-m-d') ?>" required> 
+								</div>
+							</div>
+
+								<div class="col-md-4">						
+								<div class="form-group"> 
+									<label>Pago</label> 
+									<select class="form-control " name="pago" style="width:100%;">
+										<option value="">Todas</option>
+										<option value="Sim">Somente Pagas</option>
+										<option value="Não">Pendentes</option>
+										
+									</select> 
+								</div>						
+							</div>
+
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">						
+								<div class="form-group"> 
+									<label>Profissionais</label> 
+									<select class="form-control sel15" name="funcionario" style="width:100%;">
+										<option value="">Todos</option>
+										<?php 
+				$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY id desc");
+				$res = $query->fetchAll(PDO::FETCH_ASSOC);
+				$total_reg = @count($res);
+				if($total_reg > 0){
+					for($i=0; $i < $total_reg; $i++){
+						foreach ($res[$i] as $key => $value){}
+							echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
+					}
+				}?>
+										
+									</select> 
+								</div>						
+							</div>	
+						</div>
+
+
+						
+
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary relatorio"><i class="fa-solid fa-file-lines"></i> Gerar Relatório</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+	<!-- Modal Rel Contas -->
+	<div class="modal fade" id="RelCon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-white" style="background-color: #4682B4;">
+					<h4 class="modal-title" id="exampleModalLabel">Relatório de Contas
+						<small style="color: black;">(
+							<a href="#" onclick="datas('1980-01-01', 'tudo-Con', 'Con')">
+								<span style="color:#000" id="tudo-Con">Tudo</span>
+							</a> / 
+							<a href="#" onclick="datas('<?php echo $data_atual ?>', 'hoje-Con', 'Con')">
+								<span id="hoje-Con">Hoje</span>
+							</a> /
+							<a href="#" onclick="datas('<?php echo $data_mes ?>', 'mes-Con', 'Con')">
+								<span style="color:#000" id="mes-Con">Mês</span>
+							</a> /
+							<a href="#" onclick="datas('<?php echo $data_ano ?>', 'ano-Con', 'Con')">
+								<span style="color:#000" id="ano-Con">Ano</span>
+							</a> 
+						)</small>
+
+
+
+					</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form method="post" action="rel/rel_contas_class.php" target="_blank">
+					<div class="modal-body">
+
+						<div class="row">
+							<div class="col-md-4">						
+								<div class="form-group"> 
+									<label>Data Inicial</label> 
+									<input type="date" class="form-control" name="dataInicial" id="dataInicialRel-Con" value="<?php echo date('Y-m-d') ?>" required> 
+								</div>						
+							</div>
+							<div class="col-md-4">
+								<div class="form-group"> 
+									<label>Data Final</label> 
+									<input type="date" class="form-control" name="dataFinal" id="dataFinalRel-Con" value="<?php echo date('Y-m-d') ?>" required> 
+								</div>
+							</div>
+
+							<div class="col-md-4">						
+								<div class="form-group"> 
+									<label>Pago</label> 
+									<select class="form-control" name="pago" style="width:100%;">
+										<option value="">Todas</option>
+										<option value="Sim">Somente Pagas</option>
+										<option value="Não">Pendentes</option>
+										
+									</select> 
+								</div>						
+							</div>
+
+						</div>
+
+
+
+							<div class="row">
+							<div class="col-md-6">						
+								<div class="form-group"> 
+									<label>Pagar / Receber</label> 
+									<select class="form-control sel13" name="tabela" style="width:100%;">
+										<option value="pagar">Contas à Pagar</option>
+										<option value="receber">Contas à Receber</option>
+																				
+									</select> 
+								</div>						
+							</div>
+							<div class="col-md-6">
+								<div class="form-group"> 
+									<label>Consultar Por</label> 
+									<select class="form-control sel13" name="busca" style="width:100%;">
+										<option value="data_venc">Data de Vencimento</option>
+										<option value="data_pgto">Data de Pagamento</option>
+																				
+									</select>
+								</div>
+							</div>
+
+							
+
+						</div>
+
+
+						
+
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary relatorio"><i class="fa-solid fa-file-lines"></i> Gerar Relatório</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+	<!-- Modal Rel Lucro -->
+	<div class="modal fade" id="RelLucro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-white" style="background-color: #4682B4;">
+					<h4 class="modal-title" id="exampleModalLabel">Demonstrativo de Lucro
+						<small style="color: black;">(
+							<a href="#" onclick="datas('1980-01-01', 'tudo-Lucro', 'Lucro')">
+								<span style="color:#000" id="tudo-Lucro">Tudo</span>
+							</a> / 
+							<a href="#" onclick="datas('<?php echo $data_atual ?>', 'hoje-Lucro', 'Lucro')">
+								<span id="hoje-Lucro">Hoje</span>
+							</a> /
+							<a href="#" onclick="datas('<?php echo $data_mes ?>', 'mes-Lucro', 'Lucro')">
+								<span style="color:#000" id="mes-Lucro">Mês</span>
+							</a> /
+							<a href="#" onclick="datas('<?php echo $data_ano ?>', 'ano-Lucro', 'Lucro')">
+								<span style="color:#000" id="ano-Lucro">Ano</span>
+							</a> 
+						)</small>
+
+
+
+					</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form method="post" action="rel/rel_lucro_class.php" target="_blank">
+					<div class="modal-body">
+
+						<div class="row">
+							<div class="col-md-4">						
+								<div class="form-group"> 
+									<label>Data Inicial</label> 
+									<input type="date" class="form-control" name="dataInicial" id="dataInicialRel-Lucro" value="<?php echo date('Y-m-d') ?>" required> 
+								</div>						
+							</div>
+							<div class="col-md-4">
+								<div class="form-group"> 
+									<label>Data Final</label> 
+									<input type="date" class="form-control" name="dataFinal" id="dataFinalRel-Lucro" value="<?php echo date('Y-m-d') ?>" required> 
+								</div>
+							</div>						
+
+						</div>
+
+
+						
+
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary relatorio">Gerar Relatório</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+
+	<!-- Modal Rel Anivesariantes -->
+	<div class="modal fade" id="RelAniv" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-white" style="background-color: #4682B4;">
+					<h4 class="modal-title" id="exampleModalLabel">Relatório de Aniversáriantes
+						<small style="color: black;">(
+							<a href="#" onclick="datas('1980-01-01', 'tudo-Aniv', 'Aniv')">
+								<span style="color:#000" id="tudo-Aniv">Tudo</span>
+							</a> / 
+							<a href="#" onclick="datas('<?php echo $data_atual ?>', 'hoje-Aniv', 'Aniv')">
+								<span id="hoje-Aniv">Hoje</span>
+							</a> /
+							<a href="#" onclick="datas('<?php echo $data_mes ?>', 'mes-Aniv', 'Aniv')">
+								<span style="color:#000" id="mes-Aniv">Mês</span>
+							</a> /
+							<a href="#" onclick="datas('<?php echo $data_ano ?>', 'ano-Aniv', 'Aniv')">
+								<span style="color:#000" id="ano-Aniv">Ano</span>
+							</a> 
+						)</small>
+
+
+
+					</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form method="post" action="rel/rel_aniv_class.php" target="_blank">
+					<div class="modal-body">
+
+						<div class="row">
+							<div class="col-md-4">						
+								<div class="form-group"> 
+									<label>Data Inicial</label> 
+									<input type="date" class="form-control" name="dataInicial" id="dataInicialRel-Aniv" value="<?php echo date('Y-m-d') ?>" required> 
+								</div>						
+							</div>
+							<div class="col-md-4">
+								<div class="form-group"> 
+									<label>Data Final</label> 
+									<input type="date" class="form-control" name="dataFinal" id="dataFinalRel-Aniv" value="<?php echo date('Y-m-d') ?>" required> 
+								</div>
+							</div>						
+
+						</div>
+
+
+						
+
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary relatorio">Gerar Relatório</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+	<!-- Modal Rel Entradas / Ganhos -->
+	<div class="modal fade" id="RelServicos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-white" style="background-color: #4682B4;">
+					<h4 class="modal-title" id="exampleModalLabel">Relatório de Serviços
+						<small style="color: black;">(
+							<a href="#" onclick="datas('1980-01-01', 'tudo-Ser', 'Ser')">
+								<span style="color:#000" id="tudo-Ser">Tudo</span>
+							</a> / 
+							<a href="#" onclick="datas('<?php echo $data_atual ?>', 'hoje-Ser', 'Ser')">
+								<span id="hoje-Ser">Hoje</span>
+							</a> /
+							<a href="#" onclick="datas('<?php echo $data_mes ?>', 'mes-Ser', 'Ser')">
+								<span style="color:#000" id="mes-Ser">Mês</span>
+							</a> /
+							<a href="#" onclick="datas('<?php echo $data_ano ?>', 'ano-Ser', 'Ser')">
+								<span style="color:#000" id="ano-Ser">Ano</span>
+							</a> 
+						)</small>
+
+
+
+					</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -20px">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form method="post" action="rel/rel_servicos_class.php" target="_blank">
+					<div class="modal-body">
+
+						<div class="row">
+							<div class="col-md-6">						
+								<div class="form-group"> 
+									<label>Data Inicial</label> 
+									<input type="date" class="form-control" name="dataInicial" id="dataInicialRel-Ser" value="<?php echo date('Y-m-d') ?>" required> 
+								</div>						
+							</div>
+							<div class="col-md-6">
+								<div class="form-group"> 
+									<label>Data Final</label> 
+									<input type="date" class="form-control" name="dataFinal" id="dataFinalRel-Ser" value="<?php echo date('Y-m-d') ?>" required> 
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">						
+								<div class="form-group"> 
+									<label>Forma de Pagamento</label> 
+									<select class="form-control" name="pgto" style="width:100%;" > 
+									<option value="">Selecionar Pagamento</option>
+									<?php 
+									$query = $pdo->query("SELECT * FROM formas_pgto where id_conta = '$id_conta'");
+									$res = $query->fetchAll(PDO::FETCH_ASSOC);
+									$total_reg = @count($res);
+									if($total_reg > 0){
+										for($i=0; $i < $total_reg; $i++){
+											foreach ($res[$i] as $key => $value){}
+												echo '<option value="'.$res[$i]['nome'].'">'.$res[$i]['nome'].'</option>';
+										}
+									}
+									?>
+
+
+								</select>    
+								</div>						
+							</div>
+
+
+							<div class="col-md-6">						
+								<div class="form-group"> 
+									<label>Selecionar Serviço</label> 
+									<select class="form-control" name="servico" style="width:100%;" > 
+									<option value="">Selecionar Serviço</option>
+									<?php 
+									$query = $pdo->query("SELECT * FROM servicos where id_conta = '$id_conta'");
+									$res = $query->fetchAll(PDO::FETCH_ASSOC);
+									$total_reg = @count($res);
+									if($total_reg > 0){
+										for($i=0; $i < $total_reg; $i++){
+											foreach ($res[$i] as $key => $value){}
+												echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
+										}
+									}
+									?>
+
+
+								</select>    
+								</div>						
+							</div>
+
+						</div>
+
+
+						
+
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary relatorio">Gerar Relatório</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal -->
+    <div class="modal fade" id="tutoriaisModal" tabindex="-1" aria-labelledby="tutoriaisModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-white">
+                    <h5 class="modal-title" id="tutoriaisModalLabel">Vídeos Tutoriais</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Lista de vídeos -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-group">
+                                <li class="list-group-item video-item" data-video-id="ynGq7XzOBrA">Tutorial 1: Configurando o Sistema</li>
+                                <li class="list-group-item video-item" data-video-id="Tiur6MDk0RU">Tutorial 2: Configurando o Site</li>
+
+                                <!-- <li class="list-group-item video-item" data-video-id="ejVM_av7KsQ">Tutorial 3: Utilizando a Comanda</li> -->
+
+								<li class="list-group-item video-item" data-video-id="uJd1G-cFAZc">Tutorial 6: Cadastros</li>
+
+                                <!-- <li class="list-group-item video-item" data-video-id="P7s_7ARQpVY">Tutorial 4: Agendamentos e Serviços</li> -->
+
+                                <li class="list-group-item video-item" data-video-id="UApt6WNUvVs">Tutorial 5: Produtos e controle de estoque</li>
+                                
+                                <li class="list-group-item video-item" data-video-id="Yth8P51HsEE">Tutorial 7: Clube do Assinante</li>
+
+                                <li class="list-group-item video-item" data-video-id="3bGNuRtlmAQ">Tutorial 8: Financeiro</li>
+
+                                <!-- <li class="list-group-item video-item" data-video-id="k3-zaTr6OUQ">Tutorial 9: WhatsApp e Campanha de Marketing</li>  -->
+
+                                <li class="list-group-item video-item" data-video-id="k3-zaTr6OUQ">Tutorial 10: Menu do Profissional</li>
+
+                                <li class="list-group-item video-item" data-video-id="k3-zaTr6OUQ">Tutorial 11: APP</li>
+                                
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Container do vídeo -->
+                            <div id="videoPlayer" class="ratio ratio-16x9">
+                                <iframe src="" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<!-- Modal Seu Link -->
+<div class="modal fade" id="modalSeuLink" tabindex="-1" role="dialog" aria-labelledby="modalSeuLinkLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+
+            <div class="modal-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #6a82fb, #fc5c7d); border: none; padding: 25px 30px;">
+                <h5 class="modal-title text-white font-weight-bold" id="modalSeuLinkLabel" style="font-size: 1.5rem;">Compartilhe Seu Link</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 1;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body" style="background-color: #f7f9fc; padding: 30px;">
+                <p class="text-center text-secondary mb-4">Escolha a melhor forma de compartilhar seu link com seus clientes.</p><br>
+
+                <div class="d-grid gap-3">
+                    <button class="btn btn-lg btn-light w-100 py-3" onclick="copiarLink()" style="border-radius: 10px; border: 1px solid #e0e6ed; color: #4a5568; font-weight: 600; transition: all 0.3s ease; margin-bottom: 20px">
+                        <i class="fas fa-copy fa-lg mr-3" style="color: #6a82fb;"></i> Copiar Link
+                    </button><br>
+                    <button class="btn btn-lg btn-success w-100 py-3" onclick="enviarLink()" style="background-color: #25D366; border-color: #25D366; border-radius: 10px; font-weight: 600; transition: all 0.3s ease; margin-bottom: 20px">
+                        <i class="fab fa-whatsapp fa-lg mr-3"></i> Enviar por WhatsApp
+                    </button><br>
+                    <button class="btn btn-lg btn-light w-100 py-3" onclick="mostrarQRCode()" style="border-radius: 10px; border: 1px solid #e0e6ed; color: #4a5568; font-weight: 600; transition: all 0.3s ease;">
+                        <i class="fas fa-qrcode fa-lg mr-3" style="color: #fc5c7d;"></i> Exibir QR Code
+                    </button>
+                </div>
+
+                <div id="qrcode-container" class="mt-4 text-center" style="display: none; border-top: 1px solid #e0e6ed; padding-top: 20px;">
+                    <p class="text-muted mb-3">Escaneie o código com seu celular para acessar.</p>
+                    <div id="qrcode" class="d-inline-block p-2" style="background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);"></div>
+                    <button class="btn btn-outline-secondary mt-3" onclick="imprimirQRCode()" style="border-radius: 50px; font-weight: 600; padding: 10px 25px;">
+                        <i class="fas fa-print mr-2"></i> Imprimir
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="border: none; padding: 15px 30px; background-color: #f7f9fc;">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal" style="border-radius: 50px; font-weight: 600; padding: 10px 25px;">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+	<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> -->
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+
+	
+
+
+<script type="text/javascript">
+	$(document).ready(function() {		
+		$('.sel15').select2({	
+			dropdownParent: $('#RelComissoes')		
+		});
+
+		$('.selcli').select2({	
+			dropdownParent: $('#RelEntradas')		
+		});
+	});
+</script>
+
+
+ <script type="text/javascript">
+	$("#form-perfil").submit(function () {
+
+		event.preventDefault();
+		var formData = new FormData(this);
+
+		$.ajax({
+			url: "editar-perfil.php",
+			type: 'POST',
+			data: formData,
+
+			success: function (mensagem) {
+				$('#mensagem-perfil').text('');
+				$('#mensagem-perfil').removeClass()
+				if (mensagem.trim() == "Editado com Sucesso") {
+
+					$('#btn-fechar-perfil').click();
+					location.reload();			
+					
+				} else {
+
+					$('#mensagem-perfil').addClass('text-danger')
+					$('#mensagem-perfil').text(mensagem)
+				}
+
+
+			},
+
+			cache: false,
+			contentType: false,
+			processData: false,
+
+		});
+
+	});
+</script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	function carregarImgPerfil() {
+    var target = document.getElementById('target-usu');
+    var file = document.querySelector("#foto-usu").files[0];
+    
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+            target.src = reader.result;
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+
+        } else {
+            target.src = "";
+        }
+    }
+</script>
+
+
+
+
+
+
+
+ <script type="text/javascript">
+	$("#form-config").submit(function () {
+
+		event.preventDefault();
+		var formData = new FormData(this);
+
+		$.ajax({
+			url: "editar-config.php",
+			type: 'POST',
+			data: formData,
+
+			success: function (mensagem) {
+				$('#mensagem-config').text('');
+				$('#mensagem-config').removeClass()
+				if (mensagem.trim() == "Editado com Sucesso") {
+
+					Swal.fire({
+						position: "top-center",
+						icon: "success",
+						title: "Alterado com sucesso!",
+						showConfirmButton: false,
+						timer: 1500,
+										
+						willClose: () => {
+						setTimeout(() => {
+							$('#btn-fechar-config').click();
+							location.reload();
+							}, 300);
+						}  
+					}); 								
+					
+				} else {
+
+					$('#mensagem-config').addClass('text-danger')
+					$('#mensagem-config').text(mensagem)
+				}
+
+
+			},
+
+			cache: false,
+			contentType: false,
+			processData: false,
+
+		});
+
+	});
+
+	$("#form-config2").submit(function () {
+
+		event.preventDefault();
+		var formData = new FormData(this);
+
+		$.ajax({
+			url: "editar-config-site.php",
+			type: 'POST',
+			data: formData,
+
+			success: function (mensagem) {
+				$('#mensagem-config2').text('');
+				$('#mensagem-config2').removeClass()
+				if (mensagem.trim() == "Editado com Sucesso") {
+
+					Swal.fire({
+						position: "top-center",
+						icon: "success",
+						title: "Alterado com sucesso!",
+						showConfirmButton: false,
+						timer: 1500,
+										
+						willClose: () => {
+						setTimeout(() => {
+							$('#btn-fechar-config2').click();
+							location.reload();
+							}, 300);
+						}  
+					}); 
+							
+					
+				} else {
+
+					$('#mensagem-config2').addClass('text-danger')
+					$('#mensagem-config2').text(mensagem)
+				}
+
+
+			},
+
+			cache: false,
+			contentType: false,
+			processData: false,
+
+		});
+
+	});
+</script>
+
+
+
+
+<script type="text/javascript">
+	function carregarImgLogo() {
+    var target = document.getElementById('target-logo');
+    var file = document.querySelector("#foto-logo").files[0];
+    
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+            target.src = reader.result;
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+
+        } else {
+            target.src = "";
+        }
+    }
+</script>
+
+
+
+
+
+<script type="text/javascript">
+	function carregarImgLogoRel() {
+    var target = document.getElementById('target-logo-rel');
+    var file = document.querySelector("#foto-logo-rel").files[0];
+    
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+            target.src = reader.result;
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+
+        } else {
+            target.src = "";
+        }
+    }
+</script>
+
+
+
+
+
+<script type="text/javascript">
+	function carregarImgIcone() {
+    var target = document.getElementById('target-icone');
+    var file = document.querySelector("#foto-icone").files[0];
+    
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+            target.src = reader.result;
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+
+        } else {
+            target.src = "";
+        }
+    }
+</script>
+
+
+
+
+
+<script type="text/javascript">
+	function carregarImgIconeSite() {
+    var target = document.getElementById('target-icone-site');
+    var file = document.querySelector("#foto-icone-site").files[0];
+    
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+            target.src = reader.result;
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+
+        } else {
+            target.src = "";
+        }
+    }
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+	function carregarImgBannerIndex() {
+    var target = document.getElementById('target-banner-index');
+    var file = document.querySelector("#foto-banner-index").files[0];
+    
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+            target.src = reader.result;
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+
+        } else {
+            target.src = "";
+        }
+    }
+</script>
+
+
+
+
+
+<script type="text/javascript">
+	function carregarImgSobre() {
+    var target = document.getElementById('target-sobre');
+    var file = document.querySelector("#foto-sobre").files[0];
+    
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+            target.src = reader.result;
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+
+        } else {
+            target.src = "";
+        }
+    }
+</script>
+
+
+
+
+	<script type="text/javascript">
+		function datas(data, id, campo){		
+
+			var data_atual = "<?=$data_atual?>";
+			var separarData = data_atual.split("-");
+			var mes = separarData[1];
+			var ano = separarData[0];
+
+			var separarId = id.split("-");
+
+			if(separarId[0] == 'tudo'){
+				data_atual = '2100-12-31';
+			}
+
+			if(separarId[0] == 'ano'){
+				data_atual = ano + '-12-31';
+			}
+
+			if(separarId[0] == 'mes'){
+				if(mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12){
+					data_atual = ano + '-'+ mes + '-31';
+				}else if (mes == 4 || mes == 6 || mes == 9 || mes == 11){
+					data_atual = ano + '-'+ mes + '-30';
+				}else{
+					data_atual = ano + '-'+ mes + '-28';
+				}
+
+			}
+
+			$('#dataInicialRel-'+campo).val(data);
+			$('#dataFinalRel-'+campo).val(data_atual);
+
+			document.getElementById('hoje-'+campo).style.color = "#000";
+			document.getElementById('mes-'+campo).style.color = "#000";
+			document.getElementById(id).style.color = "blue";	
+			document.getElementById('tudo-'+campo).style.color = "#000";
+			document.getElementById('ano-'+campo).style.color = "#000";
+			document.getElementById(id).style.color = "blue";		
+		}
+
+
+		
+	function validarConfirmacaoSenha() {
+		var senha = document.getElementById("senha-perfil").value;
+		var confirmacaoSenhaInput = document.getElementById("conf-senha-perfil");
+		var confirmacaoSenhaValue = confirmacaoSenhaInput.value;
+
+		// Apenas define 'required' para o campo de confirmação se houver algo no campo de senha
+		if (senha) {
+		confirmacaoSenhaInput.setAttribute("required", "required");
+		} else {
+		confirmacaoSenhaInput.removeAttribute("required");
+		}
+
+		// Valida se as senhas são diferentes
+		if (senha !== confirmacaoSenhaValue) {
+		confirmacaoSenhaInput.setCustomValidity("As senhas não conferem.");
+		} else {
+		// Se as senhas conferem, limpa a mensagem de erro personalizada
+		confirmacaoSenhaInput.setCustomValidity("");
+		}
+	}
+
+	</script>
+
+	<script>
+	$(document).ready(function () {
+		$('#tabela').DataTable({
+			lengthChange: false,
+			searching: true,
+			paging: true,
+		});
+    });
+	</script>
+
+	<script>
+		$("#form-troca").submit(function () {		
+		event.preventDefault();
+		
+		var formData = new FormData(this);
+
+		$.ajax({
+			url: 'troca.php',
+			type: 'POST',
+			data: formData,
+
+			success: function (mensagem) {				
+				$('#mensagem-troca').text('');
+				$('#mensagem-troca').removeClass()
+				if (mensagem.trim() == "Alterado com Sucesso") {  
+					Swal.fire({
+						position: "top-center",
+						icon: "success",
+						title: "Troca efetuada com sucesso!",
+						showConfirmButton: false,
+						timer: 2000,
+										
+						willClose: () => {
+						setTimeout(() => {
+							location.reload();
+						
+							}, 300);
+						}  
+					});  
+					
+					
+				} else {
+					$('#mensagem-troca').addClass('text-danger')
+					$('#mensagem-troca').text(mensagem)
+				}
+
+			},
+
+			cache: false,
+			contentType: false,
+			processData: false,
+
+		});
+
+	});
+	</script>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const videoItems = document.querySelectorAll('.video-item');
+            const iframe = document.querySelector('#videoPlayer iframe');
+
+            videoItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    // Remove a classe ativa de todos os itens
+                    videoItems.forEach(i => i.classList.remove('active'));
+                    // Adiciona a classe ativa ao item clicado
+                    this.classList.add('active');
+
+                    // Obtém o ID do vídeo
+                    const videoId = this.getAttribute('data-video-id');
+                    // Define a URL do vídeo com autoplay
+                    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                });
+            });
+
+            // Limpa o iframe ao fechar o modal
+            const modal = document.getElementById('tutoriaisModal');
+            modal.addEventListener('hidden.bs.modal', function () {
+                iframe.src = '';
+                videoItems.forEach(i => i.classList.remove('active'));
             });
         });
-    });
+    </script>
 
-    // Image Preview
-    function carregarImgPerfil() {
-        const target = document.getElementById('target-usu');
-        const file = document.querySelector("#foto-usu").files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => { target.src = reader.result; };
-            reader.readAsDataURL(file);
+    <!-- Estilos opcionais -->
+    <style>
+        .video-item {
+            cursor: pointer;
         }
-    }
-
-    // Password confirmation
-    function validarConfirmacaoSenha() {
-        const senha = $("#senha-perfil").val();
-        const confSenhaInput = document.getElementById("conf-senha-perfil");
-        if (senha) {
-            confSenhaInput.setAttribute("required", "required");
-            if (senha !== confSenhaInput.value) {
-                confSenhaInput.setCustomValidity("As senhas não conferem.");
-            } else {
-                confSenhaInput.setCustomValidity("");
-            }
-        } else {
-            confSenhaInput.removeAttribute("required");
-            confSenhaInput.setCustomValidity("");
+        .video-item:hover {
+            background-color: #f8f9fa;
         }
-    }
+        .video-item.active {
+            background-color: #e9ecef;
+            font-weight: bold;
+        }
+    </style>
 
-    // "Seu Link" Modal Logic
-    const seuLink = `https://markai.skysee.com.br/site.php?u=<?= urlencode($username) ?>`;
-    const mensagemWhatsApp = encodeURIComponent(`Confira nosso link para agendamentos: ${seuLink}`);
+	<script>
+    // Define the link (replace with your dynamic link)
+    const seuLink = 'https://markai.skysee.com.br/site.php?u=<?=$username?>'; // Adjust this to your actual link, e.g., a specific URL for the user	
+    const mensagemWhatsApp = encodeURIComponent("Confira este link incrível: " + seuLink);
 
     function copiarLink() {
         navigator.clipboard.writeText(seuLink).then(() => {
-            Swal.fire({ icon: 'success', title: 'Link Copiado!', timer: 1500, showConfirmButton: false });
+            Swal.fire({
+                icon: 'success',
+                title: 'Link Copiado!',
+                text: 'O link foi copiado para a área de transferência.',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }).catch(err => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: 'Não foi possível copiar o link.',
+                showConfirmButton: false,
+                timer: 1500
+            });
         });
     }
 
     function enviarLink() {
-        window.open(`https://api.whatsapp.com/send?text=${mensagemWhatsApp}`, '_blank');
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${mensagemWhatsApp}`;
+        window.open(whatsappUrl, '_blank');
     }
 
     function mostrarQRCode() {
-        const container = $('#qrcode-container');
-        const qrcodeEl = $('#qrcode');
-        qrcodeEl.html('');
-        new QRCode(qrcodeEl[0], { text: seuLink, width: 200, height: 200 });
-        container.slideDown();
+        const qrcodeContainer = document.getElementById('qrcode-container');
+        const qrcodeElement = document.getElementById('qrcode');
+        qrcodeElement.innerHTML = ''; // Clear previous QR code
+        qrcodeContainer.style.display = 'block';
+        new QRCode(qrcodeElement, {
+            text: seuLink,
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
     }
+
+    function imprimirQRCode() {
+    // Get the QR code canvas from qrcode.js
+    const qrcodeCanvas = document.getElementById('qrcode').querySelector('canvas');
+    const qrCodeDataURL = qrcodeCanvas.toDataURL('image/png');
+
+    // Create a new window for printing
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Imprimir QR Code</title>
+                <style>
+                    @media print {
+                        body {
+                            margin: 0;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                            font-family: Arial, sans-serif;
+                        }
+                        .qr-container {
+                            text-align: center;
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                        .qr-container img {
+                            width: 600px;
+                            height: 600px;
+                        }
+                        .qr-container p {
+                            margin-top: 60px;
+                            font-size: 32px;
+                            font-weight: bold;
+                            color: #333;
+                        }
+                        @page {
+                            size: A4;
+                            margin: 0;
+                        }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="qr-container">
+                    <img src="${qrCodeDataURL}" alt="QR Code">
+                    <p>Acesse nosso Link! 😃</p>
+                </div>
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.onload = function() {
+        printWindow.print();
+        printWindow.onafterprint = function() {
+            printWindow.close();
+        };
+    };
+}
+
+// Reset QR code visibility when modal is closed
+$('#modalSeuLink').on('hidden.bs.modal', function () {
+    document.getElementById('qrcode-container').style.display = 'none';
+    document.getElementById('qrcode').innerHTML = '';
+});
+</script>
+
+<script>
+    // Encontra os elementos do ícone e do link do CSS
+    const themeLink = document.getElementById('theme-stylesheet');
+    const themeIcon = document.getElementById('theme-icon');
+
+    // Função para aplicar o tema com base no nome
+    function applyTheme(themeName) {
+        if (themeName === 'Claro') {
+            themeLink.href = 'css/SidebarNav.min2.css';
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        } else { // Tema 'Escuro'
+            themeLink.href = 'css/SidebarNav.min.css';
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+    }
+
+    // Verifica a preferência do usuário no localStorage
+    // Usa 'Escuro' como padrão se nada for encontrado
+    const currentTheme = localStorage.getItem('theme') || 'Escuro';
+    applyTheme(currentTheme);
+
+    // Adiciona um "ouvinte" de evento de clique para o ícone
+    themeIcon.addEventListener('click', function() {
+        const newTheme = (localStorage.getItem('theme') === 'Escuro') ? 'Claro' : 'Escuro';
+        localStorage.setItem('theme', newTheme);
+        location.reload(); // Recarrega a página para aplicar o novo CSS
+    });
 </script>
