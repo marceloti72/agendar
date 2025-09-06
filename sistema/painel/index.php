@@ -1009,7 +1009,7 @@ input:checked + .slider:before {
 						?>
 
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-calendar-check" style="color: white;" title="Agendamentos hoje"></i>
+							<a href="#" class="icones"><i class="fas fa-calendar-check" style="color: white;" title="Agendamentos hoje"></i>
 							<?php 								
 								if($total_agendamentos_hoje_usuario_pendentes != 0){							
 									?>
@@ -1074,7 +1074,7 @@ input:checked + .slider:before {
 						</li>	
 
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell" title="Encaixes hoje"></i>
+							<a href="#" class="icones"><i class="fa fa-bell" title="Encaixes hoje"></i>
 							<?php 								
 								if($total_encaixes_hoje != 0){							
 									?>
@@ -1118,7 +1118,7 @@ input:checked + .slider:before {
 						}?>
 
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Aniversariantes de hoje"><i class="fa fa-birthday-cake <?php echo $icon3?>" style="color: #FFF"></i>
+							<a href="#" class="icones" title="Aniversariantes de hoje"><i class="fa fa-birthday-cake <?php echo $icon3?>" ></i>
 							<?php 								
 								if($total_aniversariantes_hoje != 0){?>
                                     <span class="badge" style="background: #2b6b39"><?php echo $total_aniversariantes_hoje ?></span><?php 
@@ -1155,7 +1155,7 @@ input:checked + .slider:before {
 										<a href="#" data-toggle="modal" data-target="#RelAniv">Relatório Aniversáriantes</a>
 									</div> 
 									<?php if ($total_aniversariantes_hoje > 0): ?>
-										<a href="#" class="notification_bottom" style="background: #4970f3ff; color: white" data-toggle="modal" data-target="#birthdayModal">
+										<a href="#" class="notification_bottom" style="background: #0ef121ff; color: white" data-toggle="modal" data-target="#birthdayModal">
 											Enviar Parabéns
 										</a>
 									<?php endif; ?>
@@ -1179,7 +1179,7 @@ input:checked + .slider:before {
 
 							?>
 						<li class="dropdown head-dpdn">
-							<a href="#" title="Depoimentos pendentes" style="color:#FFF"><i class="fa fa-comment <?php echo $icon5?>" ></i><?php 
+							<a href="#" class="icones" title="Depoimentos pendentes"><i class="fa fa-comment <?php echo $icon5?>" ></i><?php 
 							if($total_comentarios != 0){?>
                                     <span class="badge" style="background: #22168a"><?php echo $total_comentarios ?></span><?php 
 								}?>
@@ -1224,7 +1224,7 @@ input:checked + .slider:before {
 
 					?>
 					    <li class="dropdown head-dpdn">							
-								<a href="#" class="dropdown-toggle" title="Escolher tema do sistema" ><i class="fa fa-sun" style="color:#FFF" id="theme-icon"></i>						
+								<a href="#" class="icones" title="Escolher tema do sistema" ><i class="fa fa-sun" style="color:#FFF" id="theme-icon"></i>						
 						</li>
 
                         <li class="dropdown head-dpdn" style="margin-left: 20px; color: <?php echo $cor?>" title='<?php echo $status?>'><small><i class="fab fa-whatsapp fa-2x"></i></small></li>
