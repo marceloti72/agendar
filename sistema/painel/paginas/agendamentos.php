@@ -77,7 +77,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
                 ?>
             </select>
         </div>
-        <button @click.stop data-toggle="modal" data-target="#modalForm" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
+        <button @click.stop="showModal('#modalForm')" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
             <i class="fa fa-plus mr-2"></i> Novo Agendamento
         </button>
     </div>
@@ -619,11 +619,13 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
             });
         }
         
-        // jQuery continua a 'ouvir' por cliques em data-toggle, mas agora o HTML impede o problema
-        $('[data-toggle="modal"]').on('click', function(e) {
-            e.preventDefault(); 
-            var target = $(this).data('target');
-            showModal(target);
+        // O jQuery agora só abre o modal se o Alpine não o fez. O botão principal usa @click.stop
+        $('body').on('click', '[data-toggle="modal"]', function(e) {
+            if(!e.isDefaultPrevented()){ // Verifica se o Alpine já não tratou o evento
+                 e.preventDefault(); 
+                 var target = $(this).data('target');
+                 showModal(target);
+            }
         });
 
         $(document).on('click', '[data-dismiss="modal"]', function(e) {
@@ -638,6 +640,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
             }
         });
         
+        // Tornando as funções globais para serem acessíveis pelo Alpine e HTML
         window.showModal = showModal;
         window.hideModal = hideModal;
         // ===================================================================
