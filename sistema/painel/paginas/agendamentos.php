@@ -594,26 +594,40 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
     // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS (CORRIGIDAS)
     // ===================================================================
     function showModal(selector) {
-        if (typeof selector !== 'string' || selector.trim() === '') return;
-        // CORREÇÃO DEFINITIVA: Garante que o seletor seja sempre válido.
-        const cleanSelector = '#' + selector.replace(/^#+/, '');
-        $(cleanSelector).css('display', 'flex').hide().fadeIn(200);
+    if (typeof selector !== 'string' || selector.trim() === '') {
+        console.error('Seletor inválido ou vazio fornecido para showModal:', selector);
+        return;
     }
+    const cleanSelector = '#' + selector.replace(/^#+/, '').trim();
+    const $modal = jQuery(cleanSelector);
+    if ($modal.length === 0) {
+        console.error('Modal não encontrado para o seletor:', cleanSelector);
+        return;
+    }
+    $modal.css('display', 'flex').hide().fadeIn(200);
+}
 
-    function hideModal(selector) {
-        // Se o seletor for um objeto (como um elemento DOM), usa-o diretamente.
-        if (typeof selector !== 'string') {
-             $(selector).fadeOut(200, function() {
-                $(this).css('display', 'none');
-            });
-            return;
-        }
-        if (selector.trim() === '') return;
-        const cleanSelector = '#' + selector.replace(/^#+/, '');
-        $(cleanSelector).fadeOut(200, function() {
-            $(this).css('display', 'none');
+function hideModal(selector) {
+    if (typeof selector !== 'string') {
+        jQuery(selector).fadeOut(200, function() {
+            jQuery(this).css('display', 'none');
         });
+        return;
     }
+    if (selector.trim() === '') {
+        console.error('Seletor vazio fornecido para hideModal');
+        return;
+    }
+    const cleanSelector = '#' + selector.replace(/^#+/, '').trim();
+    const $modal = jQuery(cleanSelector);
+    if ($modal.length === 0) {
+        console.error('Modal não encontrado para o seletor:', cleanSelector);
+        return;
+    }
+    $modal.fadeOut(200, function() {
+        jQuery(this).css('display', 'none');
+    });
+}
 
 	$(window).load( function() {
 
