@@ -270,7 +270,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
     </div>
 
 <!-- Modal Novo Agendamento REFAZIDO COM TAILWIND CSS -->
-<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" data-backdrop="static">
+<div class="modal" id="modalForm" tabindex="-1" role="dialog" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content bg-white dark:bg-slate-800 rounded-xl shadow-xl">
             <div class="modal-header bg-blue-600 text-white flex justify-between items-center px-6 py-4">
