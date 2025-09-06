@@ -77,8 +77,8 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
                 ?>
             </select>
         </div>
-        <!-- BOTÃO CORRIGIDO: Usa onclick padrão para chamar a função global e parar a propagação do evento -->
-        <button onclick="event.stopPropagation(); showModal('modalForm');" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
+        <!-- BOTÃO CORRIGIDO: Usa Alpine.js para chamar a função global showModal e para a propagação do evento -->
+        <button @click.stop="showModal('#modalForm')" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
             <i class="fa fa-plus mr-2"></i> Novo Agendamento
         </button>
     </div>
@@ -594,7 +594,6 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
     // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS (CORRIGIDAS)
     // ===================================================================
     function showModal(selector) {
-        alert('jlkjlkj')
         if (typeof selector !== 'string' || selector.trim() === '') return;
         // CORREÇÃO DEFINITIVA: Garante que o seletor seja sempre válido.
         const cleanSelector = '#' + selector.replace(/^#+/, '');
@@ -615,6 +614,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
             $(this).css('display', 'none');
         });
     }
+
 	$(window).load( function() {
 
 		// $('#mycalendar').monthly({
@@ -634,14 +634,14 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
         // ===================================================================
         // FIX: LÓGICA PARA CONTROLAR MODAIS SEM BOOTSTRAP.JS (CORRIGIDO)
         // ===================================================================        
-        
+                
         // Listener para botões que AINDA usam data-toggle (para compatibilidade com código antigo/AJAX)
         $('body').on('click', '[data-toggle="modal"]', function(e) {
-            alert('target')
-            if (e.isDefaultPrevented()) return; // Se o Alpine já tratou, não faz nada
+            // Se o clique foi originado de um botão com @click, o Alpine já o tratou.
+            if (e.isDefaultPrevented()) return; 
+            
             e.preventDefault();
             var target = $(this).data('target');
-             alert(target)
             showModal(target);
         });
 
