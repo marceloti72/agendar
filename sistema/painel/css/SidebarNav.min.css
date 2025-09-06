@@ -144,7 +144,7 @@
         top: 0;
         left: 0;
         bottom: 0;
-        width: 200px;
+        width: 220px;
         height: 100%;
         min-height: 100%;
         z-index: 2016; /* Garante que fique acima de outros elementos */

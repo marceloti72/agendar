@@ -117,7 +117,11 @@ $plano = $res3['plano'];
 	<script src="js/modernizr.custom.js"></script>
 
 	<!--webfonts-->
-	<link href="//fonts.googleapis.com/css?family=PT+Sans:400,400i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
+	<!-- <link href="//fonts.googleapis.com/css?family=PT+Sans:400,400i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet"> -->
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 	<!--//webfonts--> 
 
 	<!-- chart -->
@@ -130,6 +134,9 @@ $plano = $res3['plano'];
 	<link href="css/custom.css" rel="stylesheet">
 	<!--//Metis Menu -->
 	<style>
+		body {
+    font-family: 'Inter', sans-serif;
+}
 		#chartdiv {
 			width: 100%;
 			height: 295px;
