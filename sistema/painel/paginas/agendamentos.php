@@ -16,6 +16,8 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     }
 
 ?>
+<!-- Bootstrap Core CSS -->
+	<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
 
 <style>
 	.tooltip-inner {
