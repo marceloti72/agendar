@@ -637,6 +637,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
         
         // Listener para botões que AINDA usam data-toggle (para compatibilidade com código antigo/AJAX)
         $('body').on('click', '[data-toggle="modal"]', function(e) {
+            alert('target')
             if (e.isDefaultPrevented()) return; // Se o Alpine já tratou, não faz nada
             e.preventDefault();
             var target = $(this).data('target');
