@@ -23,6 +23,26 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 <!-- Estilos específicos para a biblioteca do calendário -->
 <link rel="stylesheet" type="text/css" href="css/monthly.css">
 <style>
+    /* FIX: Estilos para fazer os modais funcionarem sem Bootstrap CSS */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 1050;
+        overflow-y: auto;
+        /* Alinha o .modal-dialog no centro */
+        display: none; /* Começa escondido */
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+    .modal.fade {
+        transition: opacity 0.3s ease;
+    }
+
     /* Adaptações visuais para a biblioteca do calendário se integrar ao tema */
     .monthly-header {
         background-color: #1e40af; /* Azul escuro para combinar com o tema */
@@ -79,7 +99,6 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
         </div>
     </div>
 </div>
-
 
 
 <!-- Modal Concluir Serviço/Comanda -->
@@ -255,7 +274,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
         <div class="modal-content">
             <div class="modal-header bg-blue-600 text-white">
                 <h4 class="modal-title">Novo Agendamento</h4>
-                <button type="button" id="btn-fechar" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" data-dismiss="modal" class="close" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
