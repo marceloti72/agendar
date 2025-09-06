@@ -1179,7 +1179,7 @@ input:checked + .slider:before {
 
 							?>
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Depoimentos pendentes"><i class="fa fa-comment <?php echo $icon5?>" style="color:#FFF"></i><?php 
+							<a href="#" title="Depoimentos pendentes"><i class="fa fa-comment <?php echo $icon5?>" style="color:#FFF"></i><?php 
 							if($total_comentarios != 0){?>
                                     <span class="badge" style="background: #22168a"><?php echo $total_comentarios ?></span><?php 
 								}?>
