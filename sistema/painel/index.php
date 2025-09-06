@@ -1117,7 +1117,7 @@ input:checked + .slider:before {
 						}?>
 
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Aniversariantes de hoje"><i class="fas fa-birthday-cake <?php echo $icon3?>" style="color: #FFF"></i>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Aniversariantes de hoje"><i class="fas fa-birthday-cake <?php echo $icon3?>" ></i>
 							<?php 								
 								if($total_aniversariantes_hoje != 0){?>
                                     <span class="badge" style="background: #2b6b39"><?php echo $total_aniversariantes_hoje ?></span><?php 
@@ -1223,7 +1223,7 @@ input:checked + .slider:before {
 
 					?>
 					    <li class="dropdown head-dpdn">							
-								<a href="#" class="dropdown-toggle" title="Escolher tema do sistema" ><i class="fas fa-sun" style="color:#FFF" id="theme-icon"></i>						
+								<a href="#" class="dropdown-toggle" title="Escolher tema do sistema" ><i class="fas fa-sun" id="theme-icon"></i>						
 						</li>
 
                         <li class="dropdown head-dpdn" style="margin-left: 20px; color: <?php echo $cor?>" title='<?php echo $status?>'><small><i class="fab fa-whatsapp fa-2x"></i></small></li>
