@@ -22,6 +22,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 
 <!-- Estilos específicos para a biblioteca do calendário -->
 <link rel="stylesheet" type="text/css" href="css/monthly.css">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <style>
     /* FIX: Estilos para fazer os modais funcionarem sem Bootstrap CSS */
     .modal {
@@ -78,9 +79,9 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
             </select>
         </div>
         <!-- BOTÃO CORRIGIDO: Usa Alpine.js para chamar a função global showModal e para a propagação do evento -->
-        <button @click.stop="showModal('#modalForm')" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
-            <i class="fa fa-plus mr-2"></i> Novo Agendamento
-        </button>
+        <button @click.stop="console.log('Botão clicado'); showModal('modalForm')" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
+    <i class="fa fa-plus mr-2"></i> Novo Agendamento
+</button>
     </div>
 </div>
 
@@ -594,11 +595,13 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
     // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS (CORRIGIDAS)
     // ===================================================================
     function showModal(selector) {
+    console.log('showModal chamado com:', selector);
     if (typeof selector !== 'string' || selector.trim() === '') {
         console.error('Seletor inválido ou vazio fornecido para showModal:', selector);
         return;
     }
-    const cleanSelector = '#' + selector.replace(/^#+/, '').trim();
+    const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
+    console.log('Seletor limpo:', cleanSelector);
     const $modal = jQuery(cleanSelector);
     if ($modal.length === 0) {
         console.error('Modal não encontrado para o seletor:', cleanSelector);
@@ -608,6 +611,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
 }
 
 function hideModal(selector) {
+    console.log('hideModal chamado com:', selector);
     if (typeof selector !== 'string') {
         jQuery(selector).fadeOut(200, function() {
             jQuery(this).css('display', 'none');
@@ -618,7 +622,7 @@ function hideModal(selector) {
         console.error('Seletor vazio fornecido para hideModal');
         return;
     }
-    const cleanSelector = '#' + selector.replace(/^#+/, '').trim();
+    const cleanSelector = selector.startsWith('#') ? selector : `#${selector.trim()}`;
     const $modal = jQuery(cleanSelector);
     if ($modal.length === 0) {
         console.error('Modal não encontrado para o seletor:', cleanSelector);
