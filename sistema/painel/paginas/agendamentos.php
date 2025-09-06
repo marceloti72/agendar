@@ -77,6 +77,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
                 ?>
             </select>
         </div>
+        <!-- BOTÃO CORRIGIDO: Usa apenas Alpine.js para chamar a função global showModal -->
         <button @click.stop="showModal('#modalForm')" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
             <i class="fa fa-plus mr-2"></i> Novo Agendamento
         </button>
@@ -595,14 +596,19 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
     function showModal(selector) {
         if (typeof selector !== 'string' || selector.trim() === '') return;
         // CORREÇÃO DEFINITIVA: Garante que o seletor seja sempre válido.
-        // 1. Remove todos os '#' do início da string.
-        // 2. Adiciona um único '#' no início.
         const cleanSelector = '#' + selector.replace(/^#+/, '');
         $(cleanSelector).css('display', 'flex').hide().fadeIn(200);
     }
 
     function hideModal(selector) {
-        if (typeof selector !== 'string' || selector.trim() === '') return;
+        // Se o seletor for um objeto (como um elemento DOM), usa-o diretamente.
+        if (typeof selector !== 'string') {
+             $(selector).fadeOut(200, function() {
+                $(this).css('display', 'none');
+            });
+            return;
+        }
+        if (selector.trim() === '') return;
         const cleanSelector = '#' + selector.replace(/^#+/, '');
         $(cleanSelector).fadeOut(200, function() {
             $(this).css('display', 'none');
