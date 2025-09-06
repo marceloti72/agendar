@@ -556,6 +556,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
     // FUNÇÕES GLOBAIS DE CONTROLE DOS MODAIS (CORRIGIDAS)
     // ===================================================================
     function showModal(selector) {
+        alert('jljljklj')
     console.log('showModal chamado com:', selector);
     if (typeof selector !== 'string' || selector.trim() === '') {
         console.error('Seletor inválido ou vazio fornecido para showModal:', selector);
