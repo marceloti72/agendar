@@ -619,14 +619,17 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
             });
         }
         
+        // CORREÇÃO APLICADA AQUI
         $('[data-toggle="modal"]').on('click', function(e) {
             e.preventDefault();
+            e.stopPropagation(); // Impede que o clique feche o menu lateral
             var target = $(this).data('target');
             showModal(target);
         });
 
         $(document).on('click', '[data-dismiss="modal"]', function(e) {
             e.preventDefault();
+            e.stopPropagation(); // Também é uma boa prática aqui
             var modal = $(this).closest('.modal');
             hideModal(modal);
         });
