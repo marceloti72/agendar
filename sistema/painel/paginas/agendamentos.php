@@ -78,7 +78,7 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
             </select>
         </div>
         <!-- BOTÃO CORRIGIDO: Usa onclick padrão para chamar a função global e parar a propagação do evento -->
-        <button onclick="event.stopPropagation(); showModal('#modalForm');" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
+        <button onclick="event.stopPropagation(); showModal('modalForm');" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
             <i class="fa fa-plus mr-2"></i> Novo Agendamento
         </button>
     </div>
