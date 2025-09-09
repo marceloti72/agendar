@@ -518,7 +518,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     <div class="form-group">
         <div id="lista-funcionarios">
             <div class="card-funcionario" data-id="" onclick="mudarFuncionario('')">
-                <img src="../img/perfil/sem-foto.jpg" alt="Todos" class="foto-funcionario">
+                <img src="img/perfil/sem-foto.jpg" alt="Todos" class="foto-funcionario">
                 <div class="nome-funcionario">Todos</div>
             </div>
             <?php
@@ -530,7 +530,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                     foreach ($res[$i] as $key => $value) {}
                     $primeiro_nome = explode(" ", $res[$i]['nome'])[0];
                     echo '<div class="card-funcionario" data-id="'.$res[$i]['id'].'" onclick="mudarFuncionario('.$res[$i]['id'].')">';
-                    echo '<img src="../img/perfil/'.$res[$i]['foto'].'" alt="'.$res[$i]['nome'].'" class="foto-funcionario">';
+                    echo '<img src="img/perfil/'.$res[$i]['foto'].'" alt="'.$res[$i]['nome'].'" class="foto-funcionario">';
                     echo '<div class="nome-funcionario">'.$primeiro_nome.'</div>';
                     echo '</div>';
                 }
@@ -1250,7 +1250,7 @@ $("#form-text").submit(function (event) {
 </script>
 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	
 	function mudarFuncionario(){
 		var funcionario = $('#funcionario').val();
@@ -1262,7 +1262,7 @@ $("#form-text").submit(function (event) {
 		//listarServicos(funcionario);
 
 	}
-</script>
+</script> -->
 
 
 
@@ -1829,6 +1829,7 @@ function calcular() {
     } 
 
     function mudarFuncionario(id) {
+        alert('kljkl')
     // Encontra todos os cartões de funcionário e remove a classe 'selecionado'
     const cartoes = document.querySelectorAll('.card-funcionario');
     cartoes.forEach(cartao => {
@@ -1840,6 +1841,7 @@ function calcular() {
         const cartaoSelecionado = document.querySelector(`.card-funcionario[data-id="${id}"]`);
         if (cartaoSelecionado) {
             cartaoSelecionado.classList.add('selecionado');
+            
         }
     } else {
         // Se for "Todos", seleciona o primeiro cartão
@@ -1848,6 +1850,7 @@ function calcular() {
 
     // Atualiza o valor do campo oculto
     document.getElementById('funcionario').value = id;
+    listar();
 
     // Se houver outra lógica na sua função 'mudarFuncionario()', você pode mantê-la aqui
     console.log(`Funcionário selecionado: ${id}`);
