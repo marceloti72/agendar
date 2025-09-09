@@ -345,8 +345,6 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
         }
     }
 </style>
-    
-</head>
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-R39PP1R46W"></script>
@@ -367,6 +365,8 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
 
   gtag('config', 'AW-953415060');
 </script>
+
+</head>
 
 
 <body>

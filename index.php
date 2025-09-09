@@ -117,10 +117,8 @@
             background-color: #5c5ff6ff;
         }
     </style>
-   
-</head>
 
-<!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-R39PP1R46W"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -139,6 +137,8 @@
 
   gtag('config', 'AW-953415060');
 </script>
+   
+</head>
 
 <body class="bg-gray-50 font-sans">
 
