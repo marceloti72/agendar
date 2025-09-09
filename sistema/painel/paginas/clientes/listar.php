@@ -208,7 +208,7 @@ for($i=0; $i < $total_reg; $i++){
 echo <<<HTML
 <tr class="">
 <td>
-  <img src="img/clientes/{{$foto} ? {$foto} : 'sem-foto.jpg'}" width="50" height="50" class="hovv">
+  <img src="img/clientes/{$foto} ? {$foto} : 'sem-foto.jpg'" width="50" height="50" class="hovv">
   {$nome}
 </td>
 <td class="esc">{$telefone}</td>
