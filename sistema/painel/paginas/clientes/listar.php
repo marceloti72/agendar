@@ -225,7 +225,7 @@ echo <<<HTML
 <td>
 		<a href="#" class="btn btn-primary btn-xs" onclick="editar('{$id}','{$nome}', '{$telefone}', '{$endereco}', '{$data_nasc}', '{$cartoes}', '{$cpf}')" title="Editar Dados"><i class="fe fe-edit"></i></a>
 
-		<a href="#" class="btn btn-info btn-xs" onclick="mostrar('{$id}','{$nome}', '{$telefone}', '{$cartoes}', '{$data_cadF}', '{$data_nascF}', '{$endereco}', '{$data_retornoF}', '{$nome_servico}', '{$obs_servico}', '{$valor_servico}', '{$data_servico}')" title="Ver Dados"><i class="fe fe-search"></i></a>
+		<a href="#" class="btn btn-info btn-xs" onclick="mostrar('{$id}','{$nome}', '{$telefone}', '{$cartoes}', '{$data_cadF}', '{$data_nascF}', '{$endereco}', '{$data_retornoF}', '{$nome_servico}', '{$obs_servico}', '{$valor_servico}', '{$data_servico}', '{$foto}')" title="Ver Dados"><i class="fe fe-search"></i></a>
 
 
 
@@ -313,7 +313,7 @@ HTML;
 
 
 <script type="text/javascript">
-	function mostrar(id, nome, telefone, cartoes, data_cad, data_nasc, endereco, retorno, servico, obs, valor, data){
+	function mostrar(id, nome, telefone, cartoes, data_cad, data_nasc, endereco, retorno, servico, obs, valor, data, foto_cliente){
 
 		$('#nome_dados').text(nome);		
 		$('#data_cad_dados').text(data_cad);
@@ -327,6 +327,10 @@ HTML;
 		$('#servico_dados_tab').text(servico);
 		$('#data_dados_tab').text(data);
 		$('#valor_dados_tab').text(valor);
+
+		 // Preencher a foto
+		const fotoPath = foto_cliente && foto_cliente !== '' ? 'img/clientes/' + foto_cliente : 'img/clientes/sem-foto.jpg';
+		document.getElementById('foto_cliente_modal').src = fotoPath;
 
 		$('#modalDados').modal('show');
 		listarDebitos(id)
