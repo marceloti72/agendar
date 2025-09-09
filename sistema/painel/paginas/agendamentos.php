@@ -466,6 +466,45 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
         ::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
+
+
+        #lista-funcionarios {
+    display: flex; /* Para alinhar os itens horizontalmente */
+    flex-wrap: wrap; /* Para quebra de linha se necessário */
+    gap: 10px; /* Espaço entre os cartões */
+    justify-content: center; /* Centraliza os cartões */
+}
+
+.card-funcionario {
+    text-align: center;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-funcionario:hover {
+    transform: scale(1.05); /* Efeito de zoom no hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.foto-funcionario {
+    width: 70px; /* Tamanho da foto */
+    height: 70px;
+    border-radius: 50%; /* Transforma a foto em um círculo */
+    object-fit: cover; /* Garante que a imagem preencha o círculo */
+    border: 2px solid #ccc; /* Borda padrão */
+}
+
+.card-funcionario.selecionado .foto-funcionario {
+    border-color: #007bff; /* Borda azul para indicar seleção */
+}
+
+.nome-funcionario {
+    margin-top: 5px;
+    font-size: 0.8em;
+    color: #555;
+}
     </style>
 
 
@@ -476,25 +515,31 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 	</div>
 
 	<div class="col-md-3">
-		<div class="form-group">			
-			<select class="form-control sel2" id="funcionario" name="funcionario" style="width:100%;" onchange="mudarFuncionario()"> 
-				<option value="">Todos</option>
-				<?php 
-				$query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY id desc");
-				$res = $query->fetchAll(PDO::FETCH_ASSOC);
-				$total_reg = @count($res);
-				if($total_reg > 0){
-					for($i=0; $i < $total_reg; $i++){
-						foreach ($res[$i] as $key => $value){}
-							echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
-					}
-				}
-				?>
-
-
-			</select>   
-		</div> 	
-	</div>
+    <div class="form-group">
+        <div id="lista-funcionarios">
+            <div class="card-funcionario" data-id="" onclick="mudarFuncionario('')">
+                <img src="../img/perfil/sem-foto.jpg" alt="Todos" class="foto-funcionario">
+                <div class="nome-funcionario">Todos</div>
+            </div>
+            <?php
+            $query = $pdo->query("SELECT * FROM usuarios where atendimento = 'Sim' and id_conta = '$id_conta' ORDER BY id desc");
+            $res = $query->fetchAll(PDO::FETCH_ASSOC);
+            $total_reg = @count($res);
+            if ($total_reg > 0) {
+                for ($i=0; $i < $total_reg; $i++) {
+                    foreach ($res[$i] as $key => $value) {}
+                    $primeiro_nome = explode(" ", $res[$i]['nome'])[0];
+                    echo '<div class="card-funcionario" data-id="'.$res[$i]['id'].'" onclick="mudarFuncionario('.$res[$i]['id'].')">';
+                    echo '<img src="../img/perfil/'.$res[$i]['foto'].'" alt="'.$res[$i]['nome'].'" class="foto-funcionario">';
+                    echo '<div class="nome-funcionario">'.$primeiro_nome.'</div>';
+                    echo '</div>';
+                }
+            }
+            ?>
+        </div>
+        <input type="hidden" id="funcionario" name="funcionario">
+    </div>
+</div>
 
 </div>
 <input type="hidden" name="data_agenda" id="data_agenda" value="<?php echo date('Y-m-d') ?>"> 
@@ -1782,5 +1827,35 @@ function calcular() {
         var total = total_valores - valor_rest;
         $('#valor_serv').val(total.toFixed(2));
     } 
+
+    function mudarFuncionario(id) {
+    // Encontra todos os cartões de funcionário e remove a classe 'selecionado'
+    const cartoes = document.querySelectorAll('.card-funcionario');
+    cartoes.forEach(cartao => {
+        cartao.classList.remove('selecionado');
+    });
+
+    // Adiciona a classe 'selecionado' ao cartão clicado
+    if (id) {
+        const cartaoSelecionado = document.querySelector(`.card-funcionario[data-id="${id}"]`);
+        if (cartaoSelecionado) {
+            cartaoSelecionado.classList.add('selecionado');
+        }
+    } else {
+        // Se for "Todos", seleciona o primeiro cartão
+        document.querySelector('.card-funcionario[data-id=""]').classList.add('selecionado');
+    }
+
+    // Atualiza o valor do campo oculto
+    document.getElementById('funcionario').value = id;
+
+    // Se houver outra lógica na sua função 'mudarFuncionario()', você pode mantê-la aqui
+    console.log(`Funcionário selecionado: ${id}`);
+}
+
+// Opcional: para selecionar "Todos" no carregamento da página
+document.addEventListener('DOMContentLoaded', () => {
+    mudarFuncionario(''); 
+});
 
 	</script>
