@@ -1863,8 +1863,7 @@ function calcular() {
         $('#valor_serv').val(total.toFixed(2));
     } 
 
-    function mudarFuncionario(id) {
-        alert('kljkl')
+    function mudarFuncionario(id) {        
     // Encontra todos os cartões de funcionário e remove a classe 'selecionado'
     const cartoes = document.querySelectorAll('.card-funcionario');
     cartoes.forEach(cartao => {

@@ -972,6 +972,17 @@ input:checked + .slider:before {
 		<!-- header-starts -->
 		<div class="sticky-header header-section ">
 			<div class="header-left">
+				<div class="navbar-header">						
+						<a class="navbar-brand" href="index.php">
+							<div class="brand-container">
+								
+								<div class="brand-text">
+									
+									<span class="system-name"><?php echo $nome_sistema ?></span>
+								</div>
+							</div>
+						</a>
+					</div>
 				<!--toggle button start-->
 				<button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>
 				<!--toggle button end-->
