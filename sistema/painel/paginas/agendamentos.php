@@ -505,14 +505,42 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
     font-size: 0.8em;
     color: #555;
 }
+
+#btn-flutuante {
+    background-color: #007bff; /* Cor azul, você pode alterar */
+    color: white; /* Cor do ícone */
+    border: none;
+    border-radius: 50%; /* Faz o botão ser redondo */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Sombra para destacá-lo */
+    font-size: 24px; /* Tamanho do ícone de mais */
+    width: 60px; /* Largura e altura para fazer um círculo perfeito */
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    
+    /* Posicionamento flutuante */
+    position: fixed; /* Fixa a posição na tela */
+    bottom: 20px; /* Distância da parte inferior */
+    right: 20px; /* Distância da direita */
+    z-index: 1000; /* Garante que o botão fique acima de outros elementos */
+}
+
+/* Opcional: Efeito ao passar o mouse */
+#btn-flutuante:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+}
     </style>
 
-
+<button id="btn-flutuante" data-toggle="modal" data-target="#modalForm" type="button">
+    <i class="fa fa-plus" aria-hidden="true"></i>
+</button>
 
 <div class="row">
-	<div class="col-md-3">
+	<!-- <div class="col-md-3">
 		<button style="margin-bottom:10px; border-radius: 10px;box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4)" data-toggle="modal" data-target="#modalForm" type="button" class="btn novo" ><i class="fa fa-plus" aria-hidden="true"></i> Novo Agendamento</button>
-	</div>
+	</div> -->
 
 	<div class="col-md-12">
     <div class="form-group">
@@ -530,7 +558,14 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
                     foreach ($res[$i] as $key => $value) {}
                     $primeiro_nome = explode(" ", $res[$i]['nome'])[0];
                     echo '<div class="card-funcionario" data-id="'.$res[$i]['id'].'" onclick="mudarFuncionario('.$res[$i]['id'].')">';
-                    echo '<img src="img/perfil/'.$res[$i]['foto'].'" alt="'.$res[$i]['nome'].'" class="foto-funcionario">';
+                    $caminho_foto = 'img/perfil/' . $res[$i]['foto'];
+                    if (file_exists($caminho_foto) && $res[$i]['foto'] != '') {
+                        // Se a foto existe e o campo não está vazio, exibe a foto do funcionário
+                        echo '<img src="'.$caminho_foto.'" alt="'.$res[$i]['nome'].'" class="foto-funcionario">';
+                    } else {
+                        // Se a foto não existe ou o campo está vazio, exibe a foto padrão
+                        echo '<img src="img/perfil/sem-foto.jpg" alt="Foto não disponível" class="foto-funcionario">';
+                    }                    
                     echo '<div class="nome-funcionario">'.$primeiro_nome.'</div>';
                     echo '</div>';
                 }
