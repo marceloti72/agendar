@@ -166,10 +166,10 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
             </div>
             <div class="modal-body">
                 <div class="row mb-3" style="text-align: center;"> <div class="col-12">
-                        <img id="foto_cliente_modal" src="img/clientes/sem-foto.jpg" alt="Foto do Cliente" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover; border: 2px solid #ccc;">
+                        <img id="foto_cliente_modal" src="img/clientes/sem-foto.jpg" alt="Foto do Cliente" class="img-fluid rounded-circle" style="object-fit: cover; border: 2px solid #ccc;">
                         <h4 class="mt-2" id="nome_cliente_modal"></h4> </div>
                 </div>
-                                
+
                 <div class="row" style="border-bottom: 1px solid #cac7c7;">
                     <div class="col-md-6">
                         <span><b>Telefone: </b></span>
