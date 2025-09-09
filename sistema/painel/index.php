@@ -971,8 +971,7 @@ input:checked + .slider:before {
 		
 		<!-- header-starts -->
 		<div class="sticky-header header-section ">
-			<div class="header-left">
-				<div class="navbar-header">						
+			<div class="navbar-header">						
 						<a class="navbar-brand" href="index.php">
 							<div class="brand-container">
 								
@@ -983,6 +982,8 @@ input:checked + .slider:before {
 							</div>
 						</a>
 					</div>
+			<div class="header-left">
+				
 				<!--toggle button start-->
 				<button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>
 				<!--toggle button end-->
