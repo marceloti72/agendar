@@ -95,6 +95,21 @@ if (@$_SESSION['nivel_usuario'] != 'administrador') {
                                 <input type="date" class="form-control" id="data_nasc" name="data_nasc">
                             </div>
                         </div>
+
+                        <div class="row">
+						<div class="col-md-8">						
+							<div class="form-group"> 
+								<label>Foto</label> 
+								<input class="form-control" type="file" name="foto" onChange="carregarImg_cliente();" id="foto_cliente">
+							</div>						
+						</div>
+						<div class="col-md-4">
+							<div id="divImg">
+								<img src="img/clientes/sem-foto.jpg"  width="80px" id="target_cliente">									
+							</div>
+						</div>
+
+					</div>
                     </div>
                     <input type="hidden" name="id" id="id">
                     <br>
@@ -573,4 +588,24 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "ultserv") {
             }
         });
     }
+
+    
+	function carregarImg_cliente() {
+		var target = document.getElementById('target_cliente');
+		var file = document.querySelector("#foto_cliente").files[0];
+
+		var reader = new FileReader();
+
+		reader.onloadend = function () {
+			target.src = reader.result;
+		};
+
+		if (file) {
+			reader.readAsDataURL(file);
+
+		} else {
+			target.src = "";
+		}
+	}
+
 </script>

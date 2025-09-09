@@ -157,6 +157,7 @@ for($i=0; $i < $total_reg; $i++){
 	$data_retorno = $res[$i]['data_retorno'];
 	$ultimo_servico = $res[$i]['ultimo_servico'];
 	$cpf = $res[$i]['cpf'];
+	$foto = $res[$i]['foto'];
 
 	$data_cadF = implode('/', array_reverse(@explode('-', $data_cad)));
 	$data_nascF = implode('/', array_reverse(@explode('-', $data_nasc)));
@@ -206,7 +207,10 @@ for($i=0; $i < $total_reg; $i++){
 
 echo <<<HTML
 <tr class="">
-<td>{$nome}</td>
+<td>
+<img src="img/clientes/{$foto}" width="50" height="50" class="hovv">
+{$nome}
+</td>
 <td class="esc">{$telefone}</td>
 <td class="esc">{$cpf}</td>
 <td class="esc">{$data_cadF}</td>
