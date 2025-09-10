@@ -1013,7 +1013,7 @@ for ($i = 1; $i <= 12; $i++) {
         valueLabel.label.text = "{valueY}";
         valueLabel.label.dy = -10;
 
-        // Gráfico de Pizza para Ranking de Serviços (VERSÃO FINAL)
+        // Gráfico de Pizza para Ranking de Serviços (VERSÃO FINAL - Texto só no Tooltip)
         var chartServicos = am4core.create("servicosChart", am4charts.PieChart);
         chartServicos.data = <?php echo json_encode($ranking_servicos); ?>;
         var pieSeriesServicos = chartServicos.series.push(new am4charts.PieSeries());
@@ -1041,12 +1041,18 @@ for ($i = 1; $i <= 12; $i++) {
         legend.markers.template.width = 15;
         legend.markers.template.height = 15;
 
-        // 4. Ajusta os textos (labels) dentro do gráfico
-        pieSeriesServicos.labels.template.radius = am4core.percent(-30);
-        pieSeriesServicos.labels.template.fill = am4core.color("white");
-        pieSeriesServicos.labels.template.fontWeight = "bold";
+        // 4. REMOVE OS TEXTOS (LABELS) DE DENTRO DO GRÁFICO
+        pieSeriesServicos.labels.template.disabled = true; // Desabilita todas as labels
 
-        // 5. REMOVE A LINHA FINA ("FIO DE CABELO") DO GRÁFICO
+        // 5. Garante que o tooltip funcione bem
+        pieSeriesServicos.slices.template.tooltipText = "{category}: {value} usos ({valueY.percent.formatNumber('#.#')}%)";
+        pieSeriesServicos.tooltip.label.interactionsEnabled = false; // Permite copiar texto
+        pieSeriesServicos.tooltip.background.fill = am4core.color("#222"); // Tooltip escuro
+        pieSeriesServicos.tooltip.getFillFromObject = false; // Não pega a cor da fatia para o tooltip
+        pieSeriesServicos.tooltip.label.fill = am4core.color("#fff"); // Cor do texto do tooltip
+
+
+        // 6. REMOVE A LINHA FINA ("FIO DE CABELO") DO GRÁFICO
         pieSeriesServicos.ticks.template.disabled = true;
 
         // Estilização das fatias
