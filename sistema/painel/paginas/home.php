@@ -852,7 +852,7 @@ for ($i = 1; $i <= 12; $i++) {
         // ======================================================
         // 🎨 DEFINA SUA LISTA DE CORES AQUI
         // ======================================================
-        pieSeriesReceberTipo.colors.list = [
+        pieSeriesPagarTipo.colors.list = [
             am4core.color("#4A90E2"), // Azul para a primeira categoria (ex: Serviço)
             am4core.color("#50E3C2"), // Verde para a segunda (ex: Venda)
             am4core.color("#F8B763"), // Amarelo para a terceira (ex: Assinatura)
