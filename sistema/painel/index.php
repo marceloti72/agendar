@@ -966,22 +966,12 @@ input:checked + .slider:before {
 					<!-- /.navbar-collapse -->
 				</nav>
 			</aside>
-		</div>
+		
 		<!--left-fixed -navigation-->
 		
 		<!-- header-starts -->
 		<div class="sticky-header header-section ">
-			<div class="navbar-header">						
-						<a class="navbar-brand" href="index.php">
-							<div class="brand-container">
-								
-								<div class="brand-text">
-									
-									<span class="system-name"><?php echo $nome_sistema ?></span>
-								</div>
-							</div>
-						</a>
-					</div>
+			
 			<div class="header-left">
 				
 				<!--toggle button start-->
@@ -1304,6 +1294,7 @@ input:checked + .slider:before {
 			<div class="clearfix"> </div>	
 		</div>
 		<!-- //header-ends -->
+		 </div>
 
 
 
