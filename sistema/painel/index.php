@@ -680,26 +680,6 @@ body.dark .treeview-menu > li > a {
     transition: width 0.3s ease-in-out;
 }
 
-#showLeftPush {
-    position: absolute;
-    top: 15px;
-    right: -50px; /* Posiciona o botão fora da barra lateral */
-    background: #fff;
-    border: 1px solid #ddd;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    color: #555;
-    font-size: 1.2em;
-    cursor: pointer;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: right 0.3s ease-in-out, transform 0.3s ease;
-}
-
-#showLeftPush:hover {
-    background: #f5f5f5;
-}
 
 /*
 =========================================
