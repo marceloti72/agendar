@@ -708,16 +708,7 @@ CSS CORRIGIDO E MAIS ESPECÍFICO
 */
 
 /* --- Movimentação do conteúdo principal --- */
-body.cbp-spmenu-push #page-wrapper,
-body.cbp-spmenu-push .sticky-header {
-    margin-left: var(--sidebar-width-open);
-    transition: margin-left 0.3s ease-in-out;
-}
 
-body.cbp-spmenu-push.sidebar-collapsed #page-wrapper,
-body.cbp-spmenu-push.sidebar-collapsed .sticky-header {
-    margin-left: var(--sidebar-width-collapsed);
-}
 
 /* --- Largura do Menu --- */
 body.cbp-spmenu-push .cbp-spmenu-left {
