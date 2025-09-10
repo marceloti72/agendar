@@ -754,8 +754,8 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
         justify-content: space-between;
         align-items: center;
         flex-wrap: nowrap;
-        width: 100%;
-        max-width: 100%;
+        width: 55%;
+        max-width: 55%;
         box-sizing: border-box;
     }
     .header-left, .header-right {
