@@ -235,7 +235,7 @@ if (@count($res_caixa) > 0 && $res_caixa[0]['data_fechamento'] === NULL) {
     /* Cor de fundo opcional como fallback */
     background-color: #516a88;
     /* Imagem de fundo */
-    background-image: url('../../images/icone_512.png');
+    /* background-image: url('../../images/icone_512.png'); */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -811,11 +811,11 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
     <a href="index.php" class="navbar-brand d-flex align-items-center">
 
         <img src="../../images/icone_512.png" alt="Logo" style="width: 40px; height: 40px;" class="me-3">
-
-        <div>
-            <span class="text-white font-weight-bold d-block" style="font-size: 1.1rem; line-height: 1.2;">
+        <span class="text-white font-weight-bold d-block" style="font-size: 1.1rem; line-height: 1.2;">
                 Painel
             </span>
+        <div>
+            
             
             <span class="text-white-50" style="font-size: 0.8rem;">
                 <?= $nome_sistema ?>
