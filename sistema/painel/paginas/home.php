@@ -1013,7 +1013,7 @@ for ($i = 1; $i <= 12; $i++) {
         valueLabel.label.text = "{valueY}";
         valueLabel.label.dy = -10;
 
-        // Gráfico de Pizza para Ranking de Serviços (VERSÃO MELHORADA)
+        // Gráfico de Pizza para Ranking de Serviços (VERSÃO CORRIGIDA E MELHORADA)
 var chartServicos = am4core.create("servicosChart", am4charts.PieChart);
 chartServicos.data = <?php echo json_encode($ranking_servicos); ?>;
 var pieSeriesServicos = chartServicos.series.push(new am4charts.PieSeries());
@@ -1028,33 +1028,33 @@ pieSeriesServicos.dataFields.category = "servico_nome";
 // 1. Aumenta o raio do gráfico para ocupar mais espaço no container
 pieSeriesServicos.radius = am4core.percent(95);
 
-// 2. (Opcional, mas recomendado) Transforma em um gráfico de "rosca" (donut), que é mais moderno
+// 2. (Opcional) Transforma em um gráfico de "rosca" (donut)
 pieSeriesServicos.innerRadius = am4core.percent(40);
 
-// 3. Otimiza a Legenda para ocupar menos espaço
-var legend = chartServicos.legend;
-legend.position = "right"; // Posição lateral dá mais espaço vertical ao gráfico
-legend.width = 150;        // Limita a largura da legenda
-legend.verticalScrollbar = new am4core.Scrollbar(); // Adiciona barra de rolagem se houver muitos itens
+// 3. Cria e otimiza a Legenda para ocupar menos espaço
+var legend = chartServicos.legend = new am4charts.Legend(); // <-- LINHA CORRIGIDA!
+legend.position = "right"; 
+legend.width = 150;
+legend.verticalScrollbar = new am4core.Scrollbar(); 
 
 // Ajusta o tamanho dos marcadores e texto da legenda
-legend.labels.template.truncate = true; // Corta textos muito longos com "..."
-legend.labels.template.maxWidth = 120;  // Largura máxima para o texto antes de cortar
-legend.markers.template.width = 15;     // Largura do marcador de cor
-legend.markers.template.height = 15;    // Altura do marcador de cor
+legend.labels.template.truncate = true;
+legend.labels.template.maxWidth = 120;
+legend.markers.template.width = 15;
+legend.markers.template.height = 15;
 
-// 4. Ajusta os textos (labels) dentro do gráfico para não sobrepor
-pieSeriesServicos.labels.template.radius = am4core.percent(-30); // Puxa os números para dentro da "rosca"
-pieSeriesServicos.labels.template.fill = am4core.color("white"); // Deixa o texto branco para melhor leitura
+// 4. Ajusta os textos (labels) dentro do gráfico
+pieSeriesServicos.labels.template.radius = am4core.percent(-30);
+pieSeriesServicos.labels.template.fill = am4core.color("white");
 pieSeriesServicos.labels.template.fontWeight = "bold";
 
 // Estilização das fatias
 pieSeriesServicos.slices.template.stroke = am4core.color("#fff");
 pieSeriesServicos.slices.template.strokeWidth = 2;
 pieSeriesServicos.slices.template.strokeOpacity = 1;
-pieSeriesServicos.slices.template.cornerRadius = 8; // Cantos arredondados
+pieSeriesServicos.slices.template.cornerRadius = 8;
 
-// Define uma paleta de cores mais bonita
+// Define a paleta de cores
 pieSeriesServicos.colors.list = [
     am4core.color("#4A90E2"),
     am4core.color("#50E3C2"),
@@ -1062,6 +1062,8 @@ pieSeriesServicos.colors.list = [
     am4core.color("#9068F4"),
     am4core.color("#E95D5D")
 ];
+
+// ======================================================
 
 // ======================================================
 
