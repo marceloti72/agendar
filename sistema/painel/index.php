@@ -727,7 +727,7 @@ body.dark .treeview-menu > li > a {
 
 	
 </head> 
-<body class="cbp-spmenu-push" >
+<body class="cbp-spmenu-push dark" >
 	<div class="main-content">
 
 
