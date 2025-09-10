@@ -7910,9 +7910,18 @@ h4.asd label {
       justify-content: space-between;
       align-items: center;
       flex-wrap: nowrap;
-      width: 55%;
-      max-width: 55%;
+      width: 100%;
+      max-width: 100%;
       box-sizing: border-box;
+}
+.header-left {
+    float: left;
+    width: 50%;
+    margin-left: 15%;
+	position: relative;
+}
+.header-right {
+    float: right;
 }
   
 }
