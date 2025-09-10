@@ -11,19 +11,19 @@ try {
     $data_inicio = date('Y-m-d', strtotime('-12 months'));
     $data_fim = date('Y-m-d');
     $query = $pdo->prepare("
-        SELECT u.id AS funcionario_id, u.nome AS funcionario_nome, COUNT(r.id) AS total_servicos
-        FROM receber r
-        INNER JOIN usuarios u ON r.funcionario = u.id
-        WHERE r.id_conta = ?
-          AND r.tipo = 'Serviço'
-          AND r.pago = 'Sim'
-          AND r.data_lanc BETWEEN ? AND ?
-        GROUP BY u.id, u.nome
-        ORDER BY total_servicos DESC
-        LIMIT 5
-    ");
-    $query->execute([$id_conta, $data_inicio, $data_fim]);
-    $ranking_funcionarios = $query->fetchAll(PDO::FETCH_ASSOC);
+    SELECT u.id AS funcionario_id, u.nome AS funcionario_nome, u.foto AS funcionario_foto, COUNT(r.id) AS total_servicos
+    FROM receber r
+    INNER JOIN usuarios u ON r.funcionario = u.id
+    WHERE r.id_conta = ?
+      AND r.tipo = 'Serviço'
+      AND r.pago = 'Sim'
+      AND r.data_lanc BETWEEN ? AND ?
+    GROUP BY u.id, u.nome, u.foto
+    ORDER BY total_servicos DESC
+    LIMIT 5
+");
+$query->execute([$id_conta, $data_inicio, $data_fim]);
+$ranking_funcionarios = $query->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     error_log('Erro ao carregar ranking de funcionários: ' . $e->getMessage());
     $ranking_error = 'Erro ao carregar ranking de funcionários.';
@@ -90,19 +90,19 @@ try {
 // Fetch ranking of most active clients in the last 12 months
 try {
     $query = $pdo->prepare("
-        SELECT c.id AS cliente_id, c.nome AS cliente_nome, COUNT(r.id) AS total_servicos
-        FROM receber r
-        INNER JOIN clientes c ON r.pessoa = c.id
-        WHERE r.id_conta = ?
-          AND r.tipo = 'Serviço'
-          AND r.pago = 'Sim'
-          AND r.data_lanc BETWEEN ? AND ?
-        GROUP BY c.id, c.nome
-        ORDER BY total_servicos DESC
-        LIMIT 5
-    ");
-    $query->execute([$id_conta, $data_inicio, $data_fim]);
-    $ranking_clientes_ativos = $query->fetchAll(PDO::FETCH_ASSOC);
+    SELECT c.id AS cliente_id, c.nome AS cliente_nome, c.foto AS cliente_foto, COUNT(r.id) AS total_servicos
+    FROM receber r
+    INNER JOIN clientes c ON r.pessoa = c.id
+    WHERE r.id_conta = ?
+      AND r.tipo = 'Serviço'
+      AND r.pago = 'Sim'
+      AND r.data_lanc BETWEEN ? AND ?
+    GROUP BY c.id, c.nome, c.foto
+    ORDER BY total_servicos DESC
+    LIMIT 5
+");
+$query->execute([$id_conta, $data_inicio, $data_fim]);
+$ranking_clientes_ativos = $query->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     error_log('Erro ao carregar ranking de clientes ativos: ' . $e->getMessage());
     $clientes_ativos_error = 'Erro ao carregar ranking de clientes ativos.';
@@ -399,6 +399,114 @@ try {
             height: 180px;
         }
     }
+
+    /*
+=========================================
+    NOVO ESTILO PARA SEÇÕES DE RANKING
+=========================================
+*/
+
+.ranking-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.ranking-card-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0 0 20px 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e9eef2;
+}
+
+.ranking-grid {
+    display: grid;
+    grid-template-columns: 45% 1fr; /* Mais espaço para a lista */
+    gap: 25px;
+    align-items: start;
+}
+
+.ranking-list .ranking-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9eef2;
+    transition: background-color 0.2s ease;
+}
+
+.ranking-list .ranking-item:last-child {
+    border-bottom: none;
+}
+
+.ranking-list .ranking-item:hover {
+    background-color: #f5f9fc;
+    border-radius: 8px;
+}
+
+.rank-position {
+    font-size: 16px;
+    font-weight: bold;
+    color: #777777;
+    width: 30px;
+    text-align: center;
+}
+
+.rank-position.gold { color: #FFD700; }
+.rank-position.silver { color: #C0C0C0; }
+.rank-position.bronze { color: #CD7F32; }
+
+.rank-user {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    margin: 0 15px;
+}
+
+.rank-user-photo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover; /* Garante que a foto não fique distorcida */
+    margin-right: 15px;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.rank-user-info .name {
+    display: block;
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+}
+.rank-user-info .detail {
+    font-size: 13px;
+    color: #777777;
+}
+
+.rank-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: #4A90E2;
+}
+
+.no-data-message {
+    text-align: center;
+    padding: 40px;
+    color: #777777;
+    background-color: #f9fafb;
+    border-radius: 8px;
+}
+
+/* Responsividade */
+@media (max-width: 991px) {
+    .ranking-grid {
+        grid-template-columns: 1fr; /* Empilha a lista e o gráfico */
+    }
+}
 </style>
 
 <?php 
@@ -884,9 +992,22 @@ for ($i = 1; $i <= 12; $i++) {
         var series = chartRanking.series.push(new am4charts.ColumnSeries());
         series.dataFields.valueY = "total_servicos";
         series.dataFields.categoryX = "funcionario_nome";
-        series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/] serviços";
+
+        // --- NOVAS CONFIGURAções DE ESTILO ---
         series.columns.template.fill = am4core.color("#4A90E2");
-        series.columns.template.strokeWidth = 0;
+        series.columns.template.strokeOpacity = 0;
+        series.columns.template.column.cornerRadiusTopLeft = 8;
+        series.columns.template.column.cornerRadiusTopRight = 8;
+        series.tooltip.pointerOrientation = "vertical";
+        series.tooltip.background.fill = am4core.color("#222"); // Tooltip escuro
+        series.tooltip.getFillFromObject = false;
+
+        // Deixar eixos mais limpos
+        valueAxis.renderer.grid.template.strokeOpacity = 0.1;
+        categoryAxis.renderer.grid.template.strokeOpacity = 0;
+        categoryAxis.renderer.ticks.template.disabled = true;
+        categoryAxis.renderer.line.strokeOpacity = 0.1;
+
         var valueLabel = series.bullets.push(new am4charts.LabelBullet());
         valueLabel.label.text = "{valueY}";
         valueLabel.label.dy = -10;
@@ -897,6 +1018,7 @@ for ($i = 1; $i <= 12; $i++) {
         var pieSeriesServicos = chartServicos.series.push(new am4charts.PieSeries());
         pieSeriesServicos.dataFields.value = "quantidade";
         pieSeriesServicos.dataFields.category = "servico_nome";
+
         pieSeriesServicos.slices.template.stroke = am4core.color("#fff");
         pieSeriesServicos.slices.template.strokeWidth = 2;
         pieSeriesServicos.slices.template.strokeOpacity = 1;
@@ -919,9 +1041,22 @@ for ($i = 1; $i <= 12; $i++) {
         var seriesClientes = chartClientesAtivos.series.push(new am4charts.ColumnSeries());
         seriesClientes.dataFields.valueY = "total_servicos";
         seriesClientes.dataFields.categoryX = "cliente_nome";
-        seriesClientes.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/] serviços";
-        seriesClientes.columns.template.fill = am4core.color("#4A90E2");
-        seriesClientes.columns.template.strokeWidth = 0;
+
+        // --- NOVAS CONFIGURAções DE ESTILO ---
+        series.columns.template.fill = am4core.color("#4A90E2");
+        series.columns.template.strokeOpacity = 0;
+        series.columns.template.column.cornerRadiusTopLeft = 8;
+        series.columns.template.column.cornerRadiusTopRight = 8;
+        series.tooltip.pointerOrientation = "vertical";
+        series.tooltip.background.fill = am4core.color("#222"); // Tooltip escuro
+        series.tooltip.getFillFromObject = false;
+
+        // Deixar eixos mais limpos
+        valueAxis.renderer.grid.template.strokeOpacity = 0.1;
+        categoryAxis.renderer.grid.template.strokeOpacity = 0;
+        categoryAxis.renderer.ticks.template.disabled = true;
+        categoryAxis.renderer.line.strokeOpacity = 0.1;
+        
         var valueLabelClientes = seriesClientes.bullets.push(new am4charts.LabelBullet());
         valueLabelClientes.label.text = "{valueY}";
         valueLabelClientes.label.dy = -10;
@@ -946,89 +1081,128 @@ for ($i = 1; $i <= 12; $i++) {
     </script>
 
     <div class="row-one widgettable">
-        <div class="col-md-12 content-top-2 card">
-            <div class="agileinfo-cdr">
-                <div class="card-header">
-                    <h3>Demonstrativo Financeiro</h3>
+
+        <div class="ranking-card">
+            <div class="ranking-card-header">
+                <h3>🏆 Ranking de Profissionais (Últimos 12 Meses)</h3>
+            </div>
+            <div class="ranking-grid">
+                <div class="ranking-list-container">
+                    <?php if (isset($ranking_error)): ?>
+                        <p class="no-data-message"><?php echo htmlspecialchars($ranking_error); ?></p>
+                    <?php elseif (empty($ranking_funcionarios)): ?>
+                        <p class="no-data-message">Nenhum serviço registrado nos últimos 12 meses.</p>
+                    <?php else: ?>
+                        <div class="ranking-list">
+                            <?php 
+                            $medals = ['🥇', '🥈', '🥉'];
+                            foreach ($ranking_funcionarios as $index => $funcionario): 
+                                // Define o caminho da foto ou uma foto padrão
+                                $foto_path = !empty($funcionario['funcionario_foto']) ? 'img/perfil/' . $funcionario['funcionario_foto'] : 'img/perfil/sem-foto.jpg';
+                            ?>
+                                <div class="ranking-item">
+                                    <div class="rank-position <?php if($index==0) echo 'gold'; if($index==1) echo 'silver'; if($index==2) echo 'bronze'; ?>">
+                                        <?php echo isset($medals[$index]) ? $medals[$index] : $index + 1; ?>
+                                    </div>
+                                    <div class="rank-user">
+                                        <img src="<?php echo $foto_path; ?>" alt="Foto de <?php echo htmlspecialchars($funcionario['funcionario_nome']); ?>" class="rank-user-photo">
+                                        <div class="rank-user-info">
+                                            <span class="name"><?php echo htmlspecialchars($funcionario['funcionario_nome']); ?></span>
+                                            <span class="detail">Serviços Realizados</span>
+                                        </div>
+                                    </div>
+                                    <div class="rank-value"><?php echo $funcionario['total_servicos']; ?></div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
-                <div id="Linegraph" style="width: 98%; height: 350px"></div>
+                <div class="ranking-chart-container">
+                    <div id="rankingChart"></div>
+                </div>
             </div>
         </div>
-        <!-- Ranking dos Profissionais -->
-        <div class="col-md-12 content-top-2 card ranking-section">
-            <div class="card-header">
-                <h3>Ranking de Profissionais (Últimos 12 Meses)</h3>
+        <div class="ranking-card">
+            <div class="ranking-card-header">
+                <h3>🏆 Ranking de Clientes (Últimos 12 Meses)</h3>
             </div>
-            <div class="ranking-list-container">
-                <?php if (isset($ranking_error)): ?>
-                    <p class="no-ranking"><?php echo htmlspecialchars($ranking_error); ?></p>
-                <?php elseif (empty($ranking_funcionarios)): ?>
-                    <p class="no-ranking">Nenhum serviço registrado nos últimos 12 meses.</p>
-                <?php else: ?>
-                    <div class="ranking-list">
-                        <?php foreach ($ranking_funcionarios as $index => $funcionario): ?>
-                            <div class="ranking-item position-<?php echo $index + 1; ?>">
-                                <span class="rank-icon"><?php echo $index + 1; ?></span>
-                                <p><?php echo htmlspecialchars($funcionario['funcionario_nome']); ?> <span class="services"><?php echo $funcionario['total_servicos']; ?> serviços</span></p>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <div class="ranking-chart-container">
-                <div id="rankingChart" style="height: 300px;"></div>
-            </div>
-        </div>
-        <!-- Ranking dos Serviços -->
-        <div class="col-md-12 content-top-2 card servicos-section">
-            <div class="card-header">
-                <h3>Serviços Mais Usados (Últimos 12 Meses)</h3>
-            </div>
-            <div class="servicos-list-container">
-                <?php if (isset($servicos_error)): ?>
-                    <p class="no-servicos"><?php echo htmlspecialchars($servicos_error); ?></p>
-                <?php elseif (empty($ranking_servicos)): ?>
-                    <p class="no-servicos">Nenhum serviço registrado nos últimos 12 meses.</p>
-                <?php else: ?>
-                    <div class="servicos-list">
-                        <?php foreach ($ranking_servicos as $index => $servico): ?>
-                            <div class="servicos-item position-<?php echo $index + 1; ?>">
-                                <span class="rank-icon"><?php echo $index + 1; ?></span>
-                                <p><?php echo htmlspecialchars($servico['servico_nome']); ?> <span class="quantidade"><?php echo $servico['quantidade']; ?> usos</span></p>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <div class="servicos-chart-container">
-                <div id="servicosChart" style="height: 300px;"></div>
+            <div class="ranking-grid">
+                <div class="ranking-list-container">
+                    <?php if (isset($clientes_ativos_error)): ?>
+                        <p class="no-data-message"><?php echo htmlspecialchars($clientes_ativos_error); ?></p>
+                    <?php elseif (empty($ranking_clientes_ativos)): ?>
+                        <p class="no-data-message">Nenhum serviço registrado nos últimos 12 meses.</p>
+                    <?php else: ?>
+                        <div class="ranking-list">
+                            <?php 
+                            $medals = ['🥇', '🥈', '🥉'];
+                            foreach ($ranking_clientes_ativos as $index => $cliente): 
+                                // Define o caminho da foto ou uma foto padrão
+                                $foto_path = !empty($cliente['cliente_foto']) ? 'img/clientes/' . $cliente['cliente_foto'] : 'img/clientes/sem-foto.jpg';
+                            ?>
+                                <div class="ranking-item">
+                                    <div class="rank-position <?php if($index==0) echo 'gold'; if($index==1) echo 'silver'; if($index==2) echo 'bronze'; ?>">
+                                        <?php echo isset($medals[$index]) ? $medals[$index] : $index + 1; ?>
+                                    </div>
+                                    <div class="rank-user">
+                                        <img src="<?php echo $foto_path; ?>" alt="Foto de <?php echo htmlspecialchars($cliente['cliente_nome']); ?>" class="rank-user-photo">
+                                        <div class="rank-user-info">
+                                            <span class="name"><?php echo htmlspecialchars($cliente['cliente_nome']); ?></span>
+                                            <span class="detail">Serviços Realizados</span>
+                                        </div>
+                                    </div>
+                                    <div class="rank-value"><?php echo $cliente['total_servicos']; ?></div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="ranking-chart-container">
+                    <div id="rankingChart"></div>
+                </div>
             </div>
         </div>
-        <!-- Ranking de Clientes Mais Ativos -->
-        <div class="col-md-12 content-top-2 card clientes-ativos-section">
-            <div class="card-header">
-                <h3>Ranking de Clientes Mais Ativos (Últimos 12 Meses)</h3>
+        <div class="ranking-card">
+            <div class="ranking-card-header">
+                <h3>🏆 Ranking de Serviços (Últimos 12 Meses)</h3>
             </div>
-            <div class="clientes-ativos-list-container">
-                <?php if (isset($clientes_ativos_error)): ?>
-                    <p class="no-clientes-ativos"><?php echo htmlspecialchars($clientes_ativos_error); ?></p>
-                <?php elseif (empty($ranking_clientes_ativos)): ?>
-                    <p class="no-clientes-ativos">Nenhum cliente ativo registrado nos últimos 12 meses.</p>
-                <?php else: ?>
-                    <div class="clientes-ativos-list">
-                        <?php foreach ($ranking_clientes_ativos as $index => $cliente): ?>
-                            <div class="clientes-ativos-item position-<?php echo $index + 1; ?>">
-                                <span class="rank-icon"><?php echo $index + 1; ?></span>
-                                <p><?php echo htmlspecialchars($cliente['cliente_nome']); ?> <span class="services"><?php echo $cliente['total_servicos']; ?> serviços</span></p>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <div class="clientes-ativos-chart-container">
-                <div id="clientesAtivosChart" style="height: 300px;"></div>
+            <div class="ranking-grid">
+                <div class="ranking-list-container">
+                    <?php if (isset($ranking_error)): ?>
+                        <p class="no-data-message"><?php echo htmlspecialchars($ranking_error); ?></p>
+                    <?php elseif (empty($ranking_servicos)): ?>
+                        <p class="no-data-message">Nenhum serviço registrado nos últimos 12 meses.</p>
+                    <?php else: ?>
+                        <div class="ranking-list">
+                            <?php 
+                            $medals = ['🥇', '🥈', '🥉'];
+                            foreach ($ranking_servicos as $index => $servico):                                
+                            ?>
+                                <div class="ranking-item">
+                                    <div class="rank-position <?php if($index==0) echo 'gold'; if($index==1) echo 'silver'; if($index==2) echo 'bronze'; ?>">
+                                        <?php echo isset($medals[$index]) ? $medals[$index] : $index + 1; ?>
+                                    </div>
+                                    <div class="rank-user">                                        
+                                        <div class="rank-user-info">
+                                            <span class="name"><?php echo htmlspecialchars($servico['servico_nome']); ?></span>
+                                            <span class="detail">Serviços Realizados</span>
+                                        </div>
+                                    </div>
+                                    <div class="rank-value"><?php echo $servico['quantidade']; ?></div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="ranking-chart-container">
+                    <div id="rankingChart"></div>
+                </div>
             </div>
         </div>
+
+    
+        
+        
         <!-- Clientes Aguardando Encaixe Hoje -->
         <div class="col-md-12 content-top-2 card encaixes-section" id="encaixes-hoje">
             <div class="card-header">
