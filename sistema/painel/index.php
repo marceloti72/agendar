@@ -838,9 +838,7 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						
 						<ul class="sidebar-menu">	
-							<!--toggle button start-->
-				<button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>
-				<!--toggle button end-->
+							
 
 							<?php 
                         // DEFINANDO SE É ADMINISTRADOR
@@ -1126,6 +1124,9 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 		<div class="sticky-header header-section ">
 			
 			<div class="header-left">
+				<!--toggle button start-->
+				<button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>
+				<!--toggle button end-->
 				
 				
 				<div class="profile_details_left"><!--notifications of menu start -->
