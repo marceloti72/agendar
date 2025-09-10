@@ -964,8 +964,7 @@ input:checked + .slider:before {
 						</ul>
 					</div>
 					<!-- /.navbar-collapse -->
-				</nav>
-				<!-- header-starts -->
+					 <!-- header-starts -->
 		<div class="sticky-header header-section ">
 			
 			<div class="header-left">
@@ -1290,6 +1289,7 @@ input:checked + .slider:before {
 			<div class="clearfix"> </div>	
 		</div>
 		<!-- //header-ends -->
+				</nav>
 			</aside>
 		</div>
 		<!--left-fixed -navigation-->
