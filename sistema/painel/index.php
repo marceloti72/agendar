@@ -701,27 +701,42 @@ body.dark .treeview-menu > li > a {
     background: #f5f5f5;
 }
 
-/* --- Estilos da Barra Lateral Recolhida --- */
-body.sidebar-collapsed .cbp-spmenu-left {
-    width: var(--sidebar-width-collapsed);
+/*
+=========================================
+CSS CORRIGIDO E MAIS ESPECÍFICO
+=========================================
+*/
+
+/* --- Movimentação do conteúdo principal --- */
+body.cbp-spmenu-push #page-wrapper,
+body.cbp-spmenu-push .sticky-header {
+    margin-left: var(--sidebar-width-open);
+    transition: margin-left 0.3s ease-in-out;
 }
 
-body.sidebar-collapsed #page-wrapper,
-body.sidebar-collapsed .sticky-header {
+body.cbp-spmenu-push.sidebar-collapsed #page-wrapper,
+body.cbp-spmenu-push.sidebar-collapsed .sticky-header {
     margin-left: var(--sidebar-width-collapsed);
 }
 
-body.sidebar-collapsed #showLeftPush {
-    right: -20px; /* Move o botão para mais perto da borda */
-    transform: rotate(180deg); /* Gira o ícone do botão */
+/* --- Largura do Menu --- */
+body.cbp-spmenu-push .cbp-spmenu-left {
+    width: var(--sidebar-width-open);
+    transition: width 0.3s ease-in-out;
 }
 
+body.cbp-spmenu-push.sidebar-collapsed .cbp-spmenu-left {
+    width: var(--sidebar-width-collapsed) !important; /* !important para garantir a sobreposição */
+}
+
+/* --- Esconder textos e ajustar ícones no modo recolhido --- */
 body.sidebar-collapsed .sidebar-menu span,
 body.sidebar-collapsed .sidebar-menu .pull-right,
 body.sidebar-collapsed .sidebar-menu .header {
     opacity: 0;
     visibility: hidden;
     width: 0;
+    transition: all 0.1s ease;
 }
 
 body.sidebar-collapsed .sidebar-menu > li > a {
@@ -732,33 +747,55 @@ body.sidebar-collapsed .treeview-menu {
     display: none !important;
 }
 
+/* Tooltip (dica de ferramenta) */
 body.sidebar-collapsed .sidebar-menu > li {
     position: relative;
 }
-
 body.sidebar-collapsed .sidebar-menu > li > a::after {
-    content: attr(data-tooltip); /* Usa o atributo data-tooltip para a dica de ferramenta */
+    content: attr(data-tooltip);
     position: absolute;
-    left: 100%;
+    left: calc(var(--sidebar-width-collapsed) - 10px);
     top: 50%;
     transform: translateY(-50%);
     background-color: #333;
     color: #fff;
-    padding: 5px 10px;
+    padding: 6px 12px;
     border-radius: 4px;
     white-space: nowrap;
-    font-size: 0.9em;
+    font-size: 13px;
     margin-left: 15px;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.2s;
+    transition: opacity 0.2s ease;
     pointer-events: none;
+    z-index: 1100;
 }
-
 body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
     opacity: 1;
     visibility: visible;
 }
+
+/* Manter o estilo do botão que já estava funcionando */
+#showLeftPush {
+    position: absolute;
+    top: 15px;
+    right: -20px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #555;
+    cursor: pointer;
+    z-index: 1050;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease-in-out;
+}
+#showLeftPush i { transition: transform 0.3s ease; }
+body.sidebar-collapsed #showLeftPush i { transform: rotate(180deg); }
 
 
 	</style>
@@ -1113,7 +1150,7 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 					<!-- /.navbar-collapse -->
 					 
 				</nav>
-			</aside>
+			</aside><button id="showLeftPush"><i class="fa fa-bars"></i></button>
 		</div>
 		<!--left-fixed -navigation-->
 
@@ -1124,10 +1161,7 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 		<div class="sticky-header header-section ">
 			
 			<div class="header-left">
-				<!--toggle button start-->
-				<button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>
-				<!--toggle button end-->
-				
+						
 				
 				<div class="profile_details_left"><!--notifications of menu start -->
 					<ul class="nofitications-dropdown">						
@@ -3411,35 +3445,47 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
     });
 
 
-	$(document).ready(function() {
-    // Função para aplicar o estado da barra lateral
-    function applySidebarState(state) {
-        if (state === 'collapsed') {
-            $('body').addClass('sidebar-collapsed');
-        } else {
-            $('body').removeClass('sidebar-collapsed');
-        }
-    }
+	
+</script>
 
-    // Verifique o estado salvo no carregamento da página
-    var savedState = localStorage.getItem('sidebarState');
-    if (savedState) {
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleButton = document.getElementById('showLeftPush');
+    const body = document.body;
+    
+    // As classes que o seu tema usa para abrir o menu
+    const themeOpenClass = 'cbp-spmenu-open';
+
+    if (toggleButton) {
+        // Função para APLICAR o estado visual do menu
+        const applySidebarState = (state) => {
+            if (state === 'collapsed') {
+                // Adiciona a classe para RECOLHER e garante que a classe para ABRIR está presente
+                body.classList.add('sidebar-collapsed');
+                body.classList.add(themeOpenClass);
+            } else { // 'open'
+                // Remove a classe para RECOLHER e garante que a classe para ABRIR está presente
+                body.classList.remove('sidebar-collapsed');
+                body.classList.add(themeOpenClass);
+            }
+        };
+
+        // 1. VERIFICA O ESTADO SALVO AO CARREGAR A PÁGINA
+        const savedState = localStorage.getItem('sidebarState') || 'open'; // Padrão é 'open'
         applySidebarState(savedState);
-    }
 
-    // Manipulador de clique para o botão de alternância
-    $('#showLeftPush').on('click', function(e) {
-        e.preventDefault();
-        var isCollapsed = $('body').hasClass('sidebar-collapsed');
-        
-        if (isCollapsed) {
-            applySidebarState('open');
-            localStorage.setItem('sidebarState', 'open');
-        } else {
-            applySidebarState('collapsed');
-            localStorage.setItem('sidebarState', 'collapsed');
-        }
-    });
+        // 2. CONTROLA O CLIQUE NO BOTÃO
+        toggleButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation(); // Impede que outros scripts de clique sejam acionados
+
+            const isCollapsed = body.classList.contains('sidebar-collapsed');
+            const newState = isCollapsed ? 'open' : 'collapsed';
+            
+            applySidebarState(newState);
+            localStorage.setItem('sidebarState', newState); // Salva a preferência
+        });
+    }
 });
 </script>
 
