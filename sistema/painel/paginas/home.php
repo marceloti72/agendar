@@ -1018,7 +1018,7 @@ for ($i = 1; $i <= 12; $i++) {
         var pieSeriesServicos = chartServicos.series.push(new am4charts.PieSeries());
         pieSeriesServicos.dataFields.value = "quantidade";
         pieSeriesServicos.dataFields.category = "servico_nome";
-        
+
         pieSeriesServicos.slices.template.stroke = am4core.color("#fff");
         pieSeriesServicos.slices.template.strokeWidth = 2;
         pieSeriesServicos.slices.template.strokeOpacity = 1;
@@ -1041,9 +1041,21 @@ for ($i = 1; $i <= 12; $i++) {
         var seriesClientes = chartClientesAtivos.series.push(new am4charts.ColumnSeries());
         seriesClientes.dataFields.valueY = "total_servicos";
         seriesClientes.dataFields.categoryX = "cliente_nome";
-        seriesClientes.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/] serviços";
-        seriesClientes.columns.template.fill = am4core.color("#4A90E2");
-        seriesClientes.columns.template.strokeWidth = 0;
+
+        // --- NOVAS CONFIGURAções DE ESTILO ---
+        series.columns.template.fill = am4core.color("#4A90E2");
+        series.columns.template.strokeOpacity = 0;
+        series.columns.template.column.cornerRadiusTopLeft = 8;
+        series.columns.template.column.cornerRadiusTopRight = 8;
+        series.tooltip.pointerOrientation = "vertical";
+        series.tooltip.background.fill = am4core.color("#222"); // Tooltip escuro
+        series.tooltip.getFillFromObject = false;
+
+        // Deixar eixos mais limpos
+        valueAxis.renderer.grid.template.strokeOpacity = 0.1;
+        categoryAxis.renderer.grid.template.strokeOpacity = 0;
+        categoryAxis.renderer.ticks.template.disabled = true;
+        categoryAxis.renderer.line.strokeOpacity = 0.1;
         var valueLabelClientes = seriesClientes.bullets.push(new am4charts.LabelBullet());
         valueLabelClientes.label.text = "{valueY}";
         valueLabelClientes.label.dy = -10;
@@ -1144,9 +1156,9 @@ for ($i = 1; $i <= 12; $i++) {
                         </div>
                     <?php endif; ?>
                 </div>
-                <div class="ranking-chart-container">
-                    <div id="rankingChart"></div>
-                </div>
+                <div class="clientes-ativos-chart-container">
+                <div id="clientesAtivosChart" style="height: 300px;"></div>
+            </div>
             </div>
         </div>
         <div class="ranking-card">
