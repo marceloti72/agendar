@@ -835,19 +835,6 @@ body.sidebar-collapsed #showLeftPush i { transform: rotate(180deg); }
 	<link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
  	<script type="text/javascript" src="DataTables/datatables.min.js"></script>
 
-	<div class="navbar-header">						
-						<a class="navbar-brand" href="index.php">
-							<div class="brand-container">
-								
-								<div class="brand-text">
-									
-									<span class="system-name"><?php echo $nome_sistema ?></span>
-								</div>
-							</div>
-						</a>
-					</div>
- 	
-
 
 	
 </head> 
@@ -860,6 +847,17 @@ body.sidebar-collapsed #showLeftPush i { transform: rotate(180deg); }
 			<!--left-fixed -navigation-->
 			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
 				<nav class="navbar navbar-inverse" >
+					<div class="navbar-header">						
+						<a class="navbar-brand" href="index.php">
+							<div class="brand-container">
+								
+								<div class="brand-text">
+									
+									<span class="system-name"><?php echo $nome_sistema ?></span>
+								</div>
+							</div>
+						</a>
+					</div>
 					
 					
 					
