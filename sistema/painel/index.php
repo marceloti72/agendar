@@ -878,6 +878,10 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
         
     }
 
+	.sidebar-left{
+		width: 210px;
+	}
+
 }
 
 
