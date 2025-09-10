@@ -7901,6 +7901,13 @@ h4.asd label {
 		width: 100%;
 		overflow-x: scroll;
 	}
+  .sticky-header{
+    position: fixed;
+    top: 0;
+    left:0px;
+    width: 100%;
+    z-index: 100;
+}
 }
 @media(max-width:414px){
 	.sb-search-input {
