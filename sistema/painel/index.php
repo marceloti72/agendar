@@ -810,9 +810,10 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 					<div class="navbar-header">
     <a href="index.php" class="navbar-brand d-flex align-items-center">
 
-        <img src="../../images/icone_512.png" alt="Logo" style="width: 40px; height: 40px;" class="me-3">
+        
 
         <div class="d-flex flex-column">
+			<img src="../../images/icone_512.png" alt="Logo" style="width: 40px; height: 40px;" class="me-3">
             <span class="text-white font-weight-bold" style="font-size: 1.1rem; line-height: 1.2;">
                 Painel
             </span>
