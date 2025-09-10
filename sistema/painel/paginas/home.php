@@ -849,6 +849,18 @@ for ($i = 1; $i <= 12; $i++) {
         var chartPagarTipo = am4core.create("pieChartPagarTipo", am4charts.PieChart);
         chartPagarTipo.data = <?php echo json_encode($data_pagar_tipo); ?>;
         var pieSeriesPagarTipo = chartPagarTipo.series.push(new am4charts.PieSeries());
+        // ======================================================
+        // 🎨 DEFINA SUA LISTA DE CORES AQUI
+        // ======================================================
+        pieSeriesReceberTipo.colors.list = [
+            am4core.color("#4A90E2"), // Azul para a primeira categoria (ex: Serviço)
+            am4core.color("#50E3C2"), // Verde para a segunda (ex: Venda)
+            am4core.color("#F8B763"), // Amarelo para a terceira (ex: Assinatura)
+            am4core.color("#9068F4"), // Roxo para a próxima...
+            am4core.color("#E95D5D")  // Vermelho...
+            // Adicione mais cores se tiver mais categorias
+        ];
+        // ======================================================
         pieSeriesPagarTipo.dataFields.value = "value";
         pieSeriesPagarTipo.dataFields.category = "category";
         pieSeriesPagarTipo.slices.template.stroke = am4core.color("#fff");
