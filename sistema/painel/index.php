@@ -282,16 +282,7 @@ if (@count($res_caixa) > 0 && $res_caixa[0]['data_fechamento'] === NULL) {
 
   
   @media (max-width: 768px) {
-    .sticky-header {
-        padding: 5px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: nowrap;
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
+    
     .header-left, .header-right {
         margin: 0;
         padding: 0;
@@ -414,7 +405,7 @@ if (@count($res_caixa) > 0 && $res_caixa[0]['data_fechamento'] === NULL) {
 	
 }
 @media (max-width: 480px) {
-    .sticky-header, .sticky-header {
+    .sticky-header {
 		background: #000;
         padding: 5px;
         display: flex;
