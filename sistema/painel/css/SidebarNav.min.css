@@ -141,7 +141,7 @@
     /* Posicionamento do sidebar para telas maiores */
     .sidebar-left {
         position: absolute;
-        top: 68;
+        top: 0;
         left: 0;
         bottom: 0;
         width: 200px;

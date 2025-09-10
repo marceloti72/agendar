@@ -835,7 +835,7 @@ body.sidebar-collapsed #showLeftPush i { transform: rotate(180deg); }
 	<link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
  	<script type="text/javascript" src="DataTables/datatables.min.js"></script>
 
-	<!-- <div class="navbar-header">						
+	<div class="navbar-header">						
 						<a class="navbar-brand" href="index.php">
 							<div class="brand-container">
 								
@@ -845,7 +845,7 @@ body.sidebar-collapsed #showLeftPush i { transform: rotate(180deg); }
 								</div>
 							</div>
 						</a>
-					</div> -->
+					</div>
  	
 
 
@@ -1141,7 +1141,7 @@ body.sidebar-collapsed #showLeftPush i { transform: rotate(180deg); }
 					<!-- /.navbar-collapse -->
 					 
 				</nav>
-			</aside><button id="showLeftPush"><i class="fa fa-bars"></i></button>
+			</aside>
 		</div>
 		<!--left-fixed -navigation-->
 
