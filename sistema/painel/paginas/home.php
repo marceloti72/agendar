@@ -654,7 +654,7 @@ for ($i = 1; $i <= 12; $i++) {
                         <h5><strong><big><?php echo $total_clientes ?></big></strong></h5>
                     </div>
                     <hr>
-                    <div align="center"><small>Total de Clientes</small></div>
+                    <div align="center"><small><small>Total de Clientes</small></small></div>
                 </div>
             </div>
         </a>
