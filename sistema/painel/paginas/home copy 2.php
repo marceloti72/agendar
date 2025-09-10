@@ -110,226 +110,295 @@ try {
 ?>
 
 <style>
-   /*
-=========================================
-    DASHBOARD MODERNA - CSS UNIFICADO
-=========================================
-*/
-
-/* 1. VARIÁVEIS DE DESIGN E CONFIGURAÇÕES GERAIS */
-:root {
-    --primary-color: #4A90E2; /* Azul moderno */
-    --success-color: #50E3C2; /* Verde menta */
-    --danger-color: #E95D5D;  /* Vermelho suave */
-    --warning-color: #F8B763; /* Amarelo/Laranja */
-    
-    --bg-color: #f4f7f6;
-    --card-bg-color: #ffffff;
-    --text-color: #333333;
-    --text-muted-color: #777777;
-    --border-color: #e9eef2;
-    
-    --border-radius: 12px;
-    --card-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
-}
-
-body {
-    background-color: var(--bg-color);
-}
-
-.main-page {
-    padding: 2em;
-}
-
-/*
-=========================================
-2. CARDS DE ESTATÍSTICAS (WIDGETS SUPERIORES)
-=========================================
-*/
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.stat-card {
-    background-color: var(--card-bg-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--card-shadow);
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: var(--text-color);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    text-decoration: none;
-    color: var(--text-color);
-}
-
-.stat-card-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 15px;
-    font-size: 20px;
-    color: #fff;
-}
-/* Cores específicas para os ícones */
-.stat-card-icon.bg-primary { background-color: var(--primary-color); }
-.stat-card-icon.bg-danger  { background-color: var(--danger-color); }
-.stat-card-icon.bg-success { background-color: var(--success-color); }
-.stat-card-icon.bg-warning { background-color: var(--warning-color); }
-.stat-card-icon.bg-purple  { background-color: #9068F4; }
-
-.stat-card-info h5 {
-    font-size: 24px;
-    font-weight: 600;
-    margin: 0 0 5px 0;
-}
-
-.stat-card-info span {
-    font-size: 14px;
-    color: var(--text-muted-color);
-}
-
-/*
-=========================================
-3. CARDS DE GRÁFICOS E RANKINGS
-=========================================
-*/
-.chart-card {
-    background-color: var(--card-bg-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--card-shadow);
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.chart-card-header h3 {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--text-color);
-    margin: 0 0 20px 0;
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.ranking-grid {
-    display: grid;
-    grid-template-columns: 40% 1fr; /* 40% para a lista, resto para o gráfico */
-    gap: 20px;
-    align-items: start;
-}
-
-.ranking-list .ranking-item {
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border-color);
-}
-.ranking-list .ranking-item:last-child {
-    border-bottom: none;
-}
-
-.rank-position {
-    font-size: 20px;
-    font-weight: bold;
-    color: var(--text-muted-color);
-    width: 40px;
-    text-align: center;
-}
-.rank-position.gold { color: #FFD700; }
-.rank-position.silver { color: #C0C0C0; }
-.rank-position.bronze { color: #CD7F32; }
-
-.rank-info {
-    flex-grow: 1;
-    margin: 0 10px;
-}
-.rank-info .name {
-    display: block;
-    font-weight: 500;
-    font-size: 15px;
-}
-.rank-info .detail {
-    font-size: 13px;
-    color: var(--text-muted-color);
-}
-
-.rank-value {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--primary-color);
-}
-
-.no-data-message {
-    text-align: center;
-    padding: 40px;
-    color: var(--text-muted-color);
-}
-
-/*
-=========================================
-4. AVISOS E OUTROS ELEMENTOS
-=========================================
-*/
-.aviso-pagamento {
-    background: var(--danger-color);
-    color: white;
-    padding: 15px;
-    font-size: 15px;
-    margin-bottom: 20px;
-    border-radius: var(--border-radius);
-}
-.aviso-teste {
-    background: #836FFF; /* Roxo suave */
-    color: white;
-    padding: 15px;
-    font-size: 15px;
-    margin-bottom: 20px;
-    border-radius: var(--border-radius);
-}
-.aviso-pagamento a, .aviso-teste a {
-    color: #ffc341;
-    font-weight: bold;
-    text-decoration: underline;
-}
-
-/*
-=========================================
-5. AJUSTES RESPONSIVOS 📱
-=========================================
-*/
-@media (max-width: 991px) {
-    .ranking-grid {
-        grid-template-columns: 1fr; /* Lista e gráfico empilhados */
+    /* Estilos gerais */
+    /* .main-page {
+        padding: 20px;
+        background-color: #b7b7b7;
+        min-height: 100vh;
+    } */
+    .widget, .stat, .content-top-2 {
+        margin-bottom: 20px;
     }
-}
-@media (max-width: 768px) {
-    .main-page {
-        padding: 1em;
+    .r3_counter_box, .content-top-1 {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        transition: transform 0.2s ease;
     }
-    .dashboard-grid {
-        grid-template-columns: 1fr 1fr; /* Duas colunas em tablets */
+    .r3_counter_box:hover, .content-top-1:hover {
+        transform: translateY(-5px);
     }
-    .chart-card-header h3 {
+    .icon-rounded {
+        background-color: rgb(149, 186, 224);
+        color: #fff;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
         font-size: 18px;
+        text-align: center;
+        margin-right: 10px;
     }
-}
-@media (max-width: 576px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr; /* Uma coluna em celulares */
+    .user1 { background-color: #e7032d; } /* Vermelho para débitos */
+    .dollar2 { background-color: #8bcea6; } /* Verde para ganhos */
+    .dollar1 { background-color: #ffca6e; } /* Amarelo para estoque */
+    .birthday { background-color: #ff6f61; } /* Coral para aniversariantes */
+    .stats h5 {
+        font-size: 28px;
+        margin: 0;
+        color: #333;
     }
-}
+    .stats big {
+        font-weight: bold;
+    }
+    hr {
+        border: 0;
+        border-top: 1px solid #eee;
+        margin: 10px 0;
+    }
+    .top-content h5 {
+        font-size: 18px;
+        color: #555;
+        margin: 0 0 5px;
+    }
+    .top-content label {
+        font-size: 24px;
+        color: #007bff;
+        font-weight: bold;
+    }
+    .card-header h3 {
+        font-size: 20px;
+        color: #333;
+        margin: 0;
+        padding-bottom: 10px;
+    }
+    #Linegraph {
+        width: 100% !important;
+        height: 300px;
+    }
+    /* Aviso */
+    .aviso {
+        background: #ffc107;
+        color: #333;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    /* Ranking Section (Profissionais, Serviços e Clientes Ativos) */
+    .ranking-section, .servicos-section, .encaixes-section, .clientes-ativos-section {
+        margin-top: 20px;
+        display: flex;
+        gap: 20px;
+    }
+    .ranking-list-container, .servicos-list-container, .encaixes-list-container, .clientes-ativos-list-container {
+        width: 50%;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+    }
+    .ranking-chart-container, .servicos-chart-container, .clientes-ativos-chart-container {
+        width: 70%;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+    }
+    .ranking-list, .servicos-list, .encaixes-list, .clientes-ativos-list {
+        padding: 0;
+    }
+    .ranking-item, .servicos-item, .encaixes-item, .clientes-ativos-item {
+        display: flex;
+        align-items: center;
+        padding: 12px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .ranking-item:hover, .servicos-item:hover, .encaixes-item:hover, .clientes-ativos-item:hover {
+        transform: translateX(5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    .ranking-item.position-1, .servicos-item.position-1, .clientes-ativos-item.position-1 {
+        background: linear-gradient(135deg, #ffd700, #ffec80);
+    }
+    .ranking-item.position-2, .servicos-item.position-2, .clientes-ativos-item.position-2 {
+        background: linear-gradient(135deg, #c0c0c0, #e0e0e0);
+    }
+    .ranking-item.position-3, .servicos-item.position-3, .clientes-ativos-item.position-3 {
+        background: linear-gradient(135deg, #cd7f32, #e6b8a2);
+    }
+    .ranking-item .rank-icon, .servicos-item .rank-icon, .clientes-ativos-item .rank-icon {
+        background-color: #4A90E2;
+        color: #fff;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    .ranking-item p, .servicos-item p, .encaixes-item p, .clientes-ativos-item p {
+        margin: 0;
+        color: #333;
+        font-size: 16px;
+        flex: 1;
+    }
+    .ranking-item .services, .servicos-item .quantidade, .clientes-ativos-item .services {
+        font-weight: bold;
+        color: #007bff;
+    }
+    .encaixes-item .whatsapp-icon {
+        color: #25D366;
+        font-size: 24px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+    .no-ranking, .no-servicos, .no-encaixes, .no-clientes-ativos {
+        text-align: center;
+        color: #666;
+        font-size: 16px;
+        padding: 12px;
+    }
+    #rankingChart, #servicosChart, #clientesAtivosChart {
+        width: 100%;
+        height: 300px;
+    }
+    /* Media Query para Mobile (max-width: 768px) */
+    @media (max-width: 768px) {
+        .main-page {
+            padding: 10px;
+        }
+        .col_3 .col-md-3 {
+            width: 50%;
+            float: left;
+            padding: 5px;
+        }
+        .r3_counter_box {
+            padding: 10px;
+        }
+        .icon-rounded {
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            font-size: 14px;
+        }
+        .stats h5 {
+            font-size: 20px;
+        }
+        .stats span {
+            font-size: 12px;
+        }
+        .row .col-md-4 {
+            width: 100%;
+            padding: 5px;
+        }
+        .content-top-1 {
+            padding: 10px;
+            text-align: center;
+        }
+        .top-content {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .top-content h5 {
+            font-size: 16px;
+        }
+        .top-content label {
+            font-size: 20px;
+        }
+        .top-content1 {
+            width: 100%;
+        }
+        .pie-title-center {
+            width: 100px !important;
+            height: 100px !important;
+            margin: 0 auto;
+        }
+        .card {
+            padding: 10px;
+        }
+        .card-header h3 {
+            font-size: 18px;
+        }
+        #Linegraph {
+            height: 250px;
+        }
+        .aviso {
+            font-size: 12px;
+            padding: 8px;
+        }
+        .ranking-section, .servicos-section, .encaixes-section, .clientes-ativos-section {
+            flex-direction: column;
+            gap: 10px;
+        }
+        .ranking-list-container, .ranking-chart-container, .servicos-list-container, .servicos-chart-container, .encaixes-list-container, .clientes-ativos-list-container, .clientes-ativos-chart-container {
+            width: 100%;
+        }
+        .ranking-item p, .servicos-item p, .encaixes-item p, .clientes-ativos-item p {
+            font-size: 14px;
+        }
+        #rankingChart, #servicosChart, #clientesAtivosChart {
+            height: 250px;
+        }
+    }
+    /* Ajuste para telas muito pequenas (max-width: 480px) */
+    @media (max-width: 480px) {
+        .col_3 .col-md-3 {
+            width: 100%;
+        }
+        .stats h5 {
+            font-size: 18px;
+        }
+        .pie-title-center {
+            width: 80px !important;
+            height: 80px !important;
+        }
+        .agileinfo-cdr {
+            display: none;
+        }
+        .ranking-item p, .servicos-item p, .encaixes-item p, .clientes-ativos-item p {
+            font-size: 12px;
+        }
+        .ranking-item .rank-icon, .servicos-item .rank-icon, .clientes-ativos-item .rank-icon {
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            font-size: 12px;
+        }
+        .encaixes-item .whatsapp-icon {
+            font-size: 20px;
+        }
+        #rankingChart, #servicosChart, #clientesAtivosChart {
+            height: 200px;
+        }
+    }
+    /* Additional CSS for Pie Charts */
+    #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo, #servicosChart, #clientesAtivosChart {
+        width: 100%;
+        height: 250px;
+    }
+    @media (max-width: 768px) {
+        #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo, #servicosChart, #clientesAtivosChart {
+            height: 200px;
+        }
+        .content-top-1 {
+            padding: 10px;
+        }
+        .card-header h3 {
+            font-size: 16px;
+        }
+    }
+    @media (max-width: 480px) {
+        #pieChartReceberTipo, #pieChartReceberPgto, #pieChartPagarTipo, #servicosChart, #clientesAtivosChart {
+            height: 180px;
+        }
+    }
 </style>
 
 <?php 
@@ -576,47 +645,71 @@ for ($i = 1; $i <= 12; $i++) {
     }
     ?>
 
-    <div class="dashboard-grid">
-    <a href="clientes" class="stat-card">
-        <div class="stat-card-icon bg-primary"><i class="fa fa-users"></i></div>
-        <div class="stat-card-info">
-            <h5><?php echo $total_clientes ?></h5>
-            <span>Total de Clientes</span>
+    <div class="col_3">
+        <a href="clientes">
+            <div class="col-md-3 widget widget1" style="border-radius: 12px;">
+                <div class="r3_counter_box">
+                    <i class="pull-left fa fa-users icon-rounded"></i>
+                    <div class="stats">
+                        <h5><strong><big><?php echo $total_clientes ?></big></strong></h5>
+                    </div>
+                    <hr>
+                    <div align="center"><small>Total de Clientes</small></div>
+                </div>
+            </div>
+        </a>
+
+        <a href="pagar">
+            <div class="col-md-3 widget widget1" style="border-radius: 12px;">
+                <div class="r3_counter_box">
+                    <i class="pull-left fa fa-money user1 icon-rounded"></i>
+                    <div class="stats">
+                        <h5><strong><big><?php echo $contas_pagar_hoje ?></big></strong></h5>
+                    </div>
+                    <hr>
+                    <div align="center"><small>À Pagar Hoje</small></div>
+                </div>
+            </div>
+        </a>
+
+        <a href="receber">
+            <div class="col-md-3 widget widget1" style="border-radius: 12px;">
+                <div class="r3_counter_box">
+                    <i class="pull-left fa fa-money dollar2 icon-rounded"></i>
+                    <div class="stats">
+                        <h5><strong><big><?php echo $contas_receber_hoje ?></big></strong></h5>
+                    </div>
+                    <hr>
+                    <div align="center"><small>À Receber Hoje</small></div>
+                </div>
+            </div>
+        </a>
+
+        <a href="estoque">
+            <div class="col-md-3 widget widget1" style="border-radius: 12px;">
+                <div class="r3_counter_box">
+                    <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
+                    <div class="stats">
+                        <h5><strong><big><?php echo $estoque_baixo ?></big></strong></h5>
+                    </div>
+                    <hr>
+                    <div align="center"><small>Estoque Baixo</small></div>
+                </div>
+            </div>
+        </a>
+
+        <div class="col-md-3 widget" style="border-radius: 12px;">
+            <div class="r3_counter_box">
+                <i class="pull-left fa fa-usd <?php echo $classe_saldo_dia ?> icon-rounded"></i>
+                <div class="stats">                    
+                    <h5><strong><?php echo @$saldo_total_diaF ?></strong></h5>
+                </div>
+                <hr>
+                <div align="center"><small>Saldo do Dia</small></div>
+            </div>
         </div>
-    </a>
-    
-    <a href="pagar" class="stat-card">
-        <div class="stat-card-icon bg-danger"><i class="fa fa-money"></i></div>
-        <div class="stat-card-info">
-            <h5><?php echo $contas_pagar_hoje ?></h5>
-            <span>À Pagar Hoje</span>
-        </div>
-    </a>
-    
-    <a href="receber" class="stat-card">
-        <div class="stat-card-icon bg-success"><i class="fa fa-money"></i></div>
-        <div class="stat-card-info">
-            <h5><?php echo $contas_receber_hoje ?></h5>
-            <span>À Receber Hoje</span>
-        </div>
-    </a>
-    
-    <a href="estoque" class="stat-card">
-        <div class="stat-card-icon bg-warning"><i class="fa fa-pie-chart"></i></div>
-        <div class="stat-card-info">
-            <h5><?php echo $estoque_baixo ?></h5>
-            <span>Estoque Baixo</span>
-        </div>
-    </a>
-    
-    <div class="stat-card">
-        <div class="stat-card-icon <?php echo $saldo_total_dia < 0 ? 'bg-danger' : 'bg-success'; ?>"><i class="fa fa-usd"></i></div>
-        <div class="stat-card-info">
-            <h5>R$ <?php echo $saldo_total_diaF ?></h5>
-            <span>Saldo do Dia</span>
-        </div>
+        <div class="clearfix"></div>
     </div>
-</div>
 
     <div class="row" style="margin-top: 20px">
         <div class="col-md-4 stat stat2">
@@ -762,20 +855,14 @@ for ($i = 1; $i <= 12; $i++) {
         categoryAxis.renderer.labels.template.verticalCenter = "middle";
         categoryAxis.renderer.minGridDistance = 20;
         var valueAxis = chartRanking.yAxes.push(new am4charts.ValueAxis());
-        valueAxis.renderer.grid.template.strokeOpacity = 0.1; // Linhas de grade mais suaves
         valueAxis.title.text = "Número de Serviços";
         valueAxis.min = 0;
         var series = chartRanking.series.push(new am4charts.ColumnSeries());
         series.dataFields.valueY = "total_servicos";
         series.dataFields.categoryX = "funcionario_nome";
-        // --- NOVAS CONFIGURAÇÕES DE ESTILO ---
-        series.columns.template.fill = am4core.color("var(--primary-color)"); // Usa a cor primária
-        series.columns.template.strokeOpacity = 0;
-        series.columns.template.column.cornerRadiusTopLeft = 8; // Cantos arredondados
-        series.columns.template.column.cornerRadiusTopRight = 8;
-        series.tooltip.pointerOrientation = "vertical";
-        series.tooltip.background.fill = am4core.color("#222"); // Tooltip escuro
-        series.tooltip.getFillFromObject = false;
+        series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/] serviços";
+        series.columns.template.fill = am4core.color("#4A90E2");
+        series.columns.template.strokeWidth = 0;
         var valueLabel = series.bullets.push(new am4charts.LabelBullet());
         valueLabel.label.text = "{valueY}";
         valueLabel.label.dy = -10;
@@ -784,17 +871,14 @@ for ($i = 1; $i <= 12; $i++) {
         var chartServicos = am4core.create("servicosChart", am4charts.PieChart);
         chartServicos.data = <?php echo json_encode($ranking_servicos); ?>;
         var pieSeriesServicos = chartServicos.series.push(new am4charts.PieSeries());
-        // --- NOVAS CONFIGURAÇÕES DE ESTILO ---
         pieSeriesServicos.dataFields.value = "quantidade";
         pieSeriesServicos.dataFields.category = "servico_nome";
-        pieSeriesServicos.labels.template.disabled = true; // Desabilita texto na fatia
-        pieSeriesServicos.ticks.template.disabled = true;  // Desabilita linhas
         pieSeriesServicos.slices.template.stroke = am4core.color("#fff");
         pieSeriesServicos.slices.template.strokeWidth = 2;
         pieSeriesServicos.slices.template.strokeOpacity = 1;
-        pieSeriesServicos.slices.template.cornerRadius = 8; // Cantos arredondados
+        pieSeriesServicos.labels.template.text = "{value}";
         chartServicos.legend = new am4charts.Legend();
-        chartServicos.legend.position = "right";
+        chartServicos.legend.position = "bottom";
 
         // Gráfico de Barras para Ranking de Clientes Ativos
         var chartClientesAtivos = am4core.create("clientesAtivosChart", am4charts.XYChart);
@@ -846,79 +930,33 @@ for ($i = 1; $i <= 12; $i++) {
                 <div id="Linegraph" style="width: 98%; height: 350px"></div>
             </div>
         </div>
-
         <!-- Ranking dos Profissionais -->
-        <div class="chart-card">
-    <div class="chart-card-header">
-        <h3>🏆 Ranking de Profissionais (Últimos 12 Meses)</h3>
-    </div>
-    <div class="ranking-grid">
-        <div class="ranking-list-container">
-            <?php if (isset($ranking_error)): ?>
-                <p class="no-data-message"><?php echo htmlspecialchars($ranking_error); ?></p>
-            <?php elseif (empty($ranking_funcionarios)): ?>
-                <p class="no-data-message">Nenhum serviço registrado.</p>
-            <?php else: ?>
-                <div class="ranking-list">
-                    <?php 
-                    $medals = ['🥇', '🥈', '🥉'];
-                    foreach ($ranking_funcionarios as $index => $funcionario): ?>
-                        <div class="ranking-item">
-                            <div class="rank-position <?php if($index==0) echo 'gold'; if($index==1) echo 'silver'; if($index==2) echo 'bronze'; ?>">
-                                <?php echo isset($medals[$index]) ? $medals[$index] : $index + 1; ?>
+        <div class="col-md-12 content-top-2 card ranking-section">
+            <div class="card-header">
+                <h3>Ranking de Profissionais (Últimos 12 Meses)</h3>
+            </div>
+            <div class="ranking-list-container">
+                <?php if (isset($ranking_error)): ?>
+                    <p class="no-ranking"><?php echo htmlspecialchars($ranking_error); ?></p>
+                <?php elseif (empty($ranking_funcionarios)): ?>
+                    <p class="no-ranking">Nenhum serviço registrado nos últimos 12 meses.</p>
+                <?php else: ?>
+                    <div class="ranking-list">
+                        <?php foreach ($ranking_funcionarios as $index => $funcionario): ?>
+                            <div class="ranking-item position-<?php echo $index + 1; ?>">
+                                <span class="rank-icon"><?php echo $index + 1; ?></span>
+                                <p><?php echo htmlspecialchars($funcionario['funcionario_nome']); ?> <span class="services"><?php echo $funcionario['total_servicos']; ?> serviços</span></p>
                             </div>
-                            <div class="rank-info">
-                                <span class="name"><?php echo htmlspecialchars($funcionario['funcionario_nome']); ?></span>
-                                <span class="detail">Serviços realizados</span>
-                            </div>
-                            <div class="rank-value"><?php echo $funcionario['total_servicos']; ?></div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="ranking-chart-container">
+                <div id="rankingChart" style="height: 300px;"></div>
+            </div>
         </div>
-        <div class="ranking-chart-container">
-            <div id="rankingChart" style="height: 300px;"></div>
-        </div>
-    </div>
-</div>
-
-<div class="chart-card">
-    <div class="chart-card-header">
-        <h3>🏆 Ranking de Serviços Mais Usados (Últimos 12 Meses)</h3>
-    </div>
-    <div class="ranking-grid">
-        <div class="ranking-list-container">
-            <?php if (isset($ranking_error)): ?>
-                <p class="no-data-message"><?php echo htmlspecialchars($ranking_error); ?></p>
-            <?php elseif (empty($ranking_funcionarios)): ?>
-                <p class="no-data-message">Nenhum serviço registrado.</p>
-            <?php else: ?>
-                <div class="ranking-list">
-                    <?php 
-                    $medals = ['🥇', '🥈', '🥉'];
-                    foreach ($ranking_servicos as $index => $servico): ?>
-                        <div class="ranking-item">
-                            <div class="rank-position <?php if($index==0) echo 'gold'; if($index==1) echo 'silver'; if($index==2) echo 'bronze'; ?>">
-                                <?php echo isset($medals[$index]) ? $medals[$index] : $index + 1; ?>
-                            </div>
-                            <div class="rank-info">
-                                <span class="name"><?php echo htmlspecialchars($servico['servico_nome']); ?></span>
-                                <span class="detail">Serviços realizados</span>
-                            </div>
-                            <div class="rank-value"><?php echo $servico['quantidade']; ?></div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-        </div>
-        <div class="ranking-chart-container">
-            <div id="rankingChart" style="height: 300px;"></div>
-        </div>
-    </div>
-</div>
         <!-- Ranking dos Serviços -->
-        <!-- <div class="col-md-12 content-top-2 card servicos-section">
+        <div class="col-md-12 content-top-2 card servicos-section">
             <div class="card-header">
                 <h3>Serviços Mais Usados (Últimos 12 Meses)</h3>
             </div>
@@ -941,46 +979,9 @@ for ($i = 1; $i <= 12; $i++) {
             <div class="servicos-chart-container">
                 <div id="servicosChart" style="height: 300px;"></div>
             </div>
-        </div> -->
-
-        <div class="chart-card">
-    <div class="chart-card-header">
-        <h3>🏆 Ranking de Clientes Mais Ativos (Últimos 12 Meses)</h3>
-    </div>
-    <div class="ranking-grid">
-        <div class="ranking-list-container">
-            <?php if (isset($ranking_error)): ?>
-                <p class="no-data-message"><?php echo htmlspecialchars($clientes_ativos_error); ?></p>
-            <?php elseif (empty($ranking_clientes_ativos)): ?>
-                <p class="no-data-message">Nenhum cliente registrado.</p>
-            <?php else: ?>
-                <div class="ranking-list">
-                    <?php 
-                    $medals = ['🥇', '🥈', '🥉'];
-                    foreach ($ranking_clientes_ativos as $index => $cliente): ?>
-                        <div class="ranking-item">
-                            <div class="rank-position <?php if($index==0) echo 'gold'; if($index==1) echo 'silver'; if($index==2) echo 'bronze'; ?>">
-                                <?php echo isset($medals[$index]) ? $medals[$index] : $index + 1; ?>
-                            </div>
-                            <div class="rank-info">
-                                <span class="name"><?php echo htmlspecialchars($cliente['cliente_nome']); ?></span>
-                                <span class="detail">Serviços realizados</span>
-                            </div>
-                            <div class="rank-value"><?php echo $cliente['total_servicos']; ?></div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
         </div>
-        <div class="ranking-chart-container">
-            <div id="rankingChart" style="height: 300px;"></div>
-        </div>
-    </div>
-</div>
-
-
         <!-- Ranking de Clientes Mais Ativos -->
-        <!-- <div class="col-md-12 content-top-2 card clientes-ativos-section">
+        <div class="col-md-12 content-top-2 card clientes-ativos-section">
             <div class="card-header">
                 <h3>Ranking de Clientes Mais Ativos (Últimos 12 Meses)</h3>
             </div>
@@ -1003,9 +1004,7 @@ for ($i = 1; $i <= 12; $i++) {
             <div class="clientes-ativos-chart-container">
                 <div id="clientesAtivosChart" style="height: 300px;"></div>
             </div>
-        </div> -->
-
-
+        </div>
         <!-- Clientes Aguardando Encaixe Hoje -->
         <div class="col-md-12 content-top-2 card encaixes-section" id="encaixes-hoje">
             <div class="card-header">
