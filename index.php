@@ -10,6 +10,7 @@
     <title>MARKAI - Sistema de Gestão para Serviços</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="./images/favicon_markai.png">
     <style>
         .icon-card {
             color: #5d53c8;
@@ -425,6 +426,65 @@
         </div>
     </div>
 </section>
+
+<footer class="bg-gray-800 text-gray-300">
+    <div class="container mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h3 class="font-bold text-lg text-white mb-2">MARKAI</h3>
+                <p class="text-sm">Transformando a gestão de negócios de serviços.</p>
+                <p class="text-xs mt-4">&copy; <?php echo date('Y'); ?> MarkAi. Todos os direitos reservados.</p>
+                <p class="text-xs">CNPJ: 59.774.964/0001-30</p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-white mb-3">Navegação</h4>
+                <ul class="space-y-2">
+                    <li><a href="#sessao-2" class="hover:text-white">Funcionalidades</a></li>
+                    <li><a href="precos.php" class="hover:text-white">Preços</a></li>
+                    <li><a href="#faq" class="hover:text-white">FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-white mb-3">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="terms-of-use.html" class="hover:text-white">Termos de Uso</a></li>
+                    <li><a href="privacy-policy.html" class="hover:text-white">Política de Privacidade</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-white mb-3">Siga-nos</h4>
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/skysee.software/" target="_blank" class="hover:text-white"><i class="fab fa-instagram fa-lg"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61574991107173" target="_blank" class="hover:text-white"><i class="fab fa-facebook fa-lg"></i></a>
+                </div>
+                <p class="text-sm mt-4">contato@skysee.com.br</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div id="cookie-banner" class="hidden fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 flex items-center justify-between z-50">
+    <p class="text-sm">Nós usamos cookies para melhorar sua experiência. Ao continuar a navegar, você concorda com a nossa <a href="privacidade.php" class="underline hover:text-blue-400">Política de Privacidade</a>.</p>
+    <button id="accept-cookies" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+        Entendi
+    </button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const banner = document.getElementById('cookie-banner');
+        const acceptButton = document.getElementById('accept-cookies');
+
+        if (!localStorage.getItem('cookies_accepted')) {
+            banner.classList.remove('hidden');
+        }
+
+        acceptButton.addEventListener('click', function() {
+            localStorage.setItem('cookies_accepted', 'true');
+            banner.style.display = 'none';
+        });
+    });
+</script>
 
 <a href="https://wa.me/5522998838694" target="_blank" class="whatsapp-button">
     <i class="fab fa-whatsapp"></i>
