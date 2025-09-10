@@ -416,6 +416,7 @@ if (@count($res_caixa) > 0 && $res_caixa[0]['data_fechamento'] === NULL) {
 
 @media (max-width: 480px) {
     .sticky-header {
+		background: #000;
         padding: 5px;
         display: flex;
         justify-content: space-between;
