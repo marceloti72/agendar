@@ -823,25 +823,24 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 
 	
 </head> 
-<body class="cbp-spmenu-push">
-    <div class="main-content">
+<body class="cbp-spmenu-push dark" >
+	<div class="main-content">
 
-        <div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
-            
-            <aside class="sidebar-left" style="overflow-y: auto; height:100%; scrollbar-width: thin;">
-                <nav class="navbar navbar-inverse">
-                    <div class="navbar-header"> 
-                         <a class="navbar-brand" href="index.php">
-                            <div class="brand-container">
-                                <div class="brand-text">
-                                    <span class="system-name"><?php echo $nome_sistema ?></span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="sidebar-menu">	
-							
+
+
+		<div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left"  id="cbp-spmenu-s1" >
+			<!--left-fixed -navigation-->
+			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
+				<nav class="navbar navbar-inverse" >
+					
+					
+					
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						
+						<ul class="sidebar-menu">	
+							<!--toggle button start-->
+				<button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>
+				<!--toggle button end-->
 
 							<?php 
                         // DEFINANDO SE É ADMINISTRADOR
@@ -1113,9 +1112,11 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 
 						</ul>
 					</div>
-                </nav>
-            </aside> <button id="showLeftPush"><i class="fa fa-bars"></i></button>
-
+					<!-- /.navbar-collapse -->
+					 
+				</nav>
+			</aside>
+		</div>
 		<!--left-fixed -navigation-->
 
 
@@ -3438,40 +3439,6 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
             localStorage.setItem('sidebarState', 'collapsed');
         }
     });
-});
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const toggleButton = document.getElementById('showLeftPush');
-    const body = document.body;
-
-    if (toggleButton) {
-        // Função para aplicar o estado do menu (aberto/fechado)
-        const applySidebarState = (state) => {
-            if (state === 'collapsed') {
-                body.classList.add('sidebar-collapsed');
-            } else {
-                body.classList.remove('sidebar-collapsed');
-            }
-        };
-
-        // Verifica no carregamento da página se há um estado salvo
-        const savedState = localStorage.getItem('sidebarState');
-        // Se não houver estado salvo, começa aberto por padrão
-        const initialState = savedState || 'open';
-        applySidebarState(initialState);
-        
-        // Adiciona o evento de clique ao botão
-        toggleButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            const isCollapsed = body.classList.contains('sidebar-collapsed');
-            const newState = isCollapsed ? 'open' : 'collapsed';
-            
-            applySidebarState(newState);
-            localStorage.setItem('sidebarState', newState); // Salva o novo estado
-        });
-    }
 });
 </script>
 
