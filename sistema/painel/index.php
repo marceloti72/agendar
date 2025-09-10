@@ -1157,7 +1157,7 @@ body.sidebar-collapsed #showLeftPush i { transform: rotate(180deg); }
 						
 					<li class="dropdown head-dpdn">
 						
-				        <button id="showLeftPush" class="dropdown-toggle" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>			
+				        <a href="#" id="showLeftPush" class="dropdown-toggle" data-toggle="collapse" data-target=".collapse" aria-expanded="false"><i class="fa fa-bars"></i></a>			
 
 						<?php
 						$id_conta = $_SESSION['id_conta'];
