@@ -1181,9 +1181,9 @@ for ($i = 1; $i <= 12; $i++) {
                         </div>
                     <?php endif; ?>
                 </div>
-                <div class="ranking-chart-container">
-                    <div id="rankingChart"></div>
-                </div>
+                <div class="servicos-chart-container">
+                <div id="servicosChart" style="height: 300px;"></div>
+            </div>
             </div>
         </div>
 
