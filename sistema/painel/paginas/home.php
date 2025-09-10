@@ -501,6 +501,12 @@ $ranking_clientes_ativos = $query->fetchAll(PDO::FETCH_ASSOC);
     background-color: #f9fafb;
     border-radius: 8px;
 }
+.text-subtitle {
+    font-size: 0.8em; /* Deixa o texto 20% menor que o título principal */
+    font-weight: 500; /* Deixa a fonte um pouco mais leve que o negrito */
+    color: #777777;   /* Um tom de cinza para dar menos destaque */
+    vertical-align: middle; /* Garante o alinhamento vertical correto */
+}
 
 /* Responsividade */
 @media (max-width: 991px) {
@@ -1129,7 +1135,7 @@ for ($i = 1; $i <= 12; $i++) {
 
         <div class="ranking-card">
             <div class="ranking-card-header">
-                <h3>🏆 Ranking de Profissionais (Últimos 12 Meses)</h3>
+                <h3>🏆 Ranking de Profissionais <span class="text-subtitle">(Últimos 12 Meses)</span></h3>
             </div>
             <div class="ranking-grid">
                 <div class="ranking-list-container">
@@ -1169,7 +1175,7 @@ for ($i = 1; $i <= 12; $i++) {
         </div>
         <div class="ranking-card">
             <div class="ranking-card-header">
-                <h3>🏆 Ranking de Clientes (Últimos 12 Meses)</h3>
+                <h3>🏆 Ranking de Clientes <span class="text-subtitle">(Últimos 12 Meses)</span></h3>
             </div>
             <div class="ranking-grid">
                 <div class="ranking-list-container">
@@ -1209,7 +1215,7 @@ for ($i = 1; $i <= 12; $i++) {
         </div>
         <div class="ranking-card">
             <div class="ranking-card-header">
-                <h3>🏆 Ranking de Serviços (Últimos 12 Meses)</h3>
+                <h3>🏆 Ranking de Serviços <span class="text-subtitle">(Últimos 12 Meses)</span></h3>
             </div>
             <div class="ranking-grid">
                 <div class="ranking-list-container">
