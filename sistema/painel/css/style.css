@@ -74,7 +74,7 @@ span.dashboard_text {
       max-width: 100%;
       box-sizing: border-box;
 }
-.header-section {
+/* .header-section {
     background:#111111;
     box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
     -webkit-box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
@@ -85,7 +85,7 @@ span.dashboard_text {
     clear: both;
     display: block;
     content: '';
-}
+} */
 .header-left {
     float: left;
     width: 50%;
