@@ -807,17 +807,23 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 			<!--left-fixed -navigation-->
 			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
 				<nav class="navbar navbar-inverse" >
-					<div class="navbar-header">						
-						
-            <a href="index.php" class="flex items-center space-x-3">
-                <img src="../../images/icone_512.png" alt="Logo" class="w-10 h-10">
-                <div class="flex flex-col">
-                    <span class="text-xl font-bold text-white">Painel</span>
-                    <span class="text-xs text-slate-400 font-medium tracking-wide"><?= $nome_sistema ?></span>
-                </div>
-            </a>
+					<div class="navbar-header">
+    <a href="index.php" class="navbar-brand d-flex align-items-center">
+
+        <img src="../../images/icone_512.png" alt="Logo" style="width: 40px; height: 40px;" class="me-3">
+
+        <div>
+            <span class="text-white font-weight-bold d-block" style="font-size: 1.1rem; line-height: 1.2;">
+                Painel
+            </span>
+            
+            <span class="text-white-50" style="font-size: 0.8rem;">
+                <?= $nome_sistema ?>
+            </span>
+        </div>
         
-					</div>
+    </a>
+</div>
 					
 					
 					
