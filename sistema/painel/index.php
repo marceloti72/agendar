@@ -414,6 +414,19 @@ if (@count($res_caixa) > 0 && $res_caixa[0]['data_fechamento'] === NULL) {
 	
 }
 
+@media (max-width: 480px) {
+    .sticky-header {
+        padding: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap;
+        width: 55%;
+        max-width: 5%;
+        box-sizing: border-box;
+    }
+}
+
 .list-group-item-action {
     cursor: pointer;
     transition: background-color 0.3s;
