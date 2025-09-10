@@ -151,478 +151,200 @@ if (@count($res_caixa) > 0 && $res_caixa[0]['data_fechamento'] === NULL) {
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 	<!--//Metis Menu -->
 	<style>
-		#chartdiv {
-			width: 100%;
-			height: 295px;
-		}
-
-		
-        .hovv:hover { transform: scale(3); transition: .5s;}
-        .hovv{cursor: pointer; border-radius: 50px;object-fit: cover;} 
-
-		.hovv{
-    width: 50px;
-    height: 50px;
-  }
-
-  .novo {
-		background-color: #e99f35;
-		color: white;
-		font-weight: bold;
-	}
-
-	html {
-    scroll-behavior: smooth;
-}
-
-	@media (max-width: 768px) {
-	.novo {
-		display: flex;
-		width: 100%;
-		height: 30px;
-		margin-bottom: 10px;
-		font-size: 14px;
-		align-items: center;
-		justify-content: center;
-			
-        }
-	}
-
-  .modal-header{	
-	/* background-image: linear-gradient(to bottom, #d4a0e9, #a0d4e9);
-	background-image: linear-gradient(to right, #6a85b6, #bac8e0);
-	background-image: linear-gradient(to right, #ff9966, #ff5e62);
-	background-image: linear-gradient(to right, #434371, #9669a0); */
-	background-image: linear-gradient(to right, #6a85b6, #bac8e0);
-	color: white;
-	text-transform: uppercase;
-  }
-
-  @keyframes pulse {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(2); /* Aumenta o tamanho */
-        opacity: 0.7;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-.icon-pulse {
-    display: inline-block; /* Necessário para transform funcionar bem */
-    animation: pulse 1.5s infinite ease-in-out; /* Aplica a animação */
-    /* Ajuste a duração (1.5s) e o timing (ease-in-out) como desejar */
-}
-
-@keyframes wiggle-whatsapp {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(5deg); }  /* Inclina para a direita */
-    75% { transform: rotate(-5deg); } /* Inclina para a esquerda */
-}
-
-.icon-wiggle-whatsapp {
-    display: inline-block;
-    animation: wiggle-whatsapp 1s infinite ease-in-out;
-    transform-origin: bottom center; /* Define o ponto de rotação */
-}
-
-.navbar-header {
-    /* Cor de fundo opcional como fallback */
-    background-color: #516a88;
-    /* Imagem de fundo */
-    background-image: url('../../images/icone_512.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    /* Centraliza o conteúdo verticalmente */
-    display: flex;
-    align-items: center;
-    padding: 3px 15px;	
-}
-
-.navbar-brand {
-    /* Garante que o link não tenha sublinhado e ocupa o espaço necessário */
-    padding: 0;
-    height: auto;
-    display: block;
-}
-
-.brand-container {
-    /* Alinha o logo e o texto um ao lado do outro */
-    display: flex;
-    align-items: center;
-}
-
-
-.brand-text {
-    /* Estilo para o texto */
-    color: white;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-    line-height: 1.2;
-	margin-top: 38px;
-}
-
-.system-name {
-    /* Estilo para o nome do sistema */
-    font-size: 0.4em;
-    font-style: italic;
-    color: #e0e0e0;
-}
-
-/* Estilo para os ícones da barra de navegação */
-.navbar-toggle .icon-bar {
-    background-color: white; /* Cor dos ícones para contraste */
-}
-
-
-  
-  @media (max-width: 768px) {
-    .sticky-header {
-        padding: 5px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: nowrap;
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-    .header-left, .header-right {
-        margin: 0;
-        padding: 0;
-        flex-shrink: 1;
-    }
-    #showLeftPush {
-        font-size: 16px;
-        padding: 4px;
-        margin-right: 5px;
-        line-height: 1;
-        width: 24px; /* Simétrico */
-        height: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .nofitications-dropdown {
-        display: flex;
-        align-items: center;
-        margin: 0;
-        padding: 0;
-    }
-    .nofitications-dropdown li {
-        margin-right: 5px;
-        padding: 0;
-        width: 30px; /* Largura fixa igual à altura */
-        height: 30px; /* Altura fixa igual à largura */
-        display: flex; /* Garante que o conteúdo interno se ajuste */
-        align-items: center;
-        justify-content: center;
-        
-    }
-    .nofitications-dropdown li a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        padding: 0; /* Remove padding para controle total */
-    }
-    .nofitications-dropdown li a i {
-        font-size: 16px; /* Tamanho do ícone */
-        width: 16px; /* Largura fixa */
-        height: 16px; /* Altura fixa */
-        line-height: 16px;
-        text-align: center;
-    }
-    .badge {
-        font-size: 8px;
-        padding: 2px 4px;
-        top: -8px;
-        right: -4px; /* Ajusta posição para não interferir na simetria */
-        position: absolute;
-        border-radius: 50%;
-        min-width: 12px;
-        height: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .dropdown-menu {
-        font-size: 10px;
-        max-width: 120px;
-        padding: 2px;
-    }
-    .profile_details {
-        margin-left: 110px;
-        flex-shrink: 1;
-		
-    }
-
-	
-    .prfil-img img {
-        width: 40px;
-        height: 40px;
-        margin-left: -50px;
-        border-radius: 50%;
-		
-    }
-    .user-name {
-        display: none;
-    }
-    .fa-angle-down, .fa-angle-up {
-        font-size: 12px;
-        margin-left: 2px;
-        width: 12px;
-        height: 12px;
-        line-height: 12px;
-        text-align: center;
-    }
-    .dropdown-menu.drp-mnu {
-        font-size: 10px;
-        min-width: 80px;
-        padding: 2px;
-		margin-left: -110px !important;
-    }
-    .profile_details_drop a {
-        display: flex;
-        align-items: center;
-        padding: 0;
-    }
-    /* Sobrescreve conflitos */
-    .header-left, .header-right, .nofitications-dropdown, .profile_details {
-        float: none !important;
-        display: inline-flex !important;
-    }
-
-	.dropdown-toggle {
-        width: 34px !important; /* Largura igual à altura para ser redondo */
-        height: 34px !important;
-        border-radius: 50%; /* Forma redonda */      
-        
-        text-decoration: none;
-        
-    }
-	.foto_user {        
-		margin-right: -30px;        
-        
-    }
-	
-}
-
-.list-group-item-action {
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-.list-group-item-action:hover {
-    background-color: #e9ecef;
-}
-.list-group-item-action i {
-    color: #4682B4;
-}
-#qrcode-container {
-    display: none;
-}
-#qrcode {
-    margin: 0 auto;
-}
-.btn-primary {
-    background-color: #4682B4;
-    border: none;
-    transition: all 0.3s;
-}
-.btn-primary:hover {
-    background-color: #5a9bd4;
-}
-
-.theme-switcher-container {
-    padding: 12px 15px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Alinha os itens à esquerda */
-    font-size: 14px;
-    color: #f1f1f1;
-}
-
-.theme-label-text {
-    margin-right: 10px;
-}
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 40px;
-    height: 20px;
-    margin-right: 10px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 2px;
-    bottom: 2px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-input:checked + .slider {
-    background-color: #2196F3;
-}
-
-input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-    -webkit-transform: translateX(20px);
-    -ms-transform: translateX(20px);
-    transform: translateX(20px);
-}
-
-/* Arredonda os sliders */
-.slider.round {
-    border-radius: 34px;
-}
-
-.slider.round:before {
-    border-radius: 50%;
-}
-
-.btn-floating {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    padding: 12px 20px;
-    border-radius: 50px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    font-size: 16px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-}
-
-.btn-floating:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    background-color: #218838; /* Cor mais escura ao passar o mouse */
-}
-
-.btn-floating i {
-    font-size: 18px;
-}
-
-
-
-
-/* --- Configuração geral do corpo da página --- */
+	/*
+=========================================
+ESTILOS GERAIS E FONTES
+=========================================
+*/
 body {
-    font-family: 'Poppins', sans-serif; /* Aplica a nova fonte */
-    background-color: #f4f7f6; /* Um fundo cinza bem claro */
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7f6;
+    transition: background-color 0.3s ease;
+}
+
+:root {
+    --sidebar-width-open: 260px;
+    --sidebar-width-collapsed: 80px;
+    --header-height: 70px; /* Altura do cabeçalho */
 }
 
 /*
 =========================================
-ESTILOS DO MENU LATERAL (SIDEBAR)
+MENU LATERAL (SIDEBAR)
 =========================================
 */
+.cbp-spmenu-left {
+    width: var(--sidebar-width-open);
+    background-color: #ffffff;
+    border-right: 1px solid #e9eef2;
+    box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.04);
+    transition: width 0.3s ease-in-out;
+}
 
 .sidebar-left {
-    background-color: #ffffff; /* Fundo branco para um visual limpo */
-    border-right: 1px solid #e0e0e0; /* Borda direita sutil */
-    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05); /* Sombra suave para dar profundidade */
+    /* Removemos o overflow daqui para não cortar o botão */
+    height: 100%;
+    overflow-y: auto; /* Apenas rolagem vertical */
 }
 
-/* --- Itens do Menu --- */
+.sidebar-left .navbar-header {
+    padding: 15px;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e9eef2;
+    background-color: #fff;
+}
+.sidebar-left .system-name {
+    color: #1a2a44;
+    font-weight: 600;
+    font-size: 1.1em !important;
+    font-style: normal;
+}
+
 .sidebar-menu > li > a {
-    color: #555; /* Cor de texto mais suave que o preto puro */
+    color: #555;
     font-weight: 500;
-    padding: 15px 20px; /* Mais espaço interno para os links */
-    border-left: 4px solid transparent; /* Borda à esquerda para indicar item ativo/hover */
-    transition: all 0.3s ease; /* Transição suave para efeitos */
+    padding: 15px 25px;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
 }
 
-.sidebar-menu > li > a i {
-    color: #6a85b6; /* Cor de destaque para os ícones */
-    margin-right: 10px; /* Espaço entre o ícone e o texto */
-    width: 20px; /* Garante alinhamento dos ícones */
+.sidebar-menu > li > a i.fa {
+    color: #6a85b6;
+    margin-right: 15px;
+    width: 20px;
     text-align: center;
+    font-size: 1.1em;
 }
 
-/* --- Efeito ao passar o mouse (Hover) e no item ativo --- */
 .sidebar-menu > li:hover > a,
 .sidebar-menu > li.active > a {
-    background-color: #f0f4f7; /* Fundo levemente azulado ao passar o mouse */
-    color: #1a2a44; /* Cor mais escura para o texto */
-    border-left-color: #6a85b6; /* Mostra a borda de destaque */
+    background-color: #f5f9fc;
+    color: #2c5ff6;
+    border-left-color: #2c5ff6;
+}
+.sidebar-menu > li:hover > a i.fa,
+.sidebar-menu > li.active > a i.fa {
+    color: #2c5ff6;
 }
 
-/* --- Título de Seção (Ex: MENU DO PROFISSIONAL) --- */
-.sidebar-menu .header {
-    background-color: #f9f9f9;
-    color: #888;
-    font-size: 0.8em;
-    font-weight: 600;
-    text-transform: uppercase;
-    padding: 10px 20px;
-}
-
-/* --- Submenus (Dropdowns) --- */
 .treeview-menu {
-    background-color: #f8f9fa; /* Fundo levemente diferente para submenus */
-    padding-left: 25px; /* Indentação para criar hierarquia visual */
+    background-color: transparent;
+    padding-left: 45px;
 }
 
-.treeview-menu > li > a {
-    color: #666;
-    padding: 10px 15px;
-    font-weight: 400;
+/*
+=========================================
+CABEÇALHO (HEADER)
+=========================================
+*/
+.sticky-header {
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    height: var(--header-height);
+    margin-left: var(--sidebar-width-open); /* Alinhado com o menu */
+    transition: margin-left 0.3s ease-in-out;
 }
 
-.treeview-menu > li:hover > a {
-    color: #1a2a44;
+#page-wrapper {
+    margin-left: var(--sidebar-width-open); /* Alinhado com o menu */
+    transition: margin-left 0.3s ease-in-out;
 }
 
-/* --- Barra de Rolagem Customizada --- */
-.sidebar-left::-webkit-scrollbar {
-  width: 5px;
+/*
+=========================================
+BOTÃO DE TOGGLE
+=========================================
+*/
+.cbp-spmenu {
+    position: relative;
 }
-.sidebar-left::-webkit-scrollbar-track {
-  background: #f1f1f1;
+
+#showLeftPush {
+    position: absolute;
+    top: calc(var(--header-height) / 2 - 20px); /* Centraliza verticalmente no header */
+    right: -20px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #555;
+    cursor: pointer;
+    z-index: 1050;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease-in-out;
 }
-.sidebar-left::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 5px;
+#showLeftPush i {
+    transition: transform 0.3s ease;
 }
-.sidebar-left::-webkit-scrollbar-thumb:hover {
-  background: #aaa;
+
+/*
+=========================================
+ESTADO RECOLHIDO (COLLAPSED)
+=========================================
+*/
+body.sidebar-collapsed .cbp-spmenu-left {
+    width: var(--sidebar-width-collapsed);
+}
+
+body.sidebar-collapsed .sticky-header,
+body.sidebar-collapsed #page-wrapper {
+    margin-left: var(--sidebar-width-collapsed);
+}
+
+body.sidebar-collapsed .sidebar-left .navbar-header {
+    justify-content: center;
+}
+body.sidebar-collapsed .sidebar-left .system-name {
+    display: none;
+}
+
+body.sidebar-collapsed .sidebar-menu span,
+body.sidebar-collapsed .sidebar-menu .pull-right {
+    opacity: 0;
+    visibility: hidden;
+    width: 0;
+    transition: all 0.1s ease;
+}
+
+body.sidebar-collapsed #showLeftPush i {
+    transform: rotate(180deg);
+}
+
+/* Tooltip para menu recolhido */
+body.sidebar-collapsed .sidebar-menu > li {
+    position: relative;
+}
+body.sidebar-collapsed .sidebar-menu > li > a::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: calc(var(--sidebar-width-collapsed) - 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 13px;
+    margin-left: 15px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    z-index: 1100;
+}
+body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
+    opacity: 1;
+    visibility: visible;
 }
 
 /*
@@ -630,138 +352,19 @@ ESTILOS DO MENU LATERAL (SIDEBAR)
 MODO ESCURO (DARK MODE)
 =========================================
 */
-body.dark .sidebar-left {
-    background-color: #2c3e50; /* Azul escuro para o fundo do menu */
-    border-right-color: #34495e;
-    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
-}
+body.dark { background-color: #161d31; }
+body.dark .cbp-spmenu-left { background-color: #202940; border-right-color: #2a344d; }
+body.dark .sidebar-left .navbar-header { background-color: #202940; border-bottom-color: #2a344d; }
+body.dark .sidebar-left .system-name { color: #fff; }
+body.dark .sidebar-menu > li > a { color: #a9b4d8; }
+body.dark .sidebar-menu > li > a i.fa { color: #a9b4d8; }
+body.dark .sidebar-menu > li:hover > a, body.dark .sidebar-menu > li.active > a { background-color: #2c5ff6; color: #fff; border-left-color: #2c5ff6; }
+body.dark .sidebar-menu > li:hover > a i.fa, body.dark .sidebar-menu > li.active > a i.fa { color: #fff; }
+body.dark .sticky-header { background-color: #202940; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+body.dark #showLeftPush { background: #2a344d; border-color: #3e4963; color: #a9b4d8; }
+body.dark #page-wrapper { color: #fff; } /* Adicionado para texto do conteúdo */
+</style>
 
-body.dark .sidebar-menu > li > a {
-    color: #bdc3c7; /* Cor de texto cinza claro */
-}
-
-body.dark .sidebar-menu > li > a i {
-    color: #8e9eab; /* Cor dos ícones no modo escuro */
-}
-
-body.dark .sidebar-menu > li:hover > a,
-body.dark .sidebar-menu > li.active > a {
-    background-color: #34495e;
-    color: #ffffff;
-    border-left-color: #3498db; /* Azul mais vivo para o destaque */
-}
-
-body.dark .sidebar-menu .header {
-    background-color: #34495e;
-    color: #95a5a6;
-}
-
-body.dark .treeview-menu {
-    background-color: #233140;
-}
-
-body.dark .treeview-menu > li > a {
-    color: #bdc3c7;
-}
-
-
-:root {
-    --sidebar-width-open: 260px;
-    --sidebar-width-collapsed: 80px;
-}
-
-/* #page-wrapper, .sticky-header {
-    margin-left: var(--sidebar-width-open);
-    transition: margin-left 0.3s ease-in-out;
-} */
-
-.cbp-spmenu-left {
-    width: var(--sidebar-width-open);
-    transition: width 0.3s ease-in-out;
-}
-
-#showLeftPush {
-    position: absolute;
-    top: 15px;
-    right: -50px; /* Posiciona o botão fora da barra lateral */
-    background: #fff;
-    border: 1px solid #ddd;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    color: #555;
-    font-size: 1.2em;
-    cursor: pointer;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: right 0.3s ease-in-out, transform 0.3s ease;
-}
-
-#showLeftPush:hover {
-    background: #f5f5f5;
-}
-
-/* --- Estilos da Barra Lateral Recolhida --- */
-body.sidebar-collapsed .cbp-spmenu-left {
-    width: var(--sidebar-width-collapsed);
-}
-
-body.sidebar-collapsed #page-wrapper,
-body.sidebar-collapsed .sticky-header {
-    margin-left: var(--sidebar-width-collapsed);
-}
-
-body.sidebar-collapsed #showLeftPush {
-    right: -20px; /* Move o botão para mais perto da borda */
-    transform: rotate(180deg); /* Gira o ícone do botão */
-}
-
-body.sidebar-collapsed .sidebar-menu span,
-body.sidebar-collapsed .sidebar-menu .pull-right,
-body.sidebar-collapsed .sidebar-menu .header {
-    opacity: 0;
-    visibility: hidden;
-    width: 0;
-}
-
-body.sidebar-collapsed .sidebar-menu > li > a {
-    justify-content: center;
-}
-
-body.sidebar-collapsed .treeview-menu {
-    display: none !important;
-}
-
-body.sidebar-collapsed .sidebar-menu > li {
-    position: relative;
-}
-
-body.sidebar-collapsed .sidebar-menu > li > a::after {
-    content: attr(data-tooltip); /* Usa o atributo data-tooltip para a dica de ferramenta */
-    position: absolute;
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #333;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    white-space: nowrap;
-    font-size: 0.9em;
-    margin-left: 15px;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s;
-    pointer-events: none;
-}
-
-body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
-    opacity: 1;
-    visibility: visible;
-}
-
-
-	</style>
 	<!--pie-chart --><!-- index page sales reviews visitors pie chart -->
 	<script src="js/pie-chart.js" type="text/javascript"></script>
 	<script type="text/javascript">
@@ -823,21 +426,24 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 
 	
 </head> 
-<body class="cbp-spmenu-push dark" >
-	<div class="main-content">
+<body class="cbp-spmenu-push">
+    <div class="main-content">
 
-
-
-		<div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left"  id="cbp-spmenu-s1" >
-			<!--left-fixed -navigation-->
-			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
-				<nav class="navbar navbar-inverse" >
-					
-					
-					
-					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-						
-						<ul class="sidebar-menu">	
+        <div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+            
+            <aside class="sidebar-left" style="overflow-y: auto; height:100%; scrollbar-width: thin;">
+                <nav class="navbar navbar-inverse">
+                    <div class="navbar-header"> 
+                         <a class="navbar-brand" href="index.php">
+                            <div class="brand-container">
+                                <div class="brand-text">
+                                    <span class="system-name"><?php echo $nome_sistema ?></span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="sidebar-menu">	
 							
 
 							<?php 
@@ -1110,14 +716,9 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 
 						</ul>
 					</div>
-					<!-- /.navbar-collapse -->
-					 
-				</nav>
-			</aside>
-			<!--toggle button start-->
-				<button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>
-				<!--toggle button end-->
-		</div>
+                </nav>
+            </aside> <button id="showLeftPush"><i class="fa fa-bars"></i></button>
+
 		<!--left-fixed -navigation-->
 
 
@@ -3440,6 +3041,40 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
             localStorage.setItem('sidebarState', 'collapsed');
         }
     });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleButton = document.getElementById('showLeftPush');
+    const body = document.body;
+
+    if (toggleButton) {
+        // Função para aplicar o estado do menu (aberto/fechado)
+        const applySidebarState = (state) => {
+            if (state === 'collapsed') {
+                body.classList.add('sidebar-collapsed');
+            } else {
+                body.classList.remove('sidebar-collapsed');
+            }
+        };
+
+        // Verifica no carregamento da página se há um estado salvo
+        const savedState = localStorage.getItem('sidebarState');
+        // Se não houver estado salvo, começa aberto por padrão
+        const initialState = savedState || 'open';
+        applySidebarState(initialState);
+        
+        // Adiciona o evento de clique ao botão
+        toggleButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const isCollapsed = body.classList.contains('sidebar-collapsed');
+            const newState = isCollapsed ? 'open' : 'collapsed';
+            
+            applySidebarState(newState);
+            localStorage.setItem('sidebarState', newState); // Salva o novo estado
+        });
+    }
 });
 </script>
 
