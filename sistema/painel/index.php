@@ -664,19 +664,12 @@ body.dark .treeview-menu > li > a {
     color: #bdc3c7;
 }
 
-/*
-=========================================
-ESTILOS PARA O MENU RECOLHÍVEL
-=========================================
-*/
 
-/* --- Configurações Iniciais --- */
 :root {
-    --sidebar-width-open: 260px; /* Largura do menu aberto */
-    --sidebar-width-collapsed: 80px; /* Largura do menu fechado (só ícones) */
+    --sidebar-width-open: 260px;
+    --sidebar-width-collapsed: 80px;
 }
 
-/* Transição suave para o conteúdo principal */
 #page-wrapper, .sticky-header {
     margin-left: var(--sidebar-width-open);
     transition: margin-left 0.3s ease-in-out;
@@ -687,56 +680,64 @@ ESTILOS PARA O MENU RECOLHÍVEL
     transition: width 0.3s ease-in-out;
 }
 
-/* Estilo do botão de toggle no header */
 #showLeftPush {
-    background: none;
-    border: none;
+    position: absolute;
+    top: 15px;
+    right: -50px; /* Posiciona o botão fora da barra lateral */
+    background: #fff;
+    border: 1px solid #ddd;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     color: #555;
-    font-size: 1.3em;
+    font-size: 1.2em;
     cursor: pointer;
-    padding: 0 15px;
-}
-body.dark #showLeftPush {
-    color: #bdc3c7;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: right 0.3s ease-in-out, transform 0.3s ease;
 }
 
-/* --- ESTADOS DO MENU RECOLHIDO (quando o body tiver a classe .sidebar-collapsed) --- */
+#showLeftPush:hover {
+    background: #f5f5f5;
+}
 
+/* --- Estilos da Barra Lateral Recolhida --- */
 body.sidebar-collapsed .cbp-spmenu-left {
-    width: var(--sidebar-width-collapsed); /* Encolhe o menu */
+    width: var(--sidebar-width-collapsed);
 }
 
 body.sidebar-collapsed #page-wrapper,
 body.sidebar-collapsed .sticky-header {
-    margin-left: var(--sidebar-width-collapsed); /* Empurra o conteúdo */
+    margin-left: var(--sidebar-width-collapsed);
 }
 
-/* Esconde o texto dos itens de menu */
+body.sidebar-collapsed #showLeftPush {
+    right: -20px; /* Move o botão para mais perto da borda */
+    transform: rotate(180deg); /* Gira o ícone do botão */
+}
+
 body.sidebar-collapsed .sidebar-menu span,
 body.sidebar-collapsed .sidebar-menu .pull-right,
 body.sidebar-collapsed .sidebar-menu .header {
     opacity: 0;
     visibility: hidden;
     width: 0;
-    display: inline-block; /* Ajuda na transição */
 }
 
-/* Centraliza os ícones */
 body.sidebar-collapsed .sidebar-menu > li > a {
     justify-content: center;
 }
 
-/* Esconde os submenus */
 body.sidebar-collapsed .treeview-menu {
     display: none !important;
 }
 
-/* Efeito de Tooltip para mostrar o nome do item no menu recolhido */
-body.sidebar-collapsed .sidebar-menu > li > a {
-    position: relative; /* Necessário para o tooltip */
+body.sidebar-collapsed .sidebar-menu > li {
+    position: relative;
 }
 
-body.sidebar-collapsed .sidebar-menu > li > a span {
+body.sidebar-collapsed .sidebar-menu > li > a::after {
+    content: attr(data-tooltip); /* Usa o atributo data-tooltip para a dica de ferramenta */
     position: absolute;
     left: 100%;
     top: 50%;
@@ -745,17 +746,16 @@ body.sidebar-collapsed .sidebar-menu > li > a span {
     color: #fff;
     padding: 5px 10px;
     border-radius: 4px;
-    white-space: nowrap; /* Impede que o texto quebre linha */
+    white-space: nowrap;
     font-size: 0.9em;
-    margin-left: 10px;
+    margin-left: 15px;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s;
-    pointer-events: none; /* Impede que o tooltip interfira no mouse */
+    pointer-events: none;
 }
 
-/* Mostra o tooltip ao passar o mouse */
-body.sidebar-collapsed .sidebar-menu > li:hover > a span {
+body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
     opacity: 1;
     visibility: visible;
 }
@@ -832,10 +832,15 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a span {
 			<!--left-fixed -navigation-->
 			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
 				<nav class="navbar navbar-inverse" >
-															
+					
+					
+					
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						
 						<ul class="sidebar-menu">	
+							<!--toggle button start-->
+				<button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>
+				<!--toggle button end-->
 
 							<?php 
                         // DEFINANDO SE É ADMINISTRADOR
@@ -843,7 +848,7 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a span {
 							?>
 							
 							<li class="treeview <?php echo @$home ?>">
-								<a href="#">
+								<a href="#" data-tooltip="Dashboards">
 									<i class="fa fa-dashboard"></i>
 									<span>Dashboards</span>
 									<i class="fa fa-angle-left pull-right"></i>
@@ -858,13 +863,13 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a span {
 							</li>
 
 							<li class="treeview">
-								<a href="caixa">
+								<a href="caixa" data-tooltip="Abrir Caixa">
 								<i class="fas fa-cash-register me-2"></i> <span>  Abrir Caixa</span>
 								</a>
 							</li>
 
 							<li class="treeview <?php echo @$menu_agendamentos ?>">
-								<a href="agendamentos">
+								<a href="agendamentos" data-tooltip="Agendamentos">
 								<i class="fe fe-clock"></i> <span> Agendamentos</span>
 								</a>
 							</li>
@@ -1121,8 +1126,7 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a span {
 		<div class="sticky-header header-section ">
 			
 			<div class="header-left">
-
-			   <button id="showLeftPush"><i class="fa fa-bars"></i></button>			
+				
 				
 				<div class="profile_details_left"><!--notifications of menu start -->
 					<ul class="nofitications-dropdown">						
@@ -3404,41 +3408,37 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
         localStorage.setItem('theme', newTheme);
         location.reload(); // Recarrega a página para aplicar o novo CSS
     });
-</script>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const toggleButton = document.getElementById('showLeftPush');
-    const body = document.body;
 
-    // Função para aplicar o estado do menu (aberto/fechado)
-    const applySidebarState = (state) => {
+	$(document).ready(function() {
+    // Função para aplicar o estado da barra lateral
+    function applySidebarState(state) {
         if (state === 'collapsed') {
-            body.classList.add('sidebar-collapsed');
+            $('body').addClass('sidebar-collapsed');
         } else {
-            body.classList.remove('sidebar-collapsed');
+            $('body').removeClass('sidebar-collapsed');
         }
-    };
+    }
 
-    // Verifica no carregamento da página se há um estado salvo
-    const savedState = localStorage.getItem('sidebarState');
+    // Verifique o estado salvo no carregamento da página
+    var savedState = localStorage.getItem('sidebarState');
     if (savedState) {
         applySidebarState(savedState);
     }
 
-    // Adiciona o evento de clique ao botão
-    toggleButton.addEventListener('click', function() {
-        // Verifica se o menu já está recolhido
-        const isCollapsed = body.classList.contains('sidebar-collapsed');
+    // Manipulador de clique para o botão de alternância
+    $('#showLeftPush').on('click', function(e) {
+        e.preventDefault();
+        var isCollapsed = $('body').hasClass('sidebar-collapsed');
         
-        // Alterna o estado
         if (isCollapsed) {
             applySidebarState('open');
-            localStorage.setItem('sidebarState', 'open'); // Salva o novo estado
+            localStorage.setItem('sidebarState', 'open');
         } else {
             applySidebarState('collapsed');
-            localStorage.setItem('sidebarState', 'collapsed'); // Salva o novo estado
+            localStorage.setItem('sidebarState', 'collapsed');
         }
     });
 });
 </script>
+
