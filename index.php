@@ -173,7 +173,10 @@
     <div class="absolute top-0 left-0 w-72 h-72 bg-blue-100 rounded-full opacity-50 -translate-x-1/2 -translate-y-1/2"></div>
     <div class="absolute bottom-0 right-0 w-96 h-96 bg-teal-100 rounded-full opacity-50 translate-x-1/2 translate-y-1/2"></div>
 
-    <div class="md:w-6/12 text-center md:text-left mb-12 md:mb-0">
+    <div class="container mx-auto px-6 py-20 md:py-32">
+        <div class="flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto">
+            
+            <div class="md:w-6/12 text-center md:text-left mb-12 md:mb-0">
     <span class="inline-block bg-blue-100 text-blue-600 text-sm font-semibold px-4 py-1 rounded-full mb-4">
         ✨ SISTEMA DE GESTÃO COMPLETO
     </span>
@@ -229,6 +232,19 @@
             </div>
         </div>
     </div>
+    </div>
+            
+            <div class="md:w-5/12 flex justify-center">
+                <div class="bg-white p-3 rounded-xl shadow-2xl transform transition hover:scale-105 duration-300">
+                    <div class="w-full h-4 flex items-center space-x-1.5 mb-2">
+                        <div class="w-3 h-3 bg-red-400 rounded-full"></div>
+                        <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                        <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+                    </div>
+                    <img src="./images/menu_principal.jpg" alt="Interface do sistema MarkAi" class="w-full rounded-md">
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
