@@ -1034,7 +1034,7 @@ for ($i = 1; $i <= 12; $i++) {
         // 3. Cria e otimiza a Legenda
         var legend = chartServicos.legend = new am4charts.Legend();
         legend.position = "right";
-        legend.width = 150;
+        legend.width = 200;
         legend.verticalScrollbar = new am4core.Scrollbar();
         legend.labels.template.truncate = true;
         legend.labels.template.maxWidth = 120;
