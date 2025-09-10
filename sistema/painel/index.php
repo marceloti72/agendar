@@ -766,27 +766,7 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
     visibility: visible;
 }
 
-/* Manter o estilo do botão que já estava funcionando */
-#showLeftPush {
-    position: absolute;
-    top: 15px;
-    right: -20px;
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    color: #555;
-    cursor: pointer;
-    z-index: 1050;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease-in-out;
-}
-#showLeftPush i { transition: transform 0.3s ease; }
-body.sidebar-collapsed #showLeftPush i { transform: rotate(180deg); }
+
 
 
 	</style>
