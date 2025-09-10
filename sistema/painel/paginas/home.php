@@ -585,6 +585,332 @@ for ($i = 1; $i <= 12; $i++) {
 <input type="hidden" id="dados_grafico_despesa">
 <input type="hidden" id="dados_grafico_venda">
 <input type="hidden" id="dados_grafico_servico">
+
+<!-- header-starts -->
+		<div class="sticky-header header-section ">
+			
+			<div class="header-left">
+				
+				<!--toggle button start-->
+				<button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>
+				<!--toggle button end-->
+				<div class="profile_details_left"><!--notifications of menu start -->
+					<ul class="nofitications-dropdown">						
+
+						<?php
+						$id_conta = $_SESSION['id_conta'];
+						if(@$_SESSION['nivel_usuario'] == 'administrador'){ 
+							$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and status = 'Agendado' and id_conta = '$id_conta'");
+							$res = $query->fetchAll(PDO::FETCH_ASSOC);
+							$total_agendamentos_hoje_usuario_pendentes = @count($res);
+							$link_ag = 'agendamentos';
+
+							$query = $pdo->query("SELECT * FROM encaixe where data = curDate() and id_conta = '$id_conta'");
+							$res_encaixes = $query->fetchAll(PDO::FETCH_ASSOC);
+							$total_encaixes_hoje = @count($res_encaixes);
+							
+						}else{
+							$query = $pdo->query("SELECT * FROM agendamentos where data = curDate() and funcionario = '$id_usuario' and status = 'Agendado' and id_conta = '$id_conta'");
+							$res = $query->fetchAll(PDO::FETCH_ASSOC);
+							$total_agendamentos_hoje_usuario_pendentes = @count($res);
+							$link_ag = 'agenda';
+
+							$query = $pdo->query("SELECT * FROM encaixe where data = curDate() and profissional = '$id_usuario' and id_conta = '$id_conta'");
+							$res_encaixes = $query->fetchAll(PDO::FETCH_ASSOC);
+							$total_encaixes_hoje = @count($res_encaixes);
+
+						}
+						if($total_agendamentos_hoje_usuario_pendentes != 0){
+							$icon2 = 'icon-wiggle-whatsapp';					
+						}else{
+							$icon2='';
+						}
+						?>
+
+						<li class="dropdown head-dpdn">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-calendar-check" title="Agendamentos hoje"></i>
+							<?php 								
+								if($total_agendamentos_hoje_usuario_pendentes != 0){							
+									?>
+                                    <span class="badge" style="background: #46c261ff"><?php echo $total_agendamentos_hoje_usuario_pendentes ?></span><?php 
+								}?>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="notification_header" align="center">
+										<h3><?php echo $total_agendamentos_hoje_usuario_pendentes ?> Agendamento Pendente Hoje</h3>
+									</div>
+								</li>
+
+								<?php 
+								for($i=0; $i < @count($res); $i++){
+									foreach ($res[$i] as $key => $value){}
+								$id = $res[$i]['id'];								
+								$cliente = $res[$i]['cliente'];
+								$hora = $res[$i]['hora'];
+								$servico = $res[$i]['servico'];
+								$horaF = date("H:i", strtotime($hora));
+
+
+									$query2 = $pdo->query("SELECT * FROM servicos where id = '$servico' and id_conta = '$id_conta'");
+									$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+									if(@count($res2) > 0){
+										$nome_serv = $res2[0]['nome'];
+										$valor_serv = $res2[0]['valor'];
+									}else{
+										$nome_serv = 'Não Lançado';
+										$valor_serv = '';
+									}
+
+
+									$query2 = $pdo->query("SELECT * FROM clientes where id = '$cliente' and id_conta = '$id_conta'");
+									$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+									if(@count($res2) > 0){
+										$nome_cliente = $res2[0]['nome'];
+									}else{
+										$nome_cliente = 'Sem Cliente';
+									}
+								 ?>
+								<li>									
+									<div class="notification_desc">
+										<p><b><?php echo $horaF ?> </b> - <?php echo $nome_cliente ?> / <?php echo $nome_serv ?></p>
+										<p><span></span></p>
+									</div>
+									<div class="clearfix"></div>	
+								</li>
+								<?php 
+							}
+								 ?>
+								
+								
+							
+								<li>
+									<div class="notification_bottom" style="background: #ffe8e6">
+										<a href="<?php echo $link_ag?>">Ver Agendamentos</a>
+									</div> 
+								</li>
+							</ul>
+						</li>	
+
+						<li class="dropdown head-dpdn">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-bell" title="Encaixes hoje"></i>
+							<?php 								
+								if($total_encaixes_hoje != 0){							
+									?>
+                                    <span class="badge" style="background: #46c261ff"><?php echo $total_encaixes_hoje ?></span><?php 
+								}?>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="notification_header" align="center">					
+											<h3><?php echo $total_encaixes_hoje ?> Encaixes Hoje Aguardando</h3>
+									</div>
+								</li>				
+							
+								<li>
+									<div class="notification_bottom" style="background: #ffe8e6">
+										<a href="#encaixes-hoje">Ver Encaixes</a>
+									</div> 
+								</li>
+							</ul>
+						</li>	
+
+
+
+
+                <?php 
+                // DEFINANDO SE É ADMINISTRADOR
+				if(@$_SESSION['nivel_usuario'] == 'administrador'){
+				?>
+				 	<?php if(@$rel_aniv == ''){ 
+
+						//totalizando aniversariantes do dia
+						$query = $pdo->query("SELECT * FROM clientes where month(data_nasc) = '$dataMesInicial' and day(data_nasc) = '$dataDiaInicial' and id_conta = '$id_conta' order by data_nasc asc, id asc");
+						$res = $query->fetchAll(PDO::FETCH_ASSOC);
+						$total_aniversariantes_hoje = @count($res);
+
+						if($total_aniversariantes_hoje != 0){
+							$icon3 = 'icon-wiggle-whatsapp';					
+						}else{
+							$icon3='';
+						}?>
+
+						<li class="dropdown head-dpdn">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Aniversariantes de hoje"><i class="fas fa-birthday-cake <?php echo $icon3?>" ></i>
+							<?php 								
+								if($total_aniversariantes_hoje != 0){?>
+                                    <span class="badge" style="background: #46c261ff"><?php echo $total_aniversariantes_hoje ?></span><?php 
+								}?>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="notification_header" align="center">
+										<h3><?php echo $total_aniversariantes_hoje ?> Aniversariando Hoje</h3>
+									</div>
+								</li>
+
+								<?php 
+								for($i=0; $i < @count($res); $i++){
+									foreach ($res[$i] as $key => $value){}
+								
+								$nome = $res[$i]['nome'];	
+								$telefone = $res[$i]['telefone'];														
+
+								 ?>
+								<li>									
+									<div class="notification_desc">
+										<p><b><?php echo $nome ?> </b> - <?php echo $telefone ?> </p>
+										<p><span></span></p>
+									</div>
+									<div class="clearfix"></div>	
+								</li>
+								<?php 
+							}
+								 ?>							
+							
+								<li>
+									<div class="notification_bottom" style="background: #d9ffe1">
+										<a href="#" data-toggle="modal" data-target="#RelAniv">Relatório Aniversáriantes</a>
+									</div> 
+									<?php if ($total_aniversariantes_hoje > 0): ?>
+										<a href="#" class="notification_bottom" style="background: #46c261ff; color: white" data-toggle="modal" data-target="#birthdayModal">
+											Enviar Parabéns
+										</a>
+									<?php endif; ?>
+								</li>
+							</ul>
+						</li>	
+					<?php } ?>
+
+					<?php if(@$comentarios == ''){ 
+
+						//totalizando aniversariantes do dia
+						$query = $pdo->query("SELECT * FROM comentarios where ativo != 'Sim' and id_conta = '$id_conta'");
+						$res = $query->fetchAll(PDO::FETCH_ASSOC);
+						$total_comentarios = @count($res);
+
+						if($total_comentarios != 0){
+							$icon5 = 'icon-wiggle-whatsapp';					
+						}else{
+							$icon5='';
+						}
+
+							?>
+						<li class="dropdown head-dpdn">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Depoimentos pendentes"><i class="fa fa-comment <?php echo $icon5?>" ></i><?php 
+							if($total_comentarios != 0){?>
+                                    <span class="badge" style="background: #46c261ff"><?php echo $total_comentarios ?></span><?php 
+								}?>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="notification_header" align="center">
+										<h3><?php echo $total_comentarios ?> Depoimentos Pendente</h3>
+									</div>
+								</li>
+
+								<?php 
+								for($i=0; $i < @count($res); $i++){
+									foreach ($res[$i] as $key => $value){}
+								
+								$nome = $res[$i]['nome'];
+																					
+
+								 ?>
+								<li>									
+									<div class="notification_desc">
+										<p><b>Cliente: <?php echo $nome ?> </b> </p>
+										<p><span></span></p>
+									</div>
+									<div class="clearfix"></div>	
+								</li>
+								<?php 
+							}
+								 ?>
+								
+								
+							
+								<li>
+									<div class="notification_bottom" style="background: #d8d4fc">
+										<a href="comentarios">Ver Depoimentos</a>
+									</div> 
+								</li>
+								
+							</ul>
+						</li>	
+					<?php }
+
+					?>
+					    <li class="dropdown head-dpdn">							
+								<a href="#" class="dropdown-toggle" title="Escolher tema do sistema" ><i class="fas fa-sun" id="theme-icon"></i>						
+						</li>
+
+                        <li class="dropdown head-dpdn" style="margin-left: 20px; color: <?php echo $cor?>" title='<?php echo $status?>'><small><i class="fab fa-whatsapp fa-2x"></i></small></li>
+						
+					</ul>
+					<?php 
+				}
+				?>
+					<div class="clearfix"> </div>
+				</div>
+				
+				
+			</div>
+			<div class="header-right">
+				
+				
+				
+				
+				<div class="profile_details">		
+					<ul>
+						<li class="dropdown profile_details_drop">
+							<a href="#" class="dropdown-toggle foto_user" data-toggle="dropdown" aria-expanded="false">
+								<div class="profile_img">	
+									<span class="prfil-img"><img src="img/perfil/<?php if(!empty($foto_usuario)){ echo $foto_usuario;}else{?>sem-foto.jpg<?php }?>" alt="" width="50" height="50"> </span> 
+									<div class="user-name esc">
+										<p><?php echo $nome_usuario ?></p>
+										<span id="nome_usuario"><?php echo $nivel_usuario ?></span>
+									</div>
+									<i class="fa fa-angle-down lnr"></i>
+									<i class="fa fa-angle-up lnr"></i>
+									<div class="clearfix"></div>	
+								</div>	
+							</a>
+						
+							<ul class="dropdown-menu drp-mnu">
+						<?php 
+						// DEFINANDO SE É ADMINISTRADOR
+						if(@$_SESSION['nivel_usuario'] == 'administrador'){
+						?>
+								<?php if(@$configuracoes == ''){ ?>
+								<li> <a href="configuracoes" ><i class="fa fa-cog"></i> Config. Sistema</a> </li> 	
+								<?php } }?>
+								<li> <a href="conf_site" ><i class="fa fa-link"></i></i> Config.Seu Site</a> </li>
+								
+
+								<li> <a href="" data-toggle="modal" data-target="#modalPerfil"><i class="fa fa-suitcase"></i> Editar Perfil</a> </li> 
+						<?php 
+						// DEFINANDO SE É ADMINISTRADOR
+						if(@$_SESSION['nivel_usuario'] == 'administrador' && $cliente_stripe == null){
+						?>
+								<li> <a href="" data-toggle="modal" data-target="#assinaturaModal"><i class="fa fa-dollar"></i> Minha Assinatura</a> </li> 
+								<!-- <li> <a href="" data-toggle="modal" data-target="#tutoriaisModal"><i class="fa fa-question" style="color: #15b283;"></i> Vídeos Tutoriais</a> </li>  -->
+						<?php }else{?>
+							<li> <a href="../../portal.php" target="_blank" ><i class="fa fa-dollar"></i> Sua Assinatura</a> </li><?php 
+						}
+						
+						?>
+						
+								<li> <a href="logout.php"><i class="fa fa-sign-out"></i> Sair</a> </li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="clearfix"> </div>				
+			</div>
+			<div class="clearfix"> </div>	
+		</div>
+		<!-- //header-ends -->
 <div class="main-page">
     <?php 
     // Configurações Iniciais e Conexões
