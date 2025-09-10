@@ -1014,56 +1014,50 @@ for ($i = 1; $i <= 12; $i++) {
         valueLabel.label.dy = -10;
 
         // Gráfico de Pizza para Ranking de Serviços (VERSÃO CORRIGIDA E MELHORADA)
-var chartServicos = am4core.create("servicosChart", am4charts.PieChart);
-chartServicos.data = <?php echo json_encode($ranking_servicos); ?>;
-var pieSeriesServicos = chartServicos.series.push(new am4charts.PieSeries());
+        var chartServicos = am4core.create("servicosChart", am4charts.PieChart);
+        chartServicos.data = <?php echo json_encode($ranking_servicos); ?>;
+        var pieSeriesServicos = chartServicos.series.push(new am4charts.PieSeries());
 
-pieSeriesServicos.dataFields.value = "quantidade";
-pieSeriesServicos.dataFields.category = "servico_nome";
+        pieSeriesServicos.dataFields.value = "quantidade";
+        pieSeriesServicos.dataFields.category = "servico_nome";
 
-// ======================================================
-// ✨ AJUSTES PARA AUMENTAR O GRÁFICO E MELHORAR O VISUAL
-// ======================================================
+        // 1. Aumenta o raio do gráfico para ocupar mais espaço no container
+        pieSeriesServicos.radius = am4core.percent(95);
 
-// 1. Aumenta o raio do gráfico para ocupar mais espaço no container
-pieSeriesServicos.radius = am4core.percent(95);
+        // 2. (Opcional) Transforma em um gráfico de "rosca" (donut)
+        pieSeriesServicos.innerRadius = am4core.percent(40);
 
-// 2. (Opcional) Transforma em um gráfico de "rosca" (donut)
-pieSeriesServicos.innerRadius = am4core.percent(40);
+        // 3. Cria e otimiza a Legenda para ocupar menos espaço
+        var legend = chartServicos.legend = new am4charts.Legend(); // <-- LINHA CORRIGIDA!
+        legend.position = "right"; 
+        legend.width = 150;
+        legend.verticalScrollbar = new am4core.Scrollbar(); 
 
-// 3. Cria e otimiza a Legenda para ocupar menos espaço
-var legend = chartServicos.legend = new am4charts.Legend(); // <-- LINHA CORRIGIDA!
-legend.position = "right"; 
-legend.width = 150;
-legend.verticalScrollbar = new am4core.Scrollbar(); 
+        // Ajusta o tamanho dos marcadores e texto da legenda
+        legend.labels.template.truncate = true;
+        legend.labels.template.maxWidth = 120;
+        legend.markers.template.width = 15;
+        legend.markers.template.height = 15;
 
-// Ajusta o tamanho dos marcadores e texto da legenda
-legend.labels.template.truncate = true;
-legend.labels.template.maxWidth = 120;
-legend.markers.template.width = 15;
-legend.markers.template.height = 15;
+        // 4. Ajusta os textos (labels) dentro do gráfico
+        pieSeriesServicos.labels.template.radius = am4core.percent(-30);
+        pieSeriesServicos.labels.template.fill = am4core.color("white");
+        pieSeriesServicos.labels.template.fontWeight = "bold";
 
-// 4. Ajusta os textos (labels) dentro do gráfico
-pieSeriesServicos.labels.template.radius = am4core.percent(-30);
-pieSeriesServicos.labels.template.fill = am4core.color("white");
-pieSeriesServicos.labels.template.fontWeight = "bold";
+        // Estilização das fatias
+        pieSeriesServicos.slices.template.stroke = am4core.color("#fff");
+        pieSeriesServicos.slices.template.strokeWidth = 2;
+        pieSeriesServicos.slices.template.strokeOpacity = 1;
+        pieSeriesServicos.slices.template.cornerRadius = 8;
 
-// Estilização das fatias
-pieSeriesServicos.slices.template.stroke = am4core.color("#fff");
-pieSeriesServicos.slices.template.strokeWidth = 2;
-pieSeriesServicos.slices.template.strokeOpacity = 1;
-pieSeriesServicos.slices.template.cornerRadius = 8;
-
-// Define a paleta de cores
-pieSeriesServicos.colors.list = [
-    am4core.color("#4A90E2"),
-    am4core.color("#50E3C2"),
-    am4core.color("#F8B763"),
-    am4core.color("#9068F4"),
-    am4core.color("#E95D5D")
-];
-
-// ======================================================
+        // Define a paleta de cores
+        pieSeriesServicos.colors.list = [
+            am4core.color("#4A90E2"),
+            am4core.color("#50E3C2"),
+            am4core.color("#F8B763"),
+            am4core.color("#9068F4"),
+            am4core.color("#E95D5D")
+        ];
 
 // ======================================================
 
