@@ -173,64 +173,62 @@
     <div class="absolute top-0 left-0 w-72 h-72 bg-blue-100 rounded-full opacity-50 -translate-x-1/2 -translate-y-1/2"></div>
     <div class="absolute bottom-0 right-0 w-96 h-96 bg-teal-100 rounded-full opacity-50 translate-x-1/2 translate-y-1/2"></div>
 
-    <div class="container mx-auto px-6 py-20 md:py-32">
-        <div class="flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto">
-            
-            <div class="md:w-6/12 text-center md:text-left mb-12 md:mb-0">
-                <span class="inline-block bg-blue-100 text-blue-600 text-sm font-semibold px-4 py-1 rounded-full mb-4">
-                    ✨ SISTEMA DE GESTÃO COMPLETO
-                </span>
+    <div class="md:w-6/12 text-center md:text-left mb-12 md:mb-0">
+    <span class="inline-block bg-blue-100 text-blue-600 text-sm font-semibold px-4 py-1 rounded-full mb-4">
+        ✨ SISTEMA DE GESTÃO COMPLETO
+    </span>
 
-                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-4">
-                    A Gestão do Seu Negócio, <span class="text-blue-600">Reinventada.</span>
-                </h1>
+    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-4">
+        A Gestão do Seu Negócio, <span class="text-blue-600">Reinventada.</span>
+    </h1>
 
-                <p class="text-lg md:text-xl text-gray-600 mb-8">
-                    Com o MarkAi, você automatiza tarefas, organiza agendamentos e encanta seus clientes. Tudo em um só lugar.
-                </p>
+    <p class="text-lg md:text-xl text-gray-600 mb-8">
+        Com o MarkAi, você automatiza tarefas, organiza agendamentos e encanta seus clientes. Tudo em um só lugar.
+    </p>
 
-                <ul class="space-y-3 text-left mb-8 mx-auto md:mx-0 max-w-md">
-                    <li class="flex items-center">
-                        <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                        <span>Agenda Inteligente e Online</span>
-                    </li>
-                    <li class="flex items-center">
-                        <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                        <span>Controle Financeiro Simplificado</span>
-                    </li>
-                    <li class="flex items-center">
-                        <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                        <span>Marketing e Lembretes Automáticos</span>
-                    </li>
-                </ul>
+    <ul class="space-y-3 text-left mb-8 mx-auto md:mx-0 max-w-md">
+        <li class="flex items-center">
+            <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <span>Agenda Inteligente e Online</span>
+        </li>
+        <li class="flex items-center">
+            <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <span>Controle Financeiro Simplificado</span>
+        </li>
+        <li class="flex items-center">
+            <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <span>Marketing e Lembretes Automáticos</span>
+        </li>
+    </ul>
 
-                <div class="flex flex-col items-center md:items-start">
-                    <a href="precos.php" class="custom-button primary-button">
-                        QUERO MEU TESTE GRÁTIS DE 7 DIAS
-                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                    </a>
-                    <span class="text-xs text-gray-500 mt-3">Sem cartão de crédito. Cancele quando quiser.</span>
-                </div>
+    <div class="flex flex-col items-center md:items-start">
+        <a href="precos.php" class="custom-button primary-button">
+            QUERO MEU TESTE GRÁTIS DE 7 DIAS
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+        </a>
+        <span class="text-xs text-gray-500 mt-3">Sem cartão de crédito. Cancele quando quiser.</span>
+    </div>
 
-                <div class="mt-8 flex items-center justify-center md:justify-start">
-                    <div class="flex text-yellow-400">
-                        ★★★★★
-                    </div>
-                    <p class="ml-3 text-sm text-gray-600">4.9/5 de <span class="font-semibold">200+ avaliações</span></p>
-                </div>
+    <div class="mt-8 flex items-center justify-center md:justify-start">
+        <div class="flex text-yellow-400">
+            ★★★★★
+        </div>
+        <p class="ml-3 text-sm text-gray-600">4.9/5 de <span class="font-semibold">200+ avaliações</span></p>
+    </div>
+
+    <div class="mt-8 text-center md:text-left">
+        <p class="text-sm font-semibold text-gray-600 mb-3">Leve sua gestão para onde for:</p>
+        <div class="flex items-center justify-center md:justify-start space-x-3">
+            <div class="flex items-center space-x-2 rounded-lg bg-gray-200 px-3 py-2">
+                <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                <span class="text-sm font-medium text-gray-800">Computador</span>
             </div>
-            
-            <div class="md:w-5/12 flex justify-center">
-                <div class="bg-white p-3 rounded-xl shadow-2xl transform transition hover:scale-105 duration-300">
-                    <div class="w-full h-4 flex items-center space-x-1.5 mb-2">
-                        <div class="w-3 h-3 bg-red-400 rounded-full"></div>
-                        <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                        <div class="w-3 h-3 bg-green-400 rounded-full"></div>
-                    </div>
-                    <img src="./images/menu_principal.jpg" alt="Interface do sistema MarkAi" class="w-full rounded-md">
-                </div>
+            <div class="flex items-center space-x-2 rounded-lg bg-gray-200 px-3 py-2">
+                 <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                <span class="text-sm font-medium text-gray-800">App Profissional</span>
             </div>
         </div>
+    </div>
     </div>
 </section>
 
