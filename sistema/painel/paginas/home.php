@@ -667,7 +667,7 @@ for ($i = 1; $i <= 12; $i++) {
                         <h5><strong><big><?php echo $contas_pagar_hoje ?></big></strong></h5>
                     </div>
                     <hr>
-                    <div align="center"><small>À Pagar Hoje</small></div>
+                    <div align="center"><small><small>À Pagar Hoje</small></small></div>
                 </div>
             </div>
         </a>
@@ -680,7 +680,7 @@ for ($i = 1; $i <= 12; $i++) {
                         <h5><strong><big><?php echo $contas_receber_hoje ?></big></strong></h5>
                     </div>
                     <hr>
-                    <div align="center"><small>À Receber Hoje</small></div>
+                    <div align="center"><small><small>À Receber Hoje</small></small></div>
                 </div>
             </div>
         </a>
@@ -693,7 +693,7 @@ for ($i = 1; $i <= 12; $i++) {
                         <h5><strong><big><?php echo $estoque_baixo ?></big></strong></h5>
                     </div>
                     <hr>
-                    <div align="center"><small>Estoque Baixo</small></div>
+                    <div align="center"><small><small>Estoque Baixo</small></small></div>
                 </div>
             </div>
         </a>
@@ -705,7 +705,7 @@ for ($i = 1; $i <= 12; $i++) {
                     <h5><strong><?php echo @$saldo_total_diaF ?></strong></h5>
                 </div>
                 <hr>
-                <div align="center"><small>Saldo do Dia</small></div>
+                <div align="center"><small><small>Saldo do Dia</small></small></div>
             </div>
         </div>
         <div class="clearfix"></div>
