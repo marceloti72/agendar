@@ -422,7 +422,7 @@ if (@count($res_caixa) > 0 && $res_caixa[0]['data_fechamento'] === NULL) {
         align-items: center;
         flex-wrap: nowrap;
         width: 55%;
-        max-width: 5%;
+        max-width: 55%;
         box-sizing: border-box;
     }
 }
