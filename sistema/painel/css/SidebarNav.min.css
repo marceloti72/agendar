@@ -205,7 +205,7 @@
    
 }
 @media (max-width: 480px) {
-    .header-section {
+    .header-section, .header-right {
     background:#000000;
     box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
     -webkit-box-shadow:  1px 1px 4px rgba(0, 0, 0, 0.21);
