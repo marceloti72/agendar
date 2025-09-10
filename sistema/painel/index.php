@@ -124,7 +124,7 @@ if (@count($res_caixa) > 0 && $res_caixa[0]['data_fechamento'] === NULL) {
 
 	<!-- side nav css file -->
 	<!-- <link href='css/SidebarNav.min2.css' media='all' rel='stylesheet' type='text/css'/> -->
-	<link href='css/SidebarNav.min.css' media='all' rel='stylesheet' type='text/css' id="theme-stylesheet"/>
+	<!-- <link href='css/SidebarNav.min.css' media='all' rel='stylesheet' type='text/css' id="theme-stylesheet"/> -->
 	<!-- //side nav css file -->
 
 	<link rel="stylesheet" href="css/monthly.css">
@@ -1569,10 +1569,10 @@ body.sidebar-collapsed #showLeftPush i { transform: rotate(180deg); }
 	<!--//scrolling js-->
 	
 	<!-- side nav js -->
-	<!-- <script src='js/SidebarNav.min.js' type='text/javascript'></script>
+	<script src='js/SidebarNav.min.js' type='text/javascript'></script>
 	<script>
 		$('.sidebar-menu').SidebarNav()
-	</script> -->
+	</script>
 	<!-- //side nav js -->
 	
 	
