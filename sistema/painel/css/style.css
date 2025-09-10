@@ -86,7 +86,7 @@ span.dashboard_text {
 .header-left {
     float: left;
     width: 50%;
-    margin-left: 25%;
+    margin-left: 15%;
 	position: relative;
 }
 .header-right {
@@ -6519,7 +6519,7 @@ h4.asd label {
 		height: 265px !important;
 	}
 	.header-left {
-		margin-left: 19%;
+		margin-left: 25%;
 		width: 40%;
 	}
 	.col-md-3.widget {
