@@ -1043,19 +1043,19 @@ for ($i = 1; $i <= 12; $i++) {
         seriesClientes.dataFields.valueY = "total_servicos";
         seriesClientes.dataFields.categoryX = "cliente_nome";
         // --- NOVAS CONFIGURAções DE ESTILO ---
-        series.columns.template.fill = am4core.color("#4A90E2");
-        series.columns.template.strokeOpacity = 0;
-        series.columns.template.column.cornerRadiusTopLeft = 8;
-        series.columns.template.column.cornerRadiusTopRight = 8;
-        series.tooltip.pointerOrientation = "vertical";
-        series.tooltip.background.fill = am4core.color("#222"); // Tooltip escuro
-        series.tooltip.getFillFromObject = false;
+        seriesClientes.columns.template.fill = am4core.color("#4A90E2");
+        seriesClientes.columns.template.strokeOpacity = 0;
+        seriesClientes.columns.template.column.cornerRadiusTopLeft = 8;
+        seriesClientes.columns.template.column.cornerRadiusTopRight = 8;
+        seriesClientes.tooltip.pointerOrientation = "vertical";
+        seriesClientes.tooltip.background.fill = am4core.color("#222"); // Tooltip escuro
+        seriesClientes.tooltip.getFillFromObject = false;
 
         // Deixar eixos mais limpos
-        valueAxis.renderer.grid.template.strokeOpacity = 0.1;
-        categoryAxis.renderer.grid.template.strokeOpacity = 0;
-        categoryAxis.renderer.ticks.template.disabled = true;
-        categoryAxis.renderer.line.strokeOpacity = 0.1;
+        valueAxisClientes.renderer.grid.template.strokeOpacity = 0.1;
+        categoryAxisClientes.renderer.grid.template.strokeOpacity = 0;
+        categoryAxisClientes.renderer.ticks.template.disabled = true;
+        categoryAxisClientes.renderer.line.strokeOpacity = 0.1;
         var valueLabelClientes = seriesClientes.bullets.push(new am4charts.LabelBullet());
         valueLabelClientes.label.text = "{valueY}";
         valueLabelClientes.label.dy = -10;
