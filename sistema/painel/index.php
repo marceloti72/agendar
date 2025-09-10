@@ -670,10 +670,10 @@ body.dark .treeview-menu > li > a {
     --sidebar-width-collapsed: 80px;
 }
 
-#page-wrapper, .sticky-header {
+/* #page-wrapper, .sticky-header {
     margin-left: var(--sidebar-width-open);
     transition: margin-left 0.3s ease-in-out;
-}
+} */
 
 .cbp-spmenu-left {
     width: var(--sidebar-width-open);
