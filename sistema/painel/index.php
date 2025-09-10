@@ -809,18 +809,17 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 				<nav class="navbar navbar-inverse" >
 					<div class="navbar-header">
     <a href="index.php" class="navbar-brand d-flex align-items-center">
+
         <img src="../../images/icone_512.png" alt="Logo" style="width: 40px; height: 40px;" class="me-3">
 
-        <div class="d-flex flex-column">
-            <span class="text-white font-weight-bold" style="font-size: 1.1rem; line-height: 1.2;">
+        <div>
+            <span class="text-white font-weight-bold d-block" style="font-size: 1.1rem; line-height: 1.2;">
                 Painel
             </span>
-            <span class="text-white-50" style="font-size: 0.8rem;">
+            <span class="text-white-50" style="font-size: 0.8rem; line-height: 1;">
                 <?= $nome_sistema ?>
             </span>
         </div>
-    </a>
-</div>
         
     </a>
 </div>
