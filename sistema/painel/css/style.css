@@ -7904,6 +7904,16 @@ h4.asd label {
 		width: 100%;
 		overflow-x: scroll;
 	}
+  .sticky-header{
+      padding: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: nowrap;
+      width: 55%;
+      max-width: 55%;
+      box-sizing: border-box;
+}
   
 }
 @media(max-width:414px){
