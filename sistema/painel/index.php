@@ -1155,7 +1155,11 @@ body.sidebar-collapsed #showLeftPush i { transform: rotate(180deg); }
 						
 				
 				<div class="profile_details_left"><!--notifications of menu start -->
-					<ul class="nofitications-dropdown">						
+					<ul class="nofitications-dropdown">	
+						
+					<li class="dropdown head-dpdn">
+						
+				        <a href="#" id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></a>			
 
 						<?php
 						$id_conta = $_SESSION['id_conta'];
