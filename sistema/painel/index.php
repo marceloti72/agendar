@@ -1150,16 +1150,14 @@ body.sidebar-collapsed #showLeftPush i { transform: rotate(180deg); }
 		<div class="sticky-header header-section ">
 			
 			<div class="header-left">
-				<!--toggle button start-->
-				<button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>
-						
+				
 				
 				<div class="profile_details_left"><!--notifications of menu start -->
 					<ul class="nofitications-dropdown">	
 						
 					<li class="dropdown head-dpdn">
 						
-				        <button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>			
+				        <button id="showLeftPush" class="dropdown-toggle" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>			
 
 						<?php
 						$id_conta = $_SESSION['id_conta'];
