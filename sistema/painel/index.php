@@ -1569,10 +1569,10 @@ body.sidebar-collapsed #showLeftPush i { transform: rotate(180deg); }
 	<!--//scrolling js-->
 	
 	<!-- side nav js -->
-	<script src='js/SidebarNav.min.js' type='text/javascript'></script>
+	<!-- <script src='js/SidebarNav.min.js' type='text/javascript'></script>
 	<script>
 		$('.sidebar-menu').SidebarNav()
-	</script>
+	</script> -->
 	<!-- //side nav js -->
 	
 	
