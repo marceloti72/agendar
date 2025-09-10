@@ -1013,7 +1013,7 @@ for ($i = 1; $i <= 12; $i++) {
         valueLabel.label.text = "{valueY}";
         valueLabel.label.dy = -10;
 
-        // Gráfico de Pizza para Ranking de Serviços (VERSÃO CORRIGIDA E MELHORADA)
+        // Gráfico de Pizza para Ranking de Serviços (VERSÃO FINAL)
         var chartServicos = am4core.create("servicosChart", am4charts.PieChart);
         chartServicos.data = <?php echo json_encode($ranking_servicos); ?>;
         var pieSeriesServicos = chartServicos.series.push(new am4charts.PieSeries());
@@ -1021,19 +1021,21 @@ for ($i = 1; $i <= 12; $i++) {
         pieSeriesServicos.dataFields.value = "quantidade";
         pieSeriesServicos.dataFields.category = "servico_nome";
 
-        // 1. Aumenta o raio do gráfico para ocupar mais espaço no container
+        // ======================================================
+        // ✨ AJUSTES PARA AUMENTAR O GRÁFICO E MELHORAR O VISUAL
+        // ======================================================
+
+        // 1. Aumenta o raio do gráfico
         pieSeriesServicos.radius = am4core.percent(95);
 
-        // 2. (Opcional) Transforma em um gráfico de "rosca" (donut)
+        // 2. Transforma em um gráfico de "rosca" (donut)
         pieSeriesServicos.innerRadius = am4core.percent(40);
 
-        // 3. Cria e otimiza a Legenda para ocupar menos espaço
-        var legend = chartServicos.legend = new am4charts.Legend(); // <-- LINHA CORRIGIDA!
-        legend.position = "right"; 
+        // 3. Cria e otimiza a Legenda
+        var legend = chartServicos.legend = new am4charts.Legend();
+        legend.position = "right";
         legend.width = 150;
-        legend.verticalScrollbar = new am4core.Scrollbar(); 
-
-        // Ajusta o tamanho dos marcadores e texto da legenda
+        legend.verticalScrollbar = new am4core.Scrollbar();
         legend.labels.template.truncate = true;
         legend.labels.template.maxWidth = 120;
         legend.markers.template.width = 15;
@@ -1043,6 +1045,9 @@ for ($i = 1; $i <= 12; $i++) {
         pieSeriesServicos.labels.template.radius = am4core.percent(-30);
         pieSeriesServicos.labels.template.fill = am4core.color("white");
         pieSeriesServicos.labels.template.fontWeight = "bold";
+
+        // 5. REMOVE A LINHA FINA ("FIO DE CABELO") DO GRÁFICO
+        pieSeriesServicos.ticks.template.disabled = true;
 
         // Estilização das fatias
         pieSeriesServicos.slices.template.stroke = am4core.color("#fff");
@@ -1059,7 +1064,7 @@ for ($i = 1; $i <= 12; $i++) {
             am4core.color("#E95D5D")
         ];
 
-// ======================================================
+        // ======================================================
 
         // Gráfico de Barras para Ranking de Clientes Ativos
         var chartClientesAtivos = am4core.create("clientesAtivosChart", am4charts.XYChart);
