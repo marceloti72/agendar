@@ -118,6 +118,31 @@
         }
     </style>
 
+    <style>
+    .custom-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        font-weight: bold;
+        border-radius: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    .primary-button {
+        background: linear-gradient(to right, #4A90E2, #50C9C3);
+        color: white;
+    }
+    .primary-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 7px 20px rgba(74, 144, 226, 0.4);
+    }
+</style>
+
+
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-R39PP1R46W"></script>
 <script>
@@ -143,29 +168,74 @@
 
 <body class="bg-gray-50 font-sans">
 
-<section class="bg-gradient-to-r from-[#4A90E2] to-[#50C9C3] text-white py-20 md:py-32" id="sessao-0">
-    <div class="container mx-auto px-6">
+<section class="relative overflow-hidden bg-gray-50 text-gray-800" id="sessao-0">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-teal-50 -z-10"></div>
+    <div class="absolute top-0 left-0 w-72 h-72 bg-blue-100 rounded-full opacity-50 -translate-x-1/2 -translate-y-1/2"></div>
+    <div class="absolute bottom-0 right-0 w-96 h-96 bg-teal-100 rounded-full opacity-50 translate-x-1/2 translate-y-1/2"></div>
+
+    <div class="container mx-auto px-6 py-20 md:py-32">
         <div class="flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto">
-            <div class="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
-                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
-                    Teste Grátis do MarkAi: Transforme a Gestão do Seu Negócio em Apenas 7 Dias!
+            
+            <div class="md:w-6/12 text-center md:text-left mb-12 md:mb-0">
+                <span class="inline-block bg-blue-100 text-blue-600 text-sm font-semibold px-4 py-1 rounded-full mb-4">
+                    ✨ SISTEMA DE GESTÃO COMPLETO
+                </span>
+
+                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-4">
+                    A Gestão do Seu Negócio, <span class="text-blue-600">Reinventada.</span>
                 </h1>
-                <p class="text-xl md:text-2xl mb-8">
-                    Descubra o MarkAi, o sistema completo para serviços que revoluciona a forma como você gerencia seu negócio!
+
+                <p class="text-lg md:text-xl text-gray-600 mb-8">
+                    Com o MarkAi, você automatiza tarefas, organiza agendamentos e encanta seus clientes. Tudo em um só lugar.
                 </p>
-                <div class="space-x-4">
-                    <a href="precos.php" class="custom-button primary-button">TESTAR GRÁTIS POR 7 DIAS</a>
-                    <!-- <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a> -->
+
+                <ul class="space-y-3 text-left mb-8 mx-auto md:mx-0 max-w-md">
+                    <li class="flex items-center">
+                        <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <span>Agenda Inteligente e Online</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <span>Controle Financeiro Simplificado</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <span>Marketing e Lembretes Automáticos</span>
+                    </li>
+                </ul>
+
+                <div class="flex flex-col items-center md:items-start">
+                    <a href="precos.php" class="custom-button primary-button">
+                        QUERO MEU TESTE GRÁTIS DE 7 DIAS
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </a>
+                    <span class="text-xs text-gray-500 mt-3">Sem cartão de crédito. Cancele quando quiser.</span>
+                </div>
+
+                <div class="mt-8 flex items-center justify-center md:justify-start">
+                    <div class="flex text-yellow-400">
+                        ★★★★★
+                    </div>
+                    <p class="ml-3 text-sm text-gray-600">4.9/5 de <span class="font-semibold">200+ avaliações</span></p>
                 </div>
             </div>
-            <div class="md:w-1/2 flex justify-center">
-                <img src="./images/menu_principal.jpg" alt="Descrição da Imagem" class="w-full max-w-sm rounded-lg shadow-lg">
+            
+            <div class="md:w-5/12 flex justify-center">
+                <div class="bg-white p-3 rounded-xl shadow-2xl transform transition hover:scale-105 duration-300">
+                    <div class="w-full h-4 flex items-center space-x-1.5 mb-2">
+                        <div class="w-3 h-3 bg-red-400 rounded-full"></div>
+                        <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                        <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+                    </div>
+                    <img src="./images/menu_principal.jpg" alt="Interface do sistema MarkAi" class="w-full rounded-md">
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<section class="py-16 bg-white" id="sessao-1">
+
+<!-- <section class="py-16 bg-white" id="sessao-1">
     <div class="container mx-auto px-6 text-center">
         <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-12">
             Veja o MarkAi em Ação
@@ -182,7 +252,7 @@
             ></iframe>
         </div>
     </div>
-</section>
+</section> -->
 
 <section class="py-16 bg-gray-100" id="sessao-2">
     <div class="container mx-auto px-6">
