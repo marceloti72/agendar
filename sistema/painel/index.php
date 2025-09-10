@@ -664,6 +664,102 @@ body.dark .treeview-menu > li > a {
     color: #bdc3c7;
 }
 
+/*
+=========================================
+ESTILOS PARA O MENU RECOLHÍVEL
+=========================================
+*/
+
+/* --- Configurações Iniciais --- */
+:root {
+    --sidebar-width-open: 260px; /* Largura do menu aberto */
+    --sidebar-width-collapsed: 80px; /* Largura do menu fechado (só ícones) */
+}
+
+/* Transição suave para o conteúdo principal */
+#page-wrapper, .sticky-header {
+    margin-left: var(--sidebar-width-open);
+    transition: margin-left 0.3s ease-in-out;
+}
+
+.cbp-spmenu-left {
+    width: var(--sidebar-width-open);
+    transition: width 0.3s ease-in-out;
+}
+
+/* Estilo do botão de toggle no header */
+#showLeftPush {
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 1.3em;
+    cursor: pointer;
+    padding: 0 15px;
+}
+body.dark #showLeftPush {
+    color: #bdc3c7;
+}
+
+/* --- ESTADOS DO MENU RECOLHIDO (quando o body tiver a classe .sidebar-collapsed) --- */
+
+body.sidebar-collapsed .cbp-spmenu-left {
+    width: var(--sidebar-width-collapsed); /* Encolhe o menu */
+}
+
+body.sidebar-collapsed #page-wrapper,
+body.sidebar-collapsed .sticky-header {
+    margin-left: var(--sidebar-width-collapsed); /* Empurra o conteúdo */
+}
+
+/* Esconde o texto dos itens de menu */
+body.sidebar-collapsed .sidebar-menu span,
+body.sidebar-collapsed .sidebar-menu .pull-right,
+body.sidebar-collapsed .sidebar-menu .header {
+    opacity: 0;
+    visibility: hidden;
+    width: 0;
+    display: inline-block; /* Ajuda na transição */
+}
+
+/* Centraliza os ícones */
+body.sidebar-collapsed .sidebar-menu > li > a {
+    justify-content: center;
+}
+
+/* Esconde os submenus */
+body.sidebar-collapsed .treeview-menu {
+    display: none !important;
+}
+
+/* Efeito de Tooltip para mostrar o nome do item no menu recolhido */
+body.sidebar-collapsed .sidebar-menu > li > a {
+    position: relative; /* Necessário para o tooltip */
+}
+
+body.sidebar-collapsed .sidebar-menu > li > a span {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap; /* Impede que o texto quebre linha */
+    font-size: 0.9em;
+    margin-left: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s;
+    pointer-events: none; /* Impede que o tooltip interfira no mouse */
+}
+
+/* Mostra o tooltip ao passar o mouse */
+body.sidebar-collapsed .sidebar-menu > li:hover > a span {
+    opacity: 1;
+    visibility: visible;
+}
+
 
 	</style>
 	<!--pie-chart --><!-- index page sales reviews visitors pie chart -->
@@ -736,11 +832,7 @@ body.dark .treeview-menu > li > a {
 			<!--left-fixed -navigation-->
 			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
 				<nav class="navbar navbar-inverse" >
-					
-					<!--toggle button start-->
-				<button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>
-				<!--toggle button end-->
-					
+															
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						
 						<ul class="sidebar-menu">	
@@ -1029,7 +1121,8 @@ body.dark .treeview-menu > li > a {
 		<div class="sticky-header header-section ">
 			
 			<div class="header-left">
-				
+
+			   <button id="showLeftPush"><i class="fa fa-bars"></i></button>			
 				
 				<div class="profile_details_left"><!--notifications of menu start -->
 					<ul class="nofitications-dropdown">						
@@ -3311,4 +3404,41 @@ $('#modalSeuLink').on('hidden.bs.modal', function () {
         localStorage.setItem('theme', newTheme);
         location.reload(); // Recarrega a página para aplicar o novo CSS
     });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleButton = document.getElementById('showLeftPush');
+    const body = document.body;
+
+    // Função para aplicar o estado do menu (aberto/fechado)
+    const applySidebarState = (state) => {
+        if (state === 'collapsed') {
+            body.classList.add('sidebar-collapsed');
+        } else {
+            body.classList.remove('sidebar-collapsed');
+        }
+    };
+
+    // Verifica no carregamento da página se há um estado salvo
+    const savedState = localStorage.getItem('sidebarState');
+    if (savedState) {
+        applySidebarState(savedState);
+    }
+
+    // Adiciona o evento de clique ao botão
+    toggleButton.addEventListener('click', function() {
+        // Verifica se o menu já está recolhido
+        const isCollapsed = body.classList.contains('sidebar-collapsed');
+        
+        // Alterna o estado
+        if (isCollapsed) {
+            applySidebarState('open');
+            localStorage.setItem('sidebarState', 'open'); // Salva o novo estado
+        } else {
+            applySidebarState('collapsed');
+            localStorage.setItem('sidebarState', 'collapsed'); // Salva o novo estado
+        }
+    });
+});
 </script>
