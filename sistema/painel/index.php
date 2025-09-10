@@ -808,7 +808,7 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
 				<nav class="navbar navbar-inverse" >
 					<div class="navbar-header">
-    <a href="index.php" class="navbar-brand d-flex align-items-center">
+    <a href="index.php" class="navbar-brand d-flex">
 
         <img src="../../images/icone_512.png" alt="Logo" style="width: 40px; height: 40px;" class="me-3">
 
