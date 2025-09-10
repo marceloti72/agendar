@@ -145,6 +145,10 @@ if (@count($res_caixa) > 0 && $res_caixa[0]['data_fechamento'] === NULL) {
 	<script src="js/metisMenu.min.js"></script>
 	<script src="js/custom.js"></script>
 	<link href="css/custom.css" rel="stylesheet">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 	<!--//Metis Menu -->
 	<style>
 		#chartdiv {
@@ -536,6 +540,131 @@ input:checked + .slider:before {
 }
 
 
+
+
+/* --- Configuração geral do corpo da página --- */
+body {
+    font-family: 'Poppins', sans-serif; /* Aplica a nova fonte */
+    background-color: #f4f7f6; /* Um fundo cinza bem claro */
+}
+
+/*
+=========================================
+ESTILOS DO MENU LATERAL (SIDEBAR)
+=========================================
+*/
+
+.sidebar-left {
+    background-color: #ffffff; /* Fundo branco para um visual limpo */
+    border-right: 1px solid #e0e0e0; /* Borda direita sutil */
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05); /* Sombra suave para dar profundidade */
+}
+
+/* --- Itens do Menu --- */
+.sidebar-menu > li > a {
+    color: #555; /* Cor de texto mais suave que o preto puro */
+    font-weight: 500;
+    padding: 15px 20px; /* Mais espaço interno para os links */
+    border-left: 4px solid transparent; /* Borda à esquerda para indicar item ativo/hover */
+    transition: all 0.3s ease; /* Transição suave para efeitos */
+}
+
+.sidebar-menu > li > a i {
+    color: #6a85b6; /* Cor de destaque para os ícones */
+    margin-right: 10px; /* Espaço entre o ícone e o texto */
+    width: 20px; /* Garante alinhamento dos ícones */
+    text-align: center;
+}
+
+/* --- Efeito ao passar o mouse (Hover) e no item ativo --- */
+.sidebar-menu > li:hover > a,
+.sidebar-menu > li.active > a {
+    background-color: #f0f4f7; /* Fundo levemente azulado ao passar o mouse */
+    color: #1a2a44; /* Cor mais escura para o texto */
+    border-left-color: #6a85b6; /* Mostra a borda de destaque */
+}
+
+/* --- Título de Seção (Ex: MENU DO PROFISSIONAL) --- */
+.sidebar-menu .header {
+    background-color: #f9f9f9;
+    color: #888;
+    font-size: 0.8em;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 10px 20px;
+}
+
+/* --- Submenus (Dropdowns) --- */
+.treeview-menu {
+    background-color: #f8f9fa; /* Fundo levemente diferente para submenus */
+    padding-left: 25px; /* Indentação para criar hierarquia visual */
+}
+
+.treeview-menu > li > a {
+    color: #666;
+    padding: 10px 15px;
+    font-weight: 400;
+}
+
+.treeview-menu > li:hover > a {
+    color: #1a2a44;
+}
+
+/* --- Barra de Rolagem Customizada --- */
+.sidebar-left::-webkit-scrollbar {
+  width: 5px;
+}
+.sidebar-left::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.sidebar-left::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 5px;
+}
+.sidebar-left::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+/*
+=========================================
+MODO ESCURO (DARK MODE)
+=========================================
+*/
+body.dark .sidebar-left {
+    background-color: #2c3e50; /* Azul escuro para o fundo do menu */
+    border-right-color: #34495e;
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
+}
+
+body.dark .sidebar-menu > li > a {
+    color: #bdc3c7; /* Cor de texto cinza claro */
+}
+
+body.dark .sidebar-menu > li > a i {
+    color: #8e9eab; /* Cor dos ícones no modo escuro */
+}
+
+body.dark .sidebar-menu > li:hover > a,
+body.dark .sidebar-menu > li.active > a {
+    background-color: #34495e;
+    color: #ffffff;
+    border-left-color: #3498db; /* Azul mais vivo para o destaque */
+}
+
+body.dark .sidebar-menu .header {
+    background-color: #34495e;
+    color: #95a5a6;
+}
+
+body.dark .treeview-menu {
+    background-color: #233140;
+}
+
+body.dark .treeview-menu > li > a {
+    color: #bdc3c7;
+}
+
+
 	</style>
 	<!--pie-chart --><!-- index page sales reviews visitors pie chart -->
 	<script src="js/pie-chart.js" type="text/javascript"></script>
@@ -582,18 +711,7 @@ input:checked + .slider:before {
 	<link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
  	<script type="text/javascript" src="DataTables/datatables.min.js"></script>
 
- 	
-
-
-	
-</head> 
-<body class="cbp-spmenu-push" >
-	<div class="main-content">
-		<div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left"  id="cbp-spmenu-s1" >
-			<!--left-fixed -navigation-->
-			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
-				<nav class="navbar navbar-inverse" >
-					<!-- <div class="navbar-header">						
+	<!-- <div class="navbar-header">						
 						<a class="navbar-brand" href="index.php">
 							<div class="brand-container">
 								
@@ -604,6 +722,21 @@ input:checked + .slider:before {
 							</div>
 						</a>
 					</div> -->
+ 	
+
+
+	
+</head> 
+<body class="cbp-spmenu-push" >
+	<div class="main-content">
+
+
+
+		<div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left"  id="cbp-spmenu-s1" >
+			<!--left-fixed -navigation-->
+			<aside class="sidebar-left" style="overflow: scroll; height:100%; scrollbar-width: thin;">
+				<nav class="navbar navbar-inverse" >
+					
 					<!--toggle button start-->
 				<button id="showLeftPush" data-toggle="collapse" data-target=".collapse"><i class="fa fa-bars"></i></button>
 				<!--toggle button end-->
@@ -616,20 +749,7 @@ input:checked + .slider:before {
                         // DEFINANDO SE É ADMINISTRADOR
 							if(@$_SESSION['nivel_usuario'] == 'administrador'){
 							?>
-							<!-- <li class="header">MENU ADMINISTRATIVO</li> -->
-
-
-							<!-- <li class="treeview <?php echo @$home ?>">
-								<a href="painel">
-									<i class="fa fa-home"></i> <span>Painel</span>
-								</a>
-							</li> -->
-
-							<!-- <li class="treeview <?php echo @$home ?>">
-								<a href="index.php">
-									<i class="fa fa-dashboard"></i> <span>Dashboards</span>
-								</a>
-							</li> -->
+							
 							<li class="treeview <?php echo @$home ?>">
 								<a href="#">
 									<i class="fa fa-dashboard"></i>
@@ -657,50 +777,6 @@ input:checked + .slider:before {
 								</a>
 							</li>
 
-							<!-- <li class="treeview <?php echo @$comanda ?>">
-								<a href="comanda">
-								<i class="fa fa-clipboard"></i> <span>Comandas</span>
-								</a>
-							</li> -->
-
-							<!-- <li class="treeview <?php echo @$menu_agendamentos ?>">
-								<a href="#">
-									<i class="fe fe-clock"></i>&nbsp;
-									<span>Agendamento / Serviço</span>
-									<i class="fa fa-angle-left pull-right"></i>
-								</a>
-								<ul class="treeview-menu">
-
-									<li class="<?php echo @$agendamentos ?>"><a href="agendamentos"></i>Agendamentos</a></li>
-
-									<li class="<?php echo @$servicos_agenda ?>"><a href="servicos_agenda"></i>Serviços</a></li>
-									
-																	
-								
-								</ul>
-							</li> -->
-
-
-							<!-- <li class="treeview <?php echo @$menu_pessoas ?>">
-								<a href="#">
-									<i class="fa fa-users"></i>
-									<span>Pessoas</span>
-									<i class="fa fa-angle-left pull-right"></i>
-								</a>
-								<ul class="treeview-menu">
-									<li class="<?php echo @$usuarios ?>"><a href="usuarios"></i>Usuários</a></li>
-									<li class="<?php echo @$funcionarios ?>"><a href="funcionarios"></i>Funcionários</a></li>
-									<li class="<?php echo @$clientes ?>"><a href="clientes"></i>Clientes</a></li>
-
-									<li class="<?php echo @$clientes_retorno ?>"><a href="clientes_retorno"></i>Clientes Retornos</a></li>
-
-									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"></i>Fornecedores</a></li>
-
-								</ul>
-							</li> -->
-
-
-
 							<li class="treeview <?php echo @$menu_cadastros ?>" >
 								<a href="#">
 									<i class="fa fa-pencil"></i>
@@ -713,49 +789,22 @@ input:checked + .slider:before {
 								<?php 
 								if($plano == '2'){
 								?>
-								<!-- <li class="<?php echo @$cargos ?>"><a href="cargos"></i>Cargos</a></li> -->
-								<!-- <li class="<?php echo @$usuarios ?>"><a href="usuarios"></i>Usuários</a></li> -->								 
+														 
 
 								<li class="<?php echo @$funcionarios ?>"><a href="funcionarios"></i>Profissionais</a></li>								
 								<?php 
 								}?>								
 								
-									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"></i>Fornecedores</a></li>	
-									
-									<!-- <?php 
-									if($id_conta == '1'){?>
-										<li class="<?php echo @$grupos ?>"><a href="grupos"></i>Grupo Acessos</a></li>
-
-										<li class="<?php echo @$acessos ?>"><a href="acessos"></i>Acessos</a></li>
-
-									<?php }
-									?>									 -->
-
-										<!-- <li class="<?php echo @$pgto ?>"><a href="pgto"></i>Formas de Pagamento</a></li> -->
+									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"></i>Fornecedores</a></li>									
 
 										<li class="<?php echo @$servicos ?>"><a href="servicos"></i>Serviços</a></li>
 
-										<li class="<?php echo @$servicos ?>"><a href="cupons"></i>Cupons de Desconto</a></li>
-
-										<!-- <li><a href="dias"></i>Horários / Dias</a></li>
-
-										<li class="<?php echo @$dias_bloqueio ?>"><a href="dias_bloqueio"></i>Bloqueio de Dias</a></li> -->
+										<li class="<?php echo @$servicos ?>"><a href="cupons"></i>Cupons de Desconto</a></li>										
 								
 								</ul>
 							</li>							
 
-							<li class="treeview <?php echo @$menu_servicos ?>">
-								<!-- <a href="#">
-								<i class="fa fa-briefcase"></i>
-									<span>Serviços</span>
-									<i class="fa fa-angle-left pull-right"></i>
-								</a>
-								<ul class="treeview-menu">
-
-								   <li class="<?php echo @$servicos ?>"><a href="servicos"></i>Serviços</a></li>
-
-								   <li class="<?php echo @$cat_servicos ?>"><a href="cat_servicos"></i>Categoria Serviços</a></li>
-								</ul> -->
+							<li class="treeview <?php echo @$menu_servicos ?>">							
 
 								<li class="treeview <?php echo @$menu_produtos ?>">
 								<a href="#">
@@ -767,7 +816,7 @@ input:checked + .slider:before {
 
 									<li class="<?php echo @$produtos ?>"><a href="produtos"></i>Produtos</a></li>
 
-									<!-- <li class="<?php echo @$cat_produtos ?>"><a href="cat_produtos"></i>Categorias</a></li> -->
+									
 									 <li class="<?php echo @$vendas ?>"><a href="vendas"></i>Vendas de Produtos</a></li>
 
 									<li class="<?php echo @$compras ?>"><a href="compras"></i>Compras de Produtos</a></li>
@@ -967,7 +1016,16 @@ input:checked + .slider:before {
 						</ul>
 					</div>
 					<!-- /.navbar-collapse -->
-					 <!-- header-starts -->
+					 
+				</nav>
+			</aside>
+		</div>
+		<!--left-fixed -navigation-->
+
+
+
+
+		<!-- header-starts -->
 		<div class="sticky-header header-section ">
 			
 			<div class="header-left">
@@ -1290,10 +1348,6 @@ input:checked + .slider:before {
 			<div class="clearfix"> </div>	
 		</div>
 		<!-- //header-ends -->
-				</nav>
-			</aside>
-		</div>
-		<!--left-fixed -navigation-->
 		
 		
 
