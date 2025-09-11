@@ -73,6 +73,9 @@ $data_atual = date('Y-m-d');
         .esc {
             display: table-cell; /* Visível por padrão em desktop */
         }
+		#tabela {
+			font-size: 12px; /* O padrão é 16px. Experimente valores como 13px ou 12px. */
+		}
 
         /* Media Query para Mobile (max-width: 768px) */
         @media (max-width: 768px) {
@@ -133,13 +136,11 @@ echo <<<HTML
 	<thead> 
 	<tr> 
 	<th>Nome</th>	
-	<th class="esc" style='width: 100px;'>Telefone</th> 
-	<th class="esc">CPF</th> 	
+	<th class="esc" style='width: 100px;'>Telefone</th> 	 	
 	<th class="esc">Cadastro</th> 	
-	<th class="esc">Nascimento</th> 
-	<th class="esc">Retorno</th> 
+	<th class="esc">Nascimento</th> 	 
 	<th class="esc">Cartões</th> 
-	<th style='width: 270px;'>Ações</th>
+	<th style='width: 330px;'>Ações</th>
 	</tr> 
 	</thead> 
 	<tbody>	
@@ -213,14 +214,12 @@ for($i=0; $i < $total_reg; $i++){
 echo <<<HTML
 <tr class="">
 <td>
-  <img src="img/clientes/{$foto}" width="50" height="50" class="hovv">
-<?php echo $nome; ?>
+<img src="img/clientes/{$foto}" onclick="mostrar('{$id}','{$nome}', '{$telefone}', '{$cartoes}', '{$data_cadF}', '{$data_nascF}', '{$endereco}', '{$data_retornoF}', '{$nome_servico}', '{$obs_servico}', '{$valor_servico}', '{$data_servico}', '{$foto}')" title="Ver Dados" width="50" height="50" class="hovv">
+{$nome}
 </td>
 <td class="esc">{$telefone}</td>
-<td class="esc">{$cpf}</td>
 <td class="esc">{$data_cadF}</td>
 <td class="esc">{$data_nascF}</td>
-<td class="esc {$classe_retorno}">{$data_retornoF}</td>
 <td class="esc">{$cartoes}</td>
 <td>
 		<a href="#" class="btn btn-primary btn-xs" onclick="editar('{$id}','{$nome}', '{$telefone}', '{$endereco}', '{$data_nasc}', '{$cartoes}', '{$cpf}')" title="Editar Dados"><i class="fe fe-edit"></i></a>
