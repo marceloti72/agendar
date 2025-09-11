@@ -639,7 +639,7 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
                         <small><div id="mensagem-ativar3" align="center"></div></small>
                         <input type="hidden" name="plano" value="1">
                         <input type="hidden" name="frequencia" value="30">
-                        <input type="hidden" name="valor" value="49.90">
+                        <input type="hidden" name="valor" value="39.90">
                         <button type="submit" class="btn-concluir mt-3">Concluir</button>
                     </form>
                 </div>
