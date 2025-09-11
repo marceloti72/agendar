@@ -58,7 +58,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 
 					<div class="form-group">
 						<label for="exampleInputEmail1">Tel Fixo</label>
-						<input type="text" class="form-control" id="telefone_fixo_sistema" name="telefone_fixo_sistema" placeholder="Fixo" value="<?php echo $telefone_fixo_sistema ?>" required>
+						<input type="text" class="form-control" id="telefone_fixo_sistema" name="telefone_fixo_sistema" placeholder="Fixo" value="<?php echo $telefone_fixo_sistema ?>">
 					</div>
 				</div>
 				<div class="col-md-7">
