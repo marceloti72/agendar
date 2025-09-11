@@ -375,7 +375,16 @@ $ranking_clientes_ativos = $query->fetchAll(PDO::FETCH_ASSOC);
             font-size: 20px;
         }
         #rankingChart, #servicosChart, #clientesAtivosChart {
-            height: 200px;
+            height: 300px;
+        }
+
+        .ranking-list .ranking-item {
+            width: 300px;
+            display: flex;
+            align-items: center;
+            padding: 12px 5;
+            border-bottom: 1px solid #e9eef2;
+            transition: background-color 0.2s ease;
         }
     }
     /* Additional CSS for Pie Charts */
