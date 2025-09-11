@@ -78,7 +78,7 @@ try {
     $query_update = $pdo->prepare("
         UPDATE usuarios 
         SET app = :app 
-        WHERE id_conta = :id_conta AND BINARY nivel != :nivel
+        WHERE id_conta = :id_conta AND principal IS NULL
     ");
 
     // 3. Associa os valores aos placeholders com os tipos corretos
@@ -86,8 +86,7 @@ try {
     //    - :id_conta recebe o ID da conta, que é um inteiro (PDO::PARAM_INT)
     //    - :nivel recebe o texto 'administrador' para a exclusão, que é uma string (PDO::PARAM_STR)
     $query_update->bindValue(":app", $valor_app, PDO::PARAM_STR);
-    $query_update->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);
-    $query_update->bindValue(":nivel", 'administrador', PDO::PARAM_STR);
+    $query_update->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);    
 
     // 4. Executa a atualização no banco de dados
     $query_update->execute();

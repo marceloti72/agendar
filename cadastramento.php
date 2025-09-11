@@ -115,7 +115,7 @@ try {
     $res9->execute();
 
     // Cadastra o perfil ADM-MASTER
-    $res2 = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, cpf = :cpf, email = :email, telefone = :telefone, senha = :senha, nivel = :nivel, id_conta = :id_conta, ativo = :ativo, atendimento = 'Sim', intervalo = '15', username = :username, foto = 'sem-foto.jpg', app = :app, data = NOW()");
+    $res2 = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, cpf = :cpf, email = :email, telefone = :telefone, senha = :senha, nivel = :nivel, id_conta = :id_conta, ativo = :ativo, atendimento = 'Sim', intervalo = '15', username = :username, foto = 'sem-foto.jpg', app = :app, principal = :principal, data = NOW()");
     $res2->bindValue(":nome", $nome_adm);
     $res2->bindValue(":cpf", $cpf);
     $res2->bindValue(":email", $email_adm);
@@ -126,6 +126,7 @@ try {
     $res2->bindValue(":id_conta", $id_conta);
     $res2->bindValue(":username", $id_conta);
     $res2->bindValue(":app", 'Sim');
+    $res2->bindValue(":principal", 'Sim');
     $res2->execute();
 
     $id_usuario = $pdo->lastInsertId();

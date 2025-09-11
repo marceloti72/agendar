@@ -90,15 +90,11 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 							<label for="cargo">Cargo</label>
 							<input type="text" class="form-control" id="cargo" name="cargo" placeholder="Cargo" style="text-transform: capitalize;">
 						</div>
-
-						<?php 						
-						if($plano == '2'){?>
+						
 							<div class="form-group form-check">
 							<input type="checkbox" class="form-check-input" id="isAdmin" onchange="toggleCargoField()">
 							<label class="form-check-label" for="isAdmin">É administrador?</label>
-						</div><?php 
-						}
-						?>
+						</div>
 
 						
 						</div>
