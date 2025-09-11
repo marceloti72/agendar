@@ -78,7 +78,7 @@ try {
     $query_update = $pdo->prepare("
         UPDATE usuarios 
         SET app = :app 
-        WHERE id_conta = :id_conta AND nivel != :nivel
+        WHERE id_conta = :id_conta AND BINARY nivel != :nivel
     ");
 
     // 3. Associa os valores aos placeholders com os tipos corretos
@@ -92,7 +92,7 @@ try {
     // 4. Executa a atualização no banco de dados
     $query_update->execute();
 
-    
+
     // Atualiza a tabela clientes
     $query_clientes = $pdo2->prepare("UPDATE clientes SET plano = :plano, frequencia = :frequencia, valor = :valor WHERE id_conta = :id_conta");
     $query_clientes->bindValue(":plano", $plano, PDO::PARAM_INT);
