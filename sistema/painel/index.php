@@ -802,7 +802,7 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 </head> 
 <body class="cbp-spmenu-push dark" >
 
-	<div id="session-modal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5);">
+	<!-- <div id="session-modal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5);">
 		<div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 400px; border-radius: 12px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
 			<h4 style="font-size: 1.2em; font-weight: bold; margin-top: 0;">Sua sessão está prestes a expirar!</h4>
 			<p>Por segurança, você será desconectado em <span id="session-countdown" style="font-weight: bold;">60</span> segundos.</p>
@@ -810,7 +810,7 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 			<button id="session-stay-btn" style="background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px;">Sim, continuar</button>
 			<button id="session-logout-btn" style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Não, sair</button>
 		</div>
-	</div>
+	</div> -->
 
 	<div class="main-content">
 
@@ -1539,10 +1539,9 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 	<script src="js/bootstrap.js"> </script>
 	<!-- //Bootstrap Core JavaScript -->
 
-	<script>
+	<!-- <script>
 	(function() {
-		//let inactivityTime = 28 * 60 * 1000; // 28 minutos em milissegundos
-		let inactivityTime = 5 * 1000; // 5 segundos em milissegundos
+		let inactivityTime = 28 * 60 * 1000; // 28 minutos em milissegundos
 		let countdownTime = 60 * 1000;       // 60 segundos para o countdown
 
 		let sessionTimer, countdownTimer;
@@ -1610,7 +1609,7 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 		stayBtn.onclick = stayLoggedIn;
 		logoutBtn.onclick = logout;
 	})();
-</script>
+</script> -->
 	
 </body>
 </html>
