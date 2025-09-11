@@ -1,5 +1,6 @@
 <?php	
 @session_start();
+require_once("verificar.php");
 $id_conta = $_SESSION['id_conta'];
 
 $query = $pdo->query("SELECT * FROM agendamentos where data >= curDate() and id_conta = '$id_conta'");

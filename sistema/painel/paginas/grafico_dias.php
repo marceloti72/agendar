@@ -1,3 +1,6 @@
+<?php 
+require_once("verificar.php");
+?>
 <!DOCTYPE html>
 <html>
 <head>

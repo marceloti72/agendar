@@ -2,6 +2,7 @@
 ob_start();
 
 session_start();
+require_once("verificar.php");
 require_once("../conexao.php");
 require_once '../../vendor/autoload.php';
 

@@ -1,13 +1,14 @@
 <?php
 // Enable error reporting for debugging
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
 // Start session only if not active
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once("verificar.php");
 
 // Check if user is logged in
 if (!isset($_SESSION['id_conta'])) {

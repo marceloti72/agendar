@@ -1,10 +1,5 @@
 <?php
 @session_start();
-if (!isset($_SESSION['id_usuario'])) {
-    // Redireciona se não estiver logado, idealmente para a página de login
-    echo "<script>window.location='../'</script>";
-    exit();
-}
 
 $id_conta = $_SESSION['id_conta'];
 require_once("verificar.php");

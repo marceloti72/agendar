@@ -801,6 +801,17 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 	
 </head> 
 <body class="cbp-spmenu-push dark" >
+
+	<div id="session-modal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5);">
+		<div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 400px; border-radius: 12px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+			<h4 style="font-size: 1.2em; font-weight: bold; margin-top: 0;">Sua sessão está prestes a expirar!</h4>
+			<p>Por segurança, você será desconectado em <span id="session-countdown" style="font-weight: bold;">60</span> segundos.</p>
+			<p>Deseja continuar conectado?</p>
+			<button id="session-stay-btn" style="background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px;">Sim, continuar</button>
+			<button id="session-logout-btn" style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Não, sair</button>
+		</div>
+	</div>
+
 	<div class="main-content">
 
 
@@ -1541,6 +1552,78 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 	<!-- Bootstrap Core JavaScript -->
 	<script src="js/bootstrap.js"> </script>
 	<!-- //Bootstrap Core JavaScript -->
+
+	<script>
+	(function() {
+		let inactivityTime = 28 * 60 * 1000; // 28 minutos em milissegundos
+		let countdownTime = 60 * 1000;       // 60 segundos para o countdown
+
+		let sessionTimer, countdownTimer;
+		let countdownInterval;
+
+		const modal = document.getElementById('session-modal');
+		const countdownElement = document.getElementById('session-countdown');
+		const stayBtn = document.getElementById('session-stay-btn');
+		const logoutBtn = document.getElementById('session-logout-btn');
+
+		function showModal() {
+			modal.style.display = 'block';
+			let seconds = countdownTime / 1000;
+			countdownElement.textContent = seconds;
+
+			countdownInterval = setInterval(() => {
+				seconds--;
+				countdownElement.textContent = seconds;
+				if (seconds <= 0) {
+					logout();
+				}
+			}, 1000);
+
+			countdownTimer = setTimeout(logout, countdownTime);
+		}
+
+		function hideModal() {
+			modal.style.display = 'none';
+			clearInterval(countdownInterval);
+			clearTimeout(countdownTimer);
+		}
+
+		function resetTimer() {
+			clearTimeout(sessionTimer);
+			sessionTimer = setTimeout(showModal, inactivityTime);
+		}
+
+		function stayLoggedIn() {
+			hideModal();
+			// Faz uma chamada silenciosa para renovar a sessão no servidor
+			fetch('keep_alive.php')
+				.then(response => response.json())
+				.then(data => {
+					if (data.status === 'ok') {
+						console.log('Sessão renovada.');
+						resetTimer();
+					} else {
+						logout();
+					}
+				}).catch(() => logout());
+		}
+
+		function logout() {
+			window.location.href = 'logout.php'; // Ou 'login.php'
+		}
+
+		// Eventos que reiniciam o timer
+		window.onload = resetTimer;
+		document.onmousemove = resetTimer;
+		document.onkeypress = resetTimer;
+		document.onclick = resetTimer;
+		document.onscroll = resetTimer;
+
+		// Ações dos botões do modal
+		stayBtn.onclick = stayLoggedIn;
+		logoutBtn.onclick = logout;
+	})();
+</script>
 	
 </body>
 </html>
