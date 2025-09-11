@@ -1,8 +1,8 @@
 <?php 
-ini_set('display_errors', 1); // Habilita a exibição de erros
-ini_set('display_startup_errors', 1); // Habilita erros de inicialização
-error_reporting(E_ALL); // Reporta todos os tipos de erros PHP
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Opcional: Se usar MySQLi, reporta erros
+//ini_set('display_errors', 1); // Habilita a exibição de erros
+//ini_set('display_startup_errors', 1); // Habilita erros de inicialização
+//error_reporting(E_ALL); // Reporta todos os tipos de erros PHP
+//mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Opcional: Se usar MySQLi, reporta erros
 require_once('../conexao.php');
 @session_start();
 $id_conta = $_SESSION['id_conta'];
