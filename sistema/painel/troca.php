@@ -20,12 +20,12 @@ switch ($novoPlano) {
     case 'individual_mensal':
         $plano = 1;
         $frequencia = 30;
-        $valor = 49.90;
+        $valor = 39.90;
         break;
     case 'individual_anual':
         $plano = 1;
         $frequencia = 365;
-        $valor = 526.94;
+        $valor = 420.00;
         break;
     case 'empresa_mensal':
         $plano = 2;
@@ -69,6 +69,30 @@ try {
     $query_config->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);
     $query_config->execute();
 
+
+    // 1. Determina o valor a ser gravado com base no plano
+    // Se o plano for '1', o valor será 'Não'. Caso contrário, será 'Sim'.
+    $valor_app = ($plano == '1') ? 'Não' : 'Sim';
+
+    // 2. Prepara a consulta SQL com a condição adicional (nivel != 'administrador')
+    $query_update = $pdo->prepare("
+        UPDATE usuarios 
+        SET app = :app 
+        WHERE id_conta = :id_conta AND nivel != :nivel
+    ");
+
+    // 3. Associa os valores aos placeholders com os tipos corretos
+    //    - :app recebe o valor que definimos ('Sim' ou 'Não'), que é uma string (PDO::PARAM_STR)
+    //    - :id_conta recebe o ID da conta, que é um inteiro (PDO::PARAM_INT)
+    //    - :nivel recebe o texto 'administrador' para a exclusão, que é uma string (PDO::PARAM_STR)
+    $query_update->bindValue(":app", $valor_app, PDO::PARAM_STR);
+    $query_update->bindValue(":id_conta", $id_conta, PDO::PARAM_INT);
+    $query_update->bindValue(":nivel", 'administrador', PDO::PARAM_STR);
+
+    // 4. Executa a atualização no banco de dados
+    $query_update->execute();
+
+    
     // Atualiza a tabela clientes
     $query_clientes = $pdo2->prepare("UPDATE clientes SET plano = :plano, frequencia = :frequencia, valor = :valor WHERE id_conta = :id_conta");
     $query_clientes->bindValue(":plano", $plano, PDO::PARAM_INT);

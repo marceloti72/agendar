@@ -23,11 +23,17 @@ $nome = $res[0]['nome'];
 $tel = $res[0]['telefone'];
 $username = $res[0]['username'];
 
-// if($res[0]['ativo'] == 'Não'){
-//     echo 'Seu acesso esta bloqueado! Entre em contato com a instituição.';
-//     exit();
+if($res[0]['ativo'] == 'Não'){
+    echo 'Seu acesso esta bloqueado! Entre em contato com a instituição.';
+    exit();
 
-// }
+}
+
+if($res[0]['app'] == 'Não'){
+    echo 'Você não tem acesso autorizado ao sistema! Entre em contato com a instituição.';
+    exit();
+
+}
 
 
 

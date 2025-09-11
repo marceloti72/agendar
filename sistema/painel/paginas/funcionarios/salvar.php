@@ -65,6 +65,21 @@ if($total_reg > 0){
 	$foto = 'sem-foto.jpg';
 }
 
+//verificar plano
+$query = $pdo->query("SELECT plano FROM config where id = '$id_conta'");
+$res = $query->fetch(PDO::FETCH_ASSOC); // Usamos fetch() para uma única linha
+
+// Se um resultado for encontrado, verificamos o plano.
+// Caso contrário, definimos um valor padrão seguro ('Não').
+if ($res) {
+    // Se o plano for '1', $app = 'Não'. Para qualquer outro valor, $app = 'Sim'.
+    $app = ($res['plano'] == '1') ? 'Não' : 'Sim';
+} else {
+    // Valor padrão caso não encontre a configuração da conta
+    $app = 'Não';
+}
+
+
 
 //SCRIPT PARA SUBIR FOTO NO SERVIDOR
 $nome_img = date('d-m-Y H:i:s') .'-'.@$_FILES['foto']['name'];
@@ -96,7 +111,7 @@ if(@$_FILES['foto']['name'] != ""){
 
 
 if($id == ""){
-	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, email = :email, cpf = :cpf, senha = '$senha', nivel = '$cargo', data = curDate(), ativo = :ativo, telefone = :telefone, endereco = :endereco, foto = '$foto', atendimento = '$atendimento', tipo_chave = '$tipo_chave', chave_pix = :chave_pix, intervalo = '$intervalo', comissao = '$comissao', id_conta = '$id_conta'");
+	$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, email = :email, cpf = :cpf, senha = '$senha', nivel = '$cargo', data = curDate(), ativo = :ativo, telefone = :telefone, endereco = :endereco, foto = '$foto', atendimento = '$atendimento', tipo_chave = '$tipo_chave', chave_pix = :chave_pix, intervalo = '$intervalo', comissao = '$comissao', id_conta = '$id_conta', app = :app");
 
 	$query->bindValue(":nome", "$nome");
 	$query->bindValue(":email", "$email");
@@ -104,6 +119,7 @@ if($id == ""){
 	$query->bindValue(":telefone", "$telefone");
 	$query->bindValue(":endereco", "$endereco");
 	$query->bindValue(":chave_pix", "$chave_pix");
+	$query->bindValue(":app", "$app");
 	$query->bindValue(":ativo", "Sim");
 	$query->execute();
 

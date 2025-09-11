@@ -96,7 +96,7 @@ try {
     $pdo->beginTransaction();
 
     // Cadastra a instituição no AGENDAR
-    $res1 = $pdo->prepare("INSERT INTO config SET nome = :nome, telefone_whatsapp = :telefone, email = :email_adm, ativo = :ativo, senha_menuia = 'mof36001', token = :token, email_menuia = :email_menuia, plano = :plano, api = 'Sim', data_cadastro = NOW()");
+    $res1 = $pdo->prepare("INSERT INTO config SET nome = :nome, telefone_whatsapp = :telefone, email = :email_adm, ativo = :ativo, senha_menuia = 'mof36001', token = :token, email_menuia = :email_menuia, plano = :plano, api = 'Sim', app = :app, data_cadastro = NOW()");
     $res1->bindValue(":nome", $nome);
     $res1->bindValue(":telefone", $telefone);
     $res1->bindValue(":email_adm", $email_adm);
@@ -104,6 +104,7 @@ try {
     $res1->bindValue(":token", $token_menuia);
     $res1->bindValue(":email_menuia", $email_menuia);
     $res1->bindValue(":plano", $plano);
+    $res1->bindValue(":app", 'Sim');
     $res1->execute();
 
     $id_conta = $pdo->lastInsertId();
