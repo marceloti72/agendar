@@ -140,7 +140,7 @@ echo <<<HTML
 	<th class="esc">Cargo</th> 	
 	<th class="esc">Cadastro</th>
 	<th class="esc">Comissão <small>({$tipo_comissao})</small></th>	
-	<th style='width: 250px;'>Ações</th>
+	<th style='width: 300px;'>Ações</th>
 	</tr> 
 	</thead> 
 	<tbody>	
