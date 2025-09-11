@@ -242,7 +242,7 @@ if (@count($res_caixa) > 0 && $res_caixa[0]['data_fechamento'] === NULL) {
     /* Centraliza o conteúdo verticalmente */
     display: flex;
     align-items: center;
-    padding: 3px 15px;	
+    padding: 7px 15px;	
 }
 
 .navbar-brand {
