@@ -848,21 +848,12 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 							<?php 
                         // DEFINANDO SE É ADMINISTRADOR
 							if(@$_SESSION['nivel_usuario'] == 'administrador'){
-							?>
+							?>							
 							
 							<li class="treeview <?php echo @$home ?>">
-								<a href="#" data-tooltip="Dashboards">
-									<i class="fa fa-dashboard"></i>
-									<span>Dashboards</span>
-									<i class="fa fa-angle-left pull-right"></i>
+								<a href="index.php" data-tooltip="Dashboards">
+								<i class="fa fa-dashboard"></i> <span> Dashboards</span>
 								</a>
-								<ul class="treeview-menu">
-									<li class="<?php echo @$home ?>"><a href="index.php"></i>Financeiro</a></li>
-									<li class="<?php echo @$home ?>"><a href="grafico_dias"></i>Agendamentos Mês</a></li>
-									<li class="<?php echo @$home ?>"><a href="grafico_ano"></i>Agendamentos Ano</a></li>
-					
-
-								</ul>
 							</li>
 
 							<li class="treeview">
