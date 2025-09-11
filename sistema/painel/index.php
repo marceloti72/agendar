@@ -885,15 +885,10 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 								</a>
 								<ul class="treeview-menu">
 								<li class="<?php echo @$clientes ?>"><a href="clientes"></i>Clientes</a></li>
-
-								<?php 
-								if($plano == '2'){
-								?>
-														 
+																				 
 
 								<li class="<?php echo @$funcionarios ?>"><a href="funcionarios"></i>Profissionais</a></li>								
-								<?php 
-								}?>								
+												
 								
 									<li class="<?php echo @$fornecedores ?>"><a href="fornecedores"></i>Fornecedores</a></li>									
 
