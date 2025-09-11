@@ -1195,6 +1195,10 @@ for ($i = 1; $i <= 12; $i++) {
         categoryAxisDias.renderer.minGridDistance = 20;
         categoryAxisDias.renderer.grid.template.location = 0;
 
+        categoryAxisDias.renderer.labels.template.rotation = -45;
+        categoryAxisDias.renderer.labels.template.horizontalCenter = "right";
+        categoryAxisDias.renderer.labels.template.verticalCenter = "middle";
+
         var valueAxisDias = chartDiasSemana.yAxes.push(new am4charts.ValueAxis());
         valueAxisDias.title.text = "Nº de Comandas";
         valueAxisDias.min = 0;
