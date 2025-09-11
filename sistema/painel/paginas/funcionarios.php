@@ -88,7 +88,7 @@ if(@$_SESSION['nivel_usuario'] != 'administrador'){
 						<div class="col-md-4">
 						<div class="form-group">
 							<label for="cargo">Cargo</label>
-							<input type="text" class="form-control" id="cargo" name="cargo" placeholder="Cargo" style="text-transform: capitalize;">
+							<input type="text" class="form-control" id="cargo" name="cargo" placeholder="Cargo">
 						</div>
 						
 							<div class="form-group form-check">
