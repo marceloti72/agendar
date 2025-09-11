@@ -129,7 +129,7 @@ echo <<<HTML
 	<th class="esc">Funcionário</th>
 	<th class="esc">Fornecedor</th>	
 	<th class="">Arquivo</th>	
-	<th style='width: 150px;'>Ações</th>
+	<th style='width: 250px;'>Ações</th>
 	</tr> 
 	</thead> 
 	<tbody>	
