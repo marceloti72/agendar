@@ -1541,7 +1541,8 @@ body.sidebar-collapsed .sidebar-menu > li:hover > a::after {
 
 	<script>
 	(function() {
-		let inactivityTime = 28 * 60 * 1000; // 28 minutos em milissegundos
+		//let inactivityTime = 28 * 60 * 1000; // 28 minutos em milissegundos
+		let inactivityTime = 5 * 1000; // 5 segundos em milissegundos
 		let countdownTime = 60 * 1000;       // 60 segundos para o countdown
 
 		let sessionTimer, countdownTimer;
