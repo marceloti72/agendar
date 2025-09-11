@@ -11,6 +11,9 @@ $tabela = 'produtos';
 				display: none;
 			}
 	}
+	#tabela {
+			font-size: 12px; /* O padrão é 16px. Experimente valores como 13px ou 12px. */
+		}
 </style>
 <?php 
 

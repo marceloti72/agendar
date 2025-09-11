@@ -54,6 +54,10 @@ $tabela = 'textos_index';
         .total-footer { margin: 5px 0; }
         .esc-mobile { display: table-cell; } /* Visível em desktop */
 
+        #tabela {
+			font-size: 12px; /* O padrão é 16px. Experimente valores como 13px ou 12px. */
+		}
+
         /* Media Query para Mobile (max-width: 768px) */
         @media (max-width: 768px) {
             .esc-mobile {

@@ -73,6 +73,10 @@ $tabela = 'usuarios';
             display: table-cell; /* Visível por padrão em desktop */
         }
 
+        #tabela {
+			font-size: 12px; /* O padrão é 16px. Experimente valores como 13px ou 12px. */
+		}
+
         /* Media Query para Mobile (max-width: 768px) */
         @media (max-width: 768px) {
             .table {
