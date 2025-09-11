@@ -136,11 +136,11 @@ echo <<<HTML
 	<table class="table table-hover" id="tabela">
 	<thead> 
 	<tr> 
-	<th>Nome</th>			
+	<th style='width: 250px;'>Nome</th>			
 	<th class="esc">Cargo</th> 	
 	<th class="esc">Cadastro</th>
 	<th class="esc">Comissão <small>({$tipo_comissao})</small></th>	
-	<th style='width: 330px;'>Ações</th>
+	<th style='width: 250px;'>Ações</th>
 	</tr> 
 	</thead> 
 	<tbody>	
