@@ -5,11 +5,12 @@ require_once("verificar.php");
 require_once __DIR__ . '/../../conexao.php';
 
 $hoje = date('Y-m-d');
+$data_inicio = date('Y-m-d', strtotime('-12 months'));
+$data_fim = date('Y-m-d');
+
 
 // Fetch ranking of employees with most services in the last 12 months
 try {
-    $data_inicio = date('Y-m-d', strtotime('-12 months'));
-    $data_fim = date('Y-m-d');
     $query = $pdo->prepare("
     SELECT u.id AS funcionario_id, u.nome AS funcionario_nome, u.foto AS funcionario_foto, COUNT(r.id) AS total_servicos
     FROM receber r
@@ -107,6 +108,58 @@ $ranking_clientes_ativos = $query->fetchAll(PDO::FETCH_ASSOC);
     error_log('Erro ao carregar ranking de clientes ativos: ' . $e->getMessage());
     $clientes_ativos_error = 'Erro ao carregar ranking de clientes ativos.';
 }
+
+// NEW: Fetch activities by day of the week in the last 12 months
+try {
+    $query = $pdo->prepare("
+        SELECT 
+            WEEKDAY(data_pgto) as dia_semana_num,
+            COUNT(id) as total_atividades
+        FROM receber
+        WHERE id_conta = ?
+          AND tipo = 'Comanda'
+          AND pago = 'Sim'
+          AND data_pgto IS NOT NULL
+          AND data_pgto BETWEEN ? AND ?
+        GROUP BY dia_semana_num
+        ORDER BY dia_semana_num ASC
+    ");
+    $query->execute([$id_conta, $data_inicio, $data_fim]);
+    $atividades_semana_raw = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    $dias_mapa = [
+        0 => 'Segunda',
+        1 => 'Terça',
+        2 => 'Quarta',
+        3 => 'Quinta',
+        4 => 'Sexta',
+        5 => 'Sábado',
+        6 => 'Domingo'
+    ];
+
+    // Ensure all days are present for a consistent chart, even with 0 activities
+    $atividades_semana_chart_data_map = [];
+    foreach ($dias_mapa as $num => $nome) {
+        $atividades_semana_chart_data_map[$num] = [
+            'dia_semana' => $nome,
+            'total_atividades' => 0
+        ];
+    }
+
+    foreach ($atividades_semana_raw as $row) {
+        if (isset($atividades_semana_chart_data_map[$row['dia_semana_num']])) {
+             $atividades_semana_chart_data_map[$row['dia_semana_num']]['total_atividades'] = (int)$row['total_atividades'];
+        }
+    }
+    
+    // Convert map back to indexed array for amCharts
+    $atividades_semana_chart_data = array_values($atividades_semana_chart_data_map);
+
+} catch (PDOException $e) {
+    error_log('Erro ao carregar atividades da semana: ' . $e->getMessage());
+    $atividades_semana_error = 'Erro ao carregar atividades da semana.';
+}
+
 ?>
 
 <style>
@@ -666,18 +719,18 @@ $dados_meses_vendas = '';
 $dados_meses_servicos = '';
 
 for ($i = 1; $i <= 12; $i++) {
-    $mes_atual = ($i < 10) ? '0' . $i : $i;
+    $mes_atual_loop = ($i < 10) ? '0' . $i : $i;
 
-    if ($mes_atual == '4' || $mes_atual == '6' || $mes_atual == '9' || $mes_atual == '11') {
-        $dia_final_mes = '30';
-    } else if ($mes_atual == '2') {
-        $dia_final_mes = '28';
+    if ($mes_atual_loop == '4' || $mes_atual_loop == '6' || $mes_atual_loop == '9' || $mes_atual_loop == '11') {
+        $dia_final_mes_loop = '30';
+    } else if ($mes_atual_loop == '2') {
+        $dia_final_mes_loop = '28';
     } else {
-        $dia_final_mes = '31';
+        $dia_final_mes_loop = '31';
     }
 
-    $data_mes_inicio_grafico = $ano_atual . "-" . $mes_atual . "-01";
-    $data_mes_final_grafico = $ano_atual . "-" . $mes_atual . "-" . $dia_final_mes;
+    $data_mes_inicio_grafico = $ano_atual . "-" . $mes_atual_loop . "-01";
+    $data_mes_final_grafico = $ano_atual . "-" . $mes_atual_loop . "-" . $dia_final_mes_loop;
 
     // DESPESAS
     $total_mes_despesa = 0;
@@ -779,7 +832,7 @@ for ($i = 1; $i <= 12; $i++) {
         } else {
             echo "<div style=\"background: #836FFF; color: white; padding:10px; font-size:14px; margin-bottom:10px; width: 100%; border-radius: 10px;\">
             <div><i class=\"fa fa-info-circle\"></i> <b>Aviso: </b> Prezado Cliente, Seu período de teste do sistema termina em <b>{$dias_rest} dias</b>. Clique <a href=\"https://www.gestao.skysee.com.br/pagar/{$id_m}\" target=\"_blank\" ><b style=\"color: #ffc341; font-size: 20px \" >AQUI</b></a> e assine nosso serviço.</div>
-        </div>";
+            </div>";
         }
     }
     ?>
@@ -840,7 +893,7 @@ for ($i = 1; $i <= 12; $i++) {
         <div class="col-md-3 widget" style="border-radius: 12px;">
             <div class="r3_counter_box">
                 <i class="pull-left fa fa-usd <?php echo $classe_saldo_dia ?> icon-rounded"></i>
-                <div class="stats">                    
+                <div class="stats">                       
                     <h5><strong><?php echo @$saldo_total_diaF ?></strong></h5>
                 </div>
                 <hr>
@@ -929,7 +982,6 @@ for ($i = 1; $i <= 12; $i++) {
     }
     ?>
 
-    <!-- HTML para os Gráficos de Pizza -->
     <div class="row" style="margin-top: 20px;">
         <div class="col-md-6 stat" style="padding-left: 0;">
             <div class="content-top-1">
@@ -950,12 +1002,10 @@ for ($i = 1; $i <= 12; $i++) {
         </div>
     </div>
 
-    <!-- Scripts para amCharts 4 -->
     <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
 
-    <!-- JavaScript para os Gráficos de Pizza e Barras -->
     <script>
     am4core.ready(function() {
         am4core.useTheme(am4themes_animated);
@@ -1135,6 +1185,45 @@ for ($i = 1; $i <= 12; $i++) {
         var valueLabelClientes = seriesClientes.bullets.push(new am4charts.LabelBullet());
         valueLabelClientes.label.text = "{valueY}";
         valueLabelClientes.label.dy = -10;
+        
+        // NEW: Gráfico de Barras para Dias da Semana
+        var chartDiasSemana = am4core.create("diasSemanaChart", am4charts.XYChart);
+        chartDiasSemana.data = <?php echo json_encode($atividades_semana_chart_data); ?>;
+        
+        var categoryAxisDias = chartDiasSemana.xAxes.push(new am4charts.CategoryAxis());
+        categoryAxisDias.dataFields.category = "dia_semana";
+        categoryAxisDias.renderer.minGridDistance = 20;
+        categoryAxisDias.renderer.grid.template.location = 0;
+
+        var valueAxisDias = chartDiasSemana.yAxes.push(new am4charts.ValueAxis());
+        valueAxisDias.title.text = "Nº de Comandas";
+        valueAxisDias.min = 0;
+
+        var seriesDias = chartDiasSemana.series.push(new am4charts.ColumnSeries());
+        seriesDias.dataFields.valueY = "total_atividades";
+        seriesDias.dataFields.categoryX = "dia_semana";
+        seriesDias.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/] comandas";
+
+        // Style it like the others
+        seriesDias.columns.template.fill = am4core.color("#50E3C2"); // Using a green-ish color
+        seriesDias.columns.template.strokeOpacity = 0;
+        seriesDias.columns.template.column.cornerRadiusTopLeft = 8;
+        seriesDias.columns.template.column.cornerRadiusTopRight = 8;
+        seriesDias.tooltip.pointerOrientation = "vertical";
+        seriesDias.tooltip.background.fill = am4core.color("#222");
+        seriesDias.tooltip.getFillFromObject = false;
+
+        // Clean up axes
+        valueAxisDias.renderer.grid.template.strokeOpacity = 0.1;
+        categoryAxisDias.renderer.grid.template.strokeOpacity = 0;
+        categoryAxisDias.renderer.ticks.template.disabled = true;
+        categoryAxisDias.renderer.line.strokeOpacity = 0.1;
+
+        // Add value labels on top of bars
+        var valueLabelDias = seriesDias.bullets.push(new am4charts.LabelBullet());
+        valueLabelDias.label.text = "{valueY}";
+        valueLabelDias.label.dy = -10;
+
 
         // Adicionar mensagem para gráficos vazios
         if (chartReceberTipo.data.length === 0) {
@@ -1151,6 +1240,9 @@ for ($i = 1; $i <= 12; $i++) {
         }
         if (chartClientesAtivos.data.length === 0) {
             document.getElementById("clientesAtivosChart").innerHTML = "<p style='text-align:center; padding:20px;'>Nenhum dado disponível para clientes ativos.</p>";
+        }
+        if (<?php echo empty(array_filter($atividades_semana_chart_data, function($d) { return $d['total_atividades'] > 0; })) ? 'true' : 'false'; ?>) {
+            document.getElementById("diasSemanaChart").innerHTML = "<p style='text-align:center; padding:20px;'>Nenhuma atividade registrada nos últimos 12 meses.</p>";
         }
     });
     </script>
@@ -1251,13 +1343,13 @@ for ($i = 1; $i <= 12; $i++) {
                         <div class="ranking-list">
                             <?php 
                             $medals = ['🥇', '🥈', '🥉'];
-                            foreach ($ranking_servicos as $index => $servico):                                
+                            foreach ($ranking_servicos as $index => $servico):                                       
                             ?>
                                 <div class="ranking-item">
                                     <div class="rank-position <?php if($index==0) echo 'gold'; if($index==1) echo 'silver'; if($index==2) echo 'bronze'; ?>">
                                         <?php echo isset($medals[$index]) ? $medals[$index] : $index + 1; ?>
                                     </div>
-                                    <div class="rank-user">                                        
+                                    <div class="rank-user">                                                    
                                         <div class="rank-user-info">
                                             <span class="name"><?php echo htmlspecialchars($servico['servico_nome']); ?></span>
                                             <span class="detail">Serviços Realizados</span>
@@ -1275,10 +1367,53 @@ for ($i = 1; $i <= 12; $i++) {
             </div>
         </div>
 
-    
+        <div class="ranking-card">
+            <div class="ranking-card-header">
+                <h3>📊 Dias da Semana com Mais Atividades <span class="text-subtitle">(Últimos 12 Meses)</span></h3>
+            </div>
+            <div class="ranking-grid">
+                <div class="ranking-list-container">
+                    <?php if (isset($atividades_semana_error)): ?>
+                        <p class="no-data-message"><?php echo htmlspecialchars($atividades_semana_error); ?></p>
+                    <?php elseif (empty(array_filter($atividades_semana_chart_data, function($d) { return $d['total_atividades'] > 0; }))): ?>
+                        <p class="no-data-message">Nenhuma atividade (comanda) registrada nos últimos 12 meses.</p>
+                    <?php else: ?>
+                        <div class="ranking-list">
+                            <?php 
+                            // Sort by activity count for the list view
+                            $atividades_semana_list_data = $atividades_semana_chart_data;
+                            usort($atividades_semana_list_data, function($a, $b) {
+                                return $b['total_atividades'] <=> $a['total_atividades'];
+                            });
+                            $medals = ['🥇', '🥈', '🥉'];
+                            foreach ($atividades_semana_list_data as $index => $dia): 
+                                if ($dia['total_atividades'] == 0) continue; // Don't show days with 0 activity in the list
+                            ?>
+                                <div class="ranking-item">
+                                    <div class="rank-position <?php if($index==0) echo 'gold'; if($index==1) echo 'silver'; if($index==2) echo 'bronze'; ?>">
+                                        <?php echo isset($medals[$index]) ? $medals[$index] : $index + 1; ?>
+                                    </div>
+                                    <div class="rank-user">
+                                        <div class="rank-user-info">
+                                            <span class="name"><?php echo htmlspecialchars($dia['dia_semana']); ?></span>
+                                            <span class="detail">Atividades (Comandas)</span>
+                                        </div>
+                                    </div>
+                                    <div class="rank-value"><?php echo $dia['total_atividades']; ?></div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="ranking-chart-container">
+                    <div id="diasSemanaChart" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+
         
         
-        <!-- Clientes Aguardando Encaixe Hoje -->
+        
         <div class="col-md-12 content-top-2 card encaixes-section" id="encaixes-hoje">
             <div class="card-header">
                 <h3>Clientes Aguardando Encaixe Hoje</h3>
@@ -1308,7 +1443,6 @@ for ($i = 1; $i <= 12; $i++) {
             </div>
         </div>
 
-        <!-- Modal para Aniversariantes -->
         <div class="modal fade" id="birthdayModal" tabindex="-1" role="dialog" aria-labelledby="birthdayModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -1377,17 +1511,13 @@ for ($i = 1; $i <= 12; $i++) {
         <div class="clearfix"></div>
     </div>
 
-    <!-- for amcharts js -->
     <script src="js/amcharts.js"></script>
     <script src="js/serial.js"></script>
     <script src="js/export.min.js"></script>
     <link rel="stylesheet" href="css/export.css" type="text/css" media="all" />
     <script src="js/light.js"></script>
-    <!-- for amcharts js -->
-
     <script src="js/index1.js"></script>
 
-    <!-- for index page weekly sales java script -->
     <script src="js/SimpleChart.js"></script>
     <script>
     $('#dados_grafico_despesa').val('<?=$dados_meses_despesas?>'); 
