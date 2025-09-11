@@ -96,15 +96,14 @@ try {
     $pdo->beginTransaction();
 
     // Cadastra a instituição no AGENDAR
-    $res1 = $pdo->prepare("INSERT INTO config SET nome = :nome, telefone_whatsapp = :telefone, email = :email_adm, ativo = :ativo, senha_menuia = 'mof36001', token = :token, email_menuia = :email_menuia, plano = :plano, api = 'Sim', app = :app, data_cadastro = NOW()");
+    $res1 = $pdo->prepare("INSERT INTO config SET nome = :nome, telefone_whatsapp = :telefone, email = :email_adm, ativo = :ativo, senha_menuia = 'mof36001', token = :token, email_menuia = :email_menuia, plano = :plano, api = 'Sim', data_cadastro = NOW()");
     $res1->bindValue(":nome", $nome);
     $res1->bindValue(":telefone", $telefone);
     $res1->bindValue(":email_adm", $email_adm);
     $res1->bindValue(":ativo", $ativo);    
     $res1->bindValue(":token", $token_menuia);
     $res1->bindValue(":email_menuia", $email_menuia);
-    $res1->bindValue(":plano", $plano);
-    $res1->bindValue(":app", 'Sim');
+    $res1->bindValue(":plano", $plano);    
     $res1->execute();
 
     $id_conta = $pdo->lastInsertId();
@@ -116,7 +115,7 @@ try {
     $res9->execute();
 
     // Cadastra o perfil ADM-MASTER
-    $res2 = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, cpf = :cpf, email = :email, telefone = :telefone, senha = :senha, nivel = :nivel, id_conta = :id_conta, ativo = :ativo, atendimento = 'Sim', intervalo = '15', username = :username, foto = 'sem-foto.jpg', data = NOW()");
+    $res2 = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, cpf = :cpf, email = :email, telefone = :telefone, senha = :senha, nivel = :nivel, id_conta = :id_conta, ativo = :ativo, atendimento = 'Sim', intervalo = '15', username = :username, foto = 'sem-foto.jpg', app = :app, data = NOW()");
     $res2->bindValue(":nome", $nome_adm);
     $res2->bindValue(":cpf", $cpf);
     $res2->bindValue(":email", $email_adm);
@@ -126,6 +125,7 @@ try {
     $res2->bindValue(":ativo", $ativo);
     $res2->bindValue(":id_conta", $id_conta);
     $res2->bindValue(":username", $id_conta);
+    $res2->bindValue(":app", 'Sim');
     $res2->execute();
 
     $id_usuario = $pdo->lastInsertId();
