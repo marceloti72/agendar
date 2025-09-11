@@ -527,6 +527,17 @@ $ranking_clientes_ativos = $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }
+@media (max-width: 360px) {
+    .ranking-list .ranking-item {
+        width: 260px;
+        display: flex;
+        align-items: center;
+        padding: 12px 5;
+        border-bottom: 1px solid #e9eef2;
+        transition: background-color 0.2s ease;
+    }
+
+}
 </style>
 
 <?php 
