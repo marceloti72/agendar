@@ -344,112 +344,6 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
             font-size: 0.9rem;
         }
     }
-
-
-
-
-
-    /*
-=========================================
-    NOVOS ESTILOS PARA PÁGINA DE PLANOS
-=========================================
-*/
-.plano-card {
-    display: flex;
-    flex-direction: column;
-}
-
-.plano-subtitulo {
-    margin-bottom: 20px;
-    min-height: 40px; /* Garante alinhamento */
-}
-
-.plano-empresa .plano-subtitulo {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.plano-info-usuarios {
-    margin: 20px 0;
-    font-size: 1.1rem;
-    flex-grow: 1; /* Empurra o botão para o final */
-}
-
-.recomendado-tag {
-    background: #ffc107;
-    color: #333;
-    padding: 5px 20px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    position: absolute;
-    top: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.desconto-tag {
-    background-color: var(--success-color);
-    color: white;
-    padding: 3px 8px;
-    border-radius: 10px;
-    font-size: 0.7rem;
-    margin-left: 8px;
-    display: inline-block;
-}
-
-/* NOVA SEÇÃO DE FUNCIONALIDADES */
-.funcionalidades-container {
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 40px 20px;
-    text-align: center;
-}
-
-.funcionalidades-titulo {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--dark-text);
-    margin-bottom: 10px;
-}
-
-.funcionalidades-subtitulo {
-    font-size: 1.1rem;
-    color: var(--gray-color);
-    margin-bottom: 40px;
-}
-
-.funcionalidades-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    list-style: none;
-    padding: 0;
-    text-align: left;
-}
-
-.funcionalidades-grid li {
-    background: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    display: flex;
-    align-items: center;
-    font-size: 0.95rem;
-    font-weight: 500;
-}
-
-.funcionalidades-grid li i {
-    color: var(--success-color);
-    font-size: 1.2rem;
-    margin-right: 15px;
-}
-
-@media (max-width: 768px) {
-    .plano-subtitulo {
-        min-height: auto;
-    }
-}
 </style>
 
 <!-- Google tag (gtag.js) -->
@@ -475,81 +369,93 @@ $tipo_plano = isset($_GET['tipo']) && $_GET['tipo'] === 'anual' ? 'anual' : 'men
 </head>
 
 
-<body class="bg-gray-50 font-sans">
-    
-    <div class="header-container">
-        <h1>Planos Simples e Transparentes ✨</h1>
-        <h3>Escolha o plano MarkAi que melhor se adapta ao seu negócio. Todos com 7 dias de teste grátis!</h3>
-        <div class="toggle-plano">
-            <button class="btn <?php echo $tipo_plano === 'mensal' ? 'active' : ''; ?>" onclick="window.location.href='?tipo=mensal'">Cobrança Mensal</button>
-            <button class="btn <?php echo $tipo_plano === 'anual' ? 'active' : ''; ?>" onclick="window.location.href='?tipo=anual'">Cobrança Anual <small><small class="desconto-tag">Economize até 18%</small></small></button>
-        </div>
+<body>
+<div class="header-container">
+    <h1>Planos e Preços ✨</h1>
+    <h3>Escolha o plano da MARKAI que melhor se encaixa na sua gestão de negócio.</h3>
+</div>
+
+    <div class="toggle-plano">
+        <button class="btn <?php echo $tipo_plano === 'mensal' ? 'active' : ''; ?>" onclick="window.location.href='?tipo=mensal'">Mensal</button>
+        <button class="btn <?php echo $tipo_plano === 'anual' ? 'active' : ''; ?>" onclick="window.location.href='?tipo=anual'">Anual <small><small id="desc_anual" class="ms-2">18% off*</small></small></button>
     </div>
 
     <div class="planos-container">
+        <div class="plano-card plano-empresa">
+            <?php if ($tipo_plano === 'anual'): ?>
+                <div class="desconto">18% OFF</div>
+            <?php endif; ?>
+            <h2 class="plano-titulo">Empresa</h2>
+            <p>1 a 15 usuários</p>
+            <div class="preco">
+                R$ <?php echo number_format($planos['empresa'][$tipo_plano]['preco'], 2, ',', '.'); ?> 
+                <span><?php echo $tipo_plano === 'anual' ? '/ano' : '/mês'; ?></span>
+            </div>
+            <?php if ($tipo_plano === 'anual'): ?>
+                <div class="economia">
+                    Pague de uma só vez e economize R$ <?php echo number_format($planos['empresa']['anual']['economia'], 2, ',', '.'); ?>
+                </div>
+            <?php endif; ?>
+            <ul class="funcionalidades">                
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Gestão de profissionais</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Agendamento online 24h, com fila de espera(Encaixes)</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Gestão de profissionais</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Vc poderá baixar o APP ou usar pela Web o MarkAi</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Link ou APP personalizado para clientes, agendamentos, compra de produtos, venda de assinaturas e outras opções.</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Comandas e controle de consumo</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Campanhas de retorno de clientes, disparos em massa com opção de cupom de desconto</div>             
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Gráficos e métricas -> total de clientes, agendamentos de hoje, distribuição de receitas, saldo do dia, mês e ano, agendamentos por dia da semana, serviços por profissionais, serviços mais realizados, aniversariantes de hoje, clientes aguardando encaixe</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Venda de produtos</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Controle total de estoque</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i>WhatsApp integrado <img src="images/whatsapp.png" alt="Ícone do WhatsApp" style="width: 20px; height: 20px;margin-left: 10px;"> </div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Mercado Pago integrado <img src="images/mercado-pago.png" alt="Ícone do Mecado Pago" style="background-color: white;width: 20px; height: 20px;margin-left: 10px;"> <small style="font-size: 12px;margin-left: 10px;"> (diversas formas de pagamentos e baixas automáticas)</small></div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Notificações automáticas de agendamentos, cancelamentos, lembretes, retornos etc...</div>              
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Cartão Fidelidade - Configure e premie seus clientes pela recorrência</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Diversos relatórios Financeiros</div>                  
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> e muito mais...</div>
+            </ul>
+            <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalEmpresa<?php echo $tipo_plano; ?>">Testar grátis por 7 dias</button>
+        </div>
+
         <div class="plano-card plano-individual">
             <?php if ($tipo_plano === 'anual'): ?>
                 <div class="desconto">12% OFF</div>
             <?php endif; ?>
             <h2 class="plano-titulo">Individual</h2>
-            <p class="plano-subtitulo">Perfeito para autônomos e MEIs.</p>
+            <p>1 usuário</p>
             <div class="preco">
-                R$ <?php echo number_format($planos['individual'][$tipo_plano]['preco'], 2, ',', '.'); ?>
+                R$ <?php echo number_format($planos['individual'][$tipo_plano]['preco'], 2, ',', '.'); ?> 
                 <span><?php echo $tipo_plano === 'anual' ? '/ano' : '/mês'; ?></span>
             </div>
             <?php if ($tipo_plano === 'anual'): ?>
                 <div class="economia">
-                    Economize R$ <?php echo number_format($planos['individual']['anual']['economia'], 2, ',', '.'); ?>
+                    Pague de uma só vez e economize R$ <?php echo number_format($planos['individual']['anual']['economia'], 2, ',', '.'); ?>
                 </div>
             <?php endif; ?>
-            <p class="plano-info-usuarios"><strong>1 Usuário</strong></p>
-            <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalIndividual<?php echo $tipo_plano; ?>">Iniciar Teste Grátis</button>
+            <ul class="funcionalidades">                  
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Agendamento online 24h, com fila de espera(Encaixes)</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Gestão de profissionais</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Vc poderá baixar o APP ou usar pela Web o MarkAi</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Link ou APP personalizado para clientes, agendamentos, compra de produtos, venda de assinaturas e outras opções.</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Comandas e controle de consumo</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Campanhas de retorno de clientes, disparos em massa com opção de cupom de desconto</div>             
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Gráficos e métricas -> total de clientes, agendamentos de hoje, distribuição de receitas, saldo do dia, mês e ano, agendamentos por dia da semana, serviços por profissionais, serviços mais realizados, aniversariantes de hoje, clientes aguardando encaixe</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Venda de produtos</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Controle total de estoque</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i>WhatsApp integrado <img src="images/whatsapp.png" alt="Ícone do WhatsApp" style="width: 20px; height: 20px;margin-left: 10px;"> </div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Mercado Pago integrado <img src="images/mercado-pago.png" alt="Ícone do Mecado Pago" style="background-color: white;width: 20px; height: 20px;margin-left: 10px;"> <small style="font-size: 12px;margin-left: 10px;"> (diversas formas de pagamentos e baixas automáticas)</small></div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Notificações automáticas de agendamentos, cancelamentos, lembretes, retornos etc...</div>              
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Cartão Fidelidade - Configure e premie seus clientes pela recorrência</div>
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> Diversos relatórios Financeiros</div>                  
+                <div class="funcionalidade"><i class="fas fa-check-circle"></i></i> e muito mais...</div>
+            </ul>
+            <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalIndividual<?php echo $tipo_plano; ?>">Testar grátis por 7 dias</button>
         </div>
-        
-        <div class="plano-card plano-empresa">
-            <?php if ($tipo_plano === 'anual'): ?>
-                <div class="desconto">18% OFF</div>
-            <?php endif; ?>
-            <div class="recomendado-tag">Mais Popular</div>
-            <h2 class="plano-titulo">Empresa</h2>
-            <p class="plano-subtitulo">Ideal para equipes e negócios em crescimento.</p>
-            <div class="preco">
-                R$ <?php echo number_format($planos['empresa'][$tipo_plano]['preco'], 2, ',', '.'); ?>
-                <span><?php echo $tipo_plano === 'anual' ? '/ano' : '/mês'; ?></span>
-            </div>
-            <?php if ($tipo_plano === 'anual'): ?>
-                <div class="economia">
-                    Economize R$ <?php echo number_format($planos['empresa']['anual']['economia'], 2, ',', '.'); ?>
-                </div>
-            <?php endif; ?>
-            <p class="plano-info-usuarios">Até <strong>15 Usuários</strong></p>
-            <button class="btn-teste" data-bs-toggle="modal" data-bs-target="#modalEmpresa<?php echo $tipo_plano; ?>">Iniciar Teste Grátis</button>
-        </div>
-    </div>
-
-    <div class="funcionalidades-container">
-        <h2 class="funcionalidades-titulo">Todos os Planos Incluem Estas Funcionalidades Incríveis</h2>
-        <p class="funcionalidades-subtitulo">Ferramentas poderosas para levar sua gestão ao próximo nível.</p>
-        <ul class="funcionalidades-grid">
-            <li><i class="fas fa-check"></i> Agendamento online 24h com fila de espera</li>
-            <li><i class="fas fa-check"></i> Link ou APP personalizado para clientes</li>
-            <li><i class="fas fa-check"></i> Campanhas de retorno de clientes</li>
-            <li><i class="fas fa-check"></i> WhatsApp e Mercado Pago integrados</li>
-            <li><i class="fas fa-check"></i> Notificações e lembretes automáticos</li>
-            <li><i class="fas fa-check"></i> Controle de estoque e venda de produtos</li>
-            <li><i class="fas fa-check"></i> Comissões automáticas para profissionais</li>
-            <li><i class="fas fa-check"></i> Cartão Fidelidade digital</li>
-            <li><i class="fas fa-check"></i> Pesquisa de satisfação</li>
-            <li><i class="fas fa-check"></i> Dashboard com gráficos e métricas</li>
-            <li><i class="fas fa-check"></i> Acesso via Web ou App Profissional</li>
-            <li><i class="fas fa-check"></i> E muito mais...</li>
-        </ul>
-    </div>
+    </div><br><br><br><br>
 
     <a href="https://www.markai.skysee.com.br" class="btn-flutuante">
         <i class="fas fa-home"></i> Voltar
     </a>
-
 
     <div class="modal fade" id="modalEmpresamensal" tabindex="-1" aria-labelledby="modalEmpresamensalLabel" aria-hidden="true">
         <div class="modal-dialog">
