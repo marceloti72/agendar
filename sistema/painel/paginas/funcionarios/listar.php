@@ -130,12 +130,10 @@ if($total_reg > 0){
 
 echo <<<HTML
 	<small>
-	<table class="table table-hover" id="tabela">
+	<table class="table table-hover table-sm" id="tabela">
 	<thead> 
 	<tr> 
-	<th>Nome</th>	
-	<th class="esc">Email</th> 	
-	<th class="esc">CPF</th> 	
+	<th>Nome</th>			
 	<th class="esc">Cargo</th> 	
 	<th class="esc">Cadastro</th>
 	<th class="esc">Comissão <small>({$tipo_comissao})</small></th>	
@@ -204,8 +202,6 @@ echo <<<HTML
 <img src="img/perfil/{$foto}" onclick="mostrar('{$nome}', '{$email}', '{$cpf}', '{$senha}', '{$nivel}', '{$dataF}', '{$ativo}', '{$telefone}', '{$endereco}', '{$foto}', '{$atendimento}', '{$tipo_chave}', '{$chave_pix}')" title="Ver Dados" width="50" height="50" class="hovv">
 {$nome}
 </td>
-<td class="esc">{$email}</td>
-<td class="esc">{$cpf}</td>
 <td class="esc">{$nivel}</td>
 <td class="esc">{$dataF}</td>
 <td class="esc">{$comissaoF}</td>
