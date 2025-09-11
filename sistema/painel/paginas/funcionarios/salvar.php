@@ -79,6 +79,12 @@ if ($res) {
     $app = 'Não';
 }
 
+if($app == 'Não'){
+	$senha = '';
+}else{
+	$senha = '123';
+}
+
 
 
 //SCRIPT PARA SUBIR FOTO NO SERVIDOR
