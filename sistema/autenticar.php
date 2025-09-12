@@ -63,6 +63,11 @@ if ($res) {
 			$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 			$id = @$res2[0]['id'];
 
+			// Prepara e executa a query para adicionar +1 ao contador atual
+			$query = $pdo2->prepare("UPDATE clientes SET contador_acessos = contador_acessos + 1 WHERE id = :id");
+			$query->bindValue(":id", $id);
+			$query->execute();
+
 			$query3 = $pdo2->query("SELECT * FROM receber where cliente = '$id' and vencimento < curDate() and pago = 'Não' order by vencimento asc ");
 			$res3 = $query3->fetchAll(PDO::FETCH_ASSOC);
 			if (count($res3) > 0) {
