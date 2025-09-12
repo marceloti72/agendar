@@ -150,21 +150,23 @@ if ($res) {
 			exit();
 		}
 
-		if ($ativo == 'teste') {
-			if ($url[1] == 'localhost/') {
-				//VARIAVEIS DO BANCO DE DADOS LOCAL
-				$servidor_bd = 'localhost';
-				$banco_bd = 'gestao_sistemas';
-				$usuario_bd = 'root';
-				$senha_bd = '';
-			} else {
-				//VARIAVEIS DO BANCO DE DADOS HOSPEDADO
-				$servidor_bd = 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
-				$usuario_bd = 'skysee';
-				$senha_bd = '9vtYvJly8PK6zHahjPUg';
-				$banco_bd = 'gestao_sistemas';
-			}
+		if ($url[1] == 'localhost/') {
+			//VARIAVEIS DO BANCO DE DADOS LOCAL
+			$servidor_bd = 'localhost';
+			$banco_bd = 'gestao_sistemas';
+			$usuario_bd = 'root';
+			$senha_bd = '';
+		} else {
+			//VARIAVEIS DO BANCO DE DADOS HOSPEDADO
+			$servidor_bd = 'app-rds.cvoc8ge8cth8.us-east-1.rds.amazonaws.com';
+			$usuario_bd = 'skysee';
+			$senha_bd = '9vtYvJly8PK6zHahjPUg';
+			$banco_bd = 'gestao_sistemas';
+		}
 
+		$pdo2 = new PDO("mysql:dbname=$banco_bd;host=$servidor_bd;charset=utf8", "$usuario_bd", "$senha_bd");
+
+		if ($ativo == 'teste') {
 
 			$pdo2 = new PDO("mysql:dbname=$banco_bd;host=$servidor_bd;charset=utf8", "$usuario_bd", "$senha_bd");
 
