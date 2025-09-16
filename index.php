@@ -421,8 +421,7 @@
             Comece agora seu teste grátis de 7 dias e descubra como o MarkAi pode transformar sua gestão.
         </p>
         <div class="space-x-4">
-            <a href="precos.php" class="custom-button primary-button">TESTAR GRÁTIS AGORA</a>
-            <!-- <a href="https://wa.me/5522998838694" target="_blank" class="custom-button secondary-button">FALAR COM VENDAS</a> -->
+            <a href="precos.php" class="custom-button primary-button">TESTAR GRÁTIS AGORA</a>            
         </div>
     </div>
 </section>
@@ -431,9 +430,9 @@
     <div class="container mx-auto px-6 py-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-                <h3 class="font-bold text-lg text-white mb-2">MARKAI</h3>
-                <p class="text-sm">Transformando a gestão de negócios de serviços.</p>
-                <p class="text-xs mt-4">&copy; <?php echo date('Y'); ?> MarkAi. Todos os direitos reservados.</p>
+                <h3 class="font-bold text-lg text-white mb-2">SKYSEE Software House</h3>
+                <p class="text-sm">MARKAI - Transformando a gestão de negócios de serviços.</p>
+                <p class="text-xs mt-4">&copy; <?php echo date('Y'); ?> SKYSEE. Todos os direitos reservados.</p>
                 <p class="text-xs">CNPJ: 59.774.964/0001-30</p>
             </div>
             <div>

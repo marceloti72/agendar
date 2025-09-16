@@ -364,7 +364,7 @@ try {
     $mensagem .= "Vencimento: *" . $data_vencF . "* %0A%0A";
     $mensagem .= "Baixe o APP: https://www.markai.skysee.com.br/download/markai.apk";
 
-    require("./ajax/api-texto-ass.php");
+    //require("./ajax/api-texto-ass.php");
 
     // Mensagem de lembrete para WhatsApp (1 dia antes do vencimento)
     $mensagem = $sino . " _Lembrete Automático de Vencimento!_ %0A%0A";
@@ -381,7 +381,7 @@ try {
 
     $data_agd = $data_cobranca . ' 09:00:00';
 
-    require("./ajax/api-agendar-ass.php");
+    //require("./ajax/api-agendar-ass.php");
 
     // Atualiza o hash na tabela 'receber'
     $res5 = $pdo2->prepare("UPDATE receber SET hash = :hash WHERE id = :id");
