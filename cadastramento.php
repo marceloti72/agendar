@@ -384,10 +384,10 @@ try {
     //require("./ajax/api-agendar-ass.php");
 
     // Atualiza o hash na tabela 'receber'
-    $res5 = $pdo2->prepare("UPDATE receber SET hash = :hash WHERE id = :id");
-    $res5->bindValue(":hash", $hash);
-    $res5->bindValue(":id", $ult_id_conta);
-    $res5->execute();
+    // $res5 = $pdo2->prepare("UPDATE receber SET hash = :hash WHERE id = :id");
+    // $res5->bindValue(":hash", $hash);
+    // $res5->bindValue(":id", $ult_id_conta);
+    // $res5->execute();
 
     // Insere o lead
     $res7 = $pdo2->prepare("INSERT INTO leads SET situacao = :situacao, instituicao = :instituicao, responsavel = :responsavel, telefone = :telefone, email = :email, data_cad = :data_cad");
